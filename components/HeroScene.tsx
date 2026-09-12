@@ -1,17 +1,35 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRouter } from "next/navigation";
-
 gsap.registerPlugin(ScrollTrigger);
 
 export function HeroScene() {
- const root = useRef<HTMLDivElement>(null);
- const [open, setOpen] = useState(false);
- const router = useRouter();
- const enter = (destination: string) => { setOpen(true); window.setTimeout(() => router.push(destination), 760); };
- useLayoutEffect(() => { const ctx = gsap.context(() => { const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches; gsap.fromTo(".portal-door", { opacity: 0, y: 130, rotateX: 24 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.45, stagger: .16, ease: "power4.out" }); if(!reduce){gsap.to(".portal-hall",{scale:.79,rotate:-5,xPercent:8,yPercent:7,ease:"none",scrollTrigger:{trigger:".cinematic-hero",start:"top top",end:"bottom top",scrub:1.1}});gsap.to(".door-left",{xPercent:-34,yPercent:-17,rotate:-10,ease:"none",scrollTrigger:{trigger:".cinematic-hero",start:"top top",end:"bottom top",scrub:1}});gsap.to(".door-center",{yPercent:-26,scale:1.08,ease:"none",scrollTrigger:{trigger:".cinematic-hero",start:"top top",end:"bottom top",scrub:1}});gsap.to(".door-right",{xPercent:34,yPercent:17,rotate:10,ease:"none",scrollTrigger:{trigger:".cinematic-hero",start:"top top",end:"bottom top",scrub:1}})} }, root); return () => ctx.revert(); }, []);
- return <div ref={root} className={`hero-scene portal-hall ${open ? "portal-open" : ""}`}><div className="hall-glow"></div><p className="hall-index">01 / ENTER</p><button aria-label="Explore selected work" className="portal-door door-left" onClick={()=>enter("/work")}><span>WORK</span><i></i></button><button aria-label="Explore agency partner services" className="portal-door door-center" onClick={()=>enter("/agency-partner")}><span>STUDIO</span><i></i></button><button aria-label="Contact Usman" className="portal-door door-right" onClick={()=>enter("/contact")}><span>CONTACT</span><i></i></button><div className="hall-instruction">{open ? "Entering the space" : "Tap a door to enter"}</div></div>
+  const root = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    const ctx = gsap.context(() => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gsap.fromTo(".hero-surface", { opacity: 0, scale: .62, rotate: -15 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.6, stagger: .14, ease: "power4.out" });
+      gsap.fromTo(".hero-line", { scaleX: 0 }, { scaleX: 1, duration: 1.15, stagger: .1, ease: "power3.out", delay: .3 });
+      if (!reduce) {
+        gsap.to(".interface-world", { yPercent: -23, scale: 1.2, rotate: -7, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1.1 } });
+        gsap.to(".hero-surface-a", { xPercent: -22, yPercent: -30, rotate: -12, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1 } });
+        gsap.to(".hero-surface-b", { xPercent: 30, yPercent: 27, rotate: 12, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1 } });
+      }
+    }, element);
+    const move = (event: PointerEvent) => { const rect = element.getBoundingClientRect(); element.style.setProperty("--mx", `${(event.clientX - rect.left) / rect.width - .5}`); element.style.setProperty("--my", `${(event.clientY - rect.top) / rect.height - .5}`); };
+    element.addEventListener("pointermove", move);
+    return () => { element.removeEventListener("pointermove", move); ctx.revert(); };
+  }, []);
+  return <div ref={root} aria-hidden="true" className="hero-scene interface-world">
+    <div className="hero-noise" /><div className="hero-aurora" />
+    <span className="hero-line hero-line-a" /><span className="hero-line hero-line-b" /><span className="hero-line hero-line-c" />
+    <div className="hero-surface hero-surface-a"><div className="surface-bar"><i /><i /><i /><b>PROJECT / 01</b></div><div className="surface-layout"><span /><main><i /><i /><i /></main></div></div>
+    <div className="hero-surface hero-surface-b"><p>UI SYSTEM</p><strong>16<span>+</span></strong><small>years of<br />digital craft</small></div>
+    <div className="hero-surface hero-surface-c"><p>DESIGN → BUILD</p><div className="surface-steps"><i /><i /><i /></div><b>LIVE / 2026</b></div>
+    <div className="world-caption"><span>01</span><span>INTERFACE<br />IN MOTION</span></div>
+  </div>;
 }
