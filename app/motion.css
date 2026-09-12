@@ -1,0 +1,4 @@
+.project-portal{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));will-change:transform}
+.project-portal:hover{transform:perspective(900px) translateY(-18px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));box-shadow:0 40px 75px rgba(8,13,26,.2)}
+.project-portal:hover .orb{transform:scale(1.75);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.portal-art{transform:translateZ(18px)}
