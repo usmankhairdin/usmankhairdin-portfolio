@@ -1,1 +1,5 @@
-aW1wb3J0IExpbmsgZnJvbSAibmV4dC9saW5rIjsKCmV4cG9ydCBmdW5jdGlvbiBTaXRlRm9vdGVyKCkgewogcmV0dXJuIDxmb290ZXIgY2xhc3NOYW1lPSJzaXRlLWZvb3RlciI+PGRpdj48cCBjbGFzc05hbWU9ImV5ZWJyb3ciPkF2YWlsYWJsZSBmb3IgYWdlbmN5IGNvbGxhYm9yYXRpb25zPC9wPjxoMj5IYXZlIGEgYnJpZWYgaW4gbWluZD88L2gyPjxMaW5rIGNsYXNzTmFtZT0idGV4dC1saW5rIiBocmVmPSIvY29udGFjdCI+TGV04oCZcyBzdGFydCB3aXRoIGEgZm9jdXNlZCBwYWlkIHBpbG90IDxzcGFuPuKGlzwvc3Bhbj48L0xpbms+PC9kaXY+PGRpdiBjbGFzc05hbWU9ImZvb3Rlci1tZXRhIj48TGluayBocmVmPSJtYWlsdG86dXNtYW4ua2hhaXJkaW5AZ21haWwuY29tIj51c21hbi5raGFpcmRpbkBnbWFpbC5jb208L0xpbms+PHNwYW4+TGFob3JlLCBQYWtpc3RhbiDCtyBXb3JraW5nIGdsb2JhbGx5PC9zcGFuPjxzcGFuPsKpIHtuZXcgRGF0ZSgpLmdldEZ1bGxZZWFyKCl9IFVzbWFuIEtoYWlyIERpbjwvc3Bhbj48L2Rpdj48L2Zvb3Rlcj4KfQo=
+import Link from "next/link";
+
+export function SiteFooter() {
+ return <footer className="site-footer"><div><p className="eyebrow">Available for agency collaborations</p><h2>Have a brief in mind?</h2><Link className="text-link" href="/contact">Let’s start with a focused paid pilot <span>↗</span></Link></div><div className="footer-meta"><Link href="mailto:usman.khairdin@gmail.com">usman.khairdin@gmail.com</Link><span>Lahore, Pakistan · Working globally</span><span>© {new Date().getFullYear()} Usman Khair Din</span></div></footer>
+}
