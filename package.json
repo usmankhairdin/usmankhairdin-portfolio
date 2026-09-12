@@ -1,1 +1,27 @@
-ewogICJuYW1lIjogInVzbWFua2hhaXJkaW4tcG9ydGZvbGlvIiwKICAidmVyc2lvbiI6ICIwLjEuMCIsCiAgInByaXZhdGUiOiB0cnVlLAogICJzY3JpcHRzIjogewogICAgImRldiI6ICJuZXh0IGRldiIsCiAgICAiYnVpbGQiOiAibmV4dCBidWlsZCIsCiAgICAic3RhcnQiOiAibmV4dCBzdGFydCIsCiAgICAibGludCI6ICJlc2xpbnQgLiIKICB9LAogICJkZXBlbmRlbmNpZXMiOiB7CiAgICAiQGdzYXAvcmVhY3QiOiAiXjIuMS4yIiwKICAgICJnc2FwIjogIl4zLjEyLjciLAogICAgImx1Y2lkZS1yZWFjdCI6ICJeMC40NjguMCIsCiAgICAibmV4dCI6ICJeMTYuMC4wIiwKICAgICJyZWFjdCI6ICJeMTkuMC4wIiwKICAgICJyZWFjdC1kb20iOiAiXjE5LjAuMCIKICB9LAogICJkZXZEZXBlbmRlbmNpZXMiOiB7CiAgICAiQHR5cGVzL25vZGUiOiAiXjIyLjEwLjIiLAogICAgIkB0eXBlcy9yZWFjdCI6ICJeMTkuMC4yIiwKICAgICJAdHlwZXMvcmVhY3QtZG9tIjogIl4xOS4wLjIiLAogICAgImVzbGludCI6ICJeOS4xNi4wIiwKICAgICJlc2xpbnQtY29uZmlnLW5leHQiOiAiXjE2LjAuMCIsCiAgICAidHlwZXNjcmlwdCI6ICJeNS43LjIiCiAgfQp9Cg==
+{
+  "name": "usmankhairdin-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.12.7",
+    "lucide-react": "^0.468.0",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "^16.0.0",
+    "typescript": "^5.7.2"
+  }
+}
