@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./motion.css";
+import { ExperienceCanvas } from "@/components/ExperienceCanvas";
 
 export const metadata: Metadata = {
   title: "Usman Khair Din — White-label UI & Frontend Partner",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body><ExperienceCanvas />{children}</body></html>;
 }
