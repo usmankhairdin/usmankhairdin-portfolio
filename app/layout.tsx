@@ -1,1 +1,11 @@
-aW1wb3J0IHR5cGUgeyBNZXRhZGF0YSB9IGZyb20gIm5leHQiOwppbXBvcnQgIi4vZ2xvYmFscy5jc3MiOwoKZXhwb3J0IGNvbnN0IG1ldGFkYXRhOiBNZXRhZGF0YSA9IHsKICB0aXRsZTogIlVzbWFuIEtoYWlyIERpbiDigJQgV2hpdGUtbGFiZWwgVUkgJiBGcm9udGVuZCBQYXJ0bmVyIiwKICBkZXNjcmlwdGlvbjogIldoaXRlLWxhYmVsIFVJIGRlc2lnbiBhbmQgZnJvbnRlbmQgcHJvZHVjdGlvbiBmb3IgZGlnaXRhbCBhZ2VuY2llcy4iLAp9OwoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gUm9vdExheW91dCh7IGNoaWxkcmVuIH06IFJlYWRvbmx5PHsgY2hpbGRyZW46IFJlYWN0LlJlYWN0Tm9kZSB9PikgewogIHJldHVybiA8aHRtbCBsYW5nPSJlbiI+PGJvZHk+e2NoaWxkcmVufTwvYm9keT48L2h0bWw+Owp9Cg==
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Usman Khair Din — White-label UI & Frontend Partner",
+  description: "White-label UI design and frontend production for digital agencies.",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en"><body>{children}</body></html>;
+}
