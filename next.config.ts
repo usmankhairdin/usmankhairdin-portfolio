@@ -1,1 +1,7 @@
-aW1wb3J0IHR5cGUgeyBOZXh0Q29uZmlnIH0gZnJvbSAibmV4dCI7Cgpjb25zdCBuZXh0Q29uZmlnOiBOZXh0Q29uZmlnID0gewogIHJlYWN0U3RyaWN0TW9kZTogdHJ1ZSwKfTsKCmV4cG9ydCBkZWZhdWx0IG5leHRDb25maWc7Cg==
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+};
+
+export default nextConfig;
