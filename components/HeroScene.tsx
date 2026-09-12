@@ -10,14 +10,16 @@ export function HeroScene() {
   useLayoutEffect(() => {
     const element = root.current;
     if (!element) return;
+    const hero = element.closest<HTMLElement>(".cinematic-hero");
+    if (!hero) return;
     const ctx = gsap.context(() => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       gsap.fromTo(".hero-surface", { opacity: 0, scale: .62, rotate: -15 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.6, stagger: .14, ease: "power4.out" });
       gsap.fromTo(".hero-line", { scaleX: 0 }, { scaleX: 1, duration: 1.15, stagger: .1, ease: "power3.out", delay: .3 });
       if (!reduce) {
-        gsap.to(".interface-world", { yPercent: -23, scale: 1.2, rotate: -7, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1.1 } });
-        gsap.to(".hero-surface-a", { xPercent: -22, yPercent: -30, rotate: -12, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1 } });
-        gsap.to(".hero-surface-b", { xPercent: 30, yPercent: 27, rotate: 12, ease: "none", scrollTrigger: { trigger: ".cinematic-hero", start: "top top", end: "bottom top", scrub: 1 } });
+        gsap.to(element, { yPercent: -23, scale: 1.2, rotate: -7, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.1 } });
+        gsap.to(".hero-surface-a", { xPercent: -22, yPercent: -30, rotate: -12, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1 } });
+        gsap.to(".hero-surface-b", { xPercent: 30, yPercent: 27, rotate: 12, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1 } });
       }
     }, element);
     const move = (event: PointerEvent) => { const rect = element.getBoundingClientRect(); element.style.setProperty("--mx", `${(event.clientX - rect.left) / rect.width - .5}`); element.style.setProperty("--my", `${(event.clientY - rect.top) / rect.height - .5}`); };

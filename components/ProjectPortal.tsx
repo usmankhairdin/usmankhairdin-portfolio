@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/projects";
 
-function ProjectVisual({ slug }: { slug: string }) {
+export function ProjectVisual({ slug }: { slug: string }) {
   if (slug === "prima") return <div className="project-visual prima-visual"><span>PRIMA</span><div className="prima-table"><i /><i /><i /><b>TABLE FOR 2</b></div><small>MIAMI · NEW YORK · IBIZA</small></div>;
   if (slug === "bizcare") return <div className="project-visual bizcare-visual"><span>ICHRA</span><div className="benefit-card"><b>EMPLOYEE BENEFITS</b><i /><i /><i /></div><small>ENROLLMENT / ADMINISTRATION</small></div>;
   if (slug === "bansar") return <div className="project-visual bansar-visual"><span>SHENZHEN</span><div className="route"><i /><b>GLOBAL FREIGHT</b><i /></div><small>SEA · AIR · RAIL</small></div>;
