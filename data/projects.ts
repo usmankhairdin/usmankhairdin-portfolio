@@ -9,4 +9,6 @@ export const projects: Project[] = [
   { slug: "pnw-leads", name: "PNWLeads", type: "Service-business lead generation", year: "2025", url: "https://www.usmankhairdin.com/portfolio/PNWLeads/", description: "A qualified-lead generation service for Pacific Northwest service businesses, designed around credibility, intent and conversion.", accent: "#b6e58a", accent2: "#39773e", role: "Conversion design · Frontend", tags: ["Lead generation", "Services", "Conversion"] },
 ];
 
-export const featuredProjects = projects.slice(0, 3);
+// The homepage is the portfolio's complete proof point: keep every verified
+// project in the sequence rather than treating the latter three as hidden work.
+export const featuredProjects = projects;
