@@ -1,1 +1,34 @@
-IyBVc21hbiBLaGFpciBEaW4g4oCUIFBvcnRmb2xpbyB2MQoKUHJlbWl1bSBtdWx0aS1wYWdlIHBvcnRmb2xpbyBhbmQgd2hpdGUtbGFiZWwgYWdlbmN5LXBhcnRuZXIgd2Vic2l0ZS4KCiMjIFJ1biBsb2NhbGx5CgpgYGBiYXNoCm5wbSBpbnN0YWxsCm5wbSBydW4gZGV2CmBgYAoKT3BlbiBgaHR0cDovL2xvY2FsaG9zdDozMDAwYC4KCklmIHRoZSBkZXZlbG9wbWVudCBzZXJ2ZXIgaGFzIGEgbG9jYWwgbmV0d29ya2luZyBpc3N1ZSwgdXNlIHRoZSBwcm9kdWN0aW9uIGJ1aWxkIGluc3RlYWQ6CgpgYGBiYXNoCm5wbSBydW4gYnVpbGQKbnBtIHJ1biBzdGFydCAtLSAtSCAxMjcuMC4wLjEKYGBgCgpUaGVuIG9wZW4gYGh0dHA6Ly8xMjcuMC4wLjE6MzAwMGAuCgojIyBQcm9kdWN0aW9uIGNoZWNrcwoKYGBgYmFzaApucG0gcnVuIGJ1aWxkCmBgYAoKIyMgSW1wb3J0YW50IGJlZm9yZSBwcm9kdWNlIGRlcGxveW1lbnQKCi0gUmVwbGFjZSB0aGUgcHJldmlldy1vbmx5IGNvbnRhY3QgZm9ybSBoYW5kbGVyIHdpdGggdGhlIHNlbGVjdGVkIGVtYWlsL2Zvcm0gZW5kcG9pbnQuCi0gQWRkIGFwcHJvdmVkIGhpZ2gtcmVzb2x1dGlvbiBwcm9qZWN0IHNjcmVlbnNob3RzIHRvIHRoZSBjYXNlIHN0dWRpZXMuCi0gVmVyaWZ5IHRoZSBsaXZlIHByb2plY3QgbGlua3MgYW5kIGZpbmFsIHByb2plY3Qgc2NvcGUgY29weS4KLSBQb2ludCB0aGUgZGVwbG95bWVudCBwcmV2aWV3IHRvIGB1c21hbmtoYWlyZGluLmNvbWAgb25seSBhZnRlciBhcHByb3ZhbC4K
+# Usman Khair Din — Portfolio v1
+
+Premium multi-page portfolio and white-label agency-partner website.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+If the development server has a local networking issue, use the production build instead:
+
+```bash
+npm run build
+npm run start -- -H 127.0.0.1
+```
+
+Then open `http://127.0.0.1:3000`.
+
+## Production checks
+
+```bash
+npm run build
+```
+
+## Important before production deployment
+
+- Replace the preview-only contact form handler with the selected email/form endpoint.
+- Add approved high-resolution project screenshots to the case studies.
+- Verify the live project links and final project scope copy.
+- Point the deployment preview to `usmankhairdin.com` only after approval.
