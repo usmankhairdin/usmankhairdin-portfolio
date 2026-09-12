@@ -3,13 +3,21 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/projects";
 
+const liveMedia = {
+  prima: { src: "https://primaapp.com/prima-og-share.jpg?v=20260911b", label: "PRIMA live hospitality platform" },
+  bizcare: { src: "https://www.usmankhairdin.com/portfolio/bizcare/images/hero.png", label: "BizCare ICHRA platform" },
+  bansar: { src: "https://www.bansarchina.com/wp-content/uploads/slider2/slider1.jpg", label: "Bansar freight forwarding" },
+  rantle: { src: "https://www.icrfq.com/ecpic/20161119/20/58/E-500.JPG", label: "Rantle electronic component listing" },
+  "bum-life": { src: "https://www.usmankhairdin.com/portfolio/bum.life/images/LaLuttepourlaBouteille.png", label: "Bum.Life Cart Wars" },
+  "pnw-leads": { src: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop", label: "PNWLeads service business lead generation" },
+} as const;
+
 export function ProjectVisual({ slug }: { slug: string }) {
-  if (slug === "prima") return <div className="project-visual prima-visual"><span>PRIMA</span><div className="prima-table"><i /><i /><i /><b>TABLE FOR 2</b></div><small>MIAMI · NEW YORK · IBIZA</small></div>;
-  if (slug === "bizcare") return <div className="project-visual bizcare-visual"><span>ICHRA</span><div className="benefit-card"><b>EMPLOYEE BENEFITS</b><i /><i /><i /></div><small>ENROLLMENT / ADMINISTRATION</small></div>;
-  if (slug === "bansar") return <div className="project-visual bansar-visual"><span>SHENZHEN</span><div className="route"><i /><b>GLOBAL FREIGHT</b><i /></div><small>SEA · AIR · RAIL</small></div>;
-  if (slug === "rantle") return <div className="project-visual rantle-visual"><span>RANTLE</span><div className="chip"><i /><i /><i /><i /></div><small>COMPONENTS / SOURCING</small></div>;
-  if (slug === "bum-life") return <div className="project-visual bum-life-visual"><span>THE MADNESS</span><div className="coin">B</div><small>COMMUNITY / WEB3</small></div>;
-  return <div className="project-visual pnw-visual"><span>PNW LEADS</span><div className="lead-flow"><i /><i /><i /><b>QUALIFIED</b></div><small>SERVICE BUSINESS GROWTH</small></div>;
+  const media = liveMedia[slug as keyof typeof liveMedia] ?? liveMedia.prima;
+  return <div className={`project-live-visual project-live-${slug}`}>
+    <img className="project-live-image" src={media.src} alt={media.label} />
+    <span className="project-live-caption">Live project / {slug === "bum-life" ? "Bum.Life" : slug === "pnw-leads" ? "PNWLeads" : slug}</span>
+  </div>;
 }
 
 export function ProjectPortal({ project, index }: { project: Project; index: number }) {
