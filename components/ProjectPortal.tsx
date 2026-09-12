@@ -1,1 +1,10 @@
-aW1wb3J0IExpbmsgZnJvbSAibmV4dC9saW5rIjsKaW1wb3J0IHsgQXJyb3dVcFJpZ2h0IH0gZnJvbSAibHVjaWRlLXJlYWN0IjsKaW1wb3J0IHR5cGUgeyBQcm9qZWN0IH0gZnJvbSAiQC9kYXRhL3Byb2plY3RzIjsKCmV4cG9ydCBmdW5jdGlvbiBQcm9qZWN0UG9ydGFsKHsgcHJvamVjdCwgaW5kZXggfTogeyBwcm9qZWN0OiBQcm9qZWN0OyBpbmRleDogbnVtYmVyIH0pIHsKIHJldHVybiA8TGluayBocmVmPXtgL3dvcmsvJHtwcm9qZWN0LnNsdWd9YH0gY2xhc3NOYW1lPSJwcm9qZWN0LXBvcnRhbCIgc3R5bGU9e3siLS1hY2NlbnQiOiBwcm9qZWN0LmFjY2VudCwgIi0tYWNjZW50MiI6IHByb2plY3QuYWNjZW50Mn0gYXMgUmVhY3QuQ1NTUHJvcGVydGllc30+CiAgIDxkaXYgY2xhc3NOYW1lPSJwb3J0YWwtbnVtYmVyIj4we2luZGV4ICsgMX08L2Rpdj48ZGl2IGNsYXNzTmFtZT0icG9ydGFsLWFydCIgYXJpYS1oaWRkZW49InRydWUiPjxkaXYgY2xhc3NOYW1lPSJ3aW5kb3ctYmFyIj48Yj48L2I+PGI+PC9iPjxiPjwvYj48L2Rpdj48ZGl2IGNsYXNzTmFtZT0id2luZG93LWxheW91dCI+PHNwYW4+PC9zcGFuPjxkaXY+PGk+PC9pPjxpPjwvaT48aT48L2k+PC9kaXY+PC9kaXY+PGRpdiBjbGFzc05hbWU9Im9yYiI+PC9kaXY+PC9kaXY+CiAgIDxkaXYgY2xhc3NOYW1lPSJwb3J0YWwtY29weSI+PHA+e3Byb2plY3QudHlwZX0gPHNwYW4+wrc8L3NwYW4+IHtwcm9qZWN0LnllYXJ9PC9wPjxoMz57cHJvamVjdC5uYW1lfTwvaDM+PGRpdiBjbGFzc05hbWU9InBvcnRhbC1ib3R0b20iPjxzcGFuPntwcm9qZWN0LnJvbGV9PC9zcGFuPjxBcnJvd1VwUmlnaHQgc2l6ZT17MjN9Lz48L2Rpdj48L2Rpdj4KIDwvTGluaz4KfQo=
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import type { Project } from "@/data/projects";
+
+export function ProjectPortal({ project, index }: { project: Project; index: number }) {
+ return <Link href={`/work/${project.slug}`} className="project-portal" style={{"--accent": project.accent, "--accent2": project.accent2} as React.CSSProperties}>
+   <div className="portal-number">0{index + 1}</div><div className="portal-art" aria-hidden="true"><div className="window-bar"><b></b><b></b><b></b></div><div className="window-layout"><span></span><div><i></i><i></i><i></i></div></div><div className="orb"></div></div>
+   <div className="portal-copy"><p>{project.type} <span>·</span> {project.year}</p><h3>{project.name}</h3><div className="portal-bottom"><span>{project.role}</span><ArrowUpRight size={23}/></div></div>
+ </Link>
+}
