@@ -39,6 +39,7 @@ export function HeroScene() {
       element.style.setProperty("--instrument-pointer-y", "0deg");
     };
     update();
+    const revealFrame = requestAnimationFrame(() => { element.dataset.ready = "true"; });
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
     element.addEventListener("pointermove", move, { passive: true });
@@ -48,6 +49,7 @@ export function HeroScene() {
       window.removeEventListener("resize", requestUpdate);
       element.removeEventListener("pointermove", move);
       element.removeEventListener("pointerleave", leave);
+      cancelAnimationFrame(revealFrame);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -60,6 +62,7 @@ export function HeroScene() {
       <div className="instrument-orbit instrument-orbit-two" />
       <div className="instrument-axis instrument-axis-horizontal" />
       <div className="instrument-axis instrument-axis-vertical" />
+      <div className="instrument-sweep" />
       <div className="instrument-type type-ui">UI</div>
       <div className="instrument-type type-fe">FE</div>
       <div className="instrument-cross">×</div>

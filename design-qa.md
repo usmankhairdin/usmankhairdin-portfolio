@@ -15,7 +15,7 @@
 
 - No generic illustration, browser chrome, or synthetic project UI appears in the hero.
 - Primary hero type, CTAs, navigation, instrument labels and moving signal remain readable at both inspected widths.
-- The instrument has controlled entrance, pointer-parallax and scroll motion; the signal begins inside its visual system and travels across the entire page with high contrast over light and dark surfaces.
+- The instrument has a staged, noticeable entrance (type reveal, orbit lock, construction sweep), continuous orbit/scan motion, pointer-parallax and scroll motion; the signal begins inside its visual system and travels across the entire page with high contrast over light and dark surfaces.
 - Six verified project links render in the dedicated archive.
 - Browser console: no warnings or errors.
 - `npx tsc --noEmit --incremental false`: passed.
