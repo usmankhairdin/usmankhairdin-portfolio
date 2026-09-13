@@ -1,12 +1,15 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export function ExperienceCanvas() {
-  const signal = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = signal.current;
+  const orbits = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const element = orbits.current;
     if (!element) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const large = element.querySelector<HTMLElement>(".adaptive-orbit-large");
+    const small = element.querySelector<HTMLElement>(".adaptive-orbit-small");
     const stops = [
       // The first stop lands inside the hero's UI × FE instrument; subsequent stops
       // deliberately cross the whole page rather than hovering in one corner.
@@ -23,16 +26,16 @@ export function ExperienceCanvas() {
       const local = next.at === previous.at ? 0 : (progress - previous.at) / (next.at - previous.at);
       const eased = local * local * (3 - 2 * local);
       const between = (key: "x" | "y" | "r") => previous[key] + (next[key] - previous[key]) * eased;
-      element.style.setProperty("--signal-x", `${between("x")}vw`);
-      element.style.setProperty("--signal-y", `${between("y")}vh`);
-      element.style.setProperty("--signal-r", `${between("r")}deg`);
+      gsap.set(element, { left: `${between("x")}vw`, top: `${between("y")}vh`, rotation: between("r") });
     };
     update();
     if (reduce) return;
+    const largeSpin = gsap.to(large, { rotation: 360, duration: 17, ease: "none", repeat: -1 });
+    const smallSpin = gsap.to(small, { rotation: -360, duration: 11, ease: "none", repeat: -1 });
     let frame = 0;
     const onScroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", onScroll); };
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", onScroll); largeSpin.kill(); smallSpin.kill(); };
   }, []);
-  return <div ref={signal} aria-hidden="true" className="experience-canvas adaptive-signal"><p>System signal</p><span /><i /><small /></div>;
+  return <div ref={orbits} aria-hidden="true" className="experience-canvas adaptive-orbits"><i className="adaptive-orbit adaptive-orbit-large" /><i className="adaptive-orbit adaptive-orbit-small" /><span className="adaptive-orbit-axis" /><b className="adaptive-orbit-cross">×</b></div>;
 }

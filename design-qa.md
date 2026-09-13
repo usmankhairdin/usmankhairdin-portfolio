@@ -15,7 +15,7 @@
 
 - No generic illustration, browser chrome, or synthetic project UI appears in the hero.
 - Primary hero type, CTAs, navigation, instrument labels and moving signal remain readable at both inspected widths.
-- GSAP drives the instrument as one staged scene: type arrival, orbit lock, construction sweep, continuous rotation/scan, pointer depth and a scrubbed scroll transformation. The signal begins inside its visual system and travels across the entire page with high contrast over light and dark surfaces.
+- GSAP drives the instrument as one staged scene: type arrival, construction sweep, pointer depth and a scrubbed scroll transformation. The former signal widget has been replaced by the orbital system itself: it begins behind UI × FE, rotates continuously, and follows the former signal's intentional full-page scroll journey.
 - The transparent header enters with the scene, then stays sticky and condenses to a legible glass surface after the page begins scrolling.
 - Six verified project links render in the dedicated archive.
 - Browser console: no warnings or errors.

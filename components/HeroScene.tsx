@@ -19,8 +19,6 @@ export function HeroScene() {
       const plot = ".instrument-plot";
       const ui = ".type-ui";
       const fe = ".type-fe";
-      const orbitOne = ".instrument-orbit-one";
-      const orbitTwo = ".instrument-orbit-two";
       const cross = ".instrument-cross";
       const sweep = ".instrument-sweep";
       const labels = ".instrument-principle";
@@ -28,8 +26,6 @@ export function HeroScene() {
       if (!hero) return;
 
       gsap.set(plot, { transformPerspective: 1500, transformOrigin: "50% 50%" });
-      gsap.set(orbitOne, { xPercent: -50, yPercent: -50, rotationX: 65, rotation: 45 });
-      gsap.set(orbitTwo, { xPercent: -50, yPercent: -50, rotationX: 65, rotation: -45 });
       gsap.set(cross, { xPercent: -50, yPercent: -50, z: 55 });
       gsap.set(sweep, { scaleX: 0, transformOrigin: "0% 50%" });
 
@@ -38,13 +34,10 @@ export function HeroScene() {
         .from(".instrument-grid", { autoAlpha: 0, scale: 1.18, duration: .9 }, "<.08")
         .from(ui, { autoAlpha: 0, x: -190, skewX: 14, duration: 1.1 }, "<.1")
         .from(fe, { autoAlpha: 0, x: 190, skewX: -14, duration: 1.1 }, "<.04")
-        .from([orbitOne, orbitTwo], { autoAlpha: 0, scale: .3, duration: .82, stagger: .12 }, "<.1")
         .from(cross, { autoAlpha: 0, scale: .15, duration: .68, ease: "back.out(2.4)" }, "<.18")
         .to(sweep, { autoAlpha: .95, scaleX: 1, duration: .9, ease: "power2.inOut" }, "<.05")
         .from(labels, { autoAlpha: 0, y: 16, duration: .45, stagger: .09 }, "<.18");
 
-      gsap.to(orbitOne, { rotation: "+=360", duration: 16, ease: "none", repeat: -1 });
-      gsap.to(orbitTwo, { rotation: "-=360", duration: 11, ease: "none", repeat: -1 });
       gsap.to(sweep, { xPercent: 16, autoAlpha: .15, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true });
       gsap.to(cross, { boxShadow: "0 0 0 15px #080d1aaa, 0 0 36px #d9ff2255", duration: 1.6, ease: "sine.inOut", repeat: -1, yoyo: true });
 
@@ -52,7 +45,6 @@ export function HeroScene() {
         .to(plot, { y: -105, rotationY: 28, rotationX: -12, scale: 1.12, ease: "none" }, 0)
         .to(ui, { x: -150, y: 34, rotation: -5, ease: "none" }, 0)
         .to(fe, { x: 150, y: -34, rotation: 5, ease: "none" }, 0)
-        .to([orbitOne, orbitTwo], { scale: 1.38, autoAlpha: .32, ease: "none" }, 0)
         .to(labels, { y: (index: number) => index < 2 ? -34 : 34, autoAlpha: .18, ease: "none" }, 0);
 
       const xTo = gsap.quickTo(plot, "rotationY", { duration: .7, ease: "power3.out" });
@@ -77,8 +69,6 @@ export function HeroScene() {
     <div className="instrument-topline" aria-hidden="true"><span>Independent practice</span><span>UI × FE</span></div>
     <div className="instrument-plot" aria-hidden="true">
       <div className="instrument-grid" />
-      <div className="instrument-orbit instrument-orbit-one" />
-      <div className="instrument-orbit instrument-orbit-two" />
       <div className="instrument-axis instrument-axis-horizontal" />
       <div className="instrument-axis instrument-axis-vertical" />
       <div className="instrument-sweep" />
