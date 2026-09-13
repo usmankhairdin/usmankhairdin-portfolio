@@ -11,7 +11,7 @@ export function ScrollChoreography() {
       const chapters = gsap.utils.toArray<HTMLElement>(".experience-stage");
       chapters.forEach((chapter, index) => {
         if (index) gsap.fromTo(chapter, { clipPath: "inset(12% 7% 12% 7% round 34px)", scale: .91, opacity: .35 }, { clipPath: "inset(0% 0% 0% 0% round 0px)", scale: 1, opacity: 1, ease: "none", scrollTrigger: { trigger: chapter, start: "top 88%", end: "top 38%", scrub: .7 } });
-        gsap.to(chapter, { yPercent: -5, ease: "none", scrollTrigger: { trigger: chapter, start: "top bottom", end: "bottom top", scrub: 1.1 } });
+        if (index) gsap.to(chapter, { yPercent: -5, ease: "none", scrollTrigger: { trigger: chapter, start: "top bottom", end: "bottom top", scrub: 1.1 } });
       });
       gsap.fromTo(".statement h2", { y: 130, opacity: 0, letterSpacing: "-.15em" }, { y: 0, opacity: 1, letterSpacing: "-.07em", duration: 1.5, ease: "power4.out", scrollTrigger: { trigger: ".statement", start: "top 70%" } });
       gsap.fromTo(".statement p:not(.eyebrow)", { y: 35, opacity: 0 }, { y: 0, opacity: 1, duration: .8, delay: .35, scrollTrigger: { trigger: ".statement", start: "top 70%" } });

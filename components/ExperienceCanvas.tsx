@@ -8,7 +8,7 @@ export function ExperienceCanvas() {
     if (!element) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const stops = [
-      { at: 0, x: 14, y: 73, r: -8 },
+      { at: 0, x: 51, y: 82, r: -8 },
       { at: .22, x: 79, y: 64, r: 11 },
       { at: .48, x: 50, y: 34, r: -4 },
       { at: .74, x: 18, y: 48, r: 8 },

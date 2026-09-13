@@ -1,37 +1,80 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+import Image from "next/image";
+import Link from "next/link";
+import { Pause, Play, ArrowUpRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+const ribbonProjects = [
+  { slug: "prima", name: "PRIMA", detail: "Hospitality", height: 710 },
+  { slug: "bizcare", name: "BizCare Benefits", detail: "ICHRA platform", height: 710 },
+  { slug: "bansar", name: "Bansar China", detail: "Freight & logistics", height: 620 },
+  { slug: "rantle", name: "Rantle", detail: "Electronic components", height: 710 },
+  { slug: "bum-life", name: "Bum.Life", detail: "Animated comedy", height: 710 },
+  { slug: "pnw-leads", name: "PNWLeads", detail: "Lead generation", height: 710 },
+];
 
 export function HeroScene() {
   const root = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
     const element = root.current;
-    if (!element) return;
-    const hero = element.closest<HTMLElement>(".cinematic-hero");
-    if (!hero) return;
-    const ctx = gsap.context(() => {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      gsap.fromTo(".hero-surface", { opacity: 0, scale: .62, rotate: -15 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.6, stagger: .14, ease: "power4.out" });
-      gsap.fromTo(".hero-line", { scaleX: 0 }, { scaleX: 1, duration: 1.15, stagger: .1, ease: "power3.out", delay: .3 });
-      if (!reduce) {
-        gsap.to(element, { yPercent: -23, scale: 1.2, rotate: -7, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.1 } });
-        gsap.to(".hero-surface-a", { xPercent: -22, yPercent: -30, rotate: -12, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1 } });
-        gsap.to(".hero-surface-b", { xPercent: 30, yPercent: 27, rotate: 12, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1 } });
+    const surface = canvas.current;
+    if (!element || !surface) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let disposed = false;
+    let generation = 0;
+    let cleanup: (() => void) | undefined;
+    const start = async () => {
+      const current = ++generation;
+      cleanup?.();
+      cleanup = undefined;
+      element.dataset.ribbonReady = "false";
+      if (preference.matches) return;
+      try {
+        const { createProjectRibbon } = await import("./project-ribbon");
+        if (disposed || current !== generation) return;
+        const stop = await createProjectRibbon(surface, element,
+          ribbonProjects.map((project) => `/projects/screens/${project.slug}.webp`),
+          () => { if (!disposed && current === generation) element.dataset.ribbonReady = "true"; });
+        if (disposed || current !== generation) stop();
+        else cleanup = stop;
+      } catch {
+        // The same real project screens remain usable without WebGL.
+        element.dataset.ribbonReady = "false";
       }
-    }, element);
-    const move = (event: PointerEvent) => { const rect = element.getBoundingClientRect(); element.style.setProperty("--mx", `${(event.clientX - rect.left) / rect.width - .5}`); element.style.setProperty("--my", `${(event.clientY - rect.top) / rect.height - .5}`); };
-    element.addEventListener("pointermove", move);
-    return () => { element.removeEventListener("pointermove", move); ctx.revert(); };
+    };
+    void start();
+    preference.addEventListener("change", start);
+    return () => { disposed = true; generation++; preference.removeEventListener("change", start); cleanup?.(); };
   }, []);
-  return <div ref={root} aria-hidden="true" className="hero-scene interface-world">
-    <div className="hero-noise" /><div className="hero-aurora" />
-    <span className="hero-line hero-line-a" /><span className="hero-line hero-line-b" /><span className="hero-line hero-line-c" />
-    <div className="hero-surface hero-surface-a"><div className="surface-bar"><i /><i /><i /><b>PROJECT / 01</b></div><div className="surface-layout"><span /><main><i /><i /><i /></main></div></div>
-    <div className="hero-surface hero-surface-b"><p>UI SYSTEM</p><strong>16<span>+</span></strong><small>years of<br />digital craft</small></div>
-    <div className="hero-surface hero-surface-c"><p>DESIGN → BUILD</p><div className="surface-steps"><i /><i /><i /></div><b>LIVE / 2026</b></div>
-    <div className="world-caption"><span>01</span><span>INTERFACE<br />IN MOTION</span></div>
-  </div>;
+  return (
+    <div ref={root} className="ribbon-scene" data-paused={paused}>
+      <div className="ribbon-heading" aria-hidden="true"><span>Selected work</span><span>01 — 06</span></div>
+      <div className="ribbon-screens" aria-hidden="true">
+        {ribbonProjects.map((project) => (
+          <div className={`ribbon-screen ribbon-screen-${project.slug}`} key={project.slug}>
+            <Image src={`/projects/screens/${project.slug}.webp`} alt="" width={1248} height={project.height} unoptimized loading="eager" />
+          </div>
+        ))}
+      </div>
+      <canvas ref={canvas} className="ribbon-canvas" aria-hidden="true" />
+      <nav className="ribbon-index" aria-label="Explore the projects in the ribbon">
+        {ribbonProjects.map((project, index) => (
+          <Link href={`/work/${project.slug}`} className="ribbon-project" key={project.slug}>
+            <span className="ribbon-project-number">0{index + 1}</span>
+            <span className="ribbon-project-title">{project.name}<ArrowUpRight size={12} aria-hidden="true" /></span>
+            <span className="ribbon-project-detail">{project.detail}</span>
+          </Link>
+        ))}
+      </nav>
+      <div className="ribbon-footnote">
+        <p>Six different worlds.<br /><span>One considered approach.</span></p>
+        <button className="ribbon-pause" type="button" aria-label={paused ? "Resume ribbon motion" : "Pause ribbon motion"} aria-pressed={paused} onClick={() => setPaused(!paused)}>
+          {paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}
+        </button>
+      </div>
+    </div>
+  );
 }

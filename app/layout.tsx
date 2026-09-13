@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./motion.css";
+import "./ribbon.css";
 import { ExperienceCanvas } from "@/components/ExperienceCanvas";
 
 export const metadata: Metadata = {
