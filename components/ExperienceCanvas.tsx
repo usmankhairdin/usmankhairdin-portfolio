@@ -39,11 +39,16 @@ export function ExperienceCanvas() {
       if (!positioned) {
         gsap.set(element, { xPercent: -50, yPercent: -50, x: window.innerWidth * x / 100, y: window.innerHeight * y / 100 });
         positioned = true;
-        return;
+      } else {
+        // Transform-only movement keeps the field visible between scroll samples.
+        xTo(window.innerWidth * x / 100);
+        yTo(window.innerHeight * y / 100);
       }
-      // Transform-only movement keeps the field visible between scroll samples.
-      xTo(window.innerWidth * x / 100);
-      yTo(window.innerHeight * y / 100);
+
+      const centerX = window.innerWidth * x / 100;
+      const centerY = window.innerHeight * y / 100;
+      const section = document.elementFromPoint(centerX, centerY)?.closest<HTMLElement>(".cinematic-hero, .statement, .site-footer");
+      element.dataset.surface = section ? "dark" : "light";
     };
 
     update();
