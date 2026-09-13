@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-/** A restrained line-only responsive component outline that travels through the chapters. */
+/** A line-only delivery blueprint: brief → system → responsive frontend build. */
 export function ExperienceCanvas() {
   const field = useRef<HTMLDivElement>(null);
 
@@ -12,7 +12,7 @@ export function ExperienceCanvas() {
     if (!element) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mark = element.querySelector<HTMLElement>(".adaptive-field-mark");
-    const trace = element.querySelector<SVGPathElement>(".adaptive-field-trace");
+    const trace = element.querySelector<SVGPathElement>(".adaptive-blueprint-trace");
     if (!mark || !trace) return;
 
     const desktopStops = [
@@ -48,8 +48,8 @@ export function ExperienceCanvas() {
 
     update();
     if (reduce) return;
-    gsap.set(trace, { strokeDasharray: 380, strokeDashoffset: 380 });
-    const traceMotion = gsap.to(trace, { strokeDashoffset: 0, duration: 5.6, ease: "sine.inOut", repeat: -1, yoyo: true });
+    gsap.set(trace, { strokeDasharray: 610, strokeDashoffset: 610 });
+    const traceMotion = gsap.to(trace, { strokeDashoffset: 0, duration: 6.2, ease: "sine.inOut", repeat: -1, yoyo: true });
     const fieldTilt = gsap.to(mark, { rotation: 1.8, duration: 6.5, ease: "sine.inOut", repeat: -1, yoyo: true });
     let frame = 0;
     const onScroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
@@ -65,14 +65,17 @@ export function ExperienceCanvas() {
 
   return <div ref={field} aria-hidden="true" className="experience-canvas adaptive-field">
     <svg className="adaptive-field-mark" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g className="adaptive-field-grid">
-        <rect x="116" y="184" width="408" height="272" rx="28" />
-        <path d="M116 260H524M252 260V456M252 338H524" />
-        <rect x="282" y="290" width="188" height="18" rx="9" className="adaptive-field-detail" />
-        <path d="M282 370H440M282 408H382" className="adaptive-field-detail" />
+      <g className="adaptive-blueprint-lines">
+        <path d="M86 204H204L282 320H354" />
+        <path d="M86 436H204L282 320" />
+        <path d="M354 320H426" />
+        <rect x="426" y="202" width="142" height="236" rx="20" />
+        <path d="M426 258H568M468 258V438M426 332H568" />
+        <path d="M494 284H540M494 360H540M494 388H524" className="adaptive-blueprint-detail" />
       </g>
-      <path className="adaptive-field-trace" d="M116 260H252V338H524" />
-      <g className="adaptive-field-nodes"><circle cx="116" cy="260" r="6" /><circle cx="252" cy="260" r="6" /><circle cx="252" cy="338" r="6" /><circle cx="524" cy="338" r="6" /></g>
+      <path className="adaptive-blueprint-trace" d="M86 204H204L282 320H426M86 436H204L282 320" />
+      <g className="adaptive-blueprint-nodes"><circle cx="86" cy="204" r="7" /><circle cx="86" cy="436" r="7" /><circle cx="282" cy="320" r="8" /><circle cx="426" cy="320" r="7" /></g>
+      <g className="adaptive-blueprint-labels"><text x="86" y="180">UI DIRECTION</text><text x="86" y="468">FRONTEND BUILD</text><text x="302" y="300">SYSTEM</text><text x="438" y="184">RESPONSIVE</text></g>
     </svg>
   </div>;
 }
