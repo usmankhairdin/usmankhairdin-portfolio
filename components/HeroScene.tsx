@@ -1,57 +1,76 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const principles = ["Brief", "Direction", "System", "Build"];
 
-/** A typographic instrument, not a miniature gallery or pretend interface. */
+/** The visual is choreographed as one GSAP scene, not a collection of CSS flourishes. */
 export function HeroScene() {
   const root = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = root.current;
     if (!element || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let frame = 0;
-    const update = () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const context = gsap.context(() => {
+      const plot = ".instrument-plot";
+      const ui = ".type-ui";
+      const fe = ".type-fe";
+      const orbitOne = ".instrument-orbit-one";
+      const orbitTwo = ".instrument-orbit-two";
+      const cross = ".instrument-cross";
+      const sweep = ".instrument-sweep";
+      const labels = ".instrument-principle";
       const hero = element.closest<HTMLElement>(".cinematic-hero");
       if (!hero) return;
-      const progress = Math.min(Math.max(-hero.getBoundingClientRect().top / Math.max(hero.offsetHeight, 1), 0), 1);
-      element.style.setProperty("--instrument-progress", progress.toFixed(3));
-      element.style.setProperty("--instrument-yaw", `${((progress - .24) * -15).toFixed(2)}deg`);
-      element.style.setProperty("--instrument-pitch", `${((progress - .18) * 7).toFixed(2)}deg`);
-      element.style.setProperty("--instrument-ui-x", `${(-progress * 30).toFixed(1)}px`);
-      element.style.setProperty("--instrument-ui-y", `${(progress * 10).toFixed(1)}px`);
-      element.style.setProperty("--instrument-fe-x", `${(progress * 31).toFixed(1)}px`);
-      element.style.setProperty("--instrument-fe-y", `${(-progress * 10).toFixed(1)}px`);
-      element.style.setProperty("--instrument-signal-r", `${(-38 + progress * 76).toFixed(1)}deg`);
-      frame = 0;
-    };
-    const requestUpdate = () => { if (!frame) frame = requestAnimationFrame(update); };
-    const move = (event: PointerEvent) => {
-      const bounds = element.getBoundingClientRect();
-      const x = (event.clientX - bounds.left) / Math.max(bounds.width, 1) - .5;
-      const y = (event.clientY - bounds.top) / Math.max(bounds.height, 1) - .5;
-      element.style.setProperty("--instrument-pointer-x", `${(x * 3.2).toFixed(2)}deg`);
-      element.style.setProperty("--instrument-pointer-y", `${(y * -2.2).toFixed(2)}deg`);
-    };
-    const leave = () => {
-      element.style.setProperty("--instrument-pointer-x", "0deg");
-      element.style.setProperty("--instrument-pointer-y", "0deg");
-    };
-    update();
-    const revealFrame = requestAnimationFrame(() => { element.dataset.ready = "true"; });
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    element.addEventListener("pointermove", move, { passive: true });
-    element.addEventListener("pointerleave", leave);
-    return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      element.removeEventListener("pointermove", move);
-      element.removeEventListener("pointerleave", leave);
-      cancelAnimationFrame(revealFrame);
-      if (frame) cancelAnimationFrame(frame);
-    };
+
+      gsap.set(plot, { transformPerspective: 1500, transformOrigin: "50% 50%" });
+      gsap.set(orbitOne, { xPercent: -50, yPercent: -50, rotationX: 65, rotation: 45 });
+      gsap.set(orbitTwo, { xPercent: -50, yPercent: -50, rotationX: 65, rotation: -45 });
+      gsap.set(cross, { xPercent: -50, yPercent: -50, z: 55 });
+      gsap.set(sweep, { scaleX: 0, transformOrigin: "0% 50%" });
+
+      gsap.timeline({ defaults: { ease: "power4.out" } })
+        .from(plot, { autoAlpha: 0, scale: .72, rotationY: -28, duration: 1.35 })
+        .from(".instrument-grid", { autoAlpha: 0, scale: 1.18, duration: .9 }, "<.08")
+        .from(ui, { autoAlpha: 0, x: -190, skewX: 14, duration: 1.1 }, "<.1")
+        .from(fe, { autoAlpha: 0, x: 190, skewX: -14, duration: 1.1 }, "<.04")
+        .from([orbitOne, orbitTwo], { autoAlpha: 0, scale: .3, duration: .82, stagger: .12 }, "<.1")
+        .from(cross, { autoAlpha: 0, scale: .15, duration: .68, ease: "back.out(2.4)" }, "<.18")
+        .to(sweep, { autoAlpha: .95, scaleX: 1, duration: .9, ease: "power2.inOut" }, "<.05")
+        .from(labels, { autoAlpha: 0, y: 16, duration: .45, stagger: .09 }, "<.18");
+
+      gsap.to(orbitOne, { rotation: "+=360", duration: 16, ease: "none", repeat: -1 });
+      gsap.to(orbitTwo, { rotation: "-=360", duration: 11, ease: "none", repeat: -1 });
+      gsap.to(sweep, { xPercent: 16, autoAlpha: .15, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true });
+      gsap.to(cross, { boxShadow: "0 0 0 15px #080d1aaa, 0 0 36px #d9ff2255", duration: 1.6, ease: "sine.inOut", repeat: -1, yoyo: true });
+
+      gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.05 } })
+        .to(plot, { y: -105, rotationY: 28, rotationX: -12, scale: 1.12, ease: "none" }, 0)
+        .to(ui, { x: -150, y: 34, rotation: -5, ease: "none" }, 0)
+        .to(fe, { x: 150, y: -34, rotation: 5, ease: "none" }, 0)
+        .to([orbitOne, orbitTwo], { scale: 1.38, autoAlpha: .32, ease: "none" }, 0)
+        .to(labels, { y: (index: number) => index < 2 ? -34 : 34, autoAlpha: .18, ease: "none" }, 0);
+
+      const xTo = gsap.quickTo(plot, "rotationY", { duration: .7, ease: "power3.out" });
+      const yTo = gsap.quickTo(plot, "rotationX", { duration: .7, ease: "power3.out" });
+      const onMove = (event: PointerEvent) => {
+        const bounds = element.getBoundingClientRect();
+        xTo(((event.clientX - bounds.left) / bounds.width - .5) * 14);
+        yTo(-((event.clientY - bounds.top) / bounds.height - .5) * 10);
+      };
+      const onLeave = () => { xTo(0); yTo(0); };
+      element.addEventListener("pointermove", onMove, { passive: true });
+      element.addEventListener("pointerleave", onLeave);
+      return () => {
+        element.removeEventListener("pointermove", onMove);
+        element.removeEventListener("pointerleave", onLeave);
+      };
+    }, element);
+    return () => context.revert();
   }, []);
 
   return <div ref={root} className="partner-instrument" aria-label="UI direction and frontend production">
