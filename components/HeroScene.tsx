@@ -19,27 +19,17 @@ export function HeroScene() {
       const plot = ".instrument-plot";
       const ui = ".type-ui";
       const fe = ".type-fe";
-      const cross = ".instrument-cross";
-      const sweep = ".instrument-sweep";
       const labels = ".instrument-principle";
       const hero = element.closest<HTMLElement>(".cinematic-hero");
       if (!hero) return;
 
       gsap.set(plot, { transformPerspective: 1500, transformOrigin: "50% 50%" });
-      gsap.set(cross, { xPercent: -50, yPercent: -50, z: 55 });
-      gsap.set(sweep, { scaleX: 0, transformOrigin: "0% 50%" });
-
       gsap.timeline({ defaults: { ease: "power4.out" } })
         .from(plot, { autoAlpha: 0, scale: .72, rotationY: -28, duration: 1.35 })
         .from(".instrument-grid", { autoAlpha: 0, scale: 1.18, duration: .9 }, "<.08")
         .from(ui, { autoAlpha: 0, x: -190, skewX: 14, duration: 1.1 }, "<.1")
         .from(fe, { autoAlpha: 0, x: 190, skewX: -14, duration: 1.1 }, "<.04")
-        .from(cross, { autoAlpha: 0, scale: .15, duration: .68, ease: "back.out(2.4)" }, "<.18")
-        .to(sweep, { autoAlpha: .95, scaleX: 1, duration: .9, ease: "power2.inOut" }, "<.05")
         .from(labels, { autoAlpha: 0, y: 16, duration: .45, stagger: .09 }, "<.18");
-
-      gsap.to(sweep, { xPercent: 16, autoAlpha: .15, duration: 2.4, ease: "sine.inOut", repeat: -1, yoyo: true });
-      gsap.to(cross, { boxShadow: "0 0 0 15px #080d1aaa, 0 0 36px #d9ff2255", duration: 1.6, ease: "sine.inOut", repeat: -1, yoyo: true });
 
       gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 1.05 } })
         .to(plot, { y: -105, rotationY: 28, rotationX: -12, scale: 1.12, ease: "none" }, 0)
@@ -69,13 +59,8 @@ export function HeroScene() {
     <div className="instrument-topline" aria-hidden="true"><span>Independent practice</span><span>UI × FE</span></div>
     <div className="instrument-plot" aria-hidden="true">
       <div className="instrument-grid" />
-      <div className="instrument-axis instrument-axis-horizontal" />
-      <div className="instrument-axis instrument-axis-vertical" />
-      <div className="instrument-sweep" />
       <div className="instrument-type type-ui">UI</div>
       <div className="instrument-type type-fe">FE</div>
-      <div className="instrument-cross">×</div>
-      <div className="instrument-signal"><i /><span /></div>
       {principles.map((principle, index) => <span className={`instrument-principle principle-${index + 1}`} key={principle}>{principle}</span>)}
     </div>
     <div className="instrument-caption"><span>Thoughtful direction</span><span>Responsive production</span></div>

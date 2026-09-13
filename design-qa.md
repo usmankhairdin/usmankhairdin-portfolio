@@ -25,3 +25,8 @@
 ## Result
 
 passed
+# Adaptive orbital system
+
+- Restored the hero's original two-ring proportions: a 74% outer orbit and 50% inner orbit, without a centre marker or axis lines.
+- The rings retain their independent 16s / 11s rotations while following a deliberate left–centre–right scroll route.
+- `mix-blend-mode: difference` makes only the drawn ring pixels invert against the section beneath them; a ring can therefore be light over a dark area and dark over a light area at the same time.
