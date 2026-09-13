@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-/** A line-only responsive layout field that travels through the editorial chapters. */
+/** A restrained line-only responsive component outline that travels through the chapters. */
 export function ExperienceCanvas() {
   const field = useRef<HTMLDivElement>(null);
 
@@ -21,8 +21,8 @@ export function ExperienceCanvas() {
       { at: .48, x: 50, y: 37 }, { at: .74, x: 18, y: 51 },
       { at: 1, x: 82, y: 32 },
     ];
-    const leftTo = gsap.quickTo(element, "left", { duration: .78, ease: "power3.out" });
-    const topTo = gsap.quickTo(element, "top", { duration: .78, ease: "power3.out" });
+    const xTo = gsap.quickTo(element, "x", { duration: .92, ease: "power3.out" });
+    const yTo = gsap.quickTo(element, "y", { duration: .92, ease: "power3.out" });
     let positioned = false;
 
     const update = () => {
@@ -37,19 +37,20 @@ export function ExperienceCanvas() {
       const x = previous.x + (next.x - previous.x) * eased;
       const y = previous.y + (next.y - previous.y) * eased;
       if (!positioned) {
-        gsap.set(element, { left: `${x}vw`, top: `${y}vh` });
+        gsap.set(element, { xPercent: -50, yPercent: -50, x: window.innerWidth * x / 100, y: window.innerHeight * y / 100 });
         positioned = true;
         return;
       }
-      leftTo(window.innerWidth * x / 100);
-      topTo(window.innerHeight * y / 100);
+      // Transform-only movement keeps the field visible between scroll samples.
+      xTo(window.innerWidth * x / 100);
+      yTo(window.innerHeight * y / 100);
     };
 
     update();
     if (reduce) return;
-    gsap.set(trace, { strokeDasharray: 390, strokeDashoffset: 390 });
-    const traceMotion = gsap.to(trace, { strokeDashoffset: 0, duration: 4.8, ease: "sine.inOut", repeat: -1, yoyo: true });
-    const fieldTilt = gsap.to(mark, { rotation: 3.5, duration: 5.2, ease: "sine.inOut", repeat: -1, yoyo: true });
+    gsap.set(trace, { strokeDasharray: 380, strokeDashoffset: 380 });
+    const traceMotion = gsap.to(trace, { strokeDashoffset: 0, duration: 5.6, ease: "sine.inOut", repeat: -1, yoyo: true });
+    const fieldTilt = gsap.to(mark, { rotation: 1.8, duration: 6.5, ease: "sine.inOut", repeat: -1, yoyo: true });
     let frame = 0;
     const onScroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -58,20 +59,20 @@ export function ExperienceCanvas() {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      traceMotion.kill(); fieldTilt.kill(); leftTo.tween?.kill(); topTo.tween?.kill();
+      traceMotion.kill(); fieldTilt.kill(); xTo.tween?.kill(); yTo.tween?.kill();
     };
   }, []);
 
   return <div ref={field} aria-hidden="true" className="experience-canvas adaptive-field">
     <svg className="adaptive-field-mark" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g className="adaptive-field-grid">
-        <path d="M96 174L482 92L551 434L164 516L96 174Z" />
-        <path d="M151 162L220 504M205 151L274 493M260 139L329 481M315 127L384 469M370 116L439 458M425 104L494 446" />
-        <path d="M110 243L496 161M124 312L510 230M138 381L524 299M152 450L538 368" />
-        <path d="M96 174L551 434M482 92L164 516" className="adaptive-field-diagonal" />
+        <rect x="116" y="184" width="408" height="272" rx="28" />
+        <path d="M116 260H524M252 260V456M252 338H524" />
+        <rect x="282" y="290" width="188" height="18" rx="9" className="adaptive-field-detail" />
+        <path d="M282 370H440M282 408H382" className="adaptive-field-detail" />
       </g>
-      <path className="adaptive-field-trace" d="M96 174L205 151L315 127L425 104L482 92L496 161L510 230L524 299L538 368L551 434" />
-      <g className="adaptive-field-nodes"><circle cx="96" cy="174" r="7" /><circle cx="482" cy="92" r="7" /><circle cx="551" cy="434" r="7" /><circle cx="164" cy="516" r="7" /></g>
+      <path className="adaptive-field-trace" d="M116 260H252V338H524" />
+      <g className="adaptive-field-nodes"><circle cx="116" cy="260" r="6" /><circle cx="252" cy="260" r="6" /><circle cx="252" cy="338" r="6" /><circle cx="524" cy="338" r="6" /></g>
     </svg>
   </div>;
 }
