@@ -1,22 +1,22 @@
-# Hero ribbon design QA
+# Hero instrument design QA
 
 ## Visual source
 
-- Direction reference: selected original "Living Interface Atlas" exploration at `C:\Users\Usman\.codex\generated_images\01a096b4-037b-7941-bef4-8691d2cf3d92\exec-e8043f5b-e99e-4f06-b14f-a9b44351929d.png`.
-- Production visual material: verified-project captures documented in `public/projects/screens/README.md`.
+- Direction: an original, symmetric typographic "UI × FE" instrument that makes the partnership model immediately legible.
+- Production visual material: verified-project captures remain in the work archive, documented in `public/projects/screens/README.md`.
 
 ## Implementation evidence
 
 - Desktop: `http://localhost:3000/` inspected at 1280 × 720.
 - Mobile: `http://localhost:3000/` inspected in a 390 px responsive frame.
-- The hero uses one connected, curved project ribbon; the six live-project captures are cropped for legibility and remain individually labelled and linked.
+- The hero uses a single balanced composition for UI direction and frontend production. Real project work is reached through the dedicated, readable work archive rather than compressed into the first view.
 
 ## Checks
 
-- No generic illustration, mock browser chrome, or synthetic project UI remains in the hero.
-- Primary hero type, CTAs, navigation, project labels and the moving signal remain readable at both inspected widths.
-- The signal begins away from the CTA, travels through the page with scroll, and retains a dark translucent surface plus high-contrast signal colors over the light section.
-- Six project links render; the pause control changes the ribbon into its paused state.
+- No generic illustration, browser chrome, or synthetic project UI appears in the hero.
+- Primary hero type, CTAs, navigation, instrument labels and moving signal remain readable at both inspected widths.
+- The instrument has controlled entrance, pointer-parallax and scroll motion; the signal begins inside its visual system and travels across the entire page with high contrast over light and dark surfaces.
+- Six verified project links render in the dedicated archive.
 - Browser console: no warnings or errors.
 - `npx tsc --noEmit --incremental false`: passed.
 - `npm run build`: passed.

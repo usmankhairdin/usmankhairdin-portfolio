@@ -8,7 +8,9 @@ export function ExperienceCanvas() {
     if (!element) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const stops = [
-      { at: 0, x: 51, y: 82, r: -8 },
+      // The first stop lands inside the hero's UI × FE instrument; subsequent stops
+      // deliberately cross the whole page rather than hovering in one corner.
+      { at: 0, x: 72, y: 61, r: 0 },
       { at: .22, x: 79, y: 64, r: 11 },
       { at: .48, x: 50, y: 34, r: -4 },
       { at: .74, x: 18, y: 48, r: 8 },
@@ -32,5 +34,5 @@ export function ExperienceCanvas() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", onScroll); };
   }, []);
-  return <div ref={signal} aria-hidden="true" className="experience-canvas adaptive-signal"><p>LIVE / 06</p><span /><i /><b /><em /><small /></div>;
+  return <div ref={signal} aria-hidden="true" className="experience-canvas adaptive-signal"><p>System signal</p><span /><i /><small /></div>;
 }

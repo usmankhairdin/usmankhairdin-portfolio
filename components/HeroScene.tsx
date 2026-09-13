@@ -1,80 +1,71 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Pause, Play, ArrowUpRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-const ribbonProjects = [
-  { slug: "prima", name: "PRIMA", detail: "Hospitality", height: 710 },
-  { slug: "bizcare", name: "BizCare Benefits", detail: "ICHRA platform", height: 710 },
-  { slug: "bansar", name: "Bansar China", detail: "Freight & logistics", height: 620 },
-  { slug: "rantle", name: "Rantle", detail: "Electronic components", height: 710 },
-  { slug: "bum-life", name: "Bum.Life", detail: "Animated comedy", height: 710 },
-  { slug: "pnw-leads", name: "PNWLeads", detail: "Lead generation", height: 710 },
-];
+const principles = ["Brief", "Direction", "System", "Build"];
 
+/** A typographic instrument, not a miniature gallery or pretend interface. */
 export function HeroScene() {
   const root = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const [paused, setPaused] = useState(false);
+
   useEffect(() => {
     const element = root.current;
-    const surface = canvas.current;
-    if (!element || !surface) return;
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let disposed = false;
-    let generation = 0;
-    let cleanup: (() => void) | undefined;
-    const start = async () => {
-      const current = ++generation;
-      cleanup?.();
-      cleanup = undefined;
-      element.dataset.ribbonReady = "false";
-      if (preference.matches) return;
-      try {
-        const { createProjectRibbon } = await import("./project-ribbon");
-        if (disposed || current !== generation) return;
-        const stop = await createProjectRibbon(surface, element,
-          ribbonProjects.map((project) => `/projects/screens/${project.slug}.webp`),
-          () => { if (!disposed && current === generation) element.dataset.ribbonReady = "true"; });
-        if (disposed || current !== generation) stop();
-        else cleanup = stop;
-      } catch {
-        // The same real project screens remain usable without WebGL.
-        element.dataset.ribbonReady = "false";
-      }
+    if (!element || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let frame = 0;
+    const update = () => {
+      const hero = element.closest<HTMLElement>(".cinematic-hero");
+      if (!hero) return;
+      const progress = Math.min(Math.max(-hero.getBoundingClientRect().top / Math.max(hero.offsetHeight, 1), 0), 1);
+      element.style.setProperty("--instrument-progress", progress.toFixed(3));
+      element.style.setProperty("--instrument-yaw", `${((progress - .24) * -15).toFixed(2)}deg`);
+      element.style.setProperty("--instrument-pitch", `${((progress - .18) * 7).toFixed(2)}deg`);
+      element.style.setProperty("--instrument-ui-x", `${(-progress * 30).toFixed(1)}px`);
+      element.style.setProperty("--instrument-ui-y", `${(progress * 10).toFixed(1)}px`);
+      element.style.setProperty("--instrument-fe-x", `${(progress * 31).toFixed(1)}px`);
+      element.style.setProperty("--instrument-fe-y", `${(-progress * 10).toFixed(1)}px`);
+      element.style.setProperty("--instrument-signal-r", `${(-38 + progress * 76).toFixed(1)}deg`);
+      frame = 0;
     };
-    void start();
-    preference.addEventListener("change", start);
-    return () => { disposed = true; generation++; preference.removeEventListener("change", start); cleanup?.(); };
+    const requestUpdate = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const move = (event: PointerEvent) => {
+      const bounds = element.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / Math.max(bounds.width, 1) - .5;
+      const y = (event.clientY - bounds.top) / Math.max(bounds.height, 1) - .5;
+      element.style.setProperty("--instrument-pointer-x", `${(x * 3.2).toFixed(2)}deg`);
+      element.style.setProperty("--instrument-pointer-y", `${(y * -2.2).toFixed(2)}deg`);
+    };
+    const leave = () => {
+      element.style.setProperty("--instrument-pointer-x", "0deg");
+      element.style.setProperty("--instrument-pointer-y", "0deg");
+    };
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    element.addEventListener("pointermove", move, { passive: true });
+    element.addEventListener("pointerleave", leave);
+    return () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      element.removeEventListener("pointermove", move);
+      element.removeEventListener("pointerleave", leave);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
-  return (
-    <div ref={root} className="ribbon-scene" data-paused={paused}>
-      <div className="ribbon-heading" aria-hidden="true"><span>Selected work</span><span>01 — 06</span></div>
-      <div className="ribbon-screens" aria-hidden="true">
-        {ribbonProjects.map((project) => (
-          <div className={`ribbon-screen ribbon-screen-${project.slug}`} key={project.slug}>
-            <Image src={`/projects/screens/${project.slug}.webp`} alt="" width={1248} height={project.height} unoptimized loading="eager" />
-          </div>
-        ))}
-      </div>
-      <canvas ref={canvas} className="ribbon-canvas" aria-hidden="true" />
-      <nav className="ribbon-index" aria-label="Explore the projects in the ribbon">
-        {ribbonProjects.map((project, index) => (
-          <Link href={`/work/${project.slug}`} className="ribbon-project" key={project.slug}>
-            <span className="ribbon-project-number">0{index + 1}</span>
-            <span className="ribbon-project-title">{project.name}<ArrowUpRight size={12} aria-hidden="true" /></span>
-            <span className="ribbon-project-detail">{project.detail}</span>
-          </Link>
-        ))}
-      </nav>
-      <div className="ribbon-footnote">
-        <p>Six different worlds.<br /><span>One considered approach.</span></p>
-        <button className="ribbon-pause" type="button" aria-label={paused ? "Resume ribbon motion" : "Pause ribbon motion"} aria-pressed={paused} onClick={() => setPaused(!paused)}>
-          {paused ? <Play size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}
-        </button>
-      </div>
+
+  return <div ref={root} className="partner-instrument" aria-label="UI direction and frontend production">
+    <div className="instrument-topline" aria-hidden="true"><span>Independent practice</span><span>UI × FE</span></div>
+    <div className="instrument-plot" aria-hidden="true">
+      <div className="instrument-grid" />
+      <div className="instrument-orbit instrument-orbit-one" />
+      <div className="instrument-orbit instrument-orbit-two" />
+      <div className="instrument-axis instrument-axis-horizontal" />
+      <div className="instrument-axis instrument-axis-vertical" />
+      <div className="instrument-type type-ui">UI</div>
+      <div className="instrument-type type-fe">FE</div>
+      <div className="instrument-cross">×</div>
+      <div className="instrument-signal"><i /><span /></div>
+      {principles.map((principle, index) => <span className={`instrument-principle principle-${index + 1}`} key={principle}>{principle}</span>)}
     </div>
-  );
+    <div className="instrument-caption"><span>Thoughtful direction</span><span>Responsive production</span></div>
+  </div>;
 }
