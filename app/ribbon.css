@@ -1,7 +1,8 @@
 /* A deliberate UI-to-frontend composition, not a miniature gallery or mock product. */
-.home-experience > .site-header { color: #e9ede7; background: transparent; margin-bottom: -86px; backdrop-filter: none; }
-.home-experience .header-cta { border-color: #3c4454; }
-.home-experience .site-header nav a:after { background: var(--aqua); }
+.site-header.home-header { color: #e9ede7; background: transparent; margin-bottom: -86px; backdrop-filter: none; }
+.site-header.home-header .header-cta { border-color: #3c4454; }
+.site-header.home-header nav a:after { background: var(--aqua); }
+.site-header.home-header.is-at-bottom { height: 70px; background: rgba(8, 13, 26, .82); backdrop-filter: blur(18px) saturate(135%); box-shadow: 0 9px 34px rgba(0, 0, 0, .19); border-bottom: 1px solid rgba(216, 255, 54, .16); }
 .ribbon-hero { min-height: max(760px, calc(100svh - 86px)); padding-bottom: 100px; overflow: hidden; }
 .ribbon-hero:before, .ribbon-hero:after { display: none; }
 .ribbon-hero .hero-copy { position: relative; z-index: 3; width: 46%; max-width: 600px; padding-top: clamp(115px, 17vh, 185px); }
