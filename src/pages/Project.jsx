@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import ProjectImage from '../components/ProjectImage.jsx'
+
+function BrowserViewport({ project, variant='desktop', label, className='' }){ return <div className={`browser-shot browser-shot--interactive ${className}`}><div className="browser-shot__bar"><i/><i/><i/><span>{label || project.liveUrl.replace(/^https?:\/\//,'').replace(/\/$/,'')}</span></div><div className="browser-shot__viewport"><ProjectImage project={project} variant={variant} eager={variant==='wide'} /></div></div> }
 import { projects } from '../data/projects.js'
 
 export default function Project(){
@@ -20,7 +22,7 @@ export default function Project(){
           <Link className="project-back-link" to="/work/">← All selected work</Link>
         </div>
         <div className="project-signal-rail" aria-hidden="true"><span>REAL PROJECT</span><i/><span>UI × FRONTEND</span><i/><span>RESPONSIVE</span></div>
-        <div className="browser-shot browser-shot--hero"><div className="browser-shot__bar"><i/><i/><i/><span>{p.liveUrl.replace(/^https?:\/\//,'').replace(/\/$/,'')}</span></div><ProjectImage project={p} variant="wide" eager /></div>
+        <BrowserViewport project={p} variant="wide" className="browser-shot--hero" />
       </div></section>
 
       <section className="section section--project-role"><div className="route-wrap project-story">
@@ -37,7 +39,7 @@ export default function Project(){
       <section className="section section--project-close"><div className="route-wrap project-close">
         <span className="kicker">NEED A SIMILAR DELIVERY?</span>
         <h2>Send the brief. Start with a focused paid pilot.</h2>
-        <div><a className="pill pill--dark" href={p.liveUrl} target="_blank" rel="noopener noreferrer">Open live site ↗</a><Link to="/contact/" className="pill project-contact-pill">Start a project ↗</Link></div>
+        <div><a className="pill pill--dark pill--cta" href={p.liveUrl} target="_blank" rel="noopener noreferrer">Open live site ↗</a><Link to="/contact/" className="pill pill--primary pill--cta">Start a project ↗</Link></div>
       </div></section>
     </main>
     <Footer/>
