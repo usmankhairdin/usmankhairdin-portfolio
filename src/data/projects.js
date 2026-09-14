@@ -7,9 +7,9 @@ const thum = (url, width = 1600, crop = 1000) =>
 const withScreens = project => ({
   ...project,
   screenshots: {
-    desktop: [mshot(project.liveUrl, 1280, 800), thum(project.liveUrl, 1500, 950), project.poster],
-    wide: [mshot(project.liveUrl, 1280, 800), thum(project.liveUrl, 1800, 1050), project.poster],
-    mobile: [mshot(project.liveUrl, 620, 960), thum(project.liveUrl, 620, 1000), project.poster],
+    desktop: [mshot(project.liveUrl, 1280, 800), thum(project.liveUrl, 1500, 3600), project.poster],
+    wide: [mshot(project.liveUrl, 1280, 800), thum(project.liveUrl, 1800, 4200), project.poster],
+    mobile: [mshot(project.liveUrl, 620, 960), thum(project.liveUrl, 620, 3600), project.poster],
   },
 })
 
@@ -35,7 +35,7 @@ export const projects = [
     status: 'Public portfolio build',
     liveUrl: 'https://www.usmankhairdin.com/portfolio/bizcare/',
     poster: '/assets/posters/bizcare.svg',
-    accent: '#ff705d',
+    accent: '#5368ff',
     summary: 'A benefits-focused product experience presenting ICHRA administration, marketplace enrollment and partnership options through a clear responsive interface.',
     role: 'UI / UX · Frontend',
     contribution: 'UI/UX and frontend work focused on simplifying a dense benefits proposition into a more legible, structured experience.',
@@ -101,9 +101,9 @@ export const projects = [
 ]
 
 export const doors = [
-  { id:'about', label:'ABOUT', side:'left', z:-18, accent:'#ff705d', route:'/about/' },
+  { id:'about', label:'ABOUT', side:'left', z:-18, accent:'#5368ff', route:'/about/' },
   { id:'services', label:'SERVICES', side:'right', z:-34, accent:'#5368ff', route:'/services/' },
   { id:'work', label:'WORK', side:'left', z:-50, accent:'#b7ff24', route:'/work/' },
-  { id:'agencies', label:'FOR AGENCIES', side:'right', z:-66, accent:'#ff705d', route:'/for-agencies/' },
+  { id:'agencies', label:'FOR AGENCIES', side:'right', z:-66, accent:'#5368ff', route:'/for-agencies/' },
   { id:'contact', label:'CONTACT', side:'left', z:-82, accent:'#5368ff', route:'/contact/' }
 ]
