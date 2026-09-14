@@ -5,7 +5,7 @@ export default function Footer(){
     <div>
       <span className="kicker">WHITE-LABEL UI DESIGN + FRONTEND PRODUCTION</span>
       <h2>Have a brief in <em>mind?</em></h2>
-      <Link className="pill pill--lime" to="/contact/">Start a paid pilot ↗</Link>
+      <Link className="pill pill--primary" to="/contact/">Start a paid pilot ↗</Link>
     </div>
     <div className="footer-meta">
       <a href="mailto:usman.khairdin@gmail.com">usman.khairdin@gmail.com</a>
