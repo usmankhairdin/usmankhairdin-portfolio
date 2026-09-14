@@ -1,7 +1,6 @@
-import { useTexture } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { doors, projects } from '../data/projects.js'
+import { doors } from '../data/projects.js'
 import DoorPortal from './DoorPortal.jsx'
 import { useSurface } from './surfaces.js'
 import { useJourney } from './JourneyContext.jsx'
@@ -56,26 +55,18 @@ function WallRuns({ side, wallMap }) {
   })}</>
 }
 
-function EndFrame({ src, x, y = 1.82, w = 1.35, h = 1.55 }) {
-  const tex = useTexture(src)
-  return <group position={[x, y, END_Z + .115]}>
-    {/* Deep frame/chaukhat-like treatment instead of a flat black border. */}
-    <mesh position={[0, 0, -.045]} receiveShadow={false} castShadow={false}>
-      <boxGeometry args={[w + .22, h + .22, .11]} />
-      <meshStandardMaterial color="#836e58" roughness={.46} metalness={.025} />
-    </mesh>
-    <mesh position={[0, 0, .018]} receiveShadow={false} castShadow={false}>
-      <boxGeometry args={[w + .09, h + .09, .045]} />
-      <meshStandardMaterial color="#b4976a" roughness={.38} metalness={.16} />
-    </mesh>
-    <mesh position={[0, 0, .052]} receiveShadow={false}>
-      <planeGeometry args={[w, h]} />
-      <meshStandardMaterial map={tex} roughness={.72} />
-    </mesh>
-    <mesh position={[0, 0, .068]}>
-      <planeGeometry args={[w - .025, h - .025]} />
-      <meshPhysicalMaterial color="#ffffff" transparent opacity={.055} roughness={.08} clearcoat={.8} clearcoatRoughness={.16} />
-    </mesh>
+function GalleryArt({ x = 0, y = 1.82, z = END_Z + .115, w = 1.35, h = 1.55, variant = 0, side }) {
+  const palettes = [['#5368ff','#e4e9ff','#111827'],['#ffcf4e','#fff3cb','#212937'],['#7ac6bd','#e1f6f1','#17222b'],['#a494e9','#f0edff','#25223b']]
+  const [accent, soft, ink] = palettes[variant % palettes.length]
+  const sign = side === 'right' ? 1 : -1
+  return <group position={[x, y, z]} rotation={side ? [0, side === 'left' ? Math.PI / 2 : -Math.PI / 2, 0] : [0,0,0]}>
+    <mesh position={[0,0,-.045]}><boxGeometry args={[w+.22,h+.22,.11]}/><meshStandardMaterial color="#836e58" roughness={.46}/></mesh>
+    <mesh position={[0,0,.018]}><boxGeometry args={[w+.09,h+.09,.045]}/><meshStandardMaterial color="#b4976a" roughness={.38} metalness={.16}/></mesh>
+    <mesh position={[0,0,.052]}><planeGeometry args={[w,h]}/><meshStandardMaterial color={soft} roughness={.75}/></mesh>
+    <mesh position={[-w*.17,h*.13,.065]} rotation={[0,0,sign*.35]}><planeGeometry args={[w*.55,h*.42]}/><meshBasicMaterial color={accent}/></mesh>
+    <mesh position={[w*.13,-h*.14,.068]} rotation={[0,0,-sign*.18]}><planeGeometry args={[w*.62,h*.28]}/><meshBasicMaterial color={ink}/></mesh>
+    {[-.25,0,.25].map((v,i)=><mesh key={v} position={[v*w*.85,-h*.35,.071]}><planeGeometry args={[w*.13,h*.035]}/><meshBasicMaterial color={accent}/></mesh>)}
+    <mesh position={[0,-h/2-.16,-.025]}><boxGeometry args={[w*.55,.055,.09]}/><meshStandardMaterial color="#9a8768" metalness={.42} roughness={.36}/></mesh>
   </group>
 }
 
@@ -103,9 +94,7 @@ function EndWall({ wallMap }) {
     </mesh>
 
     {/* The end wall is intentionally designed, not left as a blank white panel. */}
-    <EndFrame src={projects[0].poster} x={-1.75} w={1.18} h={1.42} />
-    <EndFrame src={projects[2].poster} x={0} w={1.42} h={1.65} />
-    <EndFrame src={projects[4].poster} x={1.75} w={1.18} h={1.42} />
+    <GalleryArt x={-1.75} w={1.18} h={1.42} variant={0}/><GalleryArt x={0} w={1.42} h={1.65} variant={1}/><GalleryArt x={1.75} w={1.18} h={1.42} variant={2}/>
   </group>
 }
 
@@ -224,40 +213,7 @@ function StartWall({ wallMap }) {
   </group>
 }
 
-function ArtFrame({ side, z, projectIndex = 0, size = 'portrait' }) {
-  const tex = useTexture(projects[projectIndex % projects.length].poster)
-  const sign = side === 'right' ? 1 : -1
-  const w = size === 'wide' ? 1.48 : 1.0
-  const h = size === 'wide' ? .92 : 1.36
-  const y = size === 'wide' ? 1.9 : 1.83
-
-  return <group position={[sign * 3.385, y, z]} rotation={[0, side === 'left' ? Math.PI / 2 : -Math.PI / 2, 0]}>
-    {/* Door-jamb-inspired frame: warm timber depth + thin metal inner lip. */}
-    <mesh position={[0, 0, -.052]} castShadow={false} receiveShadow={false}>
-      <boxGeometry args={[w + .24, h + .24, .14]} />
-      <meshStandardMaterial color="#836e58" roughness={.46} metalness={.025} />
-    </mesh>
-    <mesh position={[0, 0, .005]} castShadow={false} receiveShadow={false}>
-      <boxGeometry args={[w + .10, h + .10, .05]} />
-      <meshStandardMaterial color="#b4976a" metalness={.18} roughness={.34} />
-    </mesh>
-    <mesh position={[0, 0, .044]} receiveShadow={false}>
-      <planeGeometry args={[w, h]} />
-      <meshStandardMaterial map={tex} roughness={.7} />
-    </mesh>
-    <mesh position={[0, 0, .061]}>
-      <planeGeometry args={[w - .03, h - .03]} />
-      <meshPhysicalMaterial color="#ffffff" transparent opacity={.055} roughness={.07} clearcoat={.85} clearcoatRoughness={.15} />
-    </mesh>
-    {/* The small support/rod stays, but with no ripple/reflection beneath it. */}
-    <mesh position={[0, -h / 2 - .16, -.025]} castShadow={false} receiveShadow={false}>
-      <boxGeometry args={[w * .55, .055, .09]} />
-      <meshStandardMaterial color="#9a8768" metalness={.42} roughness={.36} />
-    </mesh>
-  </group>
-}
-
-function Plant({ side, z, accent = '#708067' }) {
+function ArtFrame({ side, z, variant = 0, size = "portrait" }) { const w=size==="wide"?1.48:1.0; const h=size==="wide"?.92:1.36; const y=size==="wide"?1.9:1.83; return <GalleryArt side={side} z={z} y={y} w={w} h={h} variant={variant}/> }\n\nfunction Plant({ side, z, accent = '#708067' }) {
   const sign = side === 'right' ? 1 : -1
   return <group position={[sign * 2.75, 0, z]}>
     <mesh position={[0, .28, 0]} castShadow receiveShadow={false}><cylinderGeometry args={[.28, .34, .56, 28]} /><meshStandardMaterial color="#6a5b4d" roughness={.88} /></mesh>
@@ -286,12 +242,12 @@ function CorridorDecor() {
       {i % 3 === 0 && <pointLight position={[0, 3.2, z]} intensity={5.2} distance={12} decay={2.15} color="#ffdca8" />}
     </group>)}
 
-    <ArtFrame side="left" z={-7.5} projectIndex={0} />
-    <ArtFrame side="right" z={-11.5} projectIndex={1} size="wide" />
-    <ArtFrame side="right" z={-25} projectIndex={2} />
-    <ArtFrame side="left" z={-39} projectIndex={3} size="wide" />
-    <ArtFrame side="right" z={-56} projectIndex={4} />
-    <ArtFrame side="left" z={-72} projectIndex={5} />
+    <ArtFrame side="left" z={-7.5} variant={0} />
+    <ArtFrame side="right" z={-11.5} variant={1} size="wide" />
+    <ArtFrame side="right" z={-25} variant={2} />
+    <ArtFrame side="left" z={-39} variant={3} size="wide" />
+    <ArtFrame side="right" z={-56} variant={0} />
+    <ArtFrame side="left" z={-72} variant={1} />
 
     <Plant side="right" z={-8.4} />
     <Plant side="left" z={-28.2} accent="#79856d" />
