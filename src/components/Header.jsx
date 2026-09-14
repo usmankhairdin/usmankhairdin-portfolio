@@ -25,6 +25,6 @@ export default function Header({ immersive=false }) {
         <NavLink to="/about/">About</NavLink>
       </>}
     </nav>
-    {immersive ? <a href="/contact/" onClick={e=>trigger(e,'contact')} className={`pill pill--lime ${journey?.activeDoor==='contact'?'active':''}`}>Start a project <span>↗</span></a> : <Link to="/contact/" className="pill pill--lime">Start a project <span>↗</span></Link>}
+    {immersive ? <a href="/contact/" onClick={e=>trigger(e,'contact')} className={`pill pill--primary ${journey?.activeDoor==='contact'?'active':''}`}>Start a project <span>↗</span></a> : <Link to="/contact/" className="pill pill--primary">Start a project <span>↗</span></Link>}
   </header>
 }
