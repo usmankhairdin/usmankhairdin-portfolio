@@ -1,30 +1,24 @@
 {
-  "name": "usmankhairdin-portfolio",
-  "version": "0.1.0",
+  "name": "usman-interface-gallery-full-final",
   "private": true,
+  "version": "9.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "@react-three/drei": "^10.7.8",
-    "@react-three/fiber": "^9.6.0",
-    "gsap": "^3.12.7",
-    "lucide-react": "^0.468.0",
-    "next": "^16.0.0",
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.4.2",
+    "gsap": "3.14.2",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "three": "^0.186.0"
+    "react-router-dom": "7.11.0",
+    "three": "0.182.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "eslint": "^9.16.0",
-    "eslint-config-next": "^16.0.0",
-    "typescript": "^5.7.2"
+    "@vitejs/plugin-react": "5.1.1",
+    "vite": "7.2.4"
   }
 }

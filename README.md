@@ -1,34 +1,34 @@
-# Usman Khair Din — Portfolio v1
+# Usman Khair Din — Interface Gallery Full Final
 
-Premium multi-page portfolio and white-label agency-partner website.
+Production-ready portfolio build based on the approved immersive corridor experience.
 
-## Run locally
+## Final selected work
+- PRIMA
+- BizCare Benefits
+- Bansar China
+- Rantle
+- Bum.Life
+- PNWLeads
 
+## Final pass highlights
+- Selected-work index rebuilt around the six approved projects only.
+- Project-card numbering removed; preview spacing and hierarchy rebalanced.
+- Live project previews use live screenshot services with fallback handling.
+- Work-room project wall uses the same approved six-project source and keeps the existing wheel browsing behavior.
+- Every public/live project link opens in a new tab so the portfolio remains open.
+- `/portfolio/...` links remain outbound references; deployment must preserve the existing `/portfolio` folder on the domain.
+- About, Services, For Agencies, Contact, Work and project-detail pages receive a richer branded visual layer while preserving the cream/ink/accent system.
+- Contact form is configured to deliver to `usman.khairdin@gmail.com` through FormSubmit.
+
+## Local run
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-If the development server has a local networking issue, use the production build instead:
-
-```bash
-npm run build
-npm run start -- -H 127.0.0.1
-```
-
-Then open `http://127.0.0.1:3000`.
-
-## Production checks
-
+## Production build
 ```bash
 npm run build
 ```
 
-## Important before production deployment
-
-- Replace the preview-only contact form handler with the selected email/form endpoint.
-- Add approved high-resolution project screenshots to the case studies.
-- Verify the live project links and final project scope copy.
-- Point the deployment preview to `usmankhairdin.com` only after approval.
+Deploy the contents of `dist/` to the domain root without deleting the existing `/portfolio` directory.
