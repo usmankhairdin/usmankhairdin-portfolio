@@ -38,7 +38,7 @@ jobs:
           NC_SSH_KEY: ${{ secrets.NC_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "$NC_SSH_KEY" > ~/.ssh/id_rsa
+          echo "$NC_SSH_KEY" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p 21098 -H "$NC_HOST" >> ~/.ssh/known_hosts
 
