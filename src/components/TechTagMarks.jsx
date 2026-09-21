@@ -1,0 +1,23 @@
+import React from 'react'
+
+// Shared, presentation-only brand marks used by the Home atmospheric tokens and
+// any authored Tech Stack tag group. Keeping one mark source prevents the Home
+// and Services versions from drifting visually while each page retains its own
+// interaction/animation system.
+export const TECH_TAG_MARKS = {
+  react: <svg className="sbt__mark" viewBox="-12 -12 24 24" aria-hidden="true"><g fill="none" stroke="#2fb4dd" strokeWidth="1.35"><ellipse rx="10.6" ry="4.2" /><ellipse rx="10.6" ry="4.2" transform="rotate(60)" /><ellipse rx="10.6" ry="4.2" transform="rotate(120)" /></g><circle r="1.9" fill="#2fb4dd" /></svg>,
+  vite: <svg className="sbt__mark" viewBox="0 0 32 32" aria-hidden="true"><path fill="#8b7bff" d="M29.9 6.1 16.7 29.6a.8.8 0 0 1-1.4 0L2.1 6.1A.8.8 0 0 1 2.9 5l13.1 2.4L29.1 5a.8.8 0 0 1 .8 1.1z" /><path fill="#ffc832" d="M22.7 2 12.2 4.1a.5.5 0 0 0-.4.4l-.6 10.4c0 .3.2.4.5.4l2.9-.6c.3 0 .5.2.5.5l-.8 3.8c0 .3.3.5.5.4l1.3-.4c.3-.1.5.2.5.5l-1.4 6.7c-.1.5.5.7.8.3l.2-.3 7.2-14.5c.1-.2-.1-.5-.4-.5l-3 .6c-.3.1-.5-.2-.4-.5L22.9 2.4c.1-.3-.1-.5-.2-.4z" /></svg>,
+  tailwind: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="#38bdf8" d="M12 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.9.2 1.6.9 2.3 1.6 1.2 1.2 2.5 2.6 5.5 2.6 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.9-.2-1.6-.9-2.3-1.6C16.3 6.2 15 4.8 12 4.8zM6 12c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.9.2 1.6.9 2.3 1.6 1.2 1.2 2.5 2.6 5.5 2.6 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.9-.2-1.6-.9-2.3-1.6C10.3 13.4 9 12 6 12z" /></svg>,
+  figma: <svg className="sbt__mark" viewBox="5 2 14 20" aria-hidden="true"><path fill="#f24e1e" d="M12 3H9a3 3 0 0 0 0 6h3z" /><path fill="#ff7262" d="M12 3h3a3 3 0 0 1 0 6h-3z" /><path fill="#a259ff" d="M12 9H9a3 3 0 0 0 0 6h3z" /><circle cx="15" cy="12" r="3" fill="#1abcfe" /><path fill="#0acf83" d="M12 15H9a3 3 0 1 0 3 3z" /></svg>,
+  photoshop: <b className="sbt__mark sbt__mark--ps" aria-hidden="true">Ps</b>,
+  html5: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="#e44d26" d="M3.4 2h17.2l-1.6 17.6L12 22l-7-2.4z" /><path fill="#f16529" d="M12 3.6v16.9l5.7-1.6L19 3.6z" /><path fill="#fff" d="M7.6 7.5h8.9l-.2 2H9.8l.2 2h6l-.5 5-3.5 1-3.5-1-.2-2.5h2l.1 1.2 1.6.4 1.6-.4.2-2H7.9z" /></svg>,
+  css3: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1572b6" d="M3.4 2h17.2l-1.6 17.6L12 22l-7-2.4z" /><path fill="#33a9dc" d="M12 3.6v16.9l5.7-1.6L19 3.6z" /><path fill="#fff" d="M16.5 7.5H7.6l.2 2h6.4l-.2 2H8l.2 2h5.7l-.2 2.2-1.7.5-1.7-.5-.1-1.3h-2l.2 2.5 3.6 1 3.5-1z" /></svg>,
+  javascript: <b className="sbt__mark sbt__mark--js" aria-hidden="true">JS</b>,
+  more: <svg className="sbt__mark sbt__mark--dots" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3.2" cy="8" r="1.4" /><circle cx="8" cy="8" r="1.4" /><circle cx="12.8" cy="8" r="1.4" /></svg>,
+  claude: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#d97757" strokeWidth="2.3" strokeLinecap="round" d="M12 2.8v18.4M2.8 12h18.4M5.5 5.5l13 13M18.5 5.5l-13 13" /></svg>,
+  codex: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="5.5" fill="#1f2937" /><path fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" d="M7.2 9.4 10.4 12l-3.2 2.6M12.8 15h4" /></svg>,
+  lovable: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="tech-lovable" x1="4" y1="3" x2="20" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#ff9b3d" /><stop offset=".55" stopColor="#ff4f8b" /><stop offset="1" stopColor="#5b7cff" /></linearGradient></defs><path fill="url(#tech-lovable)" d="M12 21.2s-7.6-4.6-9.7-9.3C.9 8.7 2.8 4.4 6.6 4.4c2 0 3.5 1 5.4 3 1.9-2 3.4-3 5.4-3 3.8 0 5.7 4.3 4.3 7.5-2.1 4.7-9.7 9.3-9.7 9.3z" /></svg>,
+  bolt: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1389fd" d="M13.8 2 5 13.4h5.2L9.4 22 19 10.2h-5.4z" /></svg>,
+  v0: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="5.5" fill="#111827" /><path fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" d="m6.4 8.6 2.6 6.8 2.6-6.8" /><ellipse cx="16.4" cy="13" rx="2.1" ry="2.9" fill="none" stroke="#fff" strokeWidth="1.7" /></svg>,
+  builder: <svg className="sbt__mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="#7c6cff" d="M12 2.4 20.2 7v10L12 21.6 3.8 17V7z" /><path fill="#18b4f4" d="M12 2.4 20.2 7v10L12 21.6z" fillOpacity=".55" /><path fill="#fff" d="M12 7.4 16 9.7v4.6L12 16.6l-4-2.3V9.7z" fillOpacity=".95" /></svg>,
+}

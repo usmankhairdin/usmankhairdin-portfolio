@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Consumer Paid</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/fontawesome.min.css" rel="stylesheet" />
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="css/select2.min.css" rel="stylesheet" />
+    <link href="../css/common.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Header HTML -->
+        <header class="navbar navbar-header fixed-top navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="d-flex">
+                    <h1 class="logo">JET PAYROLL</h1>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto top_dropdown">
+                        <li>
+                            <h2 class="choosedPlan"><i class="fas fa-info-circle" data-toggle="tooltip" data-bs-original-title="Basic Plan"></i> BASIC PLAN</h2>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="HelpDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-question-circle"></i> <label>Help</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="HelpDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="CompanyDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-building"></i> <label>Green Code</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="CompanyDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="UserDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i> <label>Will Smith</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="UserDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Left Side HTML -->
+        <aside id="sidebar-wrapper">
+            <div class="leftArrowShape text-center">
+                <h1 class="complete">Complete below steps to<br /> get started</h1>
+                <h1 class="completeToggled">Get<br />Started</h1>
+                <i class="fas fa-arrow-alt-circle-down"></i>
+            </div>
+            <div class="position-sticky mt-5 sidebar-sticky mCustomScrollbar">
+                <ol class="counting">
+                    <li class="completed"><a href="index.html"><i class="fas fa-building"></i>Company Information<i class="fas fa-check"></i></a></li>
+                    <li class="completed">
+                        <a href="date_time.html"><i class="fas fa-cog"></i>Settings<i class="fas fa-check"></i></a>
+                        <ul>
+                            <li class="completed"><a href="date_time.html"><i class="fas fa-calendar-alt"></i>Language, Date & Time<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="state_tax.html"><i class="fas fa-funnel-dollar"></i>State Tax<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="pay_schedule.html"><i class="fas fa-hand-holding-usd"></i>Pay Schedule<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="earnings_deductions.html"><i class="fas fa-wallet"></i>Earnings & Deductions<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="leaves.html"><i class="fas fa-umbrella-beach"></i>Leaves<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="bank.html"><i class="fas fa-university"></i>Bank<i class="fas fa-check"></i></a></li>
+                        </ul>
+                    </li>
+                    <li class="completed"><a href="employees.html"><i class="fas fa-user-friends"></i>Employee(s)<i class="fas fa-check"></i></a></li>
+                    <li class="active">
+                        <a href="javascript:void(0)"><i class="fas fa-clock"></i>Time Tracker<i class="fas fa-check"></i></a>
+                        <ul>
+                            <li class="active"><a href="javascript:void(0)"><i class="fas fa-laptop"></i>Office Worker<i class="fas fa-check"></i></a></li>
+                            <li><a href="javascript:void(0)" class="strikeThrough"><i class="fas fa-laptop-house"></i>Remote Worker</a></li>
+                            <li><a href="javascript:void(0)" class="strikeThrough"><i class="fas fa-motorcycle"></i>Mobile Worker</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </aside>
+
+        <!-- Heading Part HTML -->
+        <div class="justify-content-between head-section">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-12 align-self-center">
+                    <i class="headIcon fas fa-clock"></i>
+                    <label>Time Tracker <span>(Office Worker)</span></label>
+                </div>
+                <div class="col-lg-3 col-md-3 hideonSmall">
+                    <label class="setupComplettion text-start">Setup Completion</label>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width:75%;" aria-valuenow="75" aria-label="Progress" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="percentage text-end">75% Complete</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area HTML -->
+        <section id="content-wrapper">
+            <div class="container-fluid">
+                <div class="row justify-content-between">
+                    <div class="col-lg-9 col-md-12 col-sm-12 ResponsiveOnSmallOrderSecond">
+                        <div class="innerScroll mCustomScrollbar">
+                            <div class="ps-1 pe-4">
+                         <div class="row justify-content-between">
+                            <div class="col">
+                                <h2>Locations</h2>
+                            </div>
+                            <div class="col text-end">
+                                <a href="javascript:void(0)" onclick="showHidePanelsLogic('TrackerLocationForm','TrackerLocationNoData','SaveTrackerLocationCards')" class="addnew-btn"><i class="fas fa-plus-circle"></i> Add Location</a>
+                            </div>
+                            <div class="col-12">
+                                <div id="TrackerLocationNoData" class="no-data-found">
+                                    <hr />
+                                    <div class="no-data-inner">
+                                    <i class="fas fa-map-marked"></i>
+                                    <p>No location is defined. To setup time tracker you need to add location first</p>
+                                </div>
+                            </div>
+                                <div id="TrackerLocationForm" class="editable-form mt-2 d-none">
+                                    <div class="row justify-content-between">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="txtLocationName" id="lblLocationName" class="form-label">Location name <span class="mandatory">*</span></label>
+                                                <input id="txtLocationName" type="text" class="form-control" placeholder="Green Code" value="Green Code" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="ddlLocationAddress" id="lblLocationAddress" class="form-label">Location address <span class="mandatory">*</span></label>
+                                                <select id="ddlLocationAddress" class="form-select js-example-basic-single">
+                                                    <option selected="">Northwest 12th Lane, Gainesville, FL, USA</option>
+                                                    <option value="1">Southwest 12th Avenue, Gainesville, FL 32607, USA</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3466.9442760546094!2d-82.3994315237566!3d29.663391336523066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8bca82aa9f69b%3A0x752c28d4d84078dc!2sNW%2012th%20Ln%2C%20Gainesville%2C%20FL%2032605%2C%20USA!5e0!3m2!1sen!2s!4v1683552190951!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                        </div>
+                                    </div>
+                                        <div class="col-12 text-end">
+                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="showHidePanels('SaveTrackerLocationCards',1); showHidePanels('TrackerLocationNoData',0); showHidePanels('TrackerLocationForm',0);" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="SaveTrackerLocationCards" class="d-none">
+                                <hr />
+                                <div class="row justify-content-between">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header d-flex">
+                                                <h4 class="col d-none">Head Office</h4>
+                                                <a href="javascript:void(0)" class="col text-end edit-btn" onclick="showHideTrackerLocationCards(this)"><i class="fas fa-pen"></i> Edit</a>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="card-text mb-3 text-center">
+                                                    <strong class="mediumtext mt-1 mb-2">Head Office</strong>
+                                                    <p class="mediumtext">Northwest 12th Lane,<br/>Gainesville, FL, 32607, <br/>USA</p>
+                                                </div>                                            
+                                                <div class="edit-form mt-2 mb-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtEditLocationName" id="lblEditLocationName" class="form-label">Location name <span class="mandatory">*</span></label>
+                                                                <input id="txtEditLocationName" type="text" class="form-control" placeholder="Green Code" value="Green Code" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditLocationAddress" id="lblEditLocationAddress" class="form-label">Location address <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditLocationAddress" class="form-select js-example-basic-single">
+                                                                    <option value="0">Northwest 12th Lane, Gainesville, FL, USA</option>
+                                                                    <option selected="" value="1">Southwest 12th Avenue, Gainesville, FL 32607, USA</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3466.9442760546094!2d-82.3994315237566!3d29.663391336523066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8bca82aa9f69b%3A0x752c28d4d84078dc!2sNW%2012th%20Ln%2C%20Gainesville%2C%20FL%2032605%2C%20USA!5e0!3m2!1sen!2s!4v1683552190951!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                        </div>
+                                                        <div class="col-5 text-start">
+                                                            <a href="javascript:void(0)" class="remove-btn"><i class="fas fa-times"></i> Remove</a>
+                                                        </div>
+                                                        <div class="col-7 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="SaveTrackerLocationCards(this)" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-between trackerdiv">
+                                                    <hr/>
+                                                <div class="col-5 text-start">
+                                                    <strong class="mediumtext">0 Tracker(s)</strong>
+                                                </div>
+                                                <div class="col-7 text-end">
+                                                    <a href="javascript:void(0)" onclick="showHidePanelsLogic('TrackerForm','SavedTrackerList')" class="addnew-btn"><i class="fas fa-plus-circle"></i> Add Tracker</a>
+                                                </div>
+                                                <div id="SavedTrackerList" class="TrackerList d-none">
+                                                    <ul class="mt-2">
+                                                        <li class="mediumtext">
+                                                            <a href="javascript:void(0)">Front Gate</a> <a href="javascript:void(0)"><i class="fas fa-eye"></i> View</a> <a href="javascript:void(0)"><i class="fas fa-pen"></i> Edit</a>
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                </div>
+                                                <div id="TrackerForm" class="TrackerForm mt-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtTrackerName" id="lblTrackerName" class="form-label">Tracker name <span class="mandatory">*</span></label>
+                                                                <input id="txtTrackerName" type="text" class="form-control" placeholder="" value="Front Gate" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtIPAddressFrom" id="lblIPAddressFrom" class="form-label">Ip address from</label>
+                                                                <input id="txtIPAddressFrom" type="text" class="form-control" placeholder="Ip address from" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtIPAddressTo" id="lblIPAddressTo" class="form-label">Ip address to</label>
+                                                                <input id="txtIPAddressTo" type="text" class="form-control" placeholder="Ip address to" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtStartDate" id="lblStartDate" class="form-label">Time tracker start date <span class="mandatory">*</span></label>
+                                                                <input id="txtStartDate" type="date" class="form-control" placeholder="--/--/----" value="12/01/2021" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEndDate" id="lblEndDate" class="form-label">Time tracker end date <span class="mandatory">*</span></label>
+                                                                <input id="txtEndDate" type="date" class="form-control" placeholder="--/--/----" value="--/--/----" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlSelectEmployees" id="lblSelectEmployees" class="form-label">Select employee(s) <span class="mandatory">*</span></label>
+                                                                <select id="ddlSelectEmployees" class="form-select" disabled>
+                                                                    <option selected="">Everyone</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 toggle-bordered">
+                                                                <label class="form-label">Enable employee(s) clock in/out history on time tracker</label><br>
+                                                                <label class="toggle"> <input type="checkbox" checked> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3 toggle-bordered">
+                                                                <label class="form-label">Do you want to use company’s date & time settings?</label><br>
+                                                                <label class="toggle"> <input type="checkbox"> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlDateFormat" id="lblDateFormat" class="form-label">Date format <span class="mandatory">*</span></label>
+                                                                <select id="ddlDateFormat" class="form-select js-example-basic-single">
+                                                                    <option selected="">MM/DD/YY</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlTimeFormat" id="lblTimeFormat" class="form-label">Time format <span class="mandatory">*</span></label>
+                                                                <select id="ddlTimeFormat" class="form-select js-example-basic-single">
+                                                                    <option selected="">12hrs</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlTimezone" id="lblTimezone" class="form-label">Time zone <span class="mandatory">*</span></label>
+                                                                <select id="ddlTimezone" class="form-select js-example-basic-single">
+                                                                    <option selected="">US Eastern Standard Time</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <span class="form-label d-block mb-1">Week start day? <span class="mandatory">*</span></span>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" checked name="Monday" id="radioMonday" value="Monday">
+                                                                    <label class="form-check-label" for="radioMonday">Monday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Tuesday" id="radioTuesday" value="Tuesday">
+                                                                    <label class="form-check-label" for="radioTuesday">Tuesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Wednesday" id="radioWednesday" value="Wednesday">
+                                                                    <label class="form-check-label" for="radioWednesday">Wednesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Thursday" id="radioThursday" value="Thursday">
+                                                                    <label class="form-check-label" for="radioThursday">Thursday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Friday" id="radioFriday" value="Friday">
+                                                                    <label class="form-check-label" for="radioFriday">Friday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Saturday" id="radioSaturday" value="Saturday">
+                                                                    <label class="form-check-label" for="radioSaturday">Saturday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Sunday" id="radioSunday" value="Sunday">
+                                                                    <label class="form-check-label" for="radioSunday">Sunday</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <label class="form-label d-block mb-1">Default working days <span class="mandatory">*</span></label>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckMonday" value="Monday">
+                                                                    <label class="form-check-label" for="CheckMonday">Monday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckTuesday" value="Tuesday">
+                                                                    <label class="form-check-label" for="CheckTuesday">Tuesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckWednesday" value="Wednesday">
+                                                                    <label class="form-check-label" for="CheckWednesday">Wednesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckThursday" value="Thursday">
+                                                                    <label class="form-check-label" for="CheckThursday">Thursday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckFriday" value="Friday">
+                                                                    <label class="form-check-label" for="CheckFriday">Friday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="CheckSaturday" value="Saturday">
+                                                                    <label class="form-check-label" for="CheckSaturday">Saturday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="CheckSunday" value="Sunday">
+                                                                    <label class="form-check-label" for="CheckSunday">Sunday</label>
+                                                                  </div>
+                                                            </div>                            
+                                                        <div class="col-12 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="showHidePanels('SavedTrackerList',1); showHidePanels('TrackerForm',0);" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header d-flex">
+                                                <h4 class="col d-none">Sales Office</h4>
+                                                <a href="javascript:void(0)" class="col text-end edit-btn" onclick="showHideTrackerLocationCards(this)"><i class="fas fa-pen"></i> Edit</a>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="card-text mb-3 text-center">
+                                                    <strong class="mediumtext mt-1 mb-2">Sales Office</strong>
+                                                    <p class="mediumtext">Southwest 12th Avenue,<br/>Gainesville, FL 32607,<br/>USA</p>
+                                                </div>                                            
+                                                <div class="edit-form mt-2 mb-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtLocationName2" id="lblLocationName2" class="form-label">Location name <span class="mandatory">*</span></label>
+                                                                <input id="txtLocationName2" type="text" class="form-control" placeholder="Green Code" value="Green Code" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlLocationAddress2" id="lblLocationAddress2" class="form-label">Location address <span class="mandatory">*</span></label>
+                                                                <select id="ddlLocationAddress2" class="form-select js-example-basic-single">
+                                                                    <option value="0">Northwest 12th Lane, Gainesville, FL, USA</option>
+                                                                    <option selected="" value="1">Southwest 12th Avenue, Gainesville, FL 32607, USA</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3466.9442760546094!2d-82.3994315237566!3d29.663391336523066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e8bca82aa9f69b%3A0x752c28d4d84078dc!2sNW%2012th%20Ln%2C%20Gainesville%2C%20FL%2032605%2C%20USA!5e0!3m2!1sen!2s!4v1683552190951!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                        </div>
+                                                        <div class="col-5 text-start">
+                                                            <a href="javascript:void(0)" class="remove-btn"><i class="fas fa-times"></i> Remove</a>
+                                                        </div>
+                                                        <div class="col-7 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="SaveTrackerLocationCards(this)" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-between trackerdiv">
+                                                    <hr/>
+                                                <div class="col-5 text-start">
+                                                    <strong class="mediumtext">0 Tracker(s)</strong>
+                                                </div>
+                                                <div class="col-7 text-end">
+                                                    <a href="javascript:void(0)" onclick="showHidePanelsLogic('TrackerForm2','SavedTrackerList2')" class="addnew-btn"><i class="fas fa-plus-circle"></i> Add Tracker</a>
+                                                </div>
+                                                <div id="SavedTrackerList2" class="TrackerList d-none">
+                                                    <ul class="mt-2">
+                                                        <li class="mediumtext">
+                                                            <a href="javascript:void(0)">Back Gate</a> <a href="javascript:void(0)"><i class="fas fa-eye"></i> View</a> <a href="javascript:void(0)"><i class="fas fa-pen"></i> Edit</a>
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                </div>
+                                                <div id="TrackerForm2" class="TrackerForm mt-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtTrackerName2" id="lblTrackerName2" class="form-label">Tracker name <span class="mandatory">*</span></label>
+                                                                <input id="txtTrackerName2" type="text" class="form-control" placeholder="" value="Back Gate" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtIPAddressFrom2" id="lblIPAddressFrom2" class="form-label">Ip address from</label>
+                                                                <input id="txtIPAddressFrom2" type="text" class="form-control" placeholder="Ip address from" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtIPAddressTo2" id="lblIPAddressTo2" class="form-label">Ip address to</label>
+                                                                <input id="txtIPAddressTo2" type="text" class="form-control" placeholder="Ip address to" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtStartDate2" id="lblStartDate2" class="form-label">Time tracker start date <span class="mandatory">*</span></label>
+                                                                <input id="txtStartDate2" type="date" class="form-control" placeholder="--/--/----" value="12/01/2021" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEndDate2" id="lblEndDate2" class="form-label">Time tracker end date <span class="mandatory">*</span></label>
+                                                                <input id="txtEndDate2" type="date" class="form-control" placeholder="--/--/----" value="--/--/----" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlSelectEmployees2" id="lblSelectEmployees2" class="form-label">Select employee(s) <span class="mandatory">*</span></label>
+                                                                <select id="ddlSelectEmployees2" class="form-select" disabled>
+                                                                    <option selected="">Everyone</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 toggle-bordered">
+                                                                <label class="form-label">Enable employee(s) clock in/out history on time tracker</label><br>
+                                                                <label class="toggle"> <input type="checkbox" checked> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3 toggle-bordered">
+                                                                <label class="form-label">Do you want to use company’s date & time settings?</label><br>
+                                                                <label class="toggle"> <input type="checkbox"> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlDateFormat2" id="lblDateFormat2" class="form-label">Date format <span class="mandatory">*</span></label>
+                                                                <select id="ddlDateFormat2" class="form-select js-example-basic-single">
+                                                                    <option selected="">MM/DD/YY</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlTimeFormat2" id="lblTimeFormat2" class="form-label">Time format <span class="mandatory">*</span></label>
+                                                                <select id="ddlTimeFormat2" class="form-select js-example-basic-single">
+                                                                    <option selected="">12hrs</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlTimezone2" id="lblTimezone2" class="form-label">Time zone <span class="mandatory">*</span></label>
+                                                                <select id="ddlTimezone2" class="form-select js-example-basic-single">
+                                                                    <option selected="">US Eastern Standard Time</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <span class="form-label d-block mb-1">Week start day? <span class="mandatory">*</span></span>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" checked name="Monday" id="radioMonday1" value="Monday">
+                                                                    <label class="form-check-label" for="radioMonday1">Monday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Tuesday" id="radioTuesday1" value="Tuesday">
+                                                                    <label class="form-check-label" for="radioTuesday1">Tuesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Wednesday" id="radioWednesday1" value="Wednesday">
+                                                                    <label class="form-check-label" for="radioWednesday1">Wednesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Thursday" id="radioThursday1" value="Thursday">
+                                                                    <label class="form-check-label" for="radioThursday1">Thursday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Friday" id="radioFriday1" value="Friday">
+                                                                    <label class="form-check-label" for="radioFriday1">Friday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Saturday" id="radioSaturday1" value="Saturday">
+                                                                    <label class="form-check-label" for="radioSaturday1">Saturday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="Sunday" id="radioSunday1" value="Sunday">
+                                                                    <label class="form-check-label" for="radioSunday1">Sunday</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <label class="form-label d-block mb-1">Default working days <span class="mandatory">*</span></label>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckMonday1" value="Monday">
+                                                                    <label class="form-check-label" for="CheckMonday1">Monday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckTuesday1" value="Tuesday">
+                                                                    <label class="form-check-label" for="CheckTuesday1">Tuesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckWednesday1" value="Wednesday">
+                                                                    <label class="form-check-label" for="CheckWednesday1">Wednesday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckThursday1" value="Thursday">
+                                                                    <label class="form-check-label" for="CheckThursday1">Thursday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" checked id="CheckFriday1" value="Friday">
+                                                                    <label class="form-check-label" for="CheckFriday1">Friday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="CheckSaturday1" value="Saturday">
+                                                                    <label class="form-check-label" for="CheckSaturday1">Saturday</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="CheckSunday1" value="Sunday">
+                                                                    <label class="form-check-label" for="CheckSunday1">Sunday</label>
+                                                                  </div>
+                                                            </div>                           
+                                                        <div class="col-12 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="showHidePanels('SavedTrackerList2',1); showHidePanels('TrackerForm2',0);" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-md-none d-lg-block order-lg-last mb-3 ps-0">
+                    <div class="HelpSection mCustomScrollbar">
+                        <div class="pe-4">
+                            <h3>Why do we need to ask for this?</h3>
+                            <p>
+                                Office Worker are workers who works in an organization premises. So if you want to setup time tracker for office workers then office location needs to be added.<br/><br/>You can add new locations where the tracker is required. By default, we have set up locations of your company address if you entered in Company Information step.<br/><br/>Multiple locations can be added by clicking on “Add new location”.<br/><br/>Against each location multiple trackers can be added. You can click on “Add new tracker” to add tracker.
+                            </p>
+                            <img class="img-fluid mt-3" src="images/officeworker_img.png" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Actions -->
+        <div class="bottomActions">
+            <div class="row justify-content-between">
+                <div class="col-lg-9 col-md-12 col-sm-12 position-relative">
+                    <div class="row">
+                        <div class="col-4">
+                            <a href="employees.html"><i class="fas fa-play fa-rotate-180"></i> Back to Employee(s)</a>
+                        </div>
+                        <div class="col-4 text-center">
+                            <!-- <a href="iamdone.html" class="skipthisstep">Skip this step</a> -->
+                        </div>
+                        <div class="col-4 text-end">
+                            <a href="iamdone.html" class="IamDone">I am Done <i class="fas fa-play"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer HTML -->
+    <footer class="footer">
+        <div class="container-fluid">
+            
+            <div class="row ResponsiveAlignment">
+                <div class="col-lg-4 col-md-4 col-sm-12 align-self-center">
+                    <!-- LOGO -->
+                    <div class="d-inline-block text-center">
+                        <h1 class="logo">JET PAYROLL</h1>
+                        <p class="tagline">Integrity + Accuracy</p>                        
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 text-center align-self-center">© 2022 Payroll Management. All Rights Reserved.</div>
+                <div class="col-lg-4 col-md-4 col-sm-12 align-self-center">
+                    <div class="text-end lineheight">
+                        <a href="javascript:void(0)">Terms of Service</a> | <a href="javascript:void(0)">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+    <script src="js/custom.js"></script>
+</body>
+</html>

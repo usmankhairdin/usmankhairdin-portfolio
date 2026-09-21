@@ -1,0 +1,77 @@
+/* ============================================================
+   BACK TO TOP — Web Experience only (the component is not rendered while the corridor owns the scroll system).
+   Theme comes from the existing tokens: navy core + cobalt progress in light, light core + cobalt in dark.
+   ============================================================ */
+.back-to-top{
+  --btt-size:50px;
+  position:fixed;
+  z-index:80;                     /* under the header (2100) and the menu drawer (2000) */
+  right:max(24px,calc(env(safe-area-inset-right) + 18px));
+  bottom:max(24px,calc(env(safe-area-inset-bottom) + 18px));
+  width:var(--btt-size);
+  height:var(--btt-size);
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgb(var(--bg-rgb,238 232 220) / .74);
+  -webkit-backdrop-filter:blur(8px) saturate(1.1);
+  backdrop-filter:blur(8px) saturate(1.1);
+  box-shadow:0 10px 26px rgb(var(--shadow,24 20 14) / .16);
+  color:var(--bg,#eee8dc);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate3d(0,12px,0) scale(.92);
+  transition:opacity .38s cubic-bezier(.22,.8,.18,1),transform .55s cubic-bezier(.22,.8,.18,1),visibility 0s linear .38s;
+}
+.back-to-top[data-visible="true"]{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+  transition-delay:0s;
+}
+.back-to-top:focus-visible{outline:2px solid var(--accent-text,#455dff);outline-offset:4px}
+
+/* Progress ring: a faint full track and the cobalt arc that grows with the page. */
+.back-to-top__ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.back-to-top__track,.back-to-top__progress{fill:none;stroke-width:2}
+.back-to-top__track{stroke:rgb(var(--text-rgb,9 17 29) / .16)}
+.back-to-top__progress{stroke:var(--accent-text,#455dff);stroke-linecap:round}
+
+.back-to-top__core{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:calc(var(--btt-size) - 12px);
+  height:calc(var(--btt-size) - 12px);
+  border-radius:50%;
+  background:var(--text,#09111d);
+}
+.back-to-top__arrow{width:18px;height:18px;transition:transform .35s cubic-bezier(.22,.8,.18,1)}
+@media(hover:hover){.back-to-top:hover .back-to-top__arrow{transform:translate3d(0,-2.5px,0)}}
+
+/* Compact and unobtrusive on phones, clear of the browser's safe areas. */
+@media(max-width:640px){
+  .back-to-top{
+    --btt-size:44px;
+    right:max(16px,calc(env(safe-area-inset-right) + 12px));
+    bottom:max(16px,calc(env(safe-area-inset-bottom) + 12px));
+  }
+  .back-to-top__arrow{width:16px;height:16px}
+}
+
+/* Nothing floats over the menu, and nothing floats over the loader. */
+html.web-scroll-locked .back-to-top,
+html[data-boot="on"] .back-to-top,
+html[data-boot="leaving"] .back-to-top{opacity:0;visibility:hidden;pointer-events:none}
+
+@media(prefers-reduced-motion:reduce){
+  .back-to-top{transform:none;transition:opacity .2s ease,visibility 0s linear .2s}
+  .back-to-top[data-visible="true"]{transition-delay:0s}
+  .back-to-top__arrow{transition:none}
+}

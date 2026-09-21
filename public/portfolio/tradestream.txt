@@ -1,0 +1,9 @@
+Some areas feel visually heavy, spacing and contrast can be improved for better focus. Adding consistent margins and lighter background tones helps users scan data easily.
+
+Currently, hover states are subtle.
+Adding slight animation or color feedback enhances interaction clarity.
+
+Add tooltips for key metrics to help new users.
+These changes can also be applied seamlessly to the mobile version.
+
+Small tweaks like spacing, contrast, and feedback make TradeStream cleaner and more intuitive.

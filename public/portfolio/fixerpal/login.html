@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>FixerPal - Get your to-do list done</title>
+        <!-- Font Awesome Icons -->
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+        <link href="https://daneden.github.io/animate.css/animate.min.css" rel="stylesheet">
+        <!-- Theme CSS - Includes Bootstrap -->
+        <link href="css/creative.css" rel="stylesheet">
+    </head>
+    <body class="loginpage">
+        <div class="content">
+            <div class="signin-header">
+                <div class="text-center"><a href="index.html"><img src="images/logo.png" alt=""></a></div>
+            </div>
+            <form>
+                <div class="mat-in">
+                    <input type="text" name="username" value="" required />
+                    <span class="bar"></span>
+                    <label>Username</label>
+                </div>
+                <div class="mat-in">
+                    <input type="password" name="password" value="" required />
+                    <span class="bar"></span>
+                    <label>Password</label>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <button onclick="window.location.href = '~/../account/dashboard.html'" type="submit" name="submit" id="login">Login</button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-right"><a href="javascript:void(0)" data-toggle="modal" data-target="#forgot" class="forgotpassword">Forgot password?</a></div>
+                </div>
+                <div class="or-seperator">or login with</div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><a href="javascript:void(0)" class="social-button" id="facebook-connect"> <span>Connect with Facebook</span></a></div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><a href="javascript:void(0)" class="social-button" id="google-connect"> <span>Connect with Google</span></a></div>
+                </div>
+                <div class="or-seperator">Don't have an account ?</div>
+                <button onclick="window.location.href = 'register.html'" type="submit" name="submit" id="login">Signup</button>
+            </form>
+        </div>
+        <div class="bg-boxes">
+            <svg width="300px" height="100%" id="col1"><rect width="150px" height="150px" x="75px" y="75px" class="bubble" id="bub1" /></svg>
+            <svg width="200px" height="100%" id="col2"><rect width="100px" height="100px" x="50px" y="50px" class="bubble" id="bub2" /></svg>
+            <svg width="260px" height="100%" id="col3"><rect width="130px" height="130px" x="65px" y="65px" class="bubble" id="bub3" /></svg>
+            <svg width="160px" height="100%" id="col4"><rect width="80px" height="80px" x="40px" y="40px" class="bubble" id="bub4" /></svg>
+            <svg width="240px" height="100%" id="col5"><rect width="120px" height="120px" x="60px" y="60px" class="bubble" id="bub5" /></svg> 
+            <!--Here is a triangle--> 
+            <svg width="200px" height="100%" id="col6"><polygon points="50,150 100,50 150,150" class="bubble" id="bub6" /></svg>
+            <svg width="200px" height="100%" id="col7"><rect width="100px" height="100px" x="50px" y="50px" class="bubble" id="bub7" /></svg>
+            <svg width="200px" height="100%" id="col8"><rect width="100px" height="100px" x="50px" y="50px" class="bubble" id="bub8" /></svg>
+            <svg width="200px" height="100%" id="col9"><rect width="100px" height="100px" x="50px" y="50px" class="bubble" id="bub9" /></svg>
+            <svg width="200px" height="100%" id="col10"><rect width="100px" height="100px" x="50px" y="50px" class="bubble" id="bub10" /></svg>
+            <svg width="100px" height="100%" id="col11"><rect width="50px" height="50px" x="25px" y="25px" class="bubble" id="bub11" /></svg> 
+        </div>
+        <!-- Modal -->
+        <div class="modal fade forgotmodal" id="forgot" tabindex="-1" role="dialog" aria-labelledby="forgotModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center" id="forgotModalLabel">Forgot Password?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p>Enter your email below and we will send you instructions on how to reset your password</p>
+                            <input type="email" class="form-control" placeholder="Enter your emaill here" />
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><a href="javascript:void(0)" data-dismiss="modal" aria-label="Close">Cancel</a></div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-right">
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap core JavaScript --> 
+            <script src="vendor/jquery/jquery.min.js"></script> 
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

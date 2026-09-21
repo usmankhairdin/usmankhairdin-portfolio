@@ -1,0 +1,52 @@
+/* ============================================================================
+   Shared browser frame — one restrained window shell used wherever a real project page is shown: the Work-showcase panels and the
+   project-detail hero preview. Both had an identical copy of this before.
+
+   A consumer only sets the four inputs below on the frame element; every painted property is declared once here, so the two places
+   can never drift apart. Consumers add their own behaviour (the Work panel's hover lift, the detail preview's scrolling viewport)
+   in their own stylesheet.
+
+     --uf-accent    the project's accent, tinted into the shell
+     --uf-fg-rgb    "r g b" of the surrounding text colour, used for the hairline, the dots and the url pill
+     --uf-muted     the url text colour
+     --uf-bg        the shell fill        (override wholesale for a dark project stage)
+     --uf-shadow    the shell shadow      (override wholesale for a dark project stage)
+   ============================================================================ */
+.ui-frame{
+  --uf-accent:var(--accent,#455dff);
+  --uf-fg-rgb:var(--text-rgb,9 17 29);
+  --uf-muted:var(--text-3,#7b8490);
+  --uf-bg:color-mix(in srgb,var(--uf-accent) 8%,var(--panel-solid,#fff));
+  --uf-shadow:
+    0 0 0 1px rgb(var(--uf-fg-rgb) / .09),
+    0 2px 5px rgb(var(--shadow,24 20 14) / .06),
+    0 46px 96px -36px rgb(var(--shadow,24 20 14) / .46);
+  display:block;
+  position:relative;
+  padding:0 clamp(7px,.85vw,13px) clamp(7px,.85vw,13px);
+  border-radius:clamp(12px,1.25vw,20px);
+  background:var(--uf-bg);
+  box-shadow:var(--uf-shadow);
+}
+.ui-frame__bar{display:flex;align-items:center;gap:6px;height:clamp(30px,2.7vw,40px);padding:0 4px}
+.ui-frame__bar i{flex:none;width:8px;height:8px;border-radius:50%;background:rgb(var(--uf-fg-rgb) / .2)}
+.ui-frame__url{
+  margin-left:12px;
+  min-width:0;
+  padding:5px 13px;
+  border-radius:999px;
+  background:rgb(var(--uf-fg-rgb) / .06);
+  font:500 10px/1 var(--mono);
+  letter-spacing:.06em;
+  color:var(--uf-muted);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.ui-frame__screen{
+  display:block;
+  aspect-ratio:1440/900;
+  overflow:hidden;
+  border-radius:clamp(7px,.85vw,12px);
+  background:#0c121c;
+}

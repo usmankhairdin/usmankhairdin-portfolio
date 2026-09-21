@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>FixerPal - Get your to-do list done</title>
+
+        <!-- Font Awesome Icons -->
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">        
+
+        <!-- Theme CSS - Includes Bootstrap -->
+        <link rel="stylesheet" href="../css/account.min.css" id="main-stylesheet">
+    </head>
+
+    <body class="skin-deep-blue sidebar-image misty-mountains">
+        <div class="wrapper">
+            <header class="main-header">
+                <a href="../index.html" class="logo">
+                    <span class="logo-lg"><img width="90" src="../images/logo.png" alt="" /></span>
+                </a>
+                <nav class="navbar navbar-static-top">
+                    <a href="#" class="sidebar-toggle border-right border-left" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item"> <a class="nav-link" data-toggle="modal" data-target="#services" href="#">Post a task</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="../tasks.html">Browse task</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="#">My tasks</a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="../help.html">Help</a> </li>
+                            <li class="dropdown messages-menu">
+                                <a href="#" class="dropdown-toggle border-left" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">4</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 4 messages</li>
+                                    <li>
+                                        <ul class="menu">
+                                            <li><!-- start message -->
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="http://i.pravatar.cc/128?img=12" class="img-circle" alt="User Image">
+                                                    </div>
+                                                    <h6>
+                                                        Support Team
+                                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                    </h6>
+                                                    <p>Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li><!-- end message -->
+                                            <li>
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="http://i.pravatar.cc/300?img=18" class="img-circle" alt="User Image">
+                                                    </div>
+                                                    <h6>
+                                                        Atlas Design Team
+                                                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                                    </h6>
+                                                    <p>Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="http://i.pravatar.cc/300?img=16" class="img-circle" alt="User Image">
+                                                    </div>
+                                                    <h6>
+                                                        Developers
+                                                        <small><i class="fa fa-clock-o"></i> Today</small>
+                                                    </h6>
+                                                    <p>Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="http://i.pravatar.cc/300?img=38" class="img-circle" alt="User Image">
+                                                    </div>
+                                                    <h6>
+                                                        Sales Department
+                                                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                                    </h6>
+                                                    <p>Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="http://i.pravatar.cc/300?img=28" class="img-circle" alt="User Image">
+                                                    </div>
+                                                    <h6>
+                                                        Reviewers
+                                                        <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                                    </h6>
+                                                    <p>Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="footer"><a href="#">See All Messages</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="label label-warning">10</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 10 notifications</li>
+                                    <li>
+                                        <ul class="menu">
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-users text-red"></i> 5 new members joined
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="fa fa-user text-red"></i> You changed your username
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="footer"><a href="#">View all</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="http://i.pravatar.cc/300?img=59" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">Zachary Banks</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="user-header">
+                                        <img src="http://i.pravatar.cc/300?img=59" class="img-circle" alt="User Image">
+                                        <p>
+                                            Zachary Banks - Web Developer
+                                           <small>Member since Jan. 2018</small>
+                                        </p>
+                                    </li>
+                                    <li class="user-body">
+                                        <div class="col-xs-6 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-6 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                    </li>
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="../index.html" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="http://i.pravatar.cc/300?img=59" class="img-circle" alt="User Image">
+                        </div>
+                        <div class="pull-left info">
+                            <p>Zachary Banks</p>
+                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        </div>
+                    </div>
+                    <hr/>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a href="dashboard.html" data-pjax>
+                                <i class="fa fa-circle-o"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-history.html" data-pjax>
+                                <i class="fa fa-credit-card"></i>
+                                <span>Payments history</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-methods.html" data-pjax>
+                                <i class="fa fa-money"></i>
+                                <span>Payments methods</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="notifications.html" data-pjax>
+                                <i class="fa fa-bell-o"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-gear"></i>
+                                <span>Settings</span>
+                                <span class="label label-primary pull-right">8</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="account.html">Account</a></li>
+                                <li><a href="skills.html">Skills</a></li>
+                                <li><a href="badges.html">Badges</a></li>
+                                <li><a href="alerts.html">Task alerts</a></li>
+                                <li><a href="notification-settings.html">Notification settings</a></li>
+                                <li><a href="mobile.html">Mobile</a></li>
+                                <li><a href="portfolio.html">Portfolio</a></li>
+                                <li><a href="password.html">Password</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+
+
+
+            <div class="page-loader">
+                <div class="preloader-lg"></div>
+            </div>
+
+            <div class="content-wrapper-transition">
+                <div class="content-wrapper-inner">
+
+                    <div class="content-wrapper morris-page">
+                        <!-- Content Header (Page header) -->
+                        <section class="content-header">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <h1>Payment methods</h1>
+                                    <ol class="breadcrumb">
+                                        <li><a href="#">Home</a></li>
+                                        <li><a href="dashboard.html">Account</a></li>
+                                        <li class="active">Payment methods</li>
+                                    </ol>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main content -->
+                        <section class="content-dashboard">
+
+                            <div class="row aos-init aos-animate" data-aos="fade-up">
+                                <div class="tabbable-panel">
+                                    <div class="tabbable-line">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#tab_make" data-toggle="tab">Make payments</a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_receive" data-toggle="tab">Receive payments</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab_make">
+                                                <p>When you are ready to accept a fixer's offer, you will be required to pay for the task using FixerPal pay. Payment will be held securely until the task is complete and you release payment to the fixer.</p>
+                                                <div class="splitter-section">
+                                                    <div class="splitter-section-name">Credit Card</div>
+                                                    <div class="splitter-section-content">
+                                                        <div class="splitter-section-content-inner clearfix">
+                                                            <div class="credit-card-details-component">
+                                                                <div class="add-credit-card">
+                                                                    <a href="" data-toggle="modal" data-target="#paymentModal">
+                                                                        <i class="fa fa-plus-circle"></i>
+                                                                        <span>Add your credit card</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="splitter-section ">
+                                                    <div class="splitter-section-name">FixerPal Card</div>
+                                                    <div class="splitter-section-content">
+                                                        <div class="splitter-section-content-inner clearfix">
+                                                            <div class="fixerpal-credit">
+                                                                <div>
+                                                                    <div class="credit-balance" data-ui-test="credit-balance-section">
+                                                                        <p class="balance">Task Credit balance:</p>
+                                                                        <p class="balance-number"><span data-ui-test="price">$0</span></p>
+                                                                        <p class="margin-20-bottom">The Task Credit balance from Airfixer Cards will be automatically applied when you accept an offer on a task. Each card will expire 12 months from the date of registration. Any unused amount after expiry day will not be refunded or credited.</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab_receive">
+                                                <div class="splitter-section ">
+                                                    <div class="splitter-section-content">
+                                                        <div class="splitter-section-content-inner clearfix">Once a task is completed, you will be able to request payment from the Job Poster, who will then release it to your nominated account.</div>
+                                                    </div>
+                                                    <div class="splitter-section ">
+                                                        <div class="splitter-section-name">Billing address</div>
+                                                        <div class="splitter-section-content">
+                                                            <div class="splitter-section-content-inner clearfix">
+                                                                Your billing address will be verified before you can receive payments.<br/><br/>
+                                                                <form>
+                                                                    <div class="row">
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Address Line 1</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Address Line 2 (optional)</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Suburb</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>State</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Postcode</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Country</label>
+                                                                                <input type="text" class="form-control" placeholder="Address line 1" />
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-secondary">Add billing address</button>
+                                                                    </div>
+                                                                    <div class="clearfix"></div>
+
+                                                                </form>
+                                                                <small>For account verification purposes, your address will never be shown publicly.</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="splitter-section ">
+                                                        <div class="splitter-section-name">Bank account details</div>
+                                                        <div class="splitter-section-content">
+                                                            <div class="splitter-section-content-inner clearfix">
+                                                                <div class="anchovy-form">
+                                                                    <div class="margin-20-bottom">Please provide your bank details so you can get paid. We don't take any money from your account.</div>
+                                                                    <div class="row">
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Account holder name</label>
+                                                                                <input type="text" class="form-control" placeholder="Account holder name" />
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>Account number</label>
+                                                                                <input type="text" class="form-control" placeholder="Account number" />
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                                <label>BSB</label>
+                                                                                <input type="text" class="form-control" placeholder="000-000" />
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-secondary">Add bank account</button>
+                                                                    </div>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.row -->
+                                            <!-- /.content -->
+                                        </div><!-- /.content-wrapper -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- basic modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title text-center" id="myModalLabel">Add your credit card</h3>                        
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="card-holder-name">Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="card-holder-name" id="card-holder-name" placeholder="Card Holder's Name">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="card-number">Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="card-number" id="card-number" placeholder="Debit/Credit Card Number">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="expiry-month">Expiration</label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <select class="form-control col-sm-2" name="expiry-month" id="expiry-month">
+                                                    <option>Month</option>
+                                                    <option value="01">Jan (01)</option>
+                                                    <option value="02">Feb (02)</option>
+                                                    <option value="03">Mar (03)</option>
+                                                    <option value="04">Apr (04)</option>
+                                                    <option value="05">May (05)</option>
+                                                    <option value="06">June (06)</option>
+                                                    <option value="07">July (07)</option>
+                                                    <option value="08">Aug (08)</option>
+                                                    <option value="09">Sep (09)</option>
+                                                    <option value="10">Oct (10)</option>
+                                                    <option value="11">Nov (11)</option>
+                                                    <option value="12">Dec (12)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <select class="form-control col-sm-2" name="expiry-year">
+                                                    <option value="17">2017</option>
+                                                    <option value="18">2018</option>
+                                                    <option value="19">2019</option>
+                                                    <option value="20">2020</option>
+                                                    <option value="21">2021</option>
+                                                    <option value="22">2022</option>
+                                                    <option value="23">2023</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="cvv">Card CVV</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <br/>
+                                <p class="text-center">By providing your credit card details, you agree to Stripe's <a href="#">Terms & Conditions</a></p>
+                                <br/>
+                                <div class="form-group">
+                                    <div class="col-xs-6"><button type="button" class="btn btn-default" id="cancel">Cancel</button></div>
+                                    <div class="col-xs-6"><button type="button" class="btn btn-secondary" id="pay-now">Pay now</button></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade getstartedmodal" id="services" tabindex="-1" role="dialog" aria-labelledby="servicesModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                        <h5 class="modal-title text-center" id="servicesModalLabel">Tell us what you need done?</h5>                       
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">What do you need done?</label>
+                                <br/>
+                                <small>This'll be title of your task - e.g. Help move my sofa</small>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">What are the details?</label>
+                                <br/>
+                                <small>Be as specific as you can about what needs doing</small>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Next</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../js/account.min.js"></script>
+        <script>
+            $('.nav-tabs-dropdown').each(function (i, elm) {
+                $(elm).text($(elm).next('ul').find('li.active a').text());
+            });
+            $('.nav-tabs-dropdown').on('click', function (e) {
+                e.preventDefault();
+                $(e.target).toggleClass('open').next('ul').slideToggle();
+            });
+            $('#nav-tabs-wrapper a[data-toggle="tab"]').on('click', function (e) {
+                e.preventDefault();
+                $(e.target).closest('ul').hide().prev('a').removeClass('open').text($(this).text());
+            });
+        </script>
+    </body>
+</html>

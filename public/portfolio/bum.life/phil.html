@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phil - Bum.Life</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <!-- Bubblegum Sans for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-transparent text-white fixed w-full z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/logobum.png" alt="Bum.Life"
+                        class="nav-logo h-20 w-auto transition-all duration-300">
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Home</a>
+                    <a href="characters.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Characters</a>
+                    <a href="videos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Videos</a>
+                    <a href="photos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Photos</a>
+                    <a href="about.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">About</a>
+                    <a href="producers.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">For
+                        Producers</a>
+                    <a href="contact.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300 flex items-center">
+                        Contact
+                    </a>
+                </div>
+                <button class="md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Character Header -->
+    <section class="pt-32 pb-20 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-center bg-contain bg-repeat"
+            style="background-image: url('images/TexturedRedBrickWallClose-up.png'); opacity: 0.3;">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
+                Phil – The Philosopher</h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                The deep thinker who turns trash into metaphors. He is crazy wise or just crazy.
+            </p>
+        </div>
+    </section>
+
+    <!-- Character Profile -->
+    <section class="py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <!-- Character Image -->
+                    <div class="flex justify-center">
+                        <img src="images/characters/Philal_arretdebusnocturne.png" alt="Phil"
+                            class="rounded-lg shadow-lg max-w-full h-auto">
+                    </div>
+
+                    <!-- Character Details -->
+                    <div class="space-y-8">
+                        <!-- Key Characteristics -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                            <h2 class="text-2xl font-bold mb-6 text-yellow-400">Key Characteristics</h2>
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <span class="text-gray-300 font-extrabold w-28 shrink-0">Strength:</span>
+                                    <span class="text-white ms-2">Drops unexpected wisdom, sees meaning in
+                                        everything</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-gray-300 font-extrabold w-28 shrink-0">Flaw:</span>
+                                    <span class="text-white ms-2">Rambles endlessly, often ignored</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-gray-300 font-extrabold w-28 shrink-0">Quirk:</span>
+                                    <span class="text-white ms-2">Talks to pigeons as if they are disciples</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-gray-300 font-extrabold w-28 shrink-0">Vibe:</span>
+                                    <span class="text-white ms-2">Absurd, wise, eccentric</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extended Personality -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                            <h2 class="text-2xl font-bold mb-6 text-yellow-400">Extended Personality</h2>
+                            <p class="text-white">
+                                Phil is the guy who can look at a half eaten slice of pizza and somehow turn it into a
+                                metaphor for human existence. He is chill, half crazy, but sometimes he says things that
+                                actually make sense, usually when nobody is listening. The crew often rolls their eyes
+                                when he rambles, but every now and then his trash bag wisdom saves their asses.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to Characters -->
+                <div class="text-center mt-16">
+                    <a href="characters.html" class="btn-secondary inline-flex items-center">
+                        <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+                        Back to Characters
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white py-12 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2">Bum.Life</h3>
+                    <p class="text-gray-400 italic tracking-wide">5 bums. 1 bench. Infinite chaos.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <ul class="flex flex-wrap justify-center gap-6">
+                        <li><a href="characters.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Characters</a></li>
+                        <li><a href="videos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Videos</a></li>
+                        <li><a href="photos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Photos</a></li>
+                        <li><a href="about.html" class="hover:text-yellow-400 transition-colors duration-300">About</a>
+                        </li>
+                        <li><a href="contact.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="flex justify-center md:justify-end space-x-6">
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="youtube" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-800">
+                <p>&copy; 2025 Bum.Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>

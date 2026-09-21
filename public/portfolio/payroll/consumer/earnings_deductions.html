@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Consumer Paid</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/fontawesome.min.css" rel="stylesheet" />
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="css/select2.min.css" rel="stylesheet" />
+    <link href="../css/common.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Header HTML -->
+        <header class="navbar navbar-header fixed-top navbar-expand-lg">
+            <div class="container-fluid">
+                <div class="d-flex">
+                    <h1 class="logo">JET PAYROLL</h1>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto top_dropdown">
+                        <li>
+                            <h2 class="choosedPlan"><i class="fas fa-info-circle" data-toggle="tooltip" data-bs-original-title="Basic Plan"></i> BASIC PLAN</h2>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="HelpDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-question-circle"></i> <label>Help</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="HelpDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="CompanyDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-building"></i> <label>Green Code</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="CompanyDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown top_dropdown">
+                                <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="UserDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i> <label>Will Smith</label></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="UserDropdown">
+                                    <li><a class="dropdown-item active" href="javascript:void(0)">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)">Separated link</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Left Side HTML -->
+        <aside id="sidebar-wrapper">
+            <div class="leftArrowShape text-center">
+                <h1 class="complete">Complete below steps to<br /> get started</h1>
+                <h1 class="completeToggled">Get<br />Started</h1>
+                <i class="fas fa-arrow-alt-circle-down"></i>
+            </div>
+            <div class="position-sticky mt-5 sidebar-sticky mCustomScrollbar">
+                <ol class="counting">
+                    <li class="completed"><a href="index.html"><i class="fas fa-building"></i>Company Information<i class="fas fa-check"></i></a></li>
+                    <li class="active">
+                        <a href="date_time.html"><i class="fas fa-cog"></i>Settings<i class="fas fa-check"></i></a>
+                        <ul>
+                            <li class="completed"><a href="date_time.html"><i class="fas fa-calendar-alt"></i>Language, Date & Time<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="state_tax.html"><i class="fas fa-funnel-dollar"></i>State Tax<i class="fas fa-check"></i></a></li>
+                            <li class="completed"><a href="pay_schedule.html"><i class="fas fa-hand-holding-usd"></i>Pay Schedule<i class="fas fa-check"></i></a></li>
+                            <li class="active"><a href="javascript:void(0)"><i class="fas fa-wallet"></i>Earnings & Deductions<i class="fas fa-check"></i></a></li>
+                            <li><a href="leaves.html"><i class="fas fa-umbrella-beach"></i>Leaves<i class="fas fa-check"></i></a></li>
+                            <li><a href="bank.html"><i class="fas fa-university"></i>Bank<i class="fas fa-check"></i></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="employees.html"><i class="fas fa-user-friends"></i>Employee(s)<i class="fas fa-check"></i></a></li>
+                    <li>
+                        <a href="officeworker.html"><i class="fas fa-clock"></i>Time Tracker<i class="fas fa-check"></i></a>
+                        <ul>
+                            <li><a href="officeworker.html"><i class="fas fa-laptop"></i>Office Worker<i class="fas fa-check"></i></a></li>
+                            <li><a href="javascript:void(0)" class="strikeThrough"><i class="fas fa-laptop-house"></i>Remote Worker</a></li>
+                            <li><a href="javascript:void(0)" class="strikeThrough"><i class="fas fa-motorcycle"></i>Mobile Worker</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </aside>
+
+        <!-- Heading Part HTML -->
+        <div class="justify-content-between head-section">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-12 align-self-center">
+                    <i class="headIcon fas fa-cog"></i>
+                    <label>Settings <span>(Earnings & Deductions)</span></label>
+                </div>
+                <div class="col-lg-3 col-md-3 hideonSmall">
+                    <label class="setupComplettion text-start">Setup Completion</label>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width:35%;" aria-valuenow="35" aria-label="Progress" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="percentage text-end">35% Complete</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area HTML -->
+        <section id="content-wrapper">
+            <div class="container-fluid">
+                <div class="row justify-content-between">
+                    <div class="col-lg-9 col-md-12 col-sm-12 ResponsiveOnSmallOrderSecond">
+                        <div class="innerScroll mCustomScrollbar">
+                            <div class="ps-1 pe-4">
+                        <div class="row justify-content-between">
+                            <div class="col">
+                                <h2>Earnings & Deductions</h2>
+                            </div>
+                            <div class="col text-end">
+                                <a href="javascript:void(0)" onclick="showHidePanelsLogic('EarningsDeductionsForm','EarningsDeductionsNoData','SavedCards')" class="addnew-btn"><i class="fas fa-plus-circle"></i> Add Earnings & Deductions</a>
+                            </div>
+                            <div class="col-12">                                
+                                <div id="EarningsDeductionsNoData" class="no-data-found">
+                                    <hr />
+                                    <div class="no-data-inner">
+                                    <i class="fas fa-wallet"></i>
+                                    <p>You can create Earning & Deduction code(s) against which payments made to employee(s) who has made a claim for expenses incurred out of their own pocket for the business, through work-related activities or any post tax amount needs to be deducted i.e Loan, Wage garnishment etc.</p>
+                                </div>
+                            </div>
+                            <div id="EarningsDeductionsForm" class="editable-form mt-2 d-none">
+                                    <div class="row justify-content-between">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="txtDescription" id="lblDescription" class="form-label">Description <span class="mandatory">*</span></label>
+                                                <input id="txtDescription" type="text" class="form-control" placeholder="" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="ddlGroup" id="lblGroup" class="form-label">Group <span class="mandatory">*</span></label>
+                                                <select id="ddlGroup" class="form-select js-example-basic-single">
+                                                    <option selected="">Expense Reimbursement</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="ddlCategory" id="lblCategory" class="form-label">Category <span class="mandatory">*</span></label>
+                                                <select id="ddlCategory" class="form-select js-example-basic-single">
+                                                    <option selected="">Taxable</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3 mb-3">
+                                            <h3>Employer Contribution</h3>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="ddlAmountContributionType" id="lblAmountContributionType" class="form-label">Amount contribution type <span class="mandatory">*</span></label>
+                                                <select id="ddlAmountContributionType" class="form-select js-example-basic-single">
+                                                    <option selected="">Net Amount</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="txtValue" id="lblValue" class="form-label">Value</label>
+                                                <input id="txtValue" type="number" class="form-control" placeholder="150.00" value="150.00" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3 position-relative">
+                                                <label for="txtMaxYearLimit" id="lblMaxYearLimit" class="form-label">Max. year limit ($) <span class="mandatory">*</span></label>
+                                                <input id="txtMaxYearLimit" type="number" class="form-control" placeholder="$" value="" />
+                                                <label class="toggle toggleposition"> <input type='checkbox'> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="ddlFrequency" id="lblFrequency" class="form-label">Frequency <span class="mandatory">*</span></label>
+                                                <select id="ddlFrequency" class="form-select js-example-basic-single">
+                                                    <option selected="">Every Pay Cycle</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="txtEffectiveDate" id="lblEffectiveDate" class="form-label">Effective date <span class="mandatory">*</span></label>
+                                                <input id="txtEffectiveDate" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                            </div>
+                                        </div>  
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="txtExpiryDate" id="lblExpiryDate" class="form-label">Expiry date</label>
+                                                <input id="txtExpiryDate" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                            </div>
+                                        </div>    
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <div class="mb-3 check-radio-border">
+                                                <label class="form-label d-block mb-1">Employee classification <span class="mandatory">*</span></label>
+                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" checked id="everyone" value="Everyone">
+                                                    <label class="form-check-label" for="everyone">Everyone</label>
+                                                  </div>
+                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                    <input class="form-check-input" type="radio" disabled name="inlineRadioOptions" id="custom" value="Custom">
+                                                    <label class="form-check-label" for="custom">Custom</label>
+                                                  </div>
+                                            </div>
+                                        </div>                                 
+                                        <div class="col-12 text-end">
+                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="showHidePanels('SavedCards',1); showHidePanels('EarningsDeductionsNoData',0); showHidePanels('EarningsDeductionsForm',0);" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="SavedCards" class="d-none">
+                                    <hr />
+                                    <div class="row justify-content-between">
+                                    
+                                    <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header text-end">
+                                                <a href="javascript:void(0)" class="edit-btn" onclick="showHideEditCards(this)"><i class="fas fa-pen"></i> Edit</a>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="text-list card-text">
+                                                    <li>
+                                                        <strong>Description:</strong> <span>Bonus</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Group:</strong> <span>Expense Reimbursement</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Category:</strong> <span>Taxable</span>
+                                                    </li>
+                                                    <li>
+                                                        <hr/>
+                                                        <h3 class="mb-3">Employer Contribution</h3>
+                                                    </li>
+                                                    
+                                                    <li>
+                                                        <strong>Amount contribution type:</strong> <span>Net Amount</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Value:</strong> <span>150.00</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Max. year limit ($):</strong> <span></span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Frequency:</strong> <span>Every Pay Cycle</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Effective date:</strong> <span>06/01/2021</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Expiry date:</strong> <span></span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Employee classification:</strong> <span>Everyone</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="edit-form mt-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtEditDescription" id="lblEditDescription" class="form-label">Description <span class="mandatory">*</span></label>
+                                                                <input id="txtEditDescription" type="text" class="form-control" placeholder="" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditGroup" id="lblEditGroup" class="form-label">Group <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditGroup" class="form-select js-example-basic-single">
+                                                                    <option selected="">Expense Reimbursement</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditCategory" id="lblEditCategory" class="form-label">Category <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditCategory" class="form-select js-example-basic-single">
+                                                                    <option selected="">Taxable</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                        <div class="mt-3 mb-3">
+                                                            <h3>Employer Contribution</h3>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                                <label for="ddlEditAmountContributionType" id="lblEditAmountContributionType" class="form-label">Amount contribution type <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditAmountContributionType" class="form-select js-example-basic-single">
+                                                                    <option selected="">Net Amount</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditValue" id="lblEditValue" class="form-label">Value</label>
+                                                                <input id="txtEditValue" type="number" class="form-control" placeholder="150.00" value="150.00" />
+                                                            </div>
+                                                            <div class="mb-3 position-relative">
+                                                                <label for="txtEditMaxYearLimit" id="lblEditMaxYearLimit" class="form-label">Max. year limit ($) <span class="mandatory">*</span></label>
+                                                                <input id="txtEditMaxYearLimit" type="number" class="form-control" placeholder="$" value="" />
+                                                                <label class="toggle toggleposition"> <input type='checkbox'> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditFrequency" id="lblEditFrequency" class="form-label">Frequency <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditFrequency" class="form-select js-example-basic-single">
+                                                                    <option selected="">Every Pay Cycle</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditEffectiveDate" id="lblEditEffectiveDate" class="form-label">Effective date <span class="mandatory">*</span></label>
+                                                                <input id="txtEditEffectiveDate" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditExpiryDate" id="lblEditExpiryDate" class="form-label">Expiry date</label>
+                                                                <input id="txtEditExpiryDate" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <label class="form-label d-block mb-1">Employee classification <span class="mandatory">*</span></label>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" checked id="everyone1" value="Everyone">
+                                                                    <label class="form-check-label" for="everyone1">Everyone</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" disabled name="inlineRadioOptions" id="custom1" value="Custom">
+                                                                    <label class="form-check-label" for="custom1">Custom</label>
+                                                                  </div>
+                                                            </div>
+                                                        <div class="col-5 text-start">
+                                                            <a href="javascript:void(0)" class="remove-btn"><i class="fas fa-times"></i> Remove</a>
+                                                        </div>
+                                                        <div class="col-7 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="SaveCard(this)" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                        <div class="card">
+                                            <div class="card-header text-end">
+                                                <a href="javascript:void(0)" class="edit-btn" onclick="showHideEditCards(this)"><i class="fas fa-pen"></i> Edit</a>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="text-list card-text">
+                                                    <li>
+                                                        <strong>Description:</strong> <span>Bonus</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Group:</strong> <span>Expense Reimbursement</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Category:</strong> <span>Taxable</span>
+                                                    </li>
+                                                    <li>
+                                                        <hr/>
+                                                        <h3 class="mb-3">Employer Contribution</h3>
+                                                    </li>
+                                                    
+                                                    <li>
+                                                        <strong>Amount contribution type:</strong> <span>Net Amount</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Value:</strong> <span>150.00</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Max. year limit ($):</strong> <span></span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Frequency:</strong> <span>Every Pay Cycle</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Effective date:</strong> <span>06/01/2021</span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Expiry date:</strong> <span></span>
+                                                    </li>
+                                                    <li>
+                                                        <strong>Employee classification:</strong> <span>Everyone</span>
+                                                    </li>
+                                                </ul>
+                                                <div class="edit-form mt-2 d-none">
+                                                    <div class="row justify-content-between">
+                                                        <div class="mb-3">
+                                                                <label for="txtEditDescription2" id="lblEditDescription2" class="form-label">Description <span class="mandatory">*</span></label>
+                                                                <input id="txtEditDescription2" type="text" class="form-control" placeholder="" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditGroup2" id="lblEditGroup2" class="form-label">Group <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditGroup2" class="form-select js-example-basic-single">
+                                                                    <option selected="">Expense Reimbursement</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditCategory2" id="lblEditCategory2" class="form-label">Category <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditCategory2" class="form-select js-example-basic-single">
+                                                                    <option selected="">Taxable</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                        <div class="mt-3 mb-3">
+                                                            <h3>Employer Contribution</h3>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                                <label for="ddlEditAmountContributionType2" id="lblEditAmountContributionType2" class="form-label">Amount contribution type <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditAmountContributionType2" class="form-select js-example-basic-single">
+                                                                    <option selected="">Net Amount</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditValue2" id="lblEditValue2" class="form-label">Value</label>
+                                                                <input id="txtEditValue2" type="number" class="form-control" placeholder="150.00" value="150.00" />
+                                                            </div>
+                                                            <div class="mb-3 position-relative">
+                                                                <label for="txtEditMaxYearLimit2" id="lblEditMaxYearLimit2" class="form-label">Max. year limit ($) <span class="mandatory">*</span></label>
+                                                                <input id="txtEditMaxYearLimit2" type="number" class="form-control" placeholder="$" value="" />
+                                                                <label class="toggle toggleposition"> <input type='checkbox'> <span class="box"></span> <span class="switch"></span> <span class="on">No</span> <span class="off">Yes</span> </label>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="ddlEditFrequency2" id="lblEditFrequency2" class="form-label">Frequency <span class="mandatory">*</span></label>
+                                                                <select id="ddlEditFrequency2" class="form-select js-example-basic-single">
+                                                                    <option selected="">Every Pay Cycle</option>
+                                                                    <option value="1">One</option>
+                                                                    <option value="2">Two</option>
+                                                                    <option value="3">Three</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditEffectiveDate2" id="lblEditEffectiveDate2" class="form-label">Effective date <span class="mandatory">*</span></label>
+                                                                <input id="txtEditEffectiveDate2" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="txtEditExpiryDate2" id="lblEditExpiryDate2" class="form-label">Expiry date</label>
+                                                                <input id="txtEditExpiryDate2" type="date" class="form-control" placeholder="--/--/----" value="" />
+                                                            </div>
+                                                            <div class="mb-3 check-radio-border">
+                                                                <label class="form-label d-block mb-1">Employee classification <span class="mandatory">*</span></label>
+                                                                <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" checked id="everyone2" value="Everyone">
+                                                                    <label class="form-check-label" for="everyone2">Everyone</label>
+                                                                  </div>
+                                                                  <div class="form-check px-0 pe-3 form-check-inline">
+                                                                    <input class="form-check-input" type="radio" disabled name="inlineRadioOptions" id="custom2" value="Custom">
+                                                                    <label class="form-check-label" for="custom2">Custom</label>
+                                                                  </div>
+                                                            </div>
+                                                        <div class="col-5 text-start">
+                                                            <a href="javascript:void(0)" class="remove-btn"><i class="fas fa-times"></i> Remove</a>
+                                                        </div>
+                                                        <div class="col-7 text-end">
+                                                            <a href="javascript:void(0)" class="cancel-btn"><i class="fas fa-times-circle"></i> Cancel</a> <a href="javascript:void(0)" onclick="SaveCard(this)" class="save-btn"><i class="fas fa-save"></i> Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-md-none d-lg-block order-lg-last mb-3 ps-0">
+                    <div class="HelpSection mCustomScrollbar">
+                        <div class="pe-4">
+                            <h3>Why do we need to ask for this?</h3>
+                            <p>
+                                This information will help us what benefits are employee(s) entitled and what deductions are to be made from employee(s) salaries.
+                            </p>
+                            <img class="img-fluid mt-3" src="images/earnings_img.png" alt="" />
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Actions -->
+        <div class="bottomActions">
+            <div class="row justify-content-between">
+                <div class="col-lg-9 col-md-12 col-sm-12 position-relative">
+                    <div class="row">
+                        <div class="col-4">
+                            <a href="pay_schedule.html"><i class="fas fa-play fa-rotate-180"></i> Back to Pay Schedule</a>
+                        </div>
+                        <div class="col-4 text-center">
+                            <a href="leaves.html" class="skipthisstep">Skip this step</a>
+                        </div>
+                        <div class="col-4 text-end">
+                            <a href="leaves.html">Go to Leaves <i class="fas fa-play"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12"></div>
+        </div>
+
+    </div>
+    <!-- Footer HTML -->
+    <footer class="footer">
+        <div class="container-fluid">
+            
+            <div class="row ResponsiveAlignment">
+                <div class="col-lg-4 col-md-4 col-sm-12 align-self-center">
+                    <!-- LOGO -->
+                    <div class="d-inline-block text-center">
+                        <h1 class="logo">JET PAYROLL</h1>
+                        <p class="tagline">Integrity + Accuracy</p>                        
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 text-center align-self-center">© 2022 Payroll Management. All Rights Reserved.</div>
+                <div class="col-lg-4 col-md-4 col-sm-12 align-self-center">
+                    <div class="text-end lineheight">
+                        <a href="javascript:void(0)">Terms of Service</a> | <a href="javascript:void(0)">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+</html>

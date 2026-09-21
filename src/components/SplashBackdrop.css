@@ -1,0 +1,222 @@
+/* ============================================================================
+   SPLASH / HOME — cool atmospheric palette and animated background. Scoped to the Splash gate (.entry-gate--intro) only: nothing here
+   reaches the corridor, the rooms, or any standard or project page, and the site's own theme tokens are not changed.
+
+   The background is secondary to the hero: the content is read first, the traces are noticed a moment later, the tech tokens last.
+
+   PALETTE (light)  frosted blue-white  #f8fbff   → icy pearl  #f0f5fc   → silver-blue  #e7eef8
+                    cobalt accents (66 92 240) at low opacity · deep navy type #0c1830 · slate-blue supporting type
+   PALETTE (dark)   the site's deep navy, a whisper of cobalt behind the portrait, cool blue-grey lines
+
+   LEVELS           1  base             the gate background
+                    2  vertical lines   1px, 72px pitch, ~5% — static, top to bottom (no horizontal lines)
+                    3  signal traces    16–20 short segments, 4.6–7.5s each, ~9–10 on screen at any time, at different heights; dimmed behind the copy
+                    4  tech tokens      nine small frosted tokens (React, Vite, …) in negative space: slow drift around a home; draggable on a desktop
+                    5  hero content     `.entry-hero` (z-index 1) is always above all of this
+   ============================================================================ */
+
+/* ---- The gate: base, lines, and the type colours that belong to the palette ---- */
+html body .entry-gate.entry-gate--intro:not(.entry-gate--loading){--sb-pitch:var(--splash-pitch,72px)}
+
+/* light */
+html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading){
+  --sb-rgb:66 92 240;                          /* cobalt */
+  --sb-tint:157 179 255;                       /* pale blue */
+  --sb-grid:var(--splash-grid);
+  background:var(--splash-surface);
+  color:#0c1830;
+}
+html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-headline,
+html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-line{color:#0c1830}
+html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-eyebrow{color:#546480}
+html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-supporting{color:#4a5a76}
+
+/* dark: the site's deep navy with the same language, quieter (its text colours stay the site's own dark-theme tokens) */
+html[data-theme="dark"] body .entry-gate.entry-gate--intro:not(.entry-gate--loading){
+  --sb-rgb:142 160 255;
+  --sb-tint:150 170 255;
+  --sb-grid:var(--splash-grid);
+  background:var(--splash-surface);
+}
+
+/* The shared HeroSignalBackground now owns the grid (no second gate grid). */
+html body .entry-gate.entry-gate--intro:not(.entry-gate--loading):before{content:none}
+
+/* ---- The backdrop layer sits above the lines and below the hero (which is z-index 1). It never takes pointer events. ---- */
+.splash-bg{
+  --sb-ease:cubic-bezier(.4,0,.2,1);
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  contain:layout paint;
+}
+
+/* ---- Tech Stack tokens: small frosted UI fragments in negative space. Outer = position (JS), inner = slow drift around the home, body = the token. ---- */
+.splash-bg__tokens{position:absolute;inset:0}
+.sbt{
+  position:absolute;
+  left:0;
+  top:0;
+  translate:-50% -50%;
+  opacity:0;
+  transition:opacity .9s var(--sb-ease);
+  will-change:transform;
+}
+.splash-bg.is-ready .sbt{opacity:1}
+.sbt.is-off,.sbt-hit.is-off{display:none}
+.sbt.is-dragging{z-index:3}
+.sbt__drift{animation:sbt-drift var(--dur,12s) ease-in-out var(--delay,0s) infinite alternate}
+.sbt.is-dragging .sbt__drift{animation-play-state:paused}
+@keyframes sbt-drift{
+  from{transform:translate3d(calc(var(--dx,0px) * -.5),calc(var(--dy,0px) * -.5),0) rotate(calc(var(--dr,0deg) * -.5)) scale(var(--s0,1))}
+  to{transform:translate3d(calc(var(--dx,0px) * .5),calc(var(--dy,0px) * .5),0) rotate(calc(var(--dr,0deg) * .5)) scale(var(--s1,1))}
+}
+/* the token: compact, frosted, a 1px cool border. Each carries a very soft tint of its own brand (--tk = the brand colour as r g b, --tk-ink = a
+   dark shade of it for the label) so the set reads as a family of pastel frosted tokens, never as saturated cards. The brand shows in the mark first. */
+.sbt__body{
+  --tk-h:34px;
+  --tk-mark:16px;
+  --tk:66 92 240;
+  --tk-ink:#2f4068;
+  --tk-a:.11;        /* tint strength */
+  --tk-w:.56;        /* frosted white beneath it */
+  --tk-b:.26;        /* border strength */
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  height:var(--tk-h);
+  padding:0 11px 0 8px;
+  border-radius:11px;
+  background:var(--tk-bg,linear-gradient(rgb(var(--tk) / var(--tk-a)),rgb(var(--tk) / var(--tk-a)))),rgb(255 255 255 / var(--tk-w));
+  border:1px solid rgb(var(--tk) / var(--tk-b));
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  color:var(--tk-ink);
+  font:600 11px/1 var(--sans,"Manrope",system-ui,sans-serif);
+  letter-spacing:.005em;
+  white-space:nowrap;
+  opacity:.94;
+  transition:opacity .28s var(--sb-ease),background-color .28s var(--sb-ease),border-color .28s var(--sb-ease),transform .34s var(--sb-ease);
+}
+.sbt__label{display:block}
+.sbt__mark{display:block;flex:none;width:var(--tk-mark);height:var(--tk-mark)}
+b.sbt__mark{display:grid;place-items:center;border-radius:4px;font:800 8.5px/1 var(--sans,"Manrope",system-ui,sans-serif);letter-spacing:-.02em}
+.sbt__mark--ps{background:#001e36;color:#31a8ff;box-shadow:inset 0 0 0 1px #31a8ff}
+.sbt__mark--js{background:#f7df1e;color:#1c1c1c}
+.sbt__mark--dots{width:14px;fill:rgb(var(--sb-rgb))}
+
+/* the AI / build tools: secondary — a little smaller and quieter; "And many more": neutral cool blue, quieter still */
+.sbt--t2 .sbt__body{--tk-h:30px;--tk-mark:14px;gap:5px;padding:0 10px 0 7px;border-radius:10px;font-size:10.5px;opacity:.82}
+.sbt--t3 .sbt__body{--tk-h:31px;padding:0 12px 0 10px;font-size:10.5px;opacity:.84}
+
+/* per-token brand tint (light): soft, pastel, low alpha. Gradient tokens (Figma, Lovable, Builder) blend two or three brand hues at the same restraint. */
+.sbt[data-id="react"] .sbt__body{--tk:40 180 220;--tk-ink:#1d566d}
+.sbt[data-id="vite"] .sbt__body{--tk:134 110 255;--tk-ink:#43307f}
+.sbt[data-id="tailwind"] .sbt__body{--tk:56 189 248;--tk-ink:#11587a}
+.sbt[data-id="figma"] .sbt__body{--tk:162 89 255;--tk-ink:#4a2f78;--tk-bg:linear-gradient(100deg,rgb(242 78 30 / calc(var(--tk-a) * .55)),rgb(162 89 255 / calc(var(--tk-a) * .85)) 55%,rgb(26 188 254 / calc(var(--tk-a) * .8)))}
+.sbt[data-id="photoshop"] .sbt__body{--tk:49 168 255;--tk-ink:#0f4577}
+.sbt[data-id="html5"] .sbt__body{--tk:240 110 50;--tk-ink:#7a3618}
+.sbt[data-id="css3"] .sbt__body{--tk:38 120 214;--tk-ink:#1a4a78}
+.sbt[data-id="javascript"] .sbt__body{--tk:240 196 20;--tk-ink:#5c4e0c;--tk-a:.16}
+.sbt[data-id="lovable"] .sbt__body{--tk:255 84 140;--tk-ink:#7a2a4c;--tk-bg:linear-gradient(100deg,rgb(255 150 70 / calc(var(--tk-a) * .7)),rgb(255 84 140 / calc(var(--tk-a) * .95)) 55%,rgb(90 124 255 / calc(var(--tk-a) * .75)))}
+.sbt[data-id="claude"] .sbt__body{--tk:217 119 87;--tk-ink:#733a25}
+.sbt[data-id="codex"] .sbt__body{--tk:71 85 105;--tk-ink:#2d3748;--tk-a:.08}
+.sbt[data-id="bolt"] .sbt__body{--tk:19 137 253;--tk-ink:#1a4f8c}
+.sbt[data-id="v0"] .sbt__body{--tk:30 41 59;--tk-ink:#27303f;--tk-a:.06}
+.sbt[data-id="builder"] .sbt__body{--tk:124 108 255;--tk-ink:#3c3a86;--tk-bg:linear-gradient(100deg,rgb(24 180 244 / calc(var(--tk-a) * .7)),rgb(124 108 255 / calc(var(--tk-a) * .95)))}
+.sbt[data-id="more"] .sbt__body{--tk:66 92 240;--tk-ink:#33456d;--tk-a:.08}
+
+/* a token is invited by the pointer: a touch more present, a clearer border, a 1.018 lift; while held it is the most solid thing in the layer */
+.sbt.is-hover .sbt__body{--tk-a:.15;--tk-w:.72;--tk-b:.42;opacity:1;transform:scale(1.018)}
+.sbt.is-dragging .sbt__body{--tk-a:.17;--tk-w:.84;--tk-b:.52;opacity:1;transform:scale(1.02)}
+.sbt.is-blocked .sbt__body{opacity:.5}
+
+/* dark: a quiet translucent surface; the same brand tints, a little stronger to register on navy, and light labels (a pale shade of each brand) */
+html[data-theme="dark"] .sbt__body{--tk-a:.15;--tk-w:.05;--tk-b:.32;--tk-ink:#cfd8ee}
+html[data-theme="dark"] .sbt[data-id="react"] .sbt__body{--tk-ink:#b4ecfb}
+html[data-theme="dark"] .sbt[data-id="vite"] .sbt__body{--tk-ink:#d3c9ff}
+html[data-theme="dark"] .sbt[data-id="tailwind"] .sbt__body{--tk-ink:#b6e8fd}
+html[data-theme="dark"] .sbt[data-id="figma"] .sbt__body{--tk-ink:#e0cffd}
+html[data-theme="dark"] .sbt[data-id="photoshop"] .sbt__body{--tk-ink:#b4dcff}
+html[data-theme="dark"] .sbt[data-id="html5"] .sbt__body{--tk-ink:#ffcfb4}
+html[data-theme="dark"] .sbt[data-id="css3"] .sbt__body{--tk-ink:#b8d6f7}
+html[data-theme="dark"] .sbt[data-id="javascript"] .sbt__body{--tk-ink:#f6e8a4;--tk-a:.14}
+html[data-theme="dark"] .sbt[data-id="lovable"] .sbt__body{--tk-ink:#ffc4d9}
+html[data-theme="dark"] .sbt[data-id="claude"] .sbt__body{--tk-ink:#f4cdbb}
+html[data-theme="dark"] .sbt[data-id="codex"] .sbt__body{--tk-ink:#d5dbe6;--tk-a:.14}
+html[data-theme="dark"] .sbt[data-id="bolt"] .sbt__body{--tk-ink:#bcdcff}
+html[data-theme="dark"] .sbt[data-id="v0"] .sbt__body{--tk-ink:#dde2ea;--tk-a:.12}
+html[data-theme="dark"] .sbt[data-id="builder"] .sbt__body{--tk-ink:#cdcaff}
+html[data-theme="dark"] .sbt[data-id="more"] .sbt__body{--tk-ink:#c2ceee;--tk-a:.1}
+html[data-theme="dark"] .sbt.is-hover .sbt__body{--tk-a:.2;--tk-w:.09;--tk-b:.5}
+html[data-theme="dark"] .sbt.is-dragging .sbt__body{--tk-a:.24;--tk-w:.14;--tk-b:.6}
+/* the dark treatment keeps dark-only marks legible: the Codex / v0 tiles are near-black, so they get a light hairline */
+html[data-theme="dark"] .sbt[data-id="codex"] .sbt__mark rect,html[data-theme="dark"] .sbt[data-id="v0"] .sbt__mark rect{stroke:rgb(255 255 255 / .28);stroke-width:1}
+
+/* Hit proxies: invisible, exactly the token's size, above the hero (which is z-index 1) so a token behind the copy layer can still be picked up.
+   They exist only where dragging is available (fine pointer, desktop layout, no reduced motion) and only where a token rests, which is never on
+   the copy, the CTA or the portrait. `cursor:grab / grabbing` is the native fallback; with the Living Cursor on it shows DRAG instead. */
+.splash-hit{position:absolute;inset:0;z-index:2;pointer-events:none}
+.sbt-hit{
+  position:absolute;
+  left:0;
+  top:0;
+  translate:-50% -50%;
+  pointer-events:none;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.splash-hit.is-draggable .sbt-hit{pointer-events:auto;cursor:grab}
+.splash-hit.is-draggable .sbt-hit.is-dragging{cursor:grabbing}
+
+/* wide screens get the extra columns of traces (beyond the 1440px design width), smaller ones do not; a phone keeps three traces and smaller tokens */
+@media(max-width:1580px){
+}
+@media(max-width:640px){
+  .sbt__body,.sbt--t2 .sbt__body,.sbt--t3 .sbt__body{--tk-h:28px;--tk-mark:13px;gap:5px;padding:0 9px 0 6px;border-radius:9px;font-size:10px}
+  b.sbt__mark{font-size:7px}
+}
+
+/* ---- Reduced motion: the lines and the tokens remain, still; the traces are hidden; nothing drifts and nothing can be dragged ---- */
+@media(prefers-reduced-motion:reduce){
+  .sbt__drift{animation:none}
+  .sbt__body{transition:none}
+}
+
+/* ============================================================================
+   CTA icon — "Enter the Experience": a thin arrow entering an open portal frame (approved). Only its SIZE is refined: the icon canvas is
+   27.5px (was 25.1px) and the drawn glyph is enlarged a further 18% (~22px wide, was ~20px). The icon box keeps the button's height, and a
+   matching negative end margin keeps the button's width, so the pill is exactly the size it was. The stroke is set so the line stays ~2px,
+   and the hover travel is set so the arrow still moves ~3px on screen. The hover motion, timing, easing and the press are unchanged.
+   ============================================================================ */
+html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:27.5px;margin-left:-1.8px;margin-right:-3.6px}
+.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon svg{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  overflow:visible;
+  transform:scale(1.18);
+}
+.entry-gate--intro:not(.entry-gate--loading) .cta-arrow{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.entry-gate--intro:not(.entry-gate--loading) .cta-portal{opacity:.72;transition:opacity .3s ease}
+@media(hover:hover){
+  .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:hover .cta-arrow{transform:translateX(2.3px)}
+  .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:hover .cta-portal{opacity:1}
+}
+.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:focus-visible .cta-arrow{transform:translateX(2.3px)}
+.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:focus-visible .cta-portal{opacity:1}
+@media(max-width:560px){
+  html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:23.4px;margin-left:-1.6px;margin-right:-3px}
+}
+@media(max-width:380px){
+  html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:20.7px;margin-left:-1.4px;margin-right:-2.7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .entry-gate--intro:not(.entry-gate--loading) .cta-arrow,
+  .entry-gate--intro:not(.entry-gate--loading) .cta-portal{transition:none}
+}

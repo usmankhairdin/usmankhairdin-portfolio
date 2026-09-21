@@ -1,0 +1,333 @@
+/* ============================================================================
+   WORK — LARGE-FORMAT PROJECT SEQUENCE.
+   Every project is one big, art-directed composition in normal document flow (no sticky stage, no pinning, no wheel handling).
+   The projects sit side by side on one track that is pinned in the page and moved on X by the existing vertical scroll
+   (useShowcaseMotion); scrolling back reverses it exactly: a project arrives from the RIGHT, settles, and drifts toward
+   the LEFT as the next one arrives.
+   Colours come from the existing theme tokens (--text, --bg, --panel-solid, --line …); the only project-specific inputs
+   are its own accent and surface from the project data.
+   ============================================================================ */
+
+.route-page--work .section--work-showcase.wk-showcase{
+  --wk-pad-x:clamp(20px,4.4vw,72px);
+  padding:0 0 clamp(24px,5vh,64px);
+  background:none;
+  overflow:visible;
+}
+
+/* ---- One project ------------------------------------------------------- */
+.wk-project{
+  --o:0;                          /* set by the scroll engine in horizontal mode: signed distance from the stage centre */
+  --a:0;                          /* ...and its absolute value */
+  --fg:var(--text,#09111d);
+  --fg-rgb:var(--text-rgb,9 17 29);
+  --fg-2:var(--text-2,#596575);
+  --fg-3:var(--text-3,#7b8490);
+  --fg-inv:var(--bg,#eee8dc);
+  --wk-bg:var(--wk-bg-l,#eee8dc);   /* the project's own solid surface, light theme */
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  overflow:clip;                  /* nothing can ever push the page sideways */
+  min-height:clamp(680px,100vh,1080px);
+  padding:clamp(56px,10vh,120px) var(--wk-pad-x);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--fg);
+  background:var(--wk-bg);
+}
+html[data-theme="dark"] .wk-project{--wk-bg:var(--wk-bg-d,#0b111b)}   /* ...and dark theme */
+/* A project whose own surface is dark (data-driven) is presented on a dark stage, in either theme. */
+.wk-project[data-tone="dark"]{
+  --fg:#f4f0e6;
+  --fg-rgb:244 240 230;
+  --fg-2:#b7bbc6;
+  --fg-3:#8a90a0;
+  --fg-inv:#0f141d;
+  margin-inline:clamp(10px,1.6vw,28px);
+  border-radius:clamp(28px,3.4vw,56px);
+}
+
+/* ---- Atmosphere + the large ghost number (both quiet, both behind everything) ---- */
+.wk-project__atmosphere{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,#455dff) 20%,transparent),transparent 72%),
+    radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
+}
+html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosphere{
+  background:
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,#455dff) 24%,transparent),transparent 72%),
+    radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
+}
+.wk-project[data-tone="dark"] .wk-project__atmosphere{
+  background:
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,#ffd51d) 13%,transparent),transparent 72%),
+    radial-gradient(38% 48% at 6% 96%,rgb(255 255 255 / .04),transparent 70%);
+}
+
+.wk-project__ghost{
+  position:absolute;
+  z-index:-1;
+  left:-.03em;
+  bottom:-.05em;
+  font:800 clamp(220px,32vw,520px)/.75 var(--sans);
+  letter-spacing:-.09em;
+  color:transparent;
+  -webkit-text-stroke:1px rgb(var(--fg-rgb) / .08);
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ---- Composition grid: ONE layout for every project (PRIMA is the master) ----------------------------------------------------
+   Content column on the left, the large browser visual on the right. Head and body are separate grid items so the visual can span both
+   rows and the copy stays optically centred on it. Nothing here varies per project; only the project's own content, media and colours do. */
+.wk-project__inner{
+  position:relative;
+  z-index:1;
+  width:min(1720px,100%);
+  display:grid;
+  align-content:center;
+  column-gap:clamp(28px,4vw,72px);
+  row-gap:clamp(22px,3vw,44px);
+  grid-template-columns:minmax(0,3.7fr) minmax(0,8.3fr);
+  grid-template-areas:"rail rail" "head stage" "body stage";
+}
+.wk-project__head{grid-area:head;align-self:end;min-width:0;container-type:inline-size}
+.wk-project__body{grid-area:body;align-self:start;min-width:0}
+.wk-project__stage{grid-area:stage;min-width:0}
+
+/* ---- Project meta rail: belongs to the project, not the application. Small, quiet, mono, hairline rules; no fill, no controls, no counts. ---- */
+.wk-meta-rail{
+  grid-area:rail;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  min-width:0;
+  margin-bottom:clamp(6px,1.4vw,18px);
+  font:600 10px/1 var(--mono);
+  letter-spacing:.17em;
+  text-transform:uppercase;
+  color:var(--fg-3);
+  white-space:nowrap;
+}
+.wk-meta-rail i{flex:1 1 24px;min-width:16px;height:1px;background:rgb(var(--fg-rgb) / .16)}
+.wk-meta-rail__context{color:var(--fg-2)}
+.wk-meta-rail__context:before{content:"";display:inline-block;width:5px;height:5px;margin:0 10px 1px 0;border-radius:50%;background:var(--wk-accent)}
+.wk-meta-rail__label,.wk-meta-rail__context,.wk-meta-rail__discipline{overflow:hidden;text-overflow:ellipsis}
+
+.wk-project__meta{
+  display:grid;
+  gap:7px;
+  margin:clamp(18px,2.4vw,30px) 0 0;
+  font:650 11px/1.35 var(--mono);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--fg-2);
+}
+.wk-project__meta em{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-style:normal;
+  color:var(--fg-3);
+}
+.wk-project__meta em:before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--wk-accent)}
+
+.wk-project__title{
+  margin:clamp(10px,1.4vw,20px) 0 0;
+  /* Sized to fit its column on one line: shorter names get to be bigger, all share the same weight and tracking. */
+  font:800 clamp(2.4rem,min(var(--wk-cap,7.3vw),calc(100cqw / (var(--wk-chars,6) * .6)),13vh),8.2rem)/.9 var(--sans);
+  letter-spacing:-.065em;
+  color:var(--fg);
+  text-wrap:balance;
+}
+.wk-project__title a{
+  color:inherit;
+  background:linear-gradient(var(--wk-accent),var(--wk-accent)) 0 96%/0% .055em no-repeat;
+  transition:background-size .7s cubic-bezier(.22,.8,.18,1);
+}
+@media(hover:hover){.wk-project__title a:hover{background-size:100% .055em}}
+
+.wk-project__summary{
+  margin:0;
+  max-width:36ch;
+  font-size:clamp(1rem,1.12vw,1.14rem);
+  line-height:1.62;
+  color:var(--fg-2);
+}
+.wk-project__facts{margin:clamp(20px,2.4vw,32px) 0;padding:0;max-width:44ch}
+.wk-project__facts div{padding:14px 0;border-top:1px solid rgb(var(--fg-rgb) / .13)}
+.wk-project__facts div:last-child{border-bottom:1px solid rgb(var(--fg-rgb) / .13)}
+.wk-project__facts dt{font:650 10px/1 var(--mono);letter-spacing:.17em;color:var(--fg-3)}
+.wk-project__facts dd{margin:9px 0 0;font-size:15px;font-weight:650;line-height:1.4;color:var(--fg)}
+.wk-project__facts .wk-project__evidence{
+  font-family:var(--serif,'Playfair Display',serif);
+  font-style:italic;
+  font-weight:500;
+  font-size:clamp(1.2rem,1.65vw,1.6rem);
+  line-height:1.2;
+  letter-spacing:-.02em;
+}
+
+.wk-project__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
+/* The controls are the site's own, untouched: the cobalt .pill.pill--primary (same size as the hero CTAs) and the blue .text-cta link.
+   Only their placement in the row is set here. */
+.wk-project__actions .text-cta{margin-top:0}
+.wk-project[data-tone="dark"] .text-cta{color:#8ea0ff}          /* the site's dark-theme link blue, on a dark stage */
+.wk-project__actions a:focus-visible,.wk-project__title a:focus-visible{outline:2px solid var(--accent-text,#455dff);outline-offset:5px;border-radius:6px}
+.wk-project__actions .pill:focus-visible{border-radius:999px}
+
+/* ---- The large image: a restrained browser frame, never a mockup ---------- */
+/* The shared browser frame (src/components/BrowserFrame.css) with the Work panel's own inputs and its hover lift. */
+.wk-frame{
+  --uf-accent:var(--wk-accent,#455dff);
+  --uf-fg-rgb:var(--fg-rgb);
+  --uf-muted:var(--fg-3);
+  transition:transform .9s cubic-bezier(.22,.8,.18,1),box-shadow .9s cubic-bezier(.22,.8,.18,1);
+}
+.wk-project[data-tone="dark"] .wk-frame{
+  --uf-bg:color-mix(in srgb,var(--wk-accent,#ffd51d) 7%,#1a2130);
+  --uf-shadow:0 0 0 1px rgb(255 255 255 / .09),0 46px 96px -36px rgb(0 0 0 / .7);
+}
+@media(hover:hover){
+  .wk-frame:hover{transform:translate3d(0,-6px,0);box-shadow:0 0 0 1px rgb(var(--fg-rgb) / .12),0 2px 5px rgb(var(--shadow,24 20 14) / .06),0 60px 110px -36px rgb(var(--shadow,24 20 14) / .5)}
+  .wk-project[data-tone="dark"] .wk-frame:hover{box-shadow:0 0 0 1px rgb(255 255 255 / .13),0 60px 110px -36px rgb(0 0 0 / .8)}
+}
+.wk-frame__screen img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 0;
+}
+.wk-project__caption{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---- Tablet: stacked, still large; the sideways travel is shorter ---------- */
+@media(max-width:1099px){
+  .wk-project{min-height:0;padding-block:clamp(56px,9vh,96px)}
+  .wk-project__inner{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"rail" "head" "stage" "body";
+    row-gap:clamp(24px,4vw,40px);
+  }
+  .wk-project__head,.wk-project__body{align-self:auto}
+  .wk-project__title{font-size:clamp(2.8rem,10vw,6.4rem)}
+  .wk-project__summary,.wk-project__facts{max-width:60ch}
+  .wk-project__ghost{font-size:clamp(180px,42vw,420px)}
+}
+
+/* ---- Mobile: a designed vertical presentation — no sideways travel, a short rise instead ---------- */
+@media(max-width:820px){
+  .wk-project{padding-block:56px 64px}
+  .wk-project[data-tone="dark"]{margin-inline:8px;border-radius:28px}
+  .wk-project__title{font-size:clamp(2.7rem,13.5vw,4.6rem)}
+  .wk-project__actions{gap:10px 18px}
+  .wk-project__actions .pill{flex:1 1 100%}
+  .ui-frame__url{display:none}
+}
+
+/* ---- Reduced motion: the pinned exhibition is not used at all (see useShowcaseMotion); projects are a plain, still sequence ---- */
+@media(prefers-reduced-motion:reduce){
+  .wk-project,.wk-project *{transition:none!important}
+  .wk-frame:hover{transform:none}
+}
+
+/* ============================================================================
+   PINNED PROJECT EXHIBITION — discrete full-panel transitions (desktop, precise pointer, >=1024px wide, >=600px tall, motion allowed).
+   .wk-pin is a tall block in normal flow; .wk-stage sticks to the top for its whole height; .wk-track holds the projects as
+   opaque, full-stage panels stacked on top of each other. useShowcaseMotion moves each WHOLE panel (transform only) when one
+   wheel gesture / key press changes project: the incoming panel comes in from the right over the outgoing one.
+   Nothing inside a panel moves on its own. Elsewhere none of this applies: the same compositions simply follow one another vertically.
+   ============================================================================ */
+.wk-progress{display:none}
+
+.wk-showcase[data-wk-mode="horizontal"] .wk-pin{height:calc(100dvh + (var(--wk-n) - 1) * 92vw)}
+.wk-showcase[data-wk-mode="horizontal"] .wk-stage{
+  position:sticky;
+  top:0;
+  height:100dvh;
+  overflow:hidden;
+  overflow:clip;                  /* clip (not scroll): focus can never scroll the stage sideways on its own */
+  isolation:isolate;
+}
+.wk-showcase[data-wk-mode="horizontal"] .wk-track{position:relative;width:100%;height:100%}
+
+/* One project = one complete, opaque stage-sized panel (the floating header sits over its top padding). The panel is the only thing that moves. */
+.wk-showcase[data-wk-mode="horizontal"] .wk-project{
+  position:absolute;
+  inset:0;
+  width:auto;
+  height:auto;
+  min-height:0;
+  margin:0;
+  border-radius:0;
+  padding:calc(84px + clamp(10px,2.4vh,28px)) var(--wk-pad-x) clamp(46px,7.5vh,72px);   /* clear of the persistent global header */
+  overflow:hidden;
+  overflow:clip;
+  z-index:calc(var(--wk-i) + 1);  /* later projects sit ABOVE earlier ones */
+  background:var(--wk-bg);        /* solid: nothing of the panel underneath can show through */
+  /* The soft cast onto the panel underneath exists ONLY while this panel is entering (--edge is 0 for every panel that is off-stage, so
+     parked panels can never stack shadows into the visible stage). */
+  box-shadow:-46px 0 90px -34px rgb(0 0 0 / calc(var(--edge,0) * .26));
+  will-change:transform;
+}
+.wk-showcase[data-wk-mode="horizontal"] .wk-project[data-tone="dark"]{box-shadow:-46px 0 90px -34px rgb(0 0 0 / calc(var(--edge,0) * .5))}
+.wk-showcase[data-wk-mode="horizontal"] .wk-project__ghost{font-size:clamp(200px,min(32vw,56vh),520px)}
+
+/* Composition inside one stage: copy + image share the viewport height. */
+.wk-showcase[data-wk-mode="horizontal"] .wk-project__inner{
+  width:100%;
+  height:100%;
+  padding-top:clamp(34px,5vh,48px);   /* room for the meta rail; the composition is centred in the canvas beneath it */
+  align-content:center;
+  row-gap:clamp(12px,2.4vh,30px);
+  grid-template-columns:minmax(0,3.5fr) minmax(0,8.5fr);
+  grid-template-areas:"head stage" "body stage";
+}
+.wk-showcase[data-wk-mode="horizontal"] .wk-meta-rail{position:absolute;top:0;left:0;right:0;margin:0}
+.wk-showcase[data-wk-mode="horizontal"] .wk-project__head{align-self:end}
+.wk-showcase[data-wk-mode="horizontal"] .wk-project__body{align-self:start}
+.wk-showcase[data-wk-mode="horizontal"] .wk-project__stage{
+  align-self:center;
+  justify-self:end;
+  width:min(100%,calc((100dvh - 290px) * 1.6));
+}
+
+/* Global progress hairline along the bottom of the pinned stage. */
+.wk-showcase[data-wk-mode="horizontal"] .wk-progress{
+  display:block;
+  position:absolute;
+  z-index:60;
+  left:var(--wk-pad-x);
+  right:var(--wk-pad-x);
+  bottom:clamp(16px,3vh,30px);
+  height:1px;
+  background:rgb(var(--text-rgb,9 17 29) / .14);
+  pointer-events:none;
+}
+.wk-showcase[data-wk-mode="horizontal"] .wk-progress b{position:absolute;inset:0;background:var(--accent-text,#455dff);transform-origin:0 50%;transform:scaleX(var(--wk-t,0))}
+
+/* Shorter screens: the same composition, a little tighter. */
+@media(max-height:820px){
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__meta{margin-top:12px}
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__summary{font-size:.98rem;line-height:1.5}
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__facts{margin:14px 0}
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__facts div{padding:10px 0}
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__facts dd{margin-top:6px;font-size:14px}
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__facts .wk-project__evidence{font-size:1.12rem}
+}
+@media(max-height:720px){
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+}
+
+@media(max-width:1180px){
+  .wk-showcase[data-wk-mode="horizontal"] .wk-project__title{--wk-cap:6.1vw}
+}
+
+/* Sept 21 feedback: the pinned showcase hands directly into the evidence band; no empty release runway below the progress line. */
+.route-page--work .section--work-showcase.wk-showcase{padding-bottom:0}
+.wk-showcase[data-wk-mode="horizontal"]{padding-bottom:0}

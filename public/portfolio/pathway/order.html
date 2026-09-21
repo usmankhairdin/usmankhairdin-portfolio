@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Pathway</title>
+        <!--css-->
+        <link rel="stylesheet" href="css/styles.css">
+
+    </head>
+    <body>   
+        <header>
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-faded" data-toggle="affix">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="images/logo.png" class="site-brand">
+                    </a>
+                    <button class="navicon navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <div class="navicon__holder">
+                            <div style="display:inline-block">
+                                <div class="navicon__line"></div>
+                                <div class="navicon__line"></div>
+                                <div class="navicon__line"></div>
+                            </div>
+                        </div>
+                    </button>
+                    <div id="navbarNavDropdown" class="navbar-collapse collapse justify-content-end clearfix">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="search.html">Track My Parcel</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="delivery" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Delivery Services</a>
+                                <ul class="dropdown-menu mega-menu mobile-mega-menu" role="menu">
+                                    <li class="first-list">
+                                        <strong>Business Account<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Features and Benefits</a></li>
+                                            <li><a href="javascript:void(0);">Case Studies</a></li>
+                                            <li><a href="javascript:void(0);">Trustpilot Reviews</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="second-list">
+                                        <strong>Hints, Tips and Guides<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Packaging Guidelines</a></li>
+                                            <li><a href="javascript:void(0);">Prohibited &amp; Restricted Items</a></li>
+                                            <li><a href="javascript:void(0);">Guide to Weighing &amp; Measuring</a></li>
+                                            <li><a href="javascript:void(0);">Selling Guides</a></li>
+                                            <li><a href="javascript:void(0);">Business News</a></li>
+                                            <li><a href="javascript:void(0);">FAQs</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <strong>Booking Tools<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a rel="nofollow" href="javascript:void(0);" style="position:relative;">Multi Book<span class="badge badge-secondary">NEW</span></a></li>
+                                            <li><a rel="nofollow" href="javascript:void(0);">Multi Parcel Tool</a></li>
+                                            <li><a href="javascript:void(0);">CSV Upload Tool</a></li>
+                                            <li><a href="javascript:void(0);">Rapid Book Tool</a></li>
+                                            <li><a href="javascript:void(0);">Marketplace Tool</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="last-list">
+                                        <strong>Industry Solutions<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Car Parts</a></li>
+                                            <li><a href="javascript:void(0);">Car Tyres &amp; Alloy Wheels</a></li>
+                                            <li><a href="javascript:void(0);">Books &amp; Magazines</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="business" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">For Business</a>
+                                <ul class="dropdown-menu mega-menu mobile-mega-menu" role="menu">
+                                    <li class="first-list">
+                                        <strong>Business Account<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Features and Benefits</a></li>
+                                            <li><a href="javascript:void(0);">Case Studies</a></li>
+                                            <li><a href="javascript:void(0);">Trustpilot Reviews</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="second-list">
+                                        <strong>Hints, Tips and Guides<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Packaging Guidelines</a></li>
+                                            <li><a href="javascript:void(0);">Prohibited &amp; Restricted Items</a></li>
+                                            <li><a href="javascript:void(0);">Guide to Weighing &amp; Measuring</a></li>
+                                            <li><a href="javascript:void(0);">Selling Guides</a></li>
+                                            <li><a href="javascript:void(0);">Business News</a></li>
+                                            <li><a href="javascript:void(0);">FAQs</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <strong>Booking Tools<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a rel="nofollow" href="javascript:void(0);" style="position:relative;">Multi Book<span class="badge badge-secondary">NEW</span></a></li>
+                                            <li><a rel="nofollow" href="javascript:void(0);">Multi Parcel Tool</a></li>
+                                            <li><a href="javascript:void(0);">CSV Upload Tool</a></li>
+                                            <li><a href="javascript:void(0);">Rapid Book Tool</a></li>
+                                            <li><a href="javascript:void(0);">Marketplace Tool</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="last-list">
+                                        <strong>Industry Solutions<span class="caret"></span></strong>
+                                        <ul class="sub-sub">
+                                            <li><a href="javascript:void(0);">Car Parts</a></li>
+                                            <li><a href="javascript:void(0);">Car Tyres &amp; Alloy Wheels</a></li>
+                                            <li><a href="javascript:void(0);">Books &amp; Magazines</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Help</a>
+                            </li>
+                            <li class="nav-item dropdown cartdiv">
+                                <a class="nav-link shopping-cart dropdown-toggle" href="javascript:void(0);" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="images/shopping-cart.png" alt="cart-img">
+                                    <span>2</span>
+                                </a>
+                                <div class="dropdown-menu shopping-cart-dropdown" role="menu">
+                                    <div class="shopping-cart-header">
+                                        <i class="fa fa-shopping-cart cart-icon"></i><span class="badge">3</span>
+                                        <div class="shopping-cart-total">
+                                            <span class="lighter-text">Total:</span>
+                                            <span class="main-color-text">$2,229.97</span>
+                                        </div>
+                                    </div> <!--end shopping-cart-header -->
+                                    <ul class="shopping-cart-items">
+                                        <li class="clearfix">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg" alt="item1" />
+                                            <span class="item-name">Sony DSC-RX100M III</span>
+                                            <span class="item-price">$849.99</span>
+                                            <span class="item-quantity">Quantity: 01</span>
+                                        </li>
+
+                                        <li class="clearfix">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item2.jpg" alt="item1" />
+                                            <span class="item-name">KS Automatic Mechanic...</span>
+                                            <span class="item-price">$1,249.99</span>
+                                            <span class="item-quantity">Quantity: 01</span>
+                                        </li>
+
+                                        <li class="clearfix">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item3.jpg" alt="item1" />
+                                            <span class="item-name">Kindle, 6" Glare-Free To...</span>
+                                            <span class="item-price">$129.99</span>
+                                            <span class="item-quantity">Quantity: 01</span>
+                                        </li>
+                                    </ul>
+
+                                    <a href="javascript:void(0);" class="button">Checkout</a>
+                                </div> <!--end shopping-cart -->
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link">
+                                    <span class="signin-register">Sign in / Register </span>
+                                    <span class="signin-register-text">Sign in / Register </span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>  
+        </header>
+
+        <section class="order-booking">
+            <div class="container">
+                <div class="heading">
+                    <h1>Order Booking</h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="wizard-sec">
+            <div class="wizard-head">
+                <div class="container">
+                    <ul>
+                        <li class="active">
+                            <a href="javascript:void(0)">
+                                <img src="images/detail-icon.png" alt="icon">
+                                <span>Parcel Details</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">
+                                <img src="images/address-icon.png" alt="icon">
+                                <span>Address Details</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">
+                                <img src="images/order-summary.png" alt="icon">
+                                <span>Order Summary </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">
+                                <img src="images/payment-icon.png" alt="icon">
+                                <span>Payment Options</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="wizard-content">
+                <div class="container">
+                    <div class="wizard-content-inner">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-sm-12">
+                                <div class="my-detail">
+                                    <h1 class="heading-style">MY DETAILS</h1>
+                                    <div class="my-detail-inner">
+                                        <div class="left-side-bx">
+                                            <div class="my-detail-form">
+                                                <form action="">
+                                                    <div class="row">
+                                                        <div class="col-md-2 col-lg-2 col-sm-12">
+                                                            <label class="custom-label-style">Name <span>*</span></label>
+                                                        </div>
+                                                        <div class="col-md-2 col-lg-2 col-sm-12">
+                                                            <div class="custom-select-wrap">
+                                                                <select class="custom-select-style">
+                                                                    <option>Mr .</option>
+                                                                    <option>Mrs.</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                            <input type="text" class="custom-input-style" placeholder="Forename">
+                                                        </div>
+                                                        <div class="col-md-4 col-lg-4 col-sm-12">
+                                                            <input type="text" class="custom-input-style" placeholder="Surname">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-2 col-lg-2 col-sm-12">
+                                                            <label class="custom-label-style">Email <span>*</span></label>
+                                                        </div>
+                                                        <div class="col-md-10 col-lg-10 col-sm-12">
+                                                            <input type="email" class="custom-input-style" placeholder="Email Address">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <div class="warning-note">
+                                                    <p>Why not <a href="#">sign in here</a> and speed up your parcel booking?</p>                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="right-side-bx">
+                                            <div class="info-bx">
+                                                <img src="images/info-icon.png" alt="">
+                                                <p>We'd love to send you useful info like exclusive offers, competitions and new service announcements. To be included in our mailing list, just tick the box below to confirm:</p>
+                                            </div>
+                                            <div class="email-bx">
+                                                <label><input type="checkbox"> Email</label>
+                                                <p>You can change your mind at any time by opting out in your My Account area or clicking the unsubscribe link. 'We' means TNT Direct, we'll never sell or share your information with anyone else.<a href="#"> Click here</a> to view our privacy policy.</p>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+
+                                <div class="my-parcel-detail">
+                                    <h1 class="heading-style">PARCEL DETAILS</h1>
+                                    <div class="my-parcel-detail-inner">
+                                        <div class="row first-row">
+                                            <div class="col-md-7 col-lg-7 col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-ld-4 col-sm-12 cus-width">
+                                                        <label class="custom-label-style parcel-content">Parcel contents:</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-ld-8 col-sm-12">
+                                                        <input type="tex" class="custom-input-style" placeholder="Content">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-lg-5 col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-ld-4 col-sm-12 cus-width">
+                                                        <label class="custom-label-style">Value:</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-ld-8 col-sm-12">
+                                                        <div class="input-wrap">
+                                                            <span>BHD</span>
+                                                            <input type="tex" class="custom-input-style" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <form>
+                                            <div class="repeatable">
+                                                <div class="parcel-detail-fields">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                            <div class="field-parent input_select_wrap pr-0">
+                                                                <div class="select-wrap">
+                                                                    <select>
+                                                                        <option>kg</option>
+                                                                        <option>kg</option>
+                                                                        <option>kg</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="input-wrap">
+                                                                    <input type="text" class="" placeholder="Weight">
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                            <div class="field-parent input_select_wrap pr-0">
+                                                                <div class="select-wrap">
+                                                                    <select>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="input-wrap">
+                                                                    <input type="text" class="" placeholder="Length">
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                            <div class="field-parent input_select_wrap pr-0">
+                                                                <div class="select-wrap">
+                                                                    <select>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="input-wrap">
+                                                                    <input type="text" class="" placeholder="Width">
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-6">
+                                                            <div class="field-parent input_select_wrap pr-0">
+                                                                <div class="select-wrap">
+                                                                    <select>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                        <option>cm</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="input-wrap">
+                                                                    <input type="text" class="" placeholder="Height">
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clone-icon repeat">
+                                                        <img src="images/clone-icon.png" alt="icon">
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <button class="btn add-another repeat"><span>+</span> Add another</button>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="protect-this-item">
+                                    <h1 class="heading-style">PROTECT THIS ITEM</h1>
+                                    <div class="protect-inner">
+                                        <p class="para-style">Your parcel is already protected up to the value of <strong>BHD50.00.</strong> You can take additional protection for your parcel up to the value of <strong>BHD5,000.00</strong> - Fill in the value above to get a quote</p>
+                                    </div>
+                                    <div class="protect-bottom">
+                                        <p>
+                                            <input type="checkbox">
+                                            <span>I have read and agree to the <a href="#">prohibited & restricted items list</a></span>
+                                        </p>
+                                        <button type="submit" class="btn btn-nextStep">Next Step</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-12">
+                                <div class="right-panel">
+                                    <div class="right-panel-inner">
+                                        <div class="head">
+                                            <div class="logo-left">
+                                                <img src="images/logo.png">
+                                            </div>
+                                            <div class="txt-right">
+                                                <h4>Behrain NEXT DAY BY 10AM</h4>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <p class="para-style">Delivery by 10am next working day throughout most of the UK Mainland: Collection and Delivery are not guaranteed but currently enjoy a very high success rate. Collections are between 9am – 5.30pm. Same day collection available until noon (Monday to Friday). </p>
+                                        <h5><img src="images/home-icon.png" alt=""> <span>Collection between 9am - 5:30pm</span></h5>
+                                        <h5><img src="images/calendar-icon.png" alt=""> <span>Collection between 9am - 5:30pm</span></h5>
+                                        <h4>Deliveries & Collections take place Monday to Friday. Please bear this in mind when estimating the delivery of your parcel.</h4>
+                                    </div>    
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="restriction-tab" data-toggle="tab" href="#restriction" role="tab" aria-controls="home" aria-selected="true">Restriction</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="breakdown-tab" data-toggle="tab" href="#breakdown" role="tab" aria-controls="profile" aria-selected="false">Breakdown</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="restriction" role="tabpanel" aria-labelledby="restriction-tab">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Base Price:</td>
+                                                        <td class="text-right clr-orange">BHD17.9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>VAT:</td>
+                                                        <td class="text-right clr-orange">BHD3.59</td>
+                                                    </tr>
+                                                    <tr><td style="padding:12px;"></td><td style="padding:12px;"></td></tr>
+                                                </tbody>
+
+                                                <tfoot>
+                                                    <tr>
+                                                        <td>TOTAL:</td>
+                                                        <td class="text-right clr-orange"><strong>BHD21.54</strong> INC VAT</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="breakdown" role="tabpanel" aria-labelledby="breakdown-tab">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Base Price:</td>
+                                                        <td class="text-right clr-orange">BHD17.9</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>VAT:</td>
+                                                        <td class="text-right clr-orange">BHD3.59</td>
+                                                    </tr>
+                                                    <tr><td style="padding:12px;"></td><td style="padding:12px;"></td></tr>
+                                                </tbody>
+
+                                                <tfoot>
+                                                    <tr>
+                                                        <td>TOTAL:</td>
+                                                        <td class="text-right clr-orange"><strong>BHD21.54</strong> INC VAT</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="live-chat">
+                                    <a href="#"><img src="images/live-chat.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12">
+                        <h1>Newsletter Signup</h1>
+                    </div>
+                    <div class="col-md-9 col-lg-9 col-sm-12">
+                        <form method="" >
+                            <div class="field-parent">
+                                <input type="email" class="form-control" placeholder="Enter your Email here">
+                                <button type="submit" class="btn btn-send">SEND</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-inner">
+                    <div class="row">
+                        <div class="col-md-10 col-lg-10 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="footer-links">
+                                        <h2 class="footer-heading">About Us</h2>
+                                        <ul>
+                                            <li><a href="#">About Pathway Express</a></li>
+                                            <li><a href="#">Terms & Conditions</a></li>
+                                            <li><a href="#">Cookie Policy</a></li>
+                                            <li><a href="#">Privacy Policy</a></li>
+                                            <li><a href="#">Careers</a></li>
+                                            <li><a href="#">Accreditations</a></li>
+                                            <li><a href="#">Help Centre</a></li>
+                                            <li><a href="#">Refund Policy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="footer-links">
+                                        <h2 class="footer-heading">Delivery Services</h2>
+                                        <ul>
+                                            <li><a href="#">National Express Services</a></li>
+                                            <li><a href="#">International Express</a></li>
+                                            <li><a href="#">Business Parcel Delivery</a></li>
+                                            <li><a href="#">Large Parcel Delivery</a></li>
+                                            <li><a href="#">Next Day Delivery</a></li>
+                                            <li><a href="#">Same Day Delivery</a></li>
+                                            <li><a href="#">Courier Collection Services</a></li>
+                                            <li><a href="#">Document Collection Service</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="footer-links">
+                                        <h2 class="footer-heading">Delivery To</h2>
+                                        <ul>
+                                            <li><a href="#">Parcel Delivery to Australia</a></li>
+                                            <li><a href="#">Parcel Delivery to China</a></li>
+                                            <li><a href="#">Parcel Delivery to France</a></li>
+                                            <li><a href="#">Parcel Delivery to Germany</a></li>
+                                            <li><a href="#">Parcel Delivery to Ireland</a></li>
+                                            <li><a href="#">Parcel Delivery to Spain</a></li>
+                                            <li><a href="#">Parcel Delivery to USA</a></li>
+                                            <li><a href="#">Parcel Delivery to UK</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                                    <div class="footer-links">
+                                        <h2 class="footer-heading">Tools</h2>
+                                        <ul>
+                                            <li><a href="#">Get a Quote</a></li>
+                                            <li><a href="#">Parcel Tracking</a></li>
+                                            <li><a href="#">My Account</a></li>
+                                            <li><a href="#">Volume Calculator</a></li>
+                                            <li><a href="#">PrePay</a></li>
+                                            <li><a href="#">Packaging Advice</a></li>
+                                        </ul>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="footer-links">
+                                        <h2 class="footer-heading">Follow Us</h2>
+                                        <ul class="social-links">
+                                            <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        </ul>
+                                        <div class="footer-logo">
+                                            <a href="index.html"><img src="images/footer-logo.png" alt=""></a>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>  
+
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+            $('.navicon').click(function () {
+                $(this).toggleClass('navicon--toggle');
+            })
+        </script>
+        <script>
+            $(function () {
+                $(".repeat").on('click', function (e) {
+                    e.preventDefault();
+                    var $self = $(this);
+                    $self.before($self.prev('.parcel-detail-fields').clone());
+                    //$self.remove();
+                });
+            });
+            $(document).ready(function () {
+                $(".repeat").click(function () {
+                    $(".parcel-detail-fields").append("<div class='add-parcel-btn'><button class='btn'><i class='fa fa-minus'></i></button></div>");
+                });
+                $('.add-parcel-btn button').click(function () {
+                    $(this).parent().remove()
+                });
+            });
+        </script>
+    </body>
+</html>

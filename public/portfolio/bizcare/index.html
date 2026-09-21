@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizCare Website</title>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Calendly link widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
+</head>
+
+<body class="relative">
+
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="main-header" class="header-overlay text-white pt-6">
+        <div class="max-w-7xl mx-auto">
+            <nav class="flex items-center justify-center md:justify-start">
+                <!-- Logo Only -->
+                <a class="flex items-center" href="javascript:void(0);">
+                    <img src="images/bizcare-logo-dark.png" alt="BizCare Logo" class="h-18 mr-2 wow animate__animated animate__fadeInLeft">
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] px-4 pt-[120px] md:pt-12 flex items-center justify-center relative z-10">
+
+        <div class="max-w-7xl mx-auto items-center justify-between relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Left Column: Text Content -->
+                <div class="space-y-2 text-center md:text-left wow animate__animated animate__fadeInLeft">
+                    <h1 class="leading-tight font-light text-[50px] md:text-[70px] pt-6">ICHRA</h1>
+                    <h2 class="leading-tight font-bold text-[30px] md:text-[50px]">Modern
+                        Benefits for Modern
+                        Businesses</h2>
+                    <p class="font-regular text-[20px] py-3">Empowering
+                        brokers, PEOs, and employers with a streamlined,
+                        all-in-one ICHRA
+                        and enrollment platform built for flexibility,
+                        compliance, and choice.</p>
+                    <div class="w-full flex justify-center md:justify-start">
+                        <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Book Time With Us to Learn More</span>
+                            <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                <div class="relative h-full w-8 bg-white/20"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <!-- Right Column: Image Placeholder -->
+                <div class="w-full flex justify-center md:justify-end wow animate__animated animate__fadeInRight">
+                    <img src="images/hero.png" alt="Product preview placeholder" class="max-w-full h-auto" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slider Section -->
+    <section class="slider-section px-4 py-20 items-center justify-center relative">
+        <img src="images/slider-cornor.svg" class="absolute w-[350px] h-auto -left-[150px] -top-[200px] z-1 hidden md:block wow animate__animated animate__fadeInLeft" />
+
+        <div class="max-w-7xl mx-auto items-center justify-between relative z-10 wow animate__animated animate__fadeInUp">
+            <h1 class="leading-tight font-regular uppercases text-center text-[50px] md:text-[70px]">A
+                Single Platform
+            </h1>
+            <h3 class="leading-tight font-regular text-center mt-2 text-[30px]">for
+                HRA Administration & Marketplace
+                Enrollments</h3>
+
+            <!-- Grid: stays static -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mt-12 pb-12">
+
+                <!-- Left Column (Text Swiper) -->
+                <div class="flex items-center justify-center h-full">
+                    <div class="mbp-mockup-wrapper relative">
+                        <div class="mbp-container">
+                            <div class="mbp-display with-glare">
+                                <div class="display-edge">
+                                    <div class="bezel">
+                                        <div class="display-camera"></div>
+                                        <div class="display-frame overflow-hidden relative">
+                                            <div class="swiper imageSlider h-full w-full">
+                                                <div class="swiper-wrapper">
+                                                    <!-- Image 1 -->
+                                                    <div class="swiper-slide">
+                                                        <img src="images/product-img.png" alt="Product One" class="block w-full" />
+                                                    </div>
+                                                    <!-- Image 2 -->
+                                                    <div class="swiper-slide">
+                                                        <img src="images/product-img.png" alt="Product Two" class="block w-full" />
+                                                    </div>
+                                                    <!-- Image 3 -->
+                                                    <div class="swiper-slide">
+                                                        <img src="images/product-img.png" alt="Product Three" class="block w-full" />
+                                                    </div>
+                                                    <!-- Image 4 -->
+                                                    <div class="swiper-slide">
+                                                        <img src="images/product-img.png" alt="Product Three" class="block w-full" />
+                                                    </div>
+                                                    <!-- Image 5 -->
+                                                    <div class="swiper-slide">
+                                                        <img src="images/product-img.png" alt="Product Three" class="block w-full" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mbp-keyboard">
+                                <div class="front">
+                                    <div class="opener-left"></div>
+                                    <div class="opener-right"></div>
+                                </div>
+                                <div class="bottom-left"></div>
+                                <div class="bottom-right"></div>
+                                <div class="mbp-shadow">
+                                    <div class="shadow-left"></div>
+                                    <div class="shadow-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (MacBook with Image Swiper) -->
+                <div class="bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)]
+                p-6 md:p-8 text-center flex flex-col justify-center h-full rounded-[35px] shadow-lg">
+                    <div class="swiper textSlider h-full w-full">
+                        <div class="swiper-wrapper">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide flex flex-col justify-center items-center h-full">
+                                <h2 class="font-bold mb-4 text-[40px]">Built
+                                    for Brokers & PEOs</h2>
+                                <p class="text-[24px]">Free, no-commitment
+                                    quote tool built to simplify the sales
+                                    process.</p>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide flex flex-col justify-center items-center h-full">
+                                <h2 class="font-bold mb-4 text-[40px]">Flexible
+                                    Partnership Options</h2>
+                                <p class="text-[24px]">Our platform enables
+                                    partners to do as much or as little of
+                                    the ICHRA administration or enrollment
+                                    as they want.</p>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide flex flex-col justify-center items-center h-full">
+                                <h2 class="font-bold mb-4 text-[40px]">Unmatched
+                                    Enrollment Flexibility</h2>
+                                <p class="text-[24px]">Full service, direct
+                                    enrollment solution supporting both on-
+                                    and off-exchange plans and Medicare
+                                    eligibility with our licensed enrollment
+                                    specialists.</p>
+                            </div>
+                            <!-- Slide 4 -->
+                            <div class="swiper-slide flex flex-col justify-center items-center h-full">
+                                <h2 class="font-bold mb-4 text-[40px]">No
+                                    Advanced Prefunding Required</h2>
+                                <p class="text-[24px]">Employers only pay
+                                    for policies their employees enroll
+                                    in.</p>
+                            </div>
+                            <!-- Slide 5 -->
+                            <div class="swiper-slide flex flex-col justify-center items-center h-full">
+                                <h2 class="font-bold mb-4 text-[40px]">PEO
+                                    and Payroll Integrations</h2>
+                                <p class="text-[24px]">Easily integrates
+                                    with PEO, HRO, CDH, and HCM platforms to
+                                    cutdown administrative burden.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shared Pagination -->
+            <div class="swiper-pagination mt-12 flex justify-center"></div>
+        </div>
+
+        <img src="images/slider-bottom.png" class="absolute w-auto right-[0px] -bottom-[50px] z-1 hidden md:block wow animate__animated animate__fadeInRight" />
+    </section>
+
+    <!-- We Work With Section -->
+    <section class="we-work-with-section bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] px-4 py-20 relative z-10">
+        <div class="max-w-7xl mx-auto wow animate__animated animate__fadeInUp">
+            <h1 class="leading-tight font-regular text-center text-[50px] md:text-[70px] mb-12">
+                We work with...
+            </h1>
+
+            <!-- items-stretch ensures equal column height -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch h-full">
+
+                <!-- Left Column -->
+                <div class="relative flex flex-col justify-center h-full">
+                    <!-- Arrows Layer -->
+                    <div class="absolute -left-1 md:left-0 top-0 bottom-0 flex flex-col justify-between">
+                        <!-- Up Arrow -->
+                        <button id="scrollUp" class="text-gray-500 hover:text-[#2a3396]">
+                            <i data-lucide="chevron-up" class="w-12 h-12"></i>
+                        </button>
+
+                        <!-- Down Arrow -->
+                        <button id="scrollDown" class="text-gray-500 hover:text-[#2a3396]">
+                            <i data-lucide="chevron-down" class="w-12 h-12"></i>
+                        </button>
+                    </div>
+
+                    <!-- List -->
+                    <ul id="workList" class="pl-0 md:pl-16 max-h-[520px] overflow-y-auto scroll-smooth">
+                        <li class="work-list-item">Any Size Employer
+                            Group</li>
+                        <li class="work-list-item">Group Carve Outs</li>
+                        <li class="work-list-item">Brokers</li>
+                        <li class="work-list-item">TPA’s</li>
+                        <li class="work-list-item">PEO’s</li>
+                        <li class="work-list-item">HCM’s</li>
+                        <li class="work-list-item">CDH Providers</li>
+                        <li class="work-list-item">Payors</li>
+                        <li class="work-list-item">Payroll Providers</li>
+                        <li class="work-list-item">Franchises</li>
+                    </ul>
+                </div>
+
+                <!-- Right Column (Swiper Content) -->
+                <div class="swiper rightContent w-full h-full">
+                    <div class="swiper-wrapper bg-gradient-to-br from-[var(--dark-cyan)] to-[var(--blue-color)] items-center text-white rounded-[35px] py-12 h-auto">
+                        <!-- Slide 1 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> We support groups of any
+                                size and charge a standard low admin fee
+                                for administering the ICHRA </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Contact us to learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 2 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Facing renewal risks or
+                                struggling to cover certain employee groups?
+                                An ICHRA carve-out could be the smart,
+                                flexible solution you’ve been looking for.
+                            </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Let us Help</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 3 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Think of us as an RFP
+                                option, BizCare offers a nonexclusive, free
+                                tool for you along with trainings and sales
+                                materials to support your groups. We can run
+                                the group estimates, or you can at no cost
+                                to you! </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 4 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Interested in offering
+                                ICHRA’s to your groups? Our very first
+                                partnerships were with PEO’s, and we may be
+                                integrated with your software already. </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Reach out to Learn More</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 5 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> With our flexible
+                                partnership model, we could be a fit for
+                                your
+                                team! </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Contact us to learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 6 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Looking for an embedded
+                                ICHRA solution that can support estimate,
+                                HRA Admin and enrollments for your customers
+                                in one platform? </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>We’d love to talk!</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 7 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Our tool can support the
+                                estimate and enrollment process directly
+                                from your platform? ICHRA is only going to
+                                grow and we’d love to partner and take a
+                                solution to market. </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Partner with us</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 8 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> We are always looking to
+                                expand our direct connect carrier
+                                partnerships! </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Reach out to learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 9 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Are your groups looking
+                                to you for benefits alternatives? ICHRA may
+                                be an option. </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Connect with us to learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div> <!-- Slide 10 -->
+                        <div class="swiper-slide text-center space-y-12 px-[20px] md:px-[40px] flex flex-col justify-center h-full">
+                            <p class="text-[30px]"> Are you struggling to
+                                offer benefits to your part time or seasonal
+                                workers? If you want a flexible, low
+                                overhead option, we are here to help. </p>
+                            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--yellow-color] text-black uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Reach out to learn more</span>
+                                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                                    <div class="relative h-full w-8 bg-white/20"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits of BizCare Section -->
+    <section class="benefits-of-bizCare-section px-4 py-20 relative">
+        <img src="images/benefits-img.png" class="absolute w-[400px] h-auto -left-[105px] -top-[80px] -z-1 hidden md:block wow animate__animated animate__fadeInLeft" />
+        <div class="max-w-6xl mx-auto wow animate__animated animate__fadeInUp">
+            <h1 class="leading-tight font-regular text-center text-[50px] md:text-[70px] mb-12">
+                Benefits of BizCare
+            </h1>
+
+            <!-- 3 Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-[50px]">
+                <!-- Column 1 -->
+                <div class="bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] shadow-lg rounded-lg px-6 md:px-12 py-12 flex flex-col text-center md:text-left h-full relative">
+                    <img src="images/favicon.png" alt="Benefit Icon" class="mx-auto mb-6 w-[80px] absolute 
+            left-1/2 -translate-x-1/2 
+            md:translate-x-0 md:-left-[40px] 
+            -top-[43px] md:top-6" />
+
+                    <h2 class="text-[27px] text-[--secondary-color] mb-4">
+                        Your Full-Service Benefits Partner — Empowering
+                        Groups of Every Size!
+                    </h2>
+                    <p class="text-[20px]">
+                        Whether you’re seeking a trusted partner or benefits
+                        for your group, our experts bring deep
+                        group
+                        experience and individual marketplace
+                        know-how—delivering smarter, simpler solutions.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] shadow-lg rounded-lg px-6 md:px-12 py-12 flex flex-col text-center md:text-left h-full relative">
+                    <img src="images/favicon.png" alt="Benefit Icon" class="mx-auto mb-6 w-[80px] absolute 
+            left-1/2 -translate-x-1/2 
+            md:translate-x-0 md:-left-[40px] 
+            -top-[43px] md:top-6" />
+                    <h2 class="text-[27px] text-[--secondary-color] mb-4">
+                        Support That Never Stops
+                    </h2>
+                    <p class="text-[20px]">
+                        We know ICHRA is unique way to offer benefits.
+                        That’s why we partner with your employers and
+                        employees year-round—making sure they feel confident
+                        in their coverage and supported with
+                        everything from carrier questions to payment
+                        assistance.
+                    </p>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] shadow-lg rounded-lg px-6 md:px-12 py-12 flex flex-col text-center md:text-left h-full relative">
+                    <img src="images/favicon.png" alt="Benefit Icon" class="mx-auto mb-6 w-[80px] absolute 
+            left-1/2 -translate-x-1/2 
+            md:translate-x-0 md:-left-[40px] 
+            -top-[43px] md:top-6" />
+                    <h2 class="text-[27px] text-[--secondary-color] mb-4">
+                        Technology That Works for You
+                    </h2>
+                    <p class="text-[20px]">
+                        Our platform is built to simplify ICHRA
+                        administration for PEOs and brokers—offering
+                        seamless
+                        integrations, consolidated billing, and real-time
+                        insights to make managing multiple groups
+                        effortless.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] px-4 py-20 relative">
+        <div class="max-w-6xl mx-auto wow animate__animated animate__fadeInUp">
+            <h1 class="leading-tight font-regular text-center text-[50px] md:text-[70px] mb-12">
+                How It Works
+            </h1>
+
+            <!-- 4 Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-[50px]">
+                <!-- Column 1 -->
+                <div class="transition transform hover:scale-105 cursor-pointer flex flex-col text-center md:text-left">
+                    <!-- Box with image -->
+                    <div class="bg-gradient-to-br from-[var(--dark-cyan)] to-[var(--blue-color)] shadow-lg flex items-end overflow-hidden justify-center rounded-lg w-full h-[200px]">
+                        <img src="images/employees-budget.png" alt="Icon" class="h-full" />
+                    </div>
+                    <!-- Heading -->
+                    <h3 class="mt-6 text-[22px] font-regular uppercase">Employer
+                        sets a budget</h3>
+                    <!-- Paragraph -->
+                    <p class="mt-2 text-[16px] font-regular">
+                        Employers decide how much tax-free money to
+                        contribute each month, instead of offering a
+                        traditional group health plan.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="transition transform hover:scale-105 cursor-pointer flex flex-col text-center md:text-left">
+                    <div class="bg-gradient-to-br from-[var(--dark-cyan)] to-[var(--blue-color)] shadow-lg flex items-end overflow-hidden justify-center rounded-lg w-full h-[200px]">
+                        <img src="images/employees-plan.png" alt="Icon" class="h-full ml-3" />
+                    </div>
+                    <!-- Heading -->
+                    <h3 class="mt-6 text-[22px] font-regular uppercase">Employees
+                        choose a plan</h3>
+                    <!-- Paragraph -->
+                    <p class="mt-2 text-[16px] font-regular">
+                        Employees use the budget to shop for their own
+                        individual health insurance (on or off the
+                        exchange) that meets their family’s needs.
+                </div>
+
+                <!-- Column 3 -->
+                <div class="transition transform hover:scale-105 cursor-pointer flex flex-col text-center md:text-left">
+                    <div class="bg-gradient-to-br from-[var(--dark-cyan)] to-[var(--blue-color)] shadow-lg flex items-end overflow-hidden justify-center md:justify-end rounded-lg w-full h-[200px]">
+                        <img src="images/employers-invoice.png" alt="Icon" class="h-full mr-2" />
+                    </div>
+                    <!-- Heading -->
+                    <h3 class="mt-6 text-[22px] font-regular uppercase">Employer
+                        Pays the Invoice</h3>
+                    <!-- Paragraph -->
+                    <p class="mt-2 text-[16px] font-regular">
+                        BizCare generates an exact invoice, and
+                        employers pay it.
+                </div>
+
+                <!-- Column 4 -->
+                <div class="transition transform hover:scale-105 cursor-pointer flex flex-col text-center md:text-left">
+                    <div class="bg-gradient-to-br from-[var(--dark-cyan)] to-[var(--blue-color)] shadow-lg flex items-end overflow-hidden justify-center md:justify-end rounded-lg w-full h-[200px]">
+                        <img src="images/enrollment-img.png" alt="Icon" class="h-[175px] mr-1" />
+                    </div>
+                    <!-- Heading -->
+                    <h3 class="mt-6 text-[22px] font-regular uppercase">Enrollments
+                        are Submitted</h3>
+                    <!-- Paragraph -->
+                    <p class="mt-2 text-[16px] font-regular">
+                        Enrollments are sent to the carriers ahead
+                        of the group effective date.
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--secondary-color] text-white uppercase items-center w-max px-8 md:px-10 py-4 rounded-full"><span>Book Time With Us to Learn More</span>
+                    <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                        <div class="relative h-full w-8 bg-white/20"></div>
+                    </div>
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-us-section px-4 py-20 relative">
+        <div class="max-w-6xl mx-auto wow animate__animated animate__fadeInUp">
+
+            <!-- 2 Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-[1.5fr_2fr] gap-[50px]">
+                <!-- Column 1 -->
+                <div class="flex flex-col text-center md:text-left space-y-12 md:space-y-[50px]">
+                    <div class="inline-block rounded-full p-2 border-4 border-[--dark-cyan] shadow-lg">
+                        <img src="images/about-us.png" class="w-full h-full rounded-full object-cover" alt="About Us" />
+                    </div>
+
+                    <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--dark-cyan] text-[--light-cyan] justify-center uppercase w-full px-7 !px-7 md:px-10 md:!px-10 py-4 !py-4 rounded-full"><span>LEt’s TAlk</span>
+                        <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                            <div class="relative h-full w-8 bg-white/20"></div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="flex flex-col text-center md:text-left space-y-5">
+
+                    <h1 class="leading-tight font-bold text-[45px]">
+                        About Us
+                    </h1>
+                    <p class="mt-2 text-[18px] font-regular">
+                        BizCare Benefits, is a broker and
+                        PEO-first partner, working to simplify
+                        and strengthen how
+                        ICHRA benefits are delivered. Our
+                        unified platform combines ICHRA
+                        administration with full EDE
+                        enrollment, creating a one stop shop
+                        solution that streamlines compliance,
+                        enhances choice, and
+                        improves access to affordable,
+                        personalized healthcare.
+                    </p>
+                    <h2 class="leading-tight font-bold uppercase text-[25px] md:text-[30px]">
+                        To Our Current Partners and Groups
+                    </h2>
+                    <p class="mt-1 text-[18px] font-regular">
+                        We could not do this without you and our
+                        team sincerely appreciates your
+                        continued trust and
+                        support. We’re excited to keep building
+                        the future of benefits together!
+                    </p>
+                    <h2 class="leading-tight font-bold uppercase text-[25px] md:text-[30px]">
+                        A Note to Potential Partners
+                    </h2>
+                    <p class="mt-1 text-[18px] font-regular">
+                        While we’re passionate about our
+                        platform, we know ICHRA is just one
+                        option in a broader
+                        benefits strategy. That’s why we take an
+                        embedded RFP approach with Brokers,
+                        TPAs, and
+                        PEOs—ensuring every group has the right
+                        advocate to guide them toward the
+                        benefits that fit
+                        best.
+                    </p>
+                    <p class="mt-2 text-[18px] font-regular">
+                        Interested in exploring no-cost
+                        partnership opportunities, gaining
+                        access to our tools, or
+                        simply learning more about how ICHRA
+                        works? We’d love to connect—set up time
+                        with our team using
+                        the link to the left.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Help Section -->
+    <section class="help-section bg-gradient-to-br from-[var(--light-blue-cyan)] to-[var(--light-cyan)] px-4 py-20 relative">
+        <div class="max-w-6xl mx-auto text-center space-y-12 md:space-y-[40px] wow animate__animated animate__fadeInUp">
+            <img src="images/logo-big.png" alt="BizCare" class="mx-auto" />
+            <h1 class="leading-tight font-regular font-roboto text-[--secondary-color] text-center text-[50px] md:text-[70px]">
+                A
+                Smarter Way to Offer Benefits</h1>
+            <p class="mt-2 text-[25px] font-roboto font-regular">
+                With BizCare, you don’t just get a platform—you
+                get a partner. From strategy to support, we’re
+                here to
+                help you deliver flexible, cost-controlled
+                benefits that employees actually value.
+            </p>
+            <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/d/csmk-r3n-5s4/book-time-to-learn-more'});return false;" class="group relative inline-flex overflow-hidden cursor-pointer transition hover:scale-110 book-button bg-[--secondary-color] md:text-[25px] uppercase text-white items-center w-max px-20 py-6 !px-20 !py-6 rounded-full"><span>How can we help?</span>
+                <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
+                    <div class="relative h-full w-8 bg-white/20"></div>
+                </div>
+            </button>
+        </div>
+
+    </section>
+
+    <footer class="footer px-4 py-20">
+        <div class="max-w-6xl mx-auto text-center wow animate__animated animate__fadeInUp">
+            <div class="grid grid-cols-1 md:grid-cols-[1.5fr_2fr] gap-12 text-center text-white">
+
+                <!-- Left: Content -->
+                <div class="flex flex-col items-center md:items-start space-y-12">
+                    <img src="images/logo-footer.png" alt="Footer Logo">
+
+                    <!-- Two Columns Below -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                        <!-- Column 1 -->
+                        <div>
+                            <h3 class="text-[25px] font-semibold uppercase mb-4">ADDRESS</h3>
+                            <p class="mt-2 text-[18px] font-roboto font-regular">18167
+                                US Hwy 19 N
+                                Clearwater, FL 33764</p>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div>
+                            <h3 class="text-[25px] font-semibold uppercase mb-4">CONTACT</h3>
+                            <p class="mt-2 text-[18px] font-roboto font-regular">
+                                (888) 343-8102<br />
+                                <a href="mailto:Info@bizcarebenefits.com" class="underline">Info@bizcarebenefits.com</a><br />
+                                LinkedIn
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-[18px] font-roboto font-regular mx-auto">
+                        <a href="privacy-policy.html" class="underline">Privacy Policy</a>
+                        | <a href="terms-of-use.html" class="underline">Terms of Use</a>,
+                        © 2025
+                        BizCare Benefits
+                    </p>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="flex flex-col text-center md:text-left space-y-12">
+                    <p class="mt-2 text-[18px] font-roboto font-regular">
+                        BizCare, LLC is an insurance services
+                        company, not a bank. Banking Services
+                        provided by Avidia
+                        Bank, Member FDIC, Member DIF. The
+                        BizCare Mastercard debit card is issued
+                        by Avidia Bank
+                        pursuant to license by Mastercard
+                        International. ©2025 BizCare, LLC. All
+                        rights reserved.
+                    </p>
+                    <p class="mt-2 text-[18px] font-roboto font-regular">
+                        Insurance services described on this
+                        website are provided by BizCare, LLC and
+                        not the Health
+                        Insurance Marketplace® website. In
+                        offering this website, BizCare, LLC is
+                        required to comply
+                        with all applicable federal laws,
+                        including the standards established
+                        under 45 CFR §§155.220(c)
+                        and (d) as well as 45 CFR §155.260 to
+                        protect the privacy and security of
+                        personally
+                        identifiable information. This website
+                        may not support enrollment in all
+                        Qualified Health Plans
+                        (QHPs) being offered in your state
+                        through the Health Insurance
+                        Marketplace® website. For
+                        enrollment support in all available QHP
+                        options in your state, go to the Health
+                        Insurance
+                        Marketplace® website at Healthcare.gov.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Calendly link widget -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom JS -->
+    <script src="js/main.js?v=1.0.2"></script>
+
+</body>
+
+</html>

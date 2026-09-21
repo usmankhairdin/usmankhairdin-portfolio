@@ -1,0 +1,441 @@
+/* ============================================================================
+   WEB EXPERIENCE THEME + SHARED NAVIGATION
+
+   1. Theme tokens      — light (the approved direction) and an authored dark counterpart. ONE place.
+   2. Web dark base     — page base only; every other dark rule is generated into dark-web.css from the light
+                          stylesheet by role (scripts/generate-dark-theme.mjs) and is confined to Web surfaces.
+   3. Frameless header  — logo left, circular Theme + Menu controls right. No bar, no strip, no scroll background.
+   4. Menu drawer       — one drawer, slides in from the right. Web follows the theme; immersive is fixed neutral.
+
+   Nothing here reaches the corridor: tokens are only consumed under .route-page / .entry-gate--intro / the shared
+   header + drawer, and the immersive header/drawer take their colours from fixed values below, never from the theme.
+   ============================================================================ */
+
+/* ---- 1. TOKENS ---------------------------------------------------------- */
+:root{
+  --ease-out:cubic-bezier(.22,.8,.18,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --ease-drawer:cubic-bezier(.76,0,.16,1);
+
+  /* LIGHT — warm cream foundation, navy type, cobalt accent */
+  --bg:#eee8dc;            --bg-rgb:238 232 220;
+  --panel-solid:#ffffff;   --panel-elevated:#fbf9f4;
+  --text:#09111d;          --text-rgb:9 17 29;
+  --text-2:#596575;        --text-2-rgb:89 101 117;
+  --text-3:#7b8490;        --text-3-rgb:123 132 144;
+  --line:rgba(9,17,29,.12);--line-strong:rgba(9,17,29,.22);
+  --accent-strong:#3148e7;
+  --accent-text:#455dff;   --accent-text-rgb:69 93 255;
+  --grid:rgba(9,17,29,.045);
+  --shadow:24 20 14;
+  --control-bg:rgba(255,255,255,.5);     --control-bg-hover:rgba(255,255,255,.88);
+  --control-border:rgba(9,17,29,.13);    --control-border-hover:rgba(69,93,255,.42);
+  --control-fg:#09111d;                  --control-shadow:0 10px 28px rgba(24,20,14,.08);
+  --drawer-bg:#f4efe5;     --drawer-text:#09111d;   --drawer-muted:#66707e;
+  --drawer-line:rgba(9,17,29,.11);       --drawer-grid:rgba(9,17,29,.04);
+  --scrim:rgb(220 230 246 / .58);
+  --drawer-glow:rgba(69,93,255,.11);
+
+  /* SPLASH SURFACE — the Splash/Home background language, shared with the Web menu drawer: frosted blue-white, a whisper of cobalt behind the
+     portrait, and vertical-only 1px lines on a 72px pitch (5.5% light / 4.5% dark). The Splash gate and the drawer both read these. */
+  --splash-pitch:72px;
+  --splash-grid:rgb(52 78 140 / .055);
+  --splash-surface:
+    radial-gradient(ellipse 58% 72% at 76% 46%,rgb(66 92 240 / .075),transparent 72%),
+    radial-gradient(ellipse 52% 60% at 6% 104%,rgb(150 170 204 / .2),transparent 74%),
+    linear-gradient(180deg,#f8fbff 0%,#f0f5fc 54%,#e7eef8 100%);
+}
+
+html[data-theme="dark"]{
+  /* DARK — deep navy, restrained surfaces, the same cobalt personality. Authored, not inverted. */
+  --bg:#0b111b;            --bg-rgb:11 17 27;
+  --panel-solid:#131b29;   --panel-elevated:#192235;
+  --text:#eceff5;          --text-rgb:236 239 245;
+  --text-2:#a7b2c3;        --text-2-rgb:167 178 195;
+  --text-3:#7f8ba0;        --text-3-rgb:127 139 160;
+  --line:rgba(255,255,255,.11);          --line-strong:rgba(255,255,255,.2);
+  --accent-strong:#6a7dff;
+  --accent-text:#8ea0ff;   --accent-text-rgb:142 160 255;
+  --grid:rgba(255,255,255,.045);
+  --shadow:0 0 0;
+  --control-bg:rgba(255,255,255,.06);    --control-bg-hover:rgba(255,255,255,.12);
+  --control-border:rgba(255,255,255,.15);--control-border-hover:rgba(142,160,255,.6);
+  --control-fg:#eceff5;                  --control-shadow:0 10px 30px rgba(0,0,0,.28);
+  --drawer-bg:#0e1522;     --drawer-text:#eceff5;   --drawer-muted:#8e9bb0;
+  --drawer-line:rgba(255,255,255,.1);    --drawer-grid:rgba(255,255,255,.035);
+  --scrim:rgb(9 16 28 / .64);
+  --drawer-glow:rgba(69,93,255,.22);
+
+  --splash-grid:rgb(170 190 255 / .045);
+  --splash-surface:
+    radial-gradient(ellipse 54% 68% at 76% 46%,rgb(69 93 255 / .14),transparent 72%),
+    radial-gradient(ellipse 50% 56% at 6% 104%,rgb(80 110 190 / .1),transparent 74%),
+    linear-gradient(180deg,#0c1322 0%,#0b111b 100%);
+}
+
+/* ---- 2. WEB DARK BASE --------------------------------------------------- */
+/* Custom properties the light stylesheet already reads (--ink, --muted, --paper) are re-pointed ONLY inside Web surfaces,
+   so a corridor element that inherits them can never pick up the dark values. color-scheme styles native form controls. */
+html[data-theme="dark"] :is(.route-page,.entry-gate--intro,.site-header-root[data-mode="web"],.menu-drawer[data-mode="web"]){
+  color-scheme:dark;
+  --ink:var(--text);
+  --muted:var(--text-2);
+  --paper:var(--bg);
+}
+html[data-theme="dark"] :is(.route-page,.entry-gate--intro){color:var(--text)}
+html[data-theme="dark"] body{background:var(--bg)}
+
+/* Project cards carry a per-project pastel through an inline --surface; the dark counterpart tints the dark panel with each
+   project's own accent instead. */
+
+/* Dark surfaces that stay dark in both themes need a hairline to read against the dark page. */
+html[data-theme="dark"] .route-page .footer{background:#080d15;border-top:1px solid var(--line)}
+html[data-theme="dark"] .route-page .pill--dark{background:var(--panel-elevated);color:var(--text);box-shadow:inset 0 0 0 1px var(--line-strong)}
+html[data-theme="dark"] .route-page .pill--dark:hover{box-shadow:inset 0 0 0 1px var(--control-border-hover),0 13px 26px rgba(0,0,0,.3)}
+
+/* ---- 3. FRAMELESS HEADER ------------------------------------------------ */
+/* The wrapper generates no box of its own: every child (header band, skip link, drawer) is position:fixed, so it must never
+   become a flex/grid item of whatever page container it is rendered in (the splash gate is a flex column). */
+.site-header-root{
+  display:contents;
+  --hdr-h:74px;
+  --hdr-pad:clamp(24px,3.2vw,44px);
+  --hdr-btn:46px;
+}
+/* Web: the Theme + Menu circles deliberately echo the italic “surface.” accent.
+   Light reuses --blue (#5368ff), which is the exact homepage surface colour; dark reuses --accent-text,
+   which is also the authored dark-mode surface colour. Structure and interaction remain unchanged. */
+.site-header-root[data-mode="web"]{
+  --hdr-fg:#fff;
+  --hdr-bg:var(--blue);                       --hdr-bg-hover:color-mix(in srgb,var(--blue) 88%,#09111d);
+  --hdr-border:color-mix(in srgb,var(--blue) 78%,#fff);
+  --hdr-border-hover:color-mix(in srgb,var(--blue) 68%,#fff);
+  --hdr-shadow:0 4px 14px rgb(52 78 140 / .14);
+  --hdr-accent:#fff;
+}
+html[data-theme="dark"] .site-header-root[data-mode="web"]{
+  --hdr-fg:#09111d;
+  --hdr-bg:var(--accent-text);                --hdr-bg-hover:color-mix(in srgb,var(--accent-text) 88%,#fff);
+  --hdr-border:color-mix(in srgb,var(--accent-text) 72%,#fff);
+  --hdr-border-hover:color-mix(in srgb,var(--accent-text) 58%,#fff);
+  --hdr-shadow:0 4px 16px rgb(0 0 0 / .24);
+  --hdr-accent:#09111d;
+}
+/* hover is a hair of scale and a hair of value; the icon animations are the existing ones */
+.site-header-root[data-mode="web"] .hdr-btn:hover{transform:scale(1.02)}
+.site-header-root[data-mode="web"] .hdr-btn:active{transform:scale(.95)}
+/* Immersive: a fixed, theme-independent HUD look that suits the corridor. Never reads a theme token. */
+.site-header-root[data-mode="immersive"]{
+  --hdr-fg:#09111d;
+  --hdr-bg:rgba(244,240,232,.74);            --hdr-bg-hover:rgba(250,247,241,.94);
+  --hdr-border:rgba(9,17,29,.16);            --hdr-border-hover:rgba(69,93,255,.5);
+  --hdr-shadow:0 10px 30px rgba(24,20,14,.14);
+  --hdr-accent:#3148e7;
+}
+
+/* The band is the measuring box other code relies on (.topbar). It is transparent, never moves and never catches pointers;
+   only the logo and the two circular controls do. */
+.site-header{
+  position:fixed;
+  z-index:2100;
+  top:0;left:0;right:0;
+  height:var(--hdr-h);
+  pointer-events:none;
+}
+.site-header__inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:100%;
+  padding:0 var(--hdr-pad);
+  transition:transform .6s var(--ease-out),opacity .42s ease;
+  will-change:transform,opacity;
+}
+.site-header__inner > *{pointer-events:auto}
+/* Auto-hide (Web only — the hook never runs in the corridor). Translate + fade, no background ever appears. */
+.site-header[data-hidden="true"] .site-header__inner{transform:translate3d(0,-130%,0);opacity:0;transition-duration:.55s,.32s}
+.site-header[data-hidden="true"] .site-header__inner > *{pointer-events:none}
+
+.site-header-root .skip-link{z-index:2200}
+/* Corridor only: room content is real DOM projected by the scene layer (drei <Html>), whose z-index is in the millions. The menu
+   and the header controls must sit above it, or a room's form/buttons would cover the links they overlap. Web mode is unaffected. */
+.site-header-root[data-mode="immersive"] .site-header{z-index:20000100}
+.menu-drawer[data-mode="immersive"]{z-index:20000000}
+
+.site-logo{
+  display:block;
+  flex:none;
+  height:34px;
+  border-radius:8px;
+  transition:opacity .35s ease,transform .5s var(--ease-out);
+}
+.site-logo img{display:block;height:100%;width:auto;user-select:none;-webkit-user-drag:none}
+.site-logo:hover{opacity:.82;transform:translateY(-1px)}
+/* Already on the homepage: the mark stays, but it is not a link — no pointer, no hover motion. */
+.site-logo--current,.site-logo--current:hover{cursor:default;pointer-events:none;opacity:1;transform:none}
+.site-logo:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+/* The approved SVG is used as-is (navy + cobalt). On the dark Web theme its navy would disappear, so its LIGHTNESS is
+   flipped with a filter — hue-preserving, geometry untouched, file untouched. The immersive HUD keeps the original colours. */
+/* Corridor HUD: original colours, plus a soft cream halo so the navy mark still reads on the darker ceiling. */
+.site-header-root[data-mode="immersive"] .site-logo img{filter:drop-shadow(0 0 1px rgba(244,240,232,.85)) drop-shadow(0 0 14px rgba(244,240,232,.55))}
+.site-header-root[data-mode="immersive"][data-menu-open="true"] .site-logo img{filter:none;transition:filter .4s ease}
+html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter:invert(1) hue-rotate(180deg) brightness(1.06) saturate(1.15)}
+
+.site-header__controls{display:flex;align-items:center;gap:10px}
+
+/* Circular controls: identical size, radius, border, hover language and motion for Theme and Menu. */
+.hdr-btn{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:var(--hdr-btn);
+  height:var(--hdr-btn);
+  padding:0;
+  border:1px solid var(--hdr-border);
+  border-radius:50%;
+  background:var(--hdr-bg);
+  color:var(--hdr-fg);
+  -webkit-backdrop-filter:blur(14px) saturate(1.25);
+  backdrop-filter:blur(14px) saturate(1.25);
+  box-shadow:var(--hdr-shadow);
+  cursor:pointer;
+  transition:background-color .35s ease,border-color .35s ease,color .3s ease,transform .5s var(--ease-out),box-shadow .35s ease;
+}
+.hdr-btn:hover{background:var(--hdr-bg-hover);border-color:var(--hdr-border-hover);color:var(--hdr-accent);transform:translateY(-1px)}
+.hdr-btn:active{transform:scale(.95);transition-duration:.12s}
+.hdr-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Theme glyphs: the destination icon is shown; the other rotates and shrinks away. */
+.hdr-theme svg{
+  position:absolute;
+  width:20px;height:20px;
+  transition:transform .65s var(--ease-io),opacity .4s ease;
+}
+.hdr-theme__moon{opacity:1;transform:none}
+.hdr-theme__sun{opacity:0;transform:rotate(-55deg) scale(.5)}
+.hdr-theme[data-theme-current="dark"] .hdr-theme__moon{opacity:0;transform:rotate(55deg) scale(.5)}
+.hdr-theme[data-theme-current="dark"] .hdr-theme__sun{opacity:1;transform:none}
+
+/* Menu glyph: two hairlines, the lower one shorter; they meet and cross into a clean X (no bouncing, no third bar). */
+.hdr-menu__icon{position:relative;display:block;width:18px;height:12px}
+.hdr-menu__icon i{
+  position:absolute;
+  left:0;
+  height:1.5px;
+  border-radius:2px;
+  background:currentColor;
+  transition:transform .6s var(--ease-io),width .5s var(--ease-io),left .5s var(--ease-io);
+}
+.hdr-menu__icon i:nth-child(1){top:1px;width:18px}
+.hdr-menu__icon i:nth-child(2){top:9.5px;left:7px;width:11px}
+.hdr-menu[aria-expanded="true"] .hdr-menu__icon i:nth-child(1){transform:translateY(4.25px) rotate(45deg)}
+.hdr-menu[aria-expanded="true"] .hdr-menu__icon i:nth-child(2){left:0;width:18px;transform:translateY(-4.25px) rotate(-45deg)}
+
+/* ---- 4. MENU DRAWER ------------------------------------------------------ */
+.menu-drawer{
+  --dw-accent:var(--accent-text);
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  visibility:hidden;
+  pointer-events:none;
+  transition:visibility 0s linear .75s;
+}
+.menu-drawer[data-open="true"]{visibility:visible;pointer-events:auto;transition-delay:0s}
+
+.menu-drawer[data-mode="web"]{
+  --dw-bg:var(--splash-surface);   --dw-text:var(--drawer-text);   --dw-muted:var(--drawer-muted);
+  --dw-line:var(--drawer-line);   --dw-grid:var(--splash-grid);   --dw-scrim:var(--scrim);   --dw-glow:var(--drawer-glow);
+}
+/* Corridor: a fixed neutral presentation. The corridor world is never themed, so neither is its menu. */
+.menu-drawer[data-mode="immersive"]{
+  --dw-bg:#0d1420;   --dw-text:#f2eee6;   --dw-muted:#93a0b4;
+  --dw-line:rgba(255,255,255,.1);   --dw-grid:rgba(255,255,255,.035);
+  --dw-scrim:rgba(238,232,220,.5);   --dw-accent:#8ea0ff;   --dw-glow:rgba(69,93,255,.22);
+}
+
+.menu-drawer__scrim{
+  position:absolute;
+  inset:0;
+  background:var(--dw-scrim);
+  opacity:0;
+  transition:opacity .6s ease;
+}
+.menu-drawer[data-open="true"] .menu-drawer__scrim{opacity:1}
+
+.menu-drawer__panel{
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:min(100vw,clamp(420px,34vw,520px));
+  background:var(--dw-bg);
+  color:var(--dw-text);
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  transform:translate3d(101%,0,0);
+  transition:transform .55s var(--ease-drawer);
+  box-shadow:-1px 0 0 var(--dw-line),-50px 0 100px rgba(9,17,29,.12);
+  will-change:transform;
+}
+.menu-drawer[data-open="true"] .menu-drawer__panel{transform:none;transition-duration:.78s}
+/* A quiet grid (the site's signature) and one cobalt glow behind the controls — nothing else. */
+.menu-drawer__panel:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,var(--dw-grid) 1px,transparent 1px),
+    linear-gradient(var(--dw-grid) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:linear-gradient(200deg,#000 0,transparent 62%);
+  mask-image:linear-gradient(200deg,#000 0,transparent 62%);
+  pointer-events:none;
+}
+/* Web: the same vertical-only lines as the Splash (same pitch, width and opacity tokens), full height, behind the content — no horizontal lines, no mask. */
+.menu-drawer[data-mode="web"] .menu-drawer__panel:before{
+  background:linear-gradient(90deg,var(--dw-grid) 1px,transparent 1px);
+  background-size:var(--splash-pitch) 100%;
+  -webkit-mask-image:none;
+  mask-image:none;
+}
+.menu-drawer__panel:after{
+  content:"";
+  position:absolute;
+  top:-120px;right:-120px;
+  width:420px;height:420px;
+  background:radial-gradient(closest-side,var(--dw-glow),transparent);
+  pointer-events:none;
+}
+
+.menu-drawer__inner{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+  padding:calc(var(--hdr-h,74px) + clamp(18px,4vh,40px)) clamp(28px,4vw,52px) clamp(28px,4.6vh,46px);
+}
+
+/* Everything inside the panel reveals with a short, restrained stagger driven by --i. Leaving is quicker and unstaggered. */
+.menu-drawer__eyebrow,
+.menu-drawer__item,
+.menu-drawer__foot{
+  opacity:0;
+  transform:translate3d(0,22px,0);
+  transition:opacity .28s ease,transform .4s var(--ease-out);
+}
+.menu-drawer[data-open="true"] .menu-drawer__eyebrow,
+.menu-drawer[data-open="true"] .menu-drawer__item,
+.menu-drawer[data-open="true"] .menu-drawer__foot{
+  opacity:1;
+  transform:none;
+  transition:opacity .8s ease calc(.3s + var(--i,0) * .06s),transform .95s var(--ease-out) calc(.3s + var(--i,0) * .06s);
+}
+
+.menu-drawer__eyebrow{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:0;
+  font:650 10px var(--mono);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--dw-muted);
+}
+.menu-drawer__eyebrow i{display:block;flex:1;max-width:76px;height:1px;background:linear-gradient(90deg,var(--dw-accent),transparent)}
+
+.menu-drawer__nav{margin:auto 0;padding:clamp(20px,4vh,44px) 0}
+.menu-drawer__list{display:grid;gap:clamp(2px,.7vh,8px);margin:0;padding:0;list-style:none}
+
+.menu-drawer__link{
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) auto;
+  align-items:baseline;
+  gap:0 12px;
+  padding:clamp(3px,.8vh,8px) 0;
+  color:var(--dw-text);
+  font-size:clamp(1.85rem,min(4.9vh,8.2vw),3.2rem);   /* also capped by width so "For Agencies" always fits on one line */
+  font-weight:750;
+  line-height:1.06;
+  letter-spacing:-.052em;
+  transition:opacity .45s ease,transform .6s var(--ease-out),color .3s ease;
+}
+.menu-drawer__num{
+  align-self:center;
+  font:650 10px var(--mono);
+  letter-spacing:.14em;
+  color:var(--dw-muted);
+  transition:color .3s ease;
+}
+.menu-drawer__label{white-space:nowrap;transition:transform .6s var(--ease-out)}
+.menu-drawer__arrow{
+  width:.5em;height:.5em;
+  align-self:center;
+  color:var(--dw-accent);
+  opacity:0;
+  transform:translate3d(-10px,10px,0);
+  transition:opacity .35s ease,transform .6s var(--ease-out);
+}
+/* The current page is set in the brand's italic serif, in the accent — the same voice as "surface." on the homepage. */
+.menu-drawer__link.is-active .menu-drawer__label{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:-.035em;color:var(--dw-accent)}
+.menu-drawer__link.is-active .menu-drawer__num:before{content:"";display:block;width:7px;height:7px;border-radius:50%;background:var(--dw-accent)}
+/* The selected item is not a link: no pointer, no hover motion, nothing to activate. */
+.menu-drawer__link.is-active,.menu-drawer__cta.is-current{cursor:default;pointer-events:none;-webkit-user-select:none;user-select:none}
+
+@media(hover:hover){
+  .menu-drawer__list:has(a.menu-drawer__link:hover) .menu-drawer__link:not(:hover):not(:focus-visible){opacity:.36}
+  .menu-drawer__link:hover .menu-drawer__label,
+  .menu-drawer__link:focus-visible .menu-drawer__label{transform:translate3d(10px,0,0)}
+  .menu-drawer__link:hover .menu-drawer__arrow,
+  .menu-drawer__link:focus-visible .menu-drawer__arrow{opacity:1;transform:none}
+  .menu-drawer__link:hover .menu-drawer__num{color:var(--dw-accent)}
+}
+.menu-drawer__link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+
+.menu-drawer__foot{display:grid;gap:22px}
+.menu-drawer__cta{width:100%;min-height:56px;padding:0 24px;font-size:13px}
+.menu-drawer__meta{display:grid;gap:7px;font:500 11px var(--mono);letter-spacing:.06em;color:var(--dw-muted)}
+.menu-drawer__meta a{color:var(--dw-text);transition:color .25s ease}
+.menu-drawer__meta a:hover{color:var(--dw-accent)}
+
+/* Tablet / mobile: the drawer takes the whole width; same system, same type, compact rhythm. */
+@media(max-width:640px){
+  .site-header-root{--hdr-btn:44px;--hdr-h:68px}
+  .site-logo{height:30px}
+  .menu-drawer__panel{width:100vw}
+  .menu-drawer__link{grid-template-columns:30px minmax(0,1fr) auto}
+}
+@media(max-height:640px){
+  .menu-drawer__nav{padding:14px 0}
+  .menu-drawer__link{font-size:clamp(1.7rem,min(7.6vh,8.2vw),2.5rem)}
+}
+
+/* Reduced motion: no slide, no stagger — the drawer simply fades; the header fades instead of travelling. */
+@media(prefers-reduced-motion:reduce){
+  .site-header[data-hidden="true"] .site-header__inner{transform:none}
+  .menu-drawer{transition-delay:0s}
+  .menu-drawer__panel,.menu-drawer[data-open="true"] .menu-drawer__panel{transform:none;opacity:0;transition:opacity .2s ease}
+  .menu-drawer[data-open="true"] .menu-drawer__panel{opacity:1}
+  .menu-drawer__eyebrow,.menu-drawer__item,.menu-drawer__foot{transform:none;transition:none;opacity:1}
+  .menu-drawer__label,.menu-drawer__arrow,.hdr-btn,.site-logo{transition-duration:.01ms}
+}
+
+/* ---- 5. WEB DARK — hand-tuned exceptions (things the role mapping cannot know) ---- */
+/* White numerals on the cobalt number badges must survive the generic "muted text" mapping of their base rules. */
+html[data-theme="dark"] .route-page--services .service-list--premium article > span,
+html[data-theme="dark"] .route-page--services .agency-steps--premium > div > b,
+html[data-theme="dark"] .route-page--agencies .agency-steps--premium > div > b{color:#fff}
+
+/* ---- 6. ROUTE FALLBACKS (shown while a lazy route loads) — themed so a switch can never flash the wrong colour ---- */
+.home-route-fallback,.standard-route-fallback{background:var(--bg)}
+
+/* About page adopts the Splash/Home palette while remaining page-scoped. */
+html[data-theme="dark"] .route-page--about{
+  --about-ink:var(--text);
+  --about-muted:var(--text-2);
+  --about-line:rgb(170 190 255 / .15);
+  --about-line-soft:rgb(170 190 255 / .075);
+  --about-panel:rgb(255 255 255 / .055);
+  --about-panel-strong:rgb(255 255 255 / .08);
+  --about-accent:var(--accent-text);
+}

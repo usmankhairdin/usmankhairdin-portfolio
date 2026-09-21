@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      var t = 'light';
+      try {
+        var saved = localStorage.getItem('ukd-theme');
+        t = saved === 'light' || saved === 'dark' ? saved : 'light';
+      } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>html,body,#root{min-height:100%;background:#f0f5fc}html[data-theme="dark"],html[data-theme="dark"] body,html[data-theme="dark"] #root{background:#0b111b}</style>
+  <script>
+    /* Boot loader decision, made before first paint: show it on every full document load (first visit or refresh) of the
+       homepage. In-app navigation never reloads the document, so it never replays; deep links to other routes skip it.
+       Leaving the corridor through the logo / Home sets a one-shot flag, so that internal trip back home skips it too. */
+    (function () {
+      var on = false;
+      try {
+        var skip = sessionStorage.getItem('ukd-skip-boot') === '1';
+        if (skip) sessionStorage.removeItem('ukd-skip-boot');
+        on = location.pathname === '/' && !skip;
+      } catch (e) { try { on = location.pathname === '/'; } catch (e2) {} }
+      document.documentElement.setAttribute('data-boot', on ? 'on' : 'off');
+    })();
+  </script>
+  <style id="boot-css">
+    /* ==================================================================
+       UKD BOOT LOADER — critical CSS. Lives here (not in the bundle) so it paints on the first frame, already in the correct
+       theme. html[data-theme] is resolved by the script above before anything is painted; html[data-boot] says whether the
+       loader shows: "on" (first visit of the session, homepage), "leaving" (receding), "off" / unset (never shown).
+       ================================================================== */
+    html[data-theme="light"],html[data-theme="light"] body{background:#f0f5fc}
+    .boot{
+      --boot-bg:
+        radial-gradient(ellipse 58% 72% at 76% 46%,rgb(66 92 240 / .075),transparent 72%),
+        radial-gradient(ellipse 52% 60% at 6% 104%,rgb(150 170 204 / .2),transparent 74%),
+        linear-gradient(180deg,#f8fbff 0%,#f0f5fc 54%,#e7eef8 100%);
+      --boot-ink:#09111d;--boot-muted:#5a6472;--boot-grid:rgb(52 78 140 / .055);--boot-pitch:72px;
+      position:fixed;inset:0;z-index:2147483000;display:none;place-items:center;overflow:hidden;
+      background:var(--boot-bg);color:var(--boot-ink);
+      -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;
+      transition:opacity .58s cubic-bezier(.3,0,.1,1),visibility 0s linear .58s;
+    }
+    html[data-theme="dark"] .boot{
+      --boot-bg:
+        radial-gradient(ellipse 54% 68% at 76% 46%,rgb(69 93 255 / .14),transparent 72%),
+        radial-gradient(ellipse 50% 56% at 6% 104%,rgb(80 110 190 / .1),transparent 74%),
+        linear-gradient(180deg,#0c1322 0%,#0b111b 100%);
+      --boot-ink:#eceff5;--boot-muted:#95a2b7;--boot-grid:rgb(170 190 255 / .045)
+    }
+    html[data-boot="on"] .boot,html[data-boot="leaving"] .boot{display:grid}
+    html[data-boot="leaving"] .boot{opacity:0;visibility:hidden;pointer-events:none}
+
+    /* PHASE 1 — the same vertical-only technical field as the Splash, kept quiet so the UKD mark stays primary. */
+    .boot__grid{
+      position:absolute;inset:0;opacity:0;
+      background-image:linear-gradient(90deg,var(--boot-grid) 1px,transparent 1px);
+      background-size:var(--boot-pitch) 100%;background-position:center top;
+      animation:boot-grid 1.2s cubic-bezier(.22,.8,.18,1) .04s forwards;
+    }
+    @keyframes boot-grid{to{opacity:1}}
+
+    /* Four slow, independently phased signal traces echo the Splash without copying its density. */
+    .boot__signals{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .boot__trace{
+      position:absolute;top:-170px;width:1px;height:130px;opacity:.18;
+      background:linear-gradient(180deg,transparent 0%,rgb(163 184 255 / .18) 18%,rgb(83 104 255 / .72) 52%,rgb(163 184 255 / .2) 78%,transparent 100%);
+      animation:boot-trace var(--trace-dur) linear var(--trace-delay) infinite;
+      will-change:transform;
+    }
+    .boot__trace:nth-child(1){left:calc(50% - 288px);--trace-dur:8.8s;--trace-delay:-2.4s}
+    .boot__trace:nth-child(2){left:calc(50% - 72px);--trace-dur:7.2s;--trace-delay:-3.8s;height:108px;opacity:.15}
+    .boot__trace:nth-child(3){left:calc(50% + 144px);--trace-dur:9.6s;--trace-delay:-6.8s;height:146px;opacity:.16}
+    .boot__trace:nth-child(4){left:calc(50% + 288px);--trace-dur:6.9s;--trace-delay:-1.1s;height:118px;opacity:.14}
+    @keyframes boot-trace{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,calc(100vh + 340px),0)}}
+
+    .boot__stage{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;left:var(--boot-dx,0px);top:var(--boot-dy,-1.6vh);transition:transform .58s cubic-bezier(.3,0,.1,1)}
+    html[data-boot="leaving"] .boot__stage{transform:translate3d(0,-1.4vh,0) scale(.985)}
+
+    /* PHASE 2 — the mark. The exact ukd-logo.svg is used as-is; it is revealed with a wipe whose edge runs parallel to the
+       logo's own diagonal, while opacity and a 3.5% settle ease in. No blur, no bounce, no overshoot. */
+    .boot__logo{
+      position:relative;
+      width:clamp(232px,min(28vw,calc(36vh * 2.415)),430px);
+      aspect-ratio:1362/564;
+      opacity:0;
+      clip-path:polygon(-50% -6%,-4% -6%,-55.5% 106%,-50% 106%);
+    }
+    .boot__logo img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
+    html[data-theme="dark"] .boot__logo img{filter:invert(1) hue-rotate(180deg) brightness(1.06) saturate(1.15)}
+    .boot--play .boot__logo{animation:boot-logo 1.2s cubic-bezier(.4,0,.15,1) .1s forwards}
+    @keyframes boot-logo{
+      0%{opacity:0;transform:scale(1.035);clip-path:polygon(-50% -6%,-4% -6%,-55.5% 106%,-50% 106%)}
+      34%{opacity:1}
+      100%{opacity:1;transform:scale(1);clip-path:polygon(-50% -6%,155.5% -6%,104% 106%,-50% 106%)}
+    }
+
+    /* BLUE ACCENT — one soft highlight travels up the cobalt diagonal and is gone. It is confined to that stroke by a mask made
+       from the logo's own path, so the navy letterforms are never touched. */
+    .boot__accent{
+      position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
+      -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201362%20564'%3E%3Cpath%20fill='%23000'%20d='M29.243,411.500%20L31.205,415.500%20L32.848,418.500%20L35.207,423.500%20L37.530,427.500%20L40.194,432.500%20L43.151,437.500%20L46.234,442.500%20L48.927,446.500%20L50.438,448.500%20L53.777,452.500%20L55.780,455.500%20L56.307,456.500%20L58.326,459.500%20L61.473,463.500%20L64.500,466.675%20L68.500,471.328%20L71.500,474.568%20L75.500,479.103%20L82.007,485.500%20L89.628,492.500%20L93.500,495.946%20L96.500,498.294%20L99.500,500.810%20L101.500,502.294%20L104.500,504.689%20L105.500,505.291%20L108.500,507.672%20L109.500,508.269%20L111.500,509.798%20L112.500,510.368%20L114.500,511.773%20L115.500,512.323%20L117.500,513.655%20L118.500,514.148%20L119.500,514.814%20L120.500,515.308%20L122.500,516.721%20L123.500,517.270%20L125.500,518.672%20L126.500,519.165%20L127.500,519.892%20L128.500,520.368%20L132.500,522.725%20L135.500,524.194%20L136.500,524.814%20L137.500,525.229%20L138.500,525.879%20L139.500,526.304%20L140.500,526.935%20L144.500,528.896%20L145.500,529.243%20L146.500,529.757%20L150.500,531.418%20L151.500,531.958%20L152.500,532.324%20L153.500,532.883%20L154.500,533.256%20L155.500,533.878%20L156.500,534.219%20L157.500,534.765%20L159.500,535.464%20L162.500,536.768%20L164.500,537.382%20L165.500,537.883%20L166.500,538.163%20L168.500,538.939%20L169.500,539.229%20L171.500,540.037%20L172.500,540.316%20L173.500,540.773%20L175.500,541.371%20L176.500,541.786%20L178.500,542.388%20L179.500,542.808%20L186.500,544.961%20L193.500,546.813%20L201.500,548.678%20L207.500,549.904%20L210.500,550.400%20L212.500,550.825%20L217.500,551.630%20L223.500,552.294%20L226.500,552.791%20L234.500,553.637%20L238.500,553.935%20L242.500,554.087%20L252.500,554.234%20L276.500,554.229%20L296.500,553.784%20L300.500,553.540%20L310.500,552.562%20L312.500,552.237%20L316.500,551.893%20L318.500,551.637%20L328.500,549.854%20L333.500,548.746%20L335.500,548.224%20L337.500,547.856%20L339.500,547.336%20L341.500,546.934%20L353.500,543.854%20L360.500,541.744%20L366.500,539.493%20L368.500,538.845%20L369.500,538.393%20L370.500,538.088%20L372.500,537.292%20L373.500,536.997%20L375.500,536.171%20L376.500,535.872%20L377.500,535.366%20L378.500,535.031%20L381.500,533.726%20L382.500,533.165%20L383.500,532.810%20L384.500,532.252%20L385.500,531.858%20L386.500,531.327%20L387.500,530.972%20L388.500,530.438%20L389.500,530.074%20L391.500,529.152%20L392.500,528.804%20L393.500,528.249%20L394.500,527.824%20L395.500,527.182%20L396.500,526.776%20L397.500,526.171%20L398.500,525.730%20L399.500,525.136%20L400.500,524.710%20L403.500,523.020%20L404.500,522.377%20L405.500,521.946%20L406.500,521.317%20L407.500,520.862%20L408.500,520.206%20L409.500,519.732%20L411.500,518.296%20L412.500,517.736%20L414.500,516.276%20L419.500,513.347%20L420.500,512.859%20L421.500,512.182%20L422.500,511.667%20L424.500,510.233%20L425.500,509.624%20L427.500,508.142%20L429.500,506.818%20L431.500,505.295%20L432.500,504.667%20L440.500,498.570%20L445.500,494.548%20L450.335,490.500%20L453.742,487.500%20L456.996,484.500%20L461.500,480.070%20L470.553,471.500%20L476.355,465.500%20L481.500,460.447%20L491.500,450.296%20L499.500,442.383%20L503.667,438.500%20L505.636,436.500%20L509.326,432.500%20L512.264,429.500%20L519.476,422.500%20L528.500,413.336%20L533.500,408.445%20L535.500,406.607%20L540.351,401.500%20L547.500,394.285%20L552.500,389.492%20L556.169,385.500%20L560.500,381.085%20L570.252,371.500%20L581.500,360.279%20L584.445,357.500%20L589.158,352.500%20L593.340,348.500%20L597.500,344.263%20L602.398,339.500%20L606.227,335.500%20L616.429,325.500%20L625.500,316.206%20L632.500,309.508%20L638.360,303.500%20L648.500,293.462%20L654.270,287.500%20L658.500,283.446%20L662.263,279.500%20L665.500,276.335%20L670.195,271.500%20L674.492,267.500%20L678.500,263.316%20L681.500,260.555%20L686.500,255.283%20L691.500,250.577%20L694.500,247.643%20L697.896,244.500%20L702.500,239.613%20L706.500,235.831%20L710.500,231.725%20L714.500,227.825%20L718.500,223.462%20L722.500,219.836%20L726.813,215.500%20L730.500,212.039%20L734.758,207.500%20L740.078,202.500%20L746.201,196.500%20L750.917,191.500%20L755.135,187.500%20L759.024,183.500%20L763.167,179.500%20L766.950,175.500%20L771.500,171.254%20L775.162,167.500%20L779.500,163.241%20L783.500,159.030%20L792.245,150.500%20L805.500,137.198%20L811.500,131.392%20L816.079,126.500%20L827.500,115.364%20L831.500,111.174%20L843.500,99.284%20L847.500,95.122%20L852.500,90.301%20L856.212,86.500%20L859.500,83.287%20L864.139,78.500%20L868.500,74.314%20L871.500,71.180%20L876.344,66.500%20L880.037,62.500%20L891.500,51.463%20L896.257,46.500%20L908.500,34.500%20L912.323,30.500%20L916.608,26.500%20L920.460,22.500%20L924.509,18.500%20L929.083,13.500%20L930.335,12.500%20L930.667,11.500%20L930.500,11.355%20L929.500,11.196%20L884.500,11.034%20L860.500,11.157%20L839.500,11.085%20L816.500,11.162%20L800.500,10.993%20L790.500,11.061%20L784.500,11.262%20L776.500,12.050%20L770.500,13.050%20L767.500,13.747%20L762.266,15.500%20L760.500,15.997%20L757.500,17.178%20L756.500,17.668%20L755.500,17.981%20L752.500,19.183%20L751.500,19.732%20L750.500,20.139%20L749.500,20.715%20L748.500,21.113%20L747.500,21.726%20L746.500,22.124%20L745.500,22.722%20L744.500,23.169%20L743.500,23.815%20L737.500,27.236%20L731.500,31.331%20L726.500,35.184%20L722.680,38.500%20L720.531,40.500%20L714.389,46.500%20L708.500,52.759%20L697.500,63.746%20L688.500,73.014%20L681.500,79.973%20L672.500,89.288%20L665.500,96.211%20L660.522,101.500%20L649.385,112.500%20L639.500,122.676%20L636.585,125.500%20L623.500,138.752%20L614.500,147.704%20L607.500,154.896%20L601.500,160.777%20L594.500,167.833%20L587.500,175.090%20L575.288,187.500%20L556.357,206.500%20L551.660,211.500%20L540.500,222.500%20L535.500,227.761%20L524.500,238.804%20L519.500,244.073%20L512.500,250.957%20L502.003,261.500%20L498.500,265.149%20L492.500,271.067%20L487.500,276.255%20L470.339,293.500%20L464.500,299.679%20L460.500,303.508%20L455.484,308.500%20L432.986,331.500%20L420.500,344.000%20L415.500,349.204%20L412.111,352.500%20L407.409,357.500%20L404.308,360.500%20L389.500,375.500%20L383.780,381.500%20L377.704,387.500%20L371.913,393.500%20L369.500,395.750%20L360.500,403.538%20L356.500,406.669%20L355.500,407.263%20L353.500,408.688%20L349.500,411.164%20L347.500,412.507%20L346.500,413.037%20L345.500,413.784%20L340.500,416.569%20L335.500,418.899%20L334.500,419.236%20L333.500,419.777%20L332.500,420.135%20L331.500,420.706%20L330.500,421.000%20L329.500,421.500%20L326.500,422.775%20L325.500,423.078%20L323.500,423.871%20L322.500,424.090%20L321.500,424.569%20L318.500,425.351%20L317.500,425.750%20L316.500,425.970%20L313.500,426.878%20L312.500,427.034%20L310.500,427.613%20L308.500,427.977%20L305.500,428.653%20L300.500,429.284%20L298.500,429.655%20L292.500,430.052%20L289.500,430.357%20L286.500,430.409%20L279.500,430.186%20L271.500,429.633%20L269.500,429.175%20L266.500,428.742%20L264.500,428.252%20L261.500,427.724%20L259.500,427.169%20L257.500,426.720%20L253.500,425.588%20L252.500,425.158%20L250.500,424.556%20L249.500,424.130%20L247.500,423.556%20L246.500,423.102%20L245.500,422.833%20L243.500,422.006%20L242.500,421.736%20L237.513,419.500%20L232.500,416.778%20L231.500,416.110%20L230.500,415.667%20L229.500,415.017%20L225.500,412.761%20L222.500,410.750%20L218.500,407.778%20L214.500,404.645%20L208.667,399.500%20L206.569,397.500%20L204.500,395.215%20L202.220,392.500%20L199.889,389.500%20L198.227,387.500%20L194.434,382.500%20L192.421,379.500%20L191.880,378.500%20L190.500,376.452%20L190.009,375.500%20L189.343,374.500%20L188.905,373.500%20L188.340,372.500%20L187.978,371.500%20L187.457,370.500%20L187.093,369.500%20L186.500,368.219%20L185.858,366.500%20L185.353,365.500%20L183.840,361.500%20L183.343,360.500%20L183.036,359.500%20L182.244,357.500%20L181.975,356.500%20L181.280,354.500%20L181.076,353.500%20L179.230,346.500%20L178.662,343.500%20L178.388,342.500%20L177.845,338.500%20L177.358,336.500%20L177.070,334.500%20L176.425,328.500%20L176.213,324.500%20L176.151,321.500%20L176.215,307.500%20L176.115,293.500%20L176.165,280.500%20L176.092,266.500%20L176.231,235.500%20L176.114,192.500%20L176.136,146.500%20L176.233,135.500%20L176.140,105.500%20L176.193,89.500%20L176.082,79.500%20L176.039,64.500%20L176.100,55.500%20L176.022,48.500%20L176.219,40.500%20L176.202,19.500%20L176.093,12.500%20L175.500,11.688%20L174.500,11.582%20L173.500,11.637%20L157.500,11.484%20L143.500,11.606%20L130.500,11.500%20L110.500,11.612%20L71.500,11.556%20L49.500,11.612%20L37.500,11.536%20L28.500,11.618%20L11.500,11.594%20L10.500,11.854%20L10.006,12.500%20L9.957,13.500%20L9.892,25.500%20L10.033,72.500%20L9.909,144.500%20L9.985,182.500%20L9.903,206.500%20L9.966,232.500%20L9.925,312.500%20L10.012,329.500%20L10.137,333.500%20L10.370,337.500%20L11.295,347.500%20L12.853,356.500%20L13.445,360.500%20L13.694,361.500%20L14.416,365.500%20L14.706,366.500%20L15.345,369.500%20L15.919,371.500%20L16.316,373.500%20L16.609,374.500%20L17.269,377.500%20L18.333,381.500%20L19.339,384.500%20L19.799,385.500%20L23.333,396.500%20L24.416,399.500%20L26.900,405.500%20L27.227,406.500%20Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+      mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201362%20564'%3E%3Cpath%20fill='%23000'%20d='M29.243,411.500%20L31.205,415.500%20L32.848,418.500%20L35.207,423.500%20L37.530,427.500%20L40.194,432.500%20L43.151,437.500%20L46.234,442.500%20L48.927,446.500%20L50.438,448.500%20L53.777,452.500%20L55.780,455.500%20L56.307,456.500%20L58.326,459.500%20L61.473,463.500%20L64.500,466.675%20L68.500,471.328%20L71.500,474.568%20L75.500,479.103%20L82.007,485.500%20L89.628,492.500%20L93.500,495.946%20L96.500,498.294%20L99.500,500.810%20L101.500,502.294%20L104.500,504.689%20L105.500,505.291%20L108.500,507.672%20L109.500,508.269%20L111.500,509.798%20L112.500,510.368%20L114.500,511.773%20L115.500,512.323%20L117.500,513.655%20L118.500,514.148%20L119.500,514.814%20L120.500,515.308%20L122.500,516.721%20L123.500,517.270%20L125.500,518.672%20L126.500,519.165%20L127.500,519.892%20L128.500,520.368%20L132.500,522.725%20L135.500,524.194%20L136.500,524.814%20L137.500,525.229%20L138.500,525.879%20L139.500,526.304%20L140.500,526.935%20L144.500,528.896%20L145.500,529.243%20L146.500,529.757%20L150.500,531.418%20L151.500,531.958%20L152.500,532.324%20L153.500,532.883%20L154.500,533.256%20L155.500,533.878%20L156.500,534.219%20L157.500,534.765%20L159.500,535.464%20L162.500,536.768%20L164.500,537.382%20L165.500,537.883%20L166.500,538.163%20L168.500,538.939%20L169.500,539.229%20L171.500,540.037%20L172.500,540.316%20L173.500,540.773%20L175.500,541.371%20L176.500,541.786%20L178.500,542.388%20L179.500,542.808%20L186.500,544.961%20L193.500,546.813%20L201.500,548.678%20L207.500,549.904%20L210.500,550.400%20L212.500,550.825%20L217.500,551.630%20L223.500,552.294%20L226.500,552.791%20L234.500,553.637%20L238.500,553.935%20L242.500,554.087%20L252.500,554.234%20L276.500,554.229%20L296.500,553.784%20L300.500,553.540%20L310.500,552.562%20L312.500,552.237%20L316.500,551.893%20L318.500,551.637%20L328.500,549.854%20L333.500,548.746%20L335.500,548.224%20L337.500,547.856%20L339.500,547.336%20L341.500,546.934%20L353.500,543.854%20L360.500,541.744%20L366.500,539.493%20L368.500,538.845%20L369.500,538.393%20L370.500,538.088%20L372.500,537.292%20L373.500,536.997%20L375.500,536.171%20L376.500,535.872%20L377.500,535.366%20L378.500,535.031%20L381.500,533.726%20L382.500,533.165%20L383.500,532.810%20L384.500,532.252%20L385.500,531.858%20L386.500,531.327%20L387.500,530.972%20L388.500,530.438%20L389.500,530.074%20L391.500,529.152%20L392.500,528.804%20L393.500,528.249%20L394.500,527.824%20L395.500,527.182%20L396.500,526.776%20L397.500,526.171%20L398.500,525.730%20L399.500,525.136%20L400.500,524.710%20L403.500,523.020%20L404.500,522.377%20L405.500,521.946%20L406.500,521.317%20L407.500,520.862%20L408.500,520.206%20L409.500,519.732%20L411.500,518.296%20L412.500,517.736%20L414.500,516.276%20L419.500,513.347%20L420.500,512.859%20L421.500,512.182%20L422.500,511.667%20L424.500,510.233%20L425.500,509.624%20L427.500,508.142%20L429.500,506.818%20L431.500,505.295%20L432.500,504.667%20L440.500,498.570%20L445.500,494.548%20L450.335,490.500%20L453.742,487.500%20L456.996,484.500%20L461.500,480.070%20L470.553,471.500%20L476.355,465.500%20L481.500,460.447%20L491.500,450.296%20L499.500,442.383%20L503.667,438.500%20L505.636,436.500%20L509.326,432.500%20L512.264,429.500%20L519.476,422.500%20L528.500,413.336%20L533.500,408.445%20L535.500,406.607%20L540.351,401.500%20L547.500,394.285%20L552.500,389.492%20L556.169,385.500%20L560.500,381.085%20L570.252,371.500%20L581.500,360.279%20L584.445,357.500%20L589.158,352.500%20L593.340,348.500%20L597.500,344.263%20L602.398,339.500%20L606.227,335.500%20L616.429,325.500%20L625.500,316.206%20L632.500,309.508%20L638.360,303.500%20L648.500,293.462%20L654.270,287.500%20L658.500,283.446%20L662.263,279.500%20L665.500,276.335%20L670.195,271.500%20L674.492,267.500%20L678.500,263.316%20L681.500,260.555%20L686.500,255.283%20L691.500,250.577%20L694.500,247.643%20L697.896,244.500%20L702.500,239.613%20L706.500,235.831%20L710.500,231.725%20L714.500,227.825%20L718.500,223.462%20L722.500,219.836%20L726.813,215.500%20L730.500,212.039%20L734.758,207.500%20L740.078,202.500%20L746.201,196.500%20L750.917,191.500%20L755.135,187.500%20L759.024,183.500%20L763.167,179.500%20L766.950,175.500%20L771.500,171.254%20L775.162,167.500%20L779.500,163.241%20L783.500,159.030%20L792.245,150.500%20L805.500,137.198%20L811.500,131.392%20L816.079,126.500%20L827.500,115.364%20L831.500,111.174%20L843.500,99.284%20L847.500,95.122%20L852.500,90.301%20L856.212,86.500%20L859.500,83.287%20L864.139,78.500%20L868.500,74.314%20L871.500,71.180%20L876.344,66.500%20L880.037,62.500%20L891.500,51.463%20L896.257,46.500%20L908.500,34.500%20L912.323,30.500%20L916.608,26.500%20L920.460,22.500%20L924.509,18.500%20L929.083,13.500%20L930.335,12.500%20L930.667,11.500%20L930.500,11.355%20L929.500,11.196%20L884.500,11.034%20L860.500,11.157%20L839.500,11.085%20L816.500,11.162%20L800.500,10.993%20L790.500,11.061%20L784.500,11.262%20L776.500,12.050%20L770.500,13.050%20L767.500,13.747%20L762.266,15.500%20L760.500,15.997%20L757.500,17.178%20L756.500,17.668%20L755.500,17.981%20L752.500,19.183%20L751.500,19.732%20L750.500,20.139%20L749.500,20.715%20L748.500,21.113%20L747.500,21.726%20L746.500,22.124%20L745.500,22.722%20L744.500,23.169%20L743.500,23.815%20L737.500,27.236%20L731.500,31.331%20L726.500,35.184%20L722.680,38.500%20L720.531,40.500%20L714.389,46.500%20L708.500,52.759%20L697.500,63.746%20L688.500,73.014%20L681.500,79.973%20L672.500,89.288%20L665.500,96.211%20L660.522,101.500%20L649.385,112.500%20L639.500,122.676%20L636.585,125.500%20L623.500,138.752%20L614.500,147.704%20L607.500,154.896%20L601.500,160.777%20L594.500,167.833%20L587.500,175.090%20L575.288,187.500%20L556.357,206.500%20L551.660,211.500%20L540.500,222.500%20L535.500,227.761%20L524.500,238.804%20L519.500,244.073%20L512.500,250.957%20L502.003,261.500%20L498.500,265.149%20L492.500,271.067%20L487.500,276.255%20L470.339,293.500%20L464.500,299.679%20L460.500,303.508%20L455.484,308.500%20L432.986,331.500%20L420.500,344.000%20L415.500,349.204%20L412.111,352.500%20L407.409,357.500%20L404.308,360.500%20L389.500,375.500%20L383.780,381.500%20L377.704,387.500%20L371.913,393.500%20L369.500,395.750%20L360.500,403.538%20L356.500,406.669%20L355.500,407.263%20L353.500,408.688%20L349.500,411.164%20L347.500,412.507%20L346.500,413.037%20L345.500,413.784%20L340.500,416.569%20L335.500,418.899%20L334.500,419.236%20L333.500,419.777%20L332.500,420.135%20L331.500,420.706%20L330.500,421.000%20L329.500,421.500%20L326.500,422.775%20L325.500,423.078%20L323.500,423.871%20L322.500,424.090%20L321.500,424.569%20L318.500,425.351%20L317.500,425.750%20L316.500,425.970%20L313.500,426.878%20L312.500,427.034%20L310.500,427.613%20L308.500,427.977%20L305.500,428.653%20L300.500,429.284%20L298.500,429.655%20L292.500,430.052%20L289.500,430.357%20L286.500,430.409%20L279.500,430.186%20L271.500,429.633%20L269.500,429.175%20L266.500,428.742%20L264.500,428.252%20L261.500,427.724%20L259.500,427.169%20L257.500,426.720%20L253.500,425.588%20L252.500,425.158%20L250.500,424.556%20L249.500,424.130%20L247.500,423.556%20L246.500,423.102%20L245.500,422.833%20L243.500,422.006%20L242.500,421.736%20L237.513,419.500%20L232.500,416.778%20L231.500,416.110%20L230.500,415.667%20L229.500,415.017%20L225.500,412.761%20L222.500,410.750%20L218.500,407.778%20L214.500,404.645%20L208.667,399.500%20L206.569,397.500%20L204.500,395.215%20L202.220,392.500%20L199.889,389.500%20L198.227,387.500%20L194.434,382.500%20L192.421,379.500%20L191.880,378.500%20L190.500,376.452%20L190.009,375.500%20L189.343,374.500%20L188.905,373.500%20L188.340,372.500%20L187.978,371.500%20L187.457,370.500%20L187.093,369.500%20L186.500,368.219%20L185.858,366.500%20L185.353,365.500%20L183.840,361.500%20L183.343,360.500%20L183.036,359.500%20L182.244,357.500%20L181.975,356.500%20L181.280,354.500%20L181.076,353.500%20L179.230,346.500%20L178.662,343.500%20L178.388,342.500%20L177.845,338.500%20L177.358,336.500%20L177.070,334.500%20L176.425,328.500%20L176.213,324.500%20L176.151,321.500%20L176.215,307.500%20L176.115,293.500%20L176.165,280.500%20L176.092,266.500%20L176.231,235.500%20L176.114,192.500%20L176.136,146.500%20L176.233,135.500%20L176.140,105.500%20L176.193,89.500%20L176.082,79.500%20L176.039,64.500%20L176.100,55.500%20L176.022,48.500%20L176.219,40.500%20L176.202,19.500%20L176.093,12.500%20L175.500,11.688%20L174.500,11.582%20L173.500,11.637%20L157.500,11.484%20L143.500,11.606%20L130.500,11.500%20L110.500,11.612%20L71.500,11.556%20L49.500,11.612%20L37.500,11.536%20L28.500,11.618%20L11.500,11.594%20L10.500,11.854%20L10.006,12.500%20L9.957,13.500%20L9.892,25.500%20L10.033,72.500%20L9.909,144.500%20L9.985,182.500%20L9.903,206.500%20L9.966,232.500%20L9.925,312.500%20L10.012,329.500%20L10.137,333.500%20L10.370,337.500%20L11.295,347.500%20L12.853,356.500%20L13.445,360.500%20L13.694,361.500%20L14.416,365.500%20L14.706,366.500%20L15.345,369.500%20L15.919,371.500%20L16.316,373.500%20L16.609,374.500%20L17.269,377.500%20L18.333,381.500%20L19.339,384.500%20L19.799,385.500%20L23.333,396.500%20L24.416,399.500%20L26.900,405.500%20L27.227,406.500%20Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+    }
+    .boot__accent i{
+      position:absolute;top:-8%;bottom:-8%;left:0;width:19%;opacity:0;
+      background:linear-gradient(90deg,rgba(190,214,255,0),rgba(214,231,255,.9) 50%,rgba(190,214,255,0));
+      transform:translate3d(200%,0,0) skewX(30deg);
+    }
+    .boot--play .boot__accent i{animation:boot-sweep 1.05s cubic-bezier(.45,0,.25,1) .98s forwards}
+    @keyframes boot-sweep{
+      0%{opacity:0;transform:translate3d(200%,0,0) skewX(30deg)}
+      22%{opacity:.9}
+      78%{opacity:.9}
+      100%{opacity:0;transform:translate3d(385%,0,0) skewX(30deg)}
+    }
+
+    /* TEXT — after the mark settles: name, then role, then the helper line. Small rise + fade, quiet stagger. */
+    .boot__name,.boot__role,.boot__helper{margin:0;opacity:0;transform:translate3d(0,10px,0)}
+    .boot__name{margin-top:clamp(26px,4.6vh,42px);font:800 clamp(1.05rem,1.45vw,1.3rem)/1.2 Manrope,system-ui,sans-serif;letter-spacing:-.012em}
+    .boot__role{margin-top:10px;font:500 clamp(.68rem,.82vw,.78rem)/1.45 "DM Mono",ui-monospace,Menlo,Consolas,monospace;letter-spacing:.075em;color:var(--boot-muted)}
+    .boot__helper{margin-top:clamp(34px,5.6vh,52px);font:500 .69rem/1.4 "DM Mono",ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--boot-muted);--o:.8}
+    .boot--play .boot__name{animation:boot-rise .72s cubic-bezier(.22,.8,.18,1) 1.12s forwards}
+    .boot--play .boot__role{animation:boot-rise .72s cubic-bezier(.22,.8,.18,1) 1.25s forwards}
+    .boot--play .boot__helper{animation:boot-rise .72s cubic-bezier(.22,.8,.18,1) 1.38s forwards,boot-breathe 2.8s ease-in-out 2.3s infinite alternate}
+    @keyframes boot-rise{to{opacity:var(--o,1);transform:none}}
+    @keyframes boot-breathe{from{opacity:.8}to{opacity:.5}}
+
+    /* While the loader is up, the homepage is already mounted underneath but its own reveal is held. It resumes a beat after the
+       loader starts to recede (data-hero-go), so the page arrives as the loader leaves, without the two identities overlapping. */
+    html[data-boot="on"] .entry-intro-copy,html[data-boot="on"] .entry-portrait,
+    html[data-boot="leaving"]:not([data-hero-go]) .entry-intro-copy,html[data-boot="leaving"]:not([data-hero-go]) .entry-portrait{animation-play-state:paused}
+
+    @media (max-width:640px){
+      .boot__logo{width:clamp(210px,64vw,300px)}
+      .boot__stage{padding:0 20px}
+      .boot__trace:nth-child(1),.boot__trace:nth-child(4){display:none}
+    }
+    /* Reduced motion: same identity, no wipe, no sweep, no travel — quick fades only. */
+    @media (prefers-reduced-motion:reduce){
+      .boot{transition-duration:.25s,0s;transition-delay:0s,.25s}
+      .boot__grid{animation-duration:.3s}
+      .boot__logo{clip-path:none}
+      .boot--play .boot__logo{animation:boot-fade .28s ease .02s forwards}
+      .boot__accent,.boot__signals{display:none}
+      .boot__name,.boot__role,.boot__helper{transform:none}
+      .boot--play .boot__name{animation:boot-fade .28s ease .1s forwards}
+      .boot--play .boot__role{animation:boot-fade .28s ease .16s forwards}
+      .boot--play .boot__helper{animation:boot-fade .28s ease .22s forwards}
+      html[data-boot="leaving"] .boot__stage{transform:none}
+    }
+    @keyframes boot-fade{to{opacity:var(--o,1);transform:none}}
+  </style>
+  <link rel="preload" href="/assets/ukd-logo.svg" as="image" type="image/svg+xml" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f0f5fc" />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="Usman Khair Din — white-label UI design and frontend production for digital agencies, backed by 16+ years of web, product UI and responsive frontend experience." />
+  <link rel="canonical" href="https://www.usmankhairdin.com/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Usman Khair Din — White-label UI Design & Frontend Production" />
+  <meta property="og:description" content="Senior white-label UI design and frontend production for digital agencies, with selected public work and 16+ years of experience." />
+  <meta property="og:url" content="https://www.usmankhairdin.com/" />
+  <meta property="og:image" content="https://www.usmankhairdin.com/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Usman Khair Din — White-label UI design and frontend production" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Usman Khair Din — White-label UI Design & Frontend Production" />
+  <meta name="twitter:description" content="Senior white-label UI design and frontend production for digital agencies." />
+  <meta name="twitter:image" content="https://www.usmankhairdin.com/assets/og-card.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Usman Khair Din",
+    "url": "https://www.usmankhairdin.com/",
+    "jobTitle": "UX/UI Designer and Front-end Developer",
+    "description": "White-label UI design and frontend production for digital agencies.",
+    "knowsAbout": ["UX design", "UI design", "Web design", "Frontend development", "Responsive design", "Accessibility", "React", "Tailwind CSS"]
+  }
+  </script>
+
+  <title>Usman Khair Din — White-label UI Design & Frontend Production</title>
+</head>
+<body>
+  <div id="boot" class="boot" role="status" aria-label="Loading">
+    <div class="boot__grid" aria-hidden="true"></div>
+    <div class="boot__signals" aria-hidden="true">
+      <i class="boot__trace"></i><i class="boot__trace"></i><i class="boot__trace"></i><i class="boot__trace"></i>
+    </div>
+    <div class="boot__stage">
+      <div class="boot__logo">
+        <img src="/assets/ukd-logo.svg" width="1362" height="564" alt="UKD" decoding="sync" draggable="false" />
+        <span class="boot__accent" aria-hidden="true"><i></i></span>
+      </div>
+      <p class="boot__name">Usman Khair Din</p>
+      <p class="boot__role">Product UI/UX &bull; Front-End &bull; AI</p>
+      <p class="boot__helper">Preparing the experience...</p>
+    </div>
+  </div>
+  <script>
+    /* Starts the choreography once the mark and the fonts are actually available (never waits more than ~1s), so the sequence
+       never plays on a blank image or swaps fonts mid-reveal. */
+    (function () {
+      var root = document.documentElement, el = document.getElementById('boot');
+      if (!el || root.getAttribute('data-boot') !== 'on') return;
+      var played = false;
+      var stage = el.querySelector('.boot__stage'), mark = el.querySelector('.boot__logo');
+      /* Lands the mark on whole device pixels (size + position) so the SVG rasterises crisply instead of being resampled at a
+         fractional offset. Purely a sub-pixel correction: the mark keeps its size and place, no layout jump. */
+      function snap() {
+        if (root.getAttribute('data-boot') !== 'on') return;
+        stage.style.transition = 'none';
+        stage.style.setProperty('--boot-dx', '0px'); stage.style.setProperty('--boot-dy', '0px'); mark.style.width = '';
+        mark.style.width = Math.round(mark.getBoundingClientRect().width) + 'px';
+        var r = mark.getBoundingClientRect(), base = -0.016;
+        stage.style.setProperty('--boot-dx', (Math.round(r.left) - r.left) + 'px');
+        stage.style.setProperty('--boot-dy', (Math.round(r.top + base * window.innerHeight) - r.top) + 'px');
+        void stage.offsetWidth; stage.style.transition = '';
+      }
+      function play() {
+        if (played) return; played = true;
+        snap();
+        window.addEventListener('resize', snap);
+        window.__ukdBootPlayAt = performance.now();
+        el.classList.add('boot--play');
+      }
+      var img = el.querySelector('img');
+      var logo = new Promise(function (res) {
+        if (img.complete && img.naturalWidth) res();
+        else { img.addEventListener('load', res, { once: true }); img.addEventListener('error', res, { once: true }); }
+      });
+      var fonts = (document.fonts && document.fonts.load)
+        ? Promise.all([document.fonts.load('800 24px Manrope'), document.fonts.load('500 12px "DM Mono"')]).catch(function () {})
+        : Promise.resolve();
+      Promise.all([logo, fonts]).then(play);
+      setTimeout(play, 1000);
+      // Absolute fallback: if the app never releases the loader, never trap the visitor behind it.
+      setTimeout(function () { root.setAttribute('data-boot', 'off'); if (el.parentNode) el.parentNode.removeChild(el); }, 15000);
+    })();
+  </script>
+  <div id="root"></div>
+  <noscript>This site uses an interactive portfolio experience. You can contact Usman at brief@usmankhairdin.com.</noscript>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* ============================================================================
+   PROJECT BRANDING for the BODY of a case-study page (everything below the hero).
+   Only colours change: the project's own palette (src/data/projectBrands.js) replaces the generic UKD body colours. Layout, type,
+   spacing, shapes and behaviour are untouched (see Project.css, one system for every project). The hero (.pdh) and the app chrome
+   (header, footer) are not addressed by any rule here.
+   Active only on pages that have a palette (.pj-branded); a project without one keeps the generic UKD look.
+   The prefix below is deliberately specific so these rules win over the generated dark-theme sheet without !important.
+   ============================================================================ */
+.case-study.pj-branded{
+  --bt-ink:var(--pt-l-ink);--bt-ink2:var(--pt-l-ink2);--bt-s1:var(--pt-l-s1);--bt-s2:var(--pt-l-s2);--bt-panel:var(--pt-l-panel);
+  --bt-line:var(--pt-l-line);--bt-accent:var(--pt-l-accent);--bt-soft:var(--pt-l-soft);--bt-close:var(--pt-l-close);
+  --bt-closeInk:var(--pt-l-closeInk);--bt-closeInk2:var(--pt-l-closeInk2);--bt-closeAccent:var(--pt-l-closeAccent);--bt-cta:var(--pt-l-cta);--bt-ctaInk:var(--pt-l-ctaInk);--bt-deco:var(--pt-l-deco);
+  --bt-inkRgb:var(--pt-l-inkRgb);
+}
+html[data-theme="dark"] .case-study.pj-branded{
+  --bt-ink:var(--pt-d-ink);--bt-ink2:var(--pt-d-ink2);--bt-s1:var(--pt-d-s1);--bt-s2:var(--pt-d-s2);--bt-panel:var(--pt-d-panel);
+  --bt-line:var(--pt-d-line);--bt-accent:var(--pt-d-accent);--bt-soft:var(--pt-d-soft);--bt-close:var(--pt-d-close);
+  --bt-closeInk:var(--pt-d-closeInk);--bt-closeInk2:var(--pt-d-closeInk2);--bt-closeAccent:var(--pt-d-closeAccent);--bt-cta:var(--pt-d-cta);--bt-ctaInk:var(--pt-d-ctaInk);--bt-deco:var(--pt-d-deco);
+  --bt-inkRgb:var(--pt-d-inkRgb);
+}
+
+/* ---- Section rhythm: overview → alternating chapters → scope → the brand's strongest surface ---- */
+html body .case-study.pj-branded main .case-context{background:var(--bt-s1);color:var(--bt-ink)}
+html body .case-study.pj-branded main .cs-chapter--a,
+html body .case-study.pj-branded main .cs-scope--a{background:var(--bt-s2);color:var(--bt-ink)}
+html body .case-study.pj-branded main .cs-chapter--b,
+html body .case-study.pj-branded main .cs-scope--b{background:var(--bt-s1);color:var(--bt-ink)}
+html body .case-study.pj-branded main .section--project-close{background:var(--splash-surface);color:#0c1830;position:relative;isolation:isolate;overflow:hidden}
+html body .case-study.pj-branded main .section--project-close:before{content:"";position:absolute;inset:0;z-index:0;background-image:linear-gradient(90deg,var(--splash-grid) 1px,transparent 1px);background-size:var(--splash-pitch) 100%;opacity:.82;pointer-events:none}
+html body .case-study.pj-branded main .section--project-close:after{content:"";position:absolute;right:-5%;top:14%;width:min(34vw,460px);aspect-ratio:1.5;border:1px solid rgb(83 104 255 / .13);border-radius:28px;box-shadow:inset 0 0 0 28px rgb(83 104 255 / .025);transform:rotate(-7deg);animation:projectCloseFloat 9s ease-in-out -3s infinite alternate;pointer-events:none}
+html body .case-study.pj-branded main .section--project-close>.route-wrap{position:relative;z-index:2}
+html[data-theme="dark"] body .case-study.pj-branded main .section--project-close{color:#edf2fa}
+@keyframes projectCloseFloat{from{transform:translate3d(0,-4px,0) rotate(-7deg)}to{transform:translate3d(-8px,7px,0) rotate(-5deg)}}
+
+/* ---- Type: eyebrow, heading, lead, subheading, copy ---- */
+html body .case-study.pj-branded main .kicker{color:var(--bt-accent)}
+html body .case-study.pj-branded main .section--project-close .kicker{color:var(--blue)}
+html body .case-study.pj-branded main .section--project-close h2{color:#0c1830}
+html[data-theme="dark"] body .case-study.pj-branded main .section--project-close h2{color:#edf2fa}
+html body .case-study.pj-branded main .cs-head h2,
+html body .case-study.pj-branded main .cs-card h4,
+html body .case-study.pj-branded main .cs-feature h3{color:var(--bt-ink)}
+html body .case-study.pj-branded main .cs-lead,
+html body .case-study.pj-branded main .cs-card p,
+html body .case-study.pj-branded main .cs-feature p,
+html body .case-study.pj-branded main .cs-note p,
+html body .case-study.pj-branded main .case-context__copy>p{color:var(--bt-ink2)}
+
+/* ---- Overview: tags, fact card, source note ---- */
+html body .case-study.pj-branded main .project-tags span{border:1px solid var(--bt-line);background:var(--bt-soft);color:var(--bt-ink2)}
+html body .case-study.pj-branded main .case-context__copy{border:1px solid var(--bt-line);background:var(--bt-panel)}
+html body .case-study.pj-branded main .case-facts>div{border-bottom:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .case-facts dt{color:var(--bt-ink2)}
+html body .case-study.pj-branded main .case-facts dd{color:var(--bt-ink)}
+html body .case-study.pj-branded main .case-source-note{border-color:var(--bt-line);background:var(--bt-soft);color:var(--bt-ink2)}
+html body .case-study.pj-branded main .case-source-note strong{color:var(--bt-accent)}
+
+/* ---- Figures: the site's browser frame fed the project's palette, bare crops, captions, notes ---- */
+html body .case-study.pj-branded main .cs-figure figcaption,
+html body .case-study.pj-branded main .cs-phone figcaption{color:var(--bt-ink2)}
+html body .case-study.pj-branded main .cs-frame{
+  --uf-accent:var(--bt-accent);
+  --uf-fg-rgb:var(--bt-inkRgb);
+  --uf-muted:var(--bt-ink2);
+  --uf-bg:var(--bt-panel);
+  --uf-shadow:0 0 0 1px var(--bt-line),0 2px 5px color-mix(in srgb,var(--bt-ink) 8%,transparent),0 40px 80px -36px color-mix(in srgb,var(--bt-ink) 42%,transparent);
+}
+html body .case-study.pj-branded main .cs-bare{
+  border:1px solid var(--bt-line);
+  background:var(--bt-panel);
+  box-shadow:0 18px 44px -22px color-mix(in srgb,var(--bt-ink) 34%,transparent);
+}
+html body .case-study.pj-branded main .cs-note{border-color:var(--bt-line);background:linear-gradient(145deg,var(--bt-panel),var(--bt-soft))}
+html body .case-study.pj-branded main .cs-note span{color:var(--bt-accent)}
+html body .case-study.pj-branded main .cs-phones{border:1px solid var(--bt-line);background:var(--bt-panel)}
+html body .case-study.pj-branded main .cs-phone__body{
+  background:#111722;
+  box-shadow:0 26px 56px -22px color-mix(in srgb,var(--bt-ink) 46%,transparent),0 0 0 1px rgb(255 255 255 / .08) inset;
+}
+
+/* ---- Points, cards, features ---- */
+html body .case-study.pj-branded main .cs-points>div{border-top:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .cs-points>div:last-child{border-bottom:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .cs-points dt{color:var(--bt-accent)}
+html body .case-study.pj-branded main .cs-points dd{color:var(--bt-ink)}
+html body .case-study.pj-branded main .cs-card{border:1px solid var(--bt-line);background:var(--bt-panel)}
+html body .case-study.pj-branded main .cs-card__n,
+html body .case-study.pj-branded main .cs-feature__label{color:var(--bt-accent)}
+
+/* ---- Scope: the verified facts and what was delivered ---- */
+html body .case-study.pj-branded main .cs-spec__grid>div{border-top:0}
+html body .case-study.pj-branded main .cs-spec__grid>div:nth-child(n+3){border-top:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .cs-spec__grid dt{color:var(--bt-accent)}
+html body .case-study.pj-branded main .cs-spec__grid dd{color:var(--bt-ink)}
+html body .case-study.pj-branded main .case-deliverables{border-top:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .case-deliverables p{border:0;color:var(--bt-ink)}
+html body .case-study.pj-branded main .case-deliverables p+p{border-top:1px solid var(--bt-line)}
+html body .case-study.pj-branded main .case-deliverables p b{color:var(--bt-accent)}
+
+/* ---- Closing section: the primary action takes the brand's CTA colour; the other becomes a quiet outline. Same shapes, hover and press. ---- */
+html body .case-study.pj-branded main .section--project-close .pill--primary{
+  background:var(--blue);
+  color:#fff;
+  box-shadow:0 10px 22px rgb(83 104 255 / .22);
+}
+html body .case-study.pj-branded main .section--project-close .pill--primary:hover{box-shadow:0 13px 28px rgb(83 104 255 / .3)}
+html body .case-study.pj-branded main .section--project-close .pill--dark{
+  background:rgb(255 255 255 / .54);
+  color:#0c1830;
+  box-shadow:inset 0 0 0 1.5px rgb(52 78 140 / .17);
+}
+html body .case-study.pj-branded main .section--project-close .pill--dark:hover{
+  background:rgb(255 255 255 / .78);
+  box-shadow:inset 0 0 0 1.5px rgb(83 104 255 / .3),0 12px 30px rgb(52 78 140 / .08);
+}
+html[data-theme="dark"] body .case-study.pj-branded main .section--project-close .pill--dark{background:rgb(255 255 255 / .07);color:#edf2fa;box-shadow:inset 0 0 0 1.5px rgb(174 191 255 / .2)}
+html[data-theme="dark"] body .case-study.pj-branded main .section--project-close .pill--dark:hover{background:rgb(255 255 255 / .11);box-shadow:inset 0 0 0 1.5px rgb(142 160 255 / .45)}
+html body .case-study.pj-branded main .section--project-close a:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:999px}
+html body .case-study.pj-branded main .case-context a:focus-visible,
+html body .case-study.pj-branded main .cs-chapter a:focus-visible,
+html body .case-study.pj-branded main .cs-scope a:focus-visible{outline:2px solid var(--bt-accent);outline-offset:4px}
+
+@media(prefers-reduced-motion:reduce){html body .case-study.pj-branded main .section--project-close:after{animation:none!important}}
+
+/* Sept 21 closing-art replacement: the new SVG graphic owns the right side; suppress the legacy faint rectangle. */
+html body .case-study.pj-branded main .section--project-close:after{content:none}

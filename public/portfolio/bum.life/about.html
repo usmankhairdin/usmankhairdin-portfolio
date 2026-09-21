@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Bum.Life</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <!-- Bubblegum Sans for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-transparent text-white fixed w-full z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/logobum.png" alt="Bum.Life"
+                        class="nav-logo h-20 w-auto transition-all duration-300">
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Home</a>
+                    <a href="characters.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Characters</a>
+                    <a href="videos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Videos</a>
+                    <a href="photos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Photos</a>
+                    <a href="about.html"
+                        class="nav-link nav-link-active hover:text-yellow-400 transition-colors duration-300">About</a>
+                    <a href="producers.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">For
+                        Producers</a>
+                    <a href="contact.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300 flex items-center">
+                        Contact
+                    </a>
+                </div>
+                <button class="md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Header -->
+    <section class="pt-32 pb-20 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-center bg-contain bg-repeat"
+            style="background-image: url('images/TexturedRedBrickWallClose-up.png'); opacity: 0.3;">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
+                About Bum.Life</h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                The story behind the chaos, the passion behind the pixels.
+            </p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Origin Story Section -->
+                <div class="mb-20">
+                    <h2 class="mx-auto text-5xl md:text-6xl text-center mb-8">Origin Story</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                                Bum.Life emerged from the gritty streets of urban life, where five unlikely friends
+                                discovered that homelessness doesn't define your humanity—it reveals it. What began as
+                                casual sketches on napkins during late-night park gatherings evolved into a full-fledged
+                                animated series that captures the raw authenticity of street life.
+                            </p>
+                            <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                                Our creator, a former street artist turned animator, witnessed countless stories of
+                                resilience, laughter, and unexpected camaraderie among those living on society's
+                                fringes. These observations became the foundation of Bum.Life—a celebration of the human
+                                spirit that thrives despite adversity.
+                            </p>
+                            <p class="text-lg leading-relaxed text-gray-300">
+                                Every frame reflects our commitment to authentic storytelling: the genuine struggles,
+                                the unfiltered humor, and the profound bonds that form when traditional support systems
+                                fail. Bum.Life isn't just animation—it's a mirror held up to society's forgotten
+                                corners.
+                            </p>
+                        </div>
+                        <div class="flex justify-center">
+                            <img src="images/ViedeBum.png" alt="Bum Life Origin Story"
+                                class="rounded-lg shadow-lg max-w-full h-auto">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Humor Style & Character Dynamics -->
+                <div class="mb-20">
+                    <h2 class="mx-auto text-5xl md:text-6xl text-center mb-8">Humor Style & Character Dynamics</h2>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
+                        <p class="text-xl leading-relaxed text-gray-300 text-center mb-8">
+                            Our humor blends dark comedy with heartfelt moments, inspired by the resilience of street
+                            life. We don't shy away from life's harsh realities, but we always find the absurdity and
+                            humanity within them.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4 text-yellow-400">The Humor Style</h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start">
+                                        <i data-lucide="check-circle"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Dark comedy meets situational absurdity</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="check-circle"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Beer-fueled schemes and bad decisions</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="check-circle"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Raw, unfiltered dialogue that hits hard</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="check-circle"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Heartfelt moments amidst the chaos</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4 text-yellow-400">Character Dynamics</h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start">
+                                        <i data-lucide="users"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Five distinct personalities clashing and bonding</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="users"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Found family overcoming shared struggles</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="users"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Power dynamics shifting through circumstances</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i data-lucide="users"
+                                            class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0"></i>
+                                        <span>Growth through conflict and shared experiences</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tagline Highlight -->
+                <div class="mb-20 text-center">
+                    <div
+                        class="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg p-12 border-4 border-yellow-400/30">
+                        <h2 class="mx-auto text-5xl md:text-6xl font-black mb-4 text-black comic-accent">
+                            5 bums. 1 bench. Infinite chaos.
+                        </h2>
+                        <p class="text-xl text-black/80 font-medium">
+                            This isn't just a tagline—it's our manifesto. Five misfits, one shared space, endless
+                            possibilities.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Creator Vision & Production Goals -->
+                <div class="mb-20">
+                    <h2 class="mx-auto text-4xl md:text-5xl font-bold mb-8 text-center">Creator Vision & Production Goals</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6 text-yellow-400">The Creator's Vision</h3>
+                            <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                                Our creator envisioned Bum.Life as more than entertainment—a cultural mirror reflecting
+                                society's forgotten voices. Drawing from personal experiences and countless street
+                                conversations, the vision emerged: to humanize homelessness through humor and heart.
+                            </p>
+                            <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                                Every character represents real people encountered on the streets—each with their own
+                                story, struggles, and spark of humanity. The goal isn't to romanticize hardship, but to
+                                celebrate the indomitable spirit that persists despite it.
+                            </p>
+                            <p class="text-lg leading-relaxed text-gray-300">
+                                Bum.Life stands as a testament that even in life's darkest corners, laughter,
+                                friendship, and hope can flourish. We're not just creating animation; we're amplifying
+                                voices that deserve to be heard.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6 text-yellow-400">Production Goals</h3>
+                            <div class="space-y-6">
+                                <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                    <h4 class="text-xl font-bold mb-3 text-yellow-400">Authentic Representation</h4>
+                                    <p class="text-gray-300">Ensure every character feels real, every struggle
+                                        authentic, and every moment of humor earned through genuine experience.</p>
+                                </div>
+                                <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                    <h4 class="text-xl font-bold mb-3 text-yellow-400">Quality Animation</h4>
+                                    <p class="text-gray-300">Push technical boundaries to create fluid, expressive
+                                        animation that brings street life to vivid, cinematic life.</p>
+                                </div>
+                                <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                    <h4 class="text-xl font-bold mb-3 text-yellow-400">Community Impact</h4>
+                                    <p class="text-gray-300">Build a platform that not only entertains but sparks
+                                        conversations about homelessness, mental health, and human connection.</p>
+                                </div>
+                                <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                                    <h4 class="text-xl font-bold mb-3 text-yellow-400">Sustainable Growth</h4>
+                                    <p class="text-gray-300">Create a self-sustaining production that can tell more
+                                        stories and reach wider audiences while maintaining creative integrity.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 md:py-32 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Contact CTA -->
+                <div class="text-center">
+                    <h2 class="mx-auto text-5xl md:text-6xl text-center mb-8">Want to Join the Chaos?</h2>
+                    <p class="text-xl text-black mb-8 max-w-2xl mx-auto">
+                        Whether you're a fan, collaborator, or just love great animation, we'd love to hear from you.
+                    </p>
+                    <button
+                    class="border-2 border-black px-8 py-3 rounded-full font-bold transform hover:scale-105 hover:bg-black hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl">
+                    Get in Touch
+                </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="text-white py-12 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2">Bum.Life</h3>
+                    <p class="text-gray-400 italic tracking-wide">5 bums. 1 bench. Infinite chaos.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <ul class="flex flex-wrap justify-center gap-6">
+                        <li><a href="characters.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Characters</a></li>
+                        <li><a href="videos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Videos</a></li>
+                        <li><a href="photos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Photos</a></li>
+                        <li><a href="about.html" class="hover:text-yellow-400 transition-colors duration-300">About</a>
+                        </li>
+                        <li><a href="contact.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="flex justify-center md:justify-end space-x-6">
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="youtube" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-800">
+                <p>&copy; 2025 Bum.Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>

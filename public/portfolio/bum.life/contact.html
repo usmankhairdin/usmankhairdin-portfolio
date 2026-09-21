@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Bum.Life</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <!-- Bubblegum Sans for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-transparent text-white fixed w-full z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/logobum.png" alt="Bum.Life"
+                        class="nav-logo h-20 w-auto transition-all duration-300">
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Home</a>
+                    <a href="characters.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Characters</a>
+                    <a href="videos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Videos</a>
+                    <a href="photos.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Photos</a>
+                    <a href="about.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">About</a>
+                    <a href="producers.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">For
+                        Producers</a>
+                    <a href="contact.html"
+                        class="nav-link nav-link-active hover:text-yellow-400 transition-colors duration-300 flex items-center">
+                        Contact
+                    </a>
+                </div>
+                <button class="md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Header -->
+    <section class="pt-32 pb-20 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-center bg-contain bg-repeat"
+            style="background-image: url('images/TexturedRedBrickWallClose-up.png'); opacity: 0.3;">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
+                Get in Touch</h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Have questions, feedback, or just want to say hi? We'd love to hear from you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-8">Send us a Message</h2>
+                        <!-- Contact Form -->
+                        <form id="contact-form" action="contact.php" method="POST" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
+                                <input type="text" id="name" name="name" required class="form-input w-full"
+                                    placeholder="Your name">
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                                <input type="email" id="email" name="email" required class="form-input w-full"
+                                    placeholder="your.email@example.com">
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message
+                                    *</label>
+                                <textarea id="message" name="message" rows="6" required
+                                    class="form-input w-full resize-none" placeholder="What's on your mind?"></textarea>
+                            </div>
+
+                            <!-- Google reCAPTCHA -->
+                            <div class="text-center mb-6">
+                                <div class="g-recaptcha" data-sitekey="6LcXA_grAAAAAA3rAZfe322NALEF2llj8jRTHBvh"></div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn-cartoon">Send Message</button>
+                            </div>
+                        </form>
+
+                        <!-- Google reCAPTCHA JS -->
+                        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-8">
+                        <!-- Email -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                            <i data-lucide="mail" class="w-12 h-12 text-yellow-400 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-4">Email Us</h3>
+                            <a href="mailto:info@bum.life"
+                                class="text-xl text-yellow-400 hover:text-yellow-300 transition-colors duration-300 font-semibold">
+                                info@bum.life
+                            </a>
+                            <p class="text-gray-400 mt-2">
+                                For general inquiries, partnerships, or feedback
+                            </p>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                            <h3 class="text-2xl font-bold mb-6 text-center">Follow Us</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <a href="https://www.youtube.com/@BumLifeShow" target="_blank"
+                                    class="flex flex-col items-center p-4 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 transition-all duration-300 group">
+                                    <i data-lucide="youtube"
+                                        class="w-8 h-8 text-red-500 group-hover:scale-110 transition-transform duration-300"></i>
+                                    <span class="text-sm text-gray-300 mt-2 font-medium">YouTube</span>
+                                </a>
+
+                                <a href="https://x.com/BumLifeShow" target="_blank"
+                                    class="flex flex-col items-center p-4 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 transition-all duration-300 group">
+                                    <i data-lucide="twitter"
+                                        class="w-8 h-8 text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
+                                    <span class="text-sm text-gray-300 mt-2 font-medium">Twitter</span>
+                                </a>
+
+                                <a href="https://www.instagram.com/bumlifeshow" target="_blank"
+                                    class="flex flex-col items-center p-4 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 transition-all duration-300 group">
+                                    <i data-lucide="instagram"
+                                        class="w-8 h-8 text-pink-500 group-hover:scale-110 transition-transform duration-300"></i>
+                                    <span class="text-sm text-gray-300 mt-2 font-medium">Instagram</span>
+                                </a>
+
+                                <a href="https://www.tiktok.com/@bumlifeshow" target="_blank"
+                                    class="flex flex-col items-center p-4 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 transition-all duration-300 group">
+                                    <i data-lucide="music"
+                                        class="w-8 h-8 text-white group-hover:scale-110 transition-transform duration-300"></i>
+                                    <span class="text-sm text-gray-300 mt-2 font-medium">TikTok</span>
+                                </a>
+                            </div>
+
+                            <p class="text-gray-400 text-center mt-4 text-sm">
+                                Stay updated with our latest content and behind-the-scenes updates
+                            </p>
+                        </div>
+
+                        <!-- Additional Info -->
+                        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                            <i data-lucide="clock" class="w-12 h-12 text-yellow-400 mx-auto mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-4">Response Time</h3>
+                            <p class="text-gray-300">
+                                We typically respond to messages within 24-48 hours. For urgent production inquiries,
+                                please use the
+                                <a href="producers.html" class="text-yellow-400 hover:text-yellow-300 font-semibold">For
+                                    Producers</a> page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white py-12 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2">Bum.Life</h3>
+                    <p class="text-gray-400 italic tracking-wide">5 bums. 1 bench. Infinite chaos.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <ul class="flex flex-wrap justify-center gap-6">
+                        <li><a href="characters.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Characters</a></li>
+                        <li><a href="videos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Videos</a></li>
+                        <li><a href="photos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Photos</a></li>
+                        <li><a href="about.html" class="hover:text-yellow-400 transition-colors duration-300">About</a>
+                        </li>
+                        <li><a href="contact.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="flex justify-center md:justify-end space-x-6">
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="youtube" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-800">
+                <p>&copy; 2025 Bum.Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>

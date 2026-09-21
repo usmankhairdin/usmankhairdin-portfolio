@@ -1,0 +1,25 @@
+{
+  "name": "usman-interface-gallery-full-final",
+  "private": true,
+  "version": "9.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.4.2",
+    "gsap": "3.14.2",
+    "lenis": "1.3.26",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-router-dom": "7.11.0",
+    "three": "0.182.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "5.1.1",
+    "vite": "7.2.4"
+  }
+}

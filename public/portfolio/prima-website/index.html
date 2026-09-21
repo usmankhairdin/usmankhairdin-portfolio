@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PRIMA - The intelligence and profit layer for hospitality</title>
+  <!-- Tailwind CDN -->
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <link href="css/style.css?v=1.4" rel="stylesheet" />
+
+</head>
+
+<body class="min-h-screen text-slate-900">
+  <!-- Overlay for panelHeader -->
+  <div id="modalOverlay" class="modal-overlay"></div>
+  <!-- HEADER -->
+  <header class="sticky top-0 z-30 backdrop-blur bg-white/70 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div class="header-logo text-3xl tracking-tight text-indigo-600 font-Inter">PRIMA</div>
+
+      <!-- Desktop Navigation: center, hidden on screens <=991px -->
+      <nav class="flex-1 flex justify-center hidden lg:flex">
+        <ul class="nav_menu flex items-center gap-6">
+          <li><a href="hotels.html" class="nav_menu-item">Hotels</a></li>
+          <li><a href="restaurants.html" class="nav_menu-item">Restaurants</a></li>
+          <li><a href="concierges.html" class="nav_menu-item">Concierges</a></li>
+          <li><a href="influencers.html" class="nav_menu-item">Influencers</a></li>
+        </ul>
+      </nav>
+
+      <!-- Desktop right-side buttons, hidden on screens <=991px -->
+      <div class="flex items-center gap-3 hidden lg:flex">
+        <!-- <div class="flex items-center gap-2 mr-2 language-links">
+          <a href="#" class="text-sm font-bold active">EN</a>
+          <span class="text-sm text-slate-400">|</span>
+          <a href="#" class="text-sm font-semibold text-slate-400">SP</a>
+        </div> -->
+        <a href="https://primavip.co/platform/login" target="_blank"
+          class="px-4 py-2 rounded-full border border-slate-300 bg-white hover:bg-indigo-600 hover:text-white hover:border-indigo-600 flex items-center font-semibold text-base">
+          Login
+        </a>
+        <button type="button" data-target="panelHeader"
+          class="cta-btn px-2 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 transition-all duration-150 hover:opacity-90 text-white hover:bg-emerald-700">Work
+          With PRIMA</button>
+      </div>
+
+      <!-- Mobile language links, action buttons, and menu icon: only on screens <=991px -->
+      <div class="flex items-center gap-2 lg:hidden language-links">
+        <!-- <a href="#" class="text-sm font-bold active">EN</a>
+        <span class="text-sm text-slate-400">|</span>
+        <a href="#" class="text-sm font-semibold text-slate-400">SP</a> -->
+        <a href="https://primavip.co/platform/login" target="_blank"
+          class="px-3 py-1 rounded-xl border border-slate-300 bg-white hover:bg-indigo-600 hover:text-white hover:border-indigo-600 flex items-center text-sm font-semibold transition-colors">
+          Login
+        </a>
+        <button type="button" data-target="panelHeader"
+          class="cta-btn px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:bg-emerald-700 transition-all duration-150 hover:opacity-90 text-sm font-semibold">Work
+          With PRIMA</button>
+        <button id="mobileMenuBtn"
+          class="flex items-center justify-center p-2 rounded-full border border-slate-300 bg-white hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
+          aria-label="Open menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay"
+      class="fixed inset-0 min-h-screen h-screen bg-black bg-opacity-40 z-[9999998] hidden lg:hidden"></div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobileMenu"
+      class="fixed top-0 right-0 w-full max-w-xs min-h-screen h-screen bg-white shadow-2xl z-[9999999] transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+        <span class="text-2xl font-bold text-indigo-600">Menu</span>
+        <button id="closeMobileMenu"
+          class="p-2 rounded-full border border-slate-300 bg-white hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
+          aria-label="Close menu">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <nav class="px-6 py-4 flex-1 overflow-y-auto">
+        <ul class="flex flex-col gap-4">
+          <li><a href="javascript:void(0)" class="nav_menu-item">Home</a></li>
+          <li><a href="hotels.html" class="nav_menu-item">Hotels</a></li>
+          <li><a href="restaurants.html" class="nav_menu-item">Restaurants</a></li>
+          <li><a href="concierges.html" class="nav_menu-item">Concierges</a></li>
+          <li><a href="influencers.html" class="nav_menu-item">Influencers</a></li>
+          <li><a href="https://primavip.co/platform/login" target="_blank" class="nav_menu-item">Login</a></li>
+          <li><a data-target="panelHeader" href="javascript:void(0)" class="nav_menu-item">Work With PRIMA</a></li>
+        </ul>
+        <!-- ...existing code... (removed buttons from mobile menu) -->
+      </nav>
+    </div>
+    </div>
+
+  </header>
+  <!-- Header Lead Form -->
+  <div id="panelHeader" class="collapsible">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 border-t border-slate-200 bg-white shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold">Tell us a bit about you</h3>
+        <button type="button" class="close-btn text-slate-500 hover:text-slate-700" data-close="panelHeader"
+          aria-label="Close"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form class="mt-3 grid grid-cols-2 gap-3" onsubmit="event.preventDefault(); alert('Lead Submitted');">
+        <label class="col-span-2 sm:col-span-1">
+          <span class="sr-only">I am a</span>
+          <select required name="persona" class="w-full px-3 py-2 rounded-xl border border-slate-300">
+            <option value="">I am a…</option>
+            <option value="hotel">Hotel / Property</option>
+            <option value="concierge">Concierge</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="creator">Creator / Influencer</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <input required name="fullName" placeholder="Full Name"
+          class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl border border-slate-300" />
+        <input name="company" placeholder="Company / Property"
+          class="col-span-2 px-3 py-2 rounded-xl border border-slate-300" />
+        <input required type="email" name="email" placeholder="Email"
+          class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl border border-slate-300" />
+        <input name="phone" placeholder="Phone"
+          class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl border border-slate-300" />
+        <input name="city" placeholder="City"
+          class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl border border-slate-300" />
+        <input name="preferredTime" placeholder="Preferred Contact Time"
+          class="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl border border-slate-300" />
+        <textarea name="notes" rows="3" placeholder="Anything else we should know?"
+          class="col-span-2 px-3 py-2 rounded-xl border border-slate-300"></textarea>
+        <div class="col-span-2 flex items-center gap-3">
+          <button type="submit"
+            class="inline-flex items-center justify-center gap-2 cursor-pointer px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- HERO -->
+  <section id="hero" class="relative py-4">
+    <div class="splash"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[3fr_2fr] gap-2 items-center h-full">
+        <!-- Left Column: spans 2/3 on desktop -->
+        <div class="flex flex-col justify-right justify-end">
+          <h1 class="text-[34px] md:text-[65px] leading-[1] font-black">The <span
+              class="text-indigo-600">Platform</span> That <span class="text-indigo-600">Connects</span> Hospitality
+          </h1>
+          <div
+            class="max-w-3xl mx-auto rounded-2xl items-start bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 mt-8 text-[18px] md:text-[20px] space-y-2 text-left">
+            <p class="mb-4 text-lg font-semibold text-emerald-600">WITH PRIMA</p>
+            <div>
+              <label class="inline-flex items-start space-x-3 text-xl">
+                <span class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600">
+                  <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i>
+                </span>
+                <span><strong>Guests</strong>
+                  enjoy seamless, unforgettable experiences.</span></label>
+            </div>
+            <div><label class="inline-flex items-start space-x-3 text-xl"><span
+                  class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600"><i
+                    data-lucide="check" class="w-4 h-4 text-indigo-600"></i></span><span><strong>Restaurants</strong>
+                  fill seats with
+                  high-intent diners.</span></label></div>
+            <div><label class="inline-flex items-start space-x-3 text-xl"><span <span
+                  class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600"><i
+                    data-lucide="check" class="w-4 h-4 text-indigo-600"></i></span><span><strong>Concierges</strong> get
+                  credit for every
+                  booking.</span></label></div>
+            <div><label class="inline-flex items-start space-x-3 text-xl"><span <span
+                  class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600"><i
+                    data-lucide="check" class="w-4 h-4 text-indigo-600"></i></span><span><strong>Influencers</strong>
+                  prove impact through
+                  measurable bookings.</span></label>
+            </div>
+            <div><label class="inline-flex items-start space-x-3 text-xl"><span <span
+                  class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600"><i
+                    data-lucide="check" class="w-4 h-4 text-indigo-600"></i></span><span><strong>Hotels</strong>
+                  generate ancillary revenue while improving service levels.</span></label></div>
+            <div><label class="inline-flex items-start space-x-3 text-xl"><span <span
+                  class="flex items-center justify-center p-1 rounded-full border-2 border-indigo-600"><i
+                    data-lucide="check" class="w-4 h-4 text-indigo-600"></i></span><span><strong>Everybody</strong>
+                  Wins<span style="position:relative;display:inline-block;"> <sup
+                      style="font-size:0.5em;position:absolute;top: 0.8em;right:-0.8em;">TM</sup>.</span></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: spans 1/3 on desktop -->
+        <div class="flex justify-center md:justify-left mt-6 md:mt-0 wow animate__animated fadeInRightContainer">
+          <img src="images/hero-placeholder.png" alt="PRIMA platform preview"
+            class="w-auto h-[580px]" />
+        </div>
+      </div>
+      <div
+        class="absolute w-[130px] md:w-[170px] z-[999999] bottom-[-90px] md:bottom-[-110px] right-[-5px] md:right-[10px] lg:right-[-60px] wow animate__animated fadeInRightContainer">
+        <div>
+          <img src="images/snapping-fingers.svg" alt="Snapping fingers" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE CITIES -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 wow animate__animated fadeInUpContainer">
+    <div class="relative flex items-center justify-center mt-10">
+
+      <!-- Heading above the curve -->
+      <h2 class="relative z-10 bg-white px-4 text-3xl font-semibold text-center mb-6">
+        <span class="relative text-center z-10">
+          PRIMA is
+          <span class="relative inline-block">
+            <span class="inline-block relative z-10">LIVE</span>
+            <span class="absolute left-0 right-0 bottom-0 h-5 z-0 pointer-events-none"
+              style="background: url('images/scribble-underline.svg') no-repeat center bottom; background-size: contain; width: 100%;"></span>
+          </span>
+          in
+        </span>
+      </h2>
+    </div>
+    <div class="rounded-2xl overflow-hidden shadow-md border border-slate-300">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-[1px]">
+        <a href="https://book.primaapp.com/miami" target="_blank" class="group relative p-4 transition overflow-hidden"
+          style="background-image: url('images/miami.jpg'); background-size: cover; background-position: center center;">
+          <div
+            class="absolute inset-0 bg-black opacity-30 group-hover:opacity-50 pointer-events-none transition-opacity duration-300">
+          </div>
+          <div class="relative z-10 flex items-start justify-between">
+            <span class="text-xs font-semibold tracking-widest text-white uppercase">Market</span>
+            <button class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">Book
+              Now</button>
+          </div>
+          <div class="relative z-10 mt-1 text-xl sm:text-2xl font-extrabold text-white">Miami</div>
+        </a>
+        <a href="https://book.primaapp.com/los-angeles" target="_blank"
+          class="group relative p-4 transition overflow-hidden"
+          style="background-image: url('images/los-angeles.jpg'); background-size: cover; background-position: center center;">
+          <div
+            class="absolute inset-0 bg-black opacity-30 group-hover:opacity-50 pointer-events-none transition-opacity duration-300">
+          </div>
+          <div class="relative z-10 flex items-start justify-between">
+            <span class="text-xs font-semibold tracking-widest text-white uppercase">Market</span>
+            <button class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">Book
+              Now</button>
+          </div>
+          <div class="relative z-10 mt-1 text-xl sm:text-2xl font-extrabold text-white">Los Angeles</div>
+        </a>
+        <a href="https://book.primaapp.com/ibiza" target="_blank" class="group relative p-4 transition overflow-hidden"
+          style="background-image: url('images/Ibiza.webp'); background-size: cover; background-position:center 185px;">
+          <div
+            class="absolute inset-0 bg-black opacity-30 group-hover:opacity-50 pointer-events-none transition-opacity duration-300">
+          </div>
+          <div class="relative z-10 flex items-start justify-between">
+            <span class="text-xs font-semibold tracking-widest text-white uppercase">Market</span>
+            <button class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700">Book
+              Now</button>
+          </div>
+          <div class="relative z-10 mt-1 text-xl sm:text-2xl font-extrabold text-white">Ibiza</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATTRIBUTION BLOCK -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+    <div
+      class="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 text-center wow animate__animated fadeInUpContainer">
+      <h2 class="text-4xl font-semibold mt-4 mb-6">
+        <span class="relative text-center z-10">
+          <span class="relative inline-block">
+            <span class="inline-block relative z-10">Attribution</span>
+            <span class="absolute left-0 right-0 -bottom-1 h-5 z-0 pointer-events-none"
+              style="background: url('images/scribble-underline.svg') no-repeat center bottom; background-size: contain; width: 100%;"></span>
+          </span>
+          , Not Assumptions
+        </span>
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-4 text-left">
+        <div class="p-3 rounded-xl border border-slate-200 bg-white transition hover:bg-violet-100">
+          <div class="flex items-start gap-3">
+            <span class="flex items-center justify-center rounded-full w-[60px] h-[60px] bg-indigo-600 shrink-0">
+              <i data-lucide="activity" class="w-[40px] h-[40px] text-white"></i>
+            </span>
+            <div class="flex-1">
+              <h3 class="text-[16px] md:text-[20px] font-semibold">Source-Level Attribution</h3>
+              <p class="text-black text-[15px]">See exactly where every booking came from and who deserves credit. PRIMA
+                eliminates guesswork and ensures every stakeholder receives recognition for the value they create.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl border border-slate-200 bg-white transition hover:bg-violet-100">
+          <div class="flex items-start gap-3">
+            <span class="flex items-center justify-center rounded-full w-[60px] h-[60px] bg-indigo-600 shrink-0">
+              <i data-lucide="layout-dashboard" class="w-[40px] h-[40px] text-white"></i>
+            </span>
+            <div class="flex-1">
+              <h3 class="text-[16px] md:text-[20px] font-semibold">Unified Reporting</h3>
+              <p class="text-black text-[15px]">One dashboard for hotels, restaurants, and concierges to track value in
+                real time. Data flows seamlessly across the ecosystem to provide clarity and eliminate silos.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl border border-slate-200 bg-white transition hover:bg-violet-100">
+          <div class="flex items-start gap-3">
+            <span class="flex items-center justify-center rounded-full w-[60px] h-[60px] bg-indigo-600 shrink-0">
+              <i data-lucide="calendar-x" class="w-[40px] h-[40px] text-white"></i>
+            </span>
+            <div class="flex-1">
+              <h3 class="text-[16px] md:text-[20px] font-semibold">Eliminate No-Shows</h3>
+              <p class="text-black text-[15px]">67% of bookings on PRIMA are for today or tomorrow, showing higher
+                intent and drastically reducing no-shows. Venues save time, protect their revenue, and ensure seats are
+                filled.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 rounded-xl border border-slate-200 bg-white transition hover:bg-violet-100">
+          <div class="flex items-start gap-4">
+            <span class="flex items-center justify-center rounded-full w-[60px] h-[60px] bg-indigo-600 shrink-0">
+              <i data-lucide="stars" class="w-[40px] h-[40px] text-white"></i>
+            </span>
+            <div class="flex-1">
+              <h3 class="text-[16px] md:text-[20px] font-semibold">Enhanced Guest Experience</h3>
+              <p class="text-black text-[15px]">Make every interaction seamless and memorable for high-value guests.
+                PRIMA ensures a premium experience by streamlining booking and guaranteeing access.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOTELS SECTION -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    <div class="wow animate__animated fadeInUpContainer">
+      <img src="images/we-built.png" alt="We built PRIMA for you" class="w-full max-w-3xl mx-auto mb-8" />
+    </div>
+    <div class="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 md:p-8">
+
+      <div class="grid md:grid-cols-12 gap-10 items-center justify-center">
+        <div class="md:col-span-7 wow animate__animated fadeInLeftContainer">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">Hotels, Residential Communities and AirBNBs</h2>
+          <p class="mb-6">PRIMA allows hotels and properties to provide guests with access
+            to exclusive restaurants, driving satisfaction and creating a premium amenity. Real-time attribution ensures
+            hotels see value clearly.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Drive guest satisfaction with exclusive access</li>
+            <li>Generate new revenue streams through partnerships</li>
+            <li>Provide clear reporting and accountability</li>
+          </ul>
+          <a href="hotels.html"
+            class="inline-block mt-4 mr-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Learn
+            More</a>
+          <a type="button" data-target="panelHeader"
+            class="inline-block mt-4 cursor-pointer px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Join
+            PRIMA</a>
+
+        </div>
+        <div class="flex justify-center md:justify-center md:col-span-5 wow animate__animated fadeInRightContainer">
+          <img src="images/hotels.jpg" alt="Resort hotel pool at sunset"
+            class="w-full md:max-w-xl rounded-2xl shadow-2xl ring-1 md:-mb-0 mb-[-175px] border-2 border-white ring-white/20 object-cover aspect-[4/3]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIPE SECTION -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 md:mt-8 mt-[200px]">
+    <div class="rounded-2xl overflow-hidden stripe-gradient-bg shadow-md p-4">
+      <div class="grid lg:grid-cols-3 gap-2 md:gap-[1px] wow animate__animated fadeInUpContainer">
+
+        <!-- First Item -->
+        <div
+          class="flex h-full w-full flex-row items-center justify-start md:justify-center text-left pb-2 md:pb-0 border-b-2 md:border-b-0 md:border-r-2 border-slate-400 gap-4">
+          <span
+            class="flex items-center justify-center text-center rounded-full w-[70px] h-[70px] bg-indigo-600 text-white text-[20px] font-extrabold">
+            <span class="flex items-center justify-center w-[70px] h-[70px]">72%</span>
+          </span>
+          <div>
+            <p class="font-bold text-[20px]">72% of diners say it’s too hard to book reservations.</p>
+          </div>
+        </div>
+
+        <!-- Second Item -->
+        <div
+          class="flex h-full w-full flex-row items-center justify-start md:justify-center text-left pl-0 md:pl-6 pb-2 md:pb-0 border-b-2 md:border-b-0 md:border-r-2 border-slate-400 gap-4">
+          <span
+            class="flex items-center justify-center text-center rounded-full w-[70px] h-[70px] bg-emerald-600 text-white text-[20px] font-extrabold">
+            <span class="flex items-center justify-center w-[70px] h-[70px]">300%</span>
+          </span>
+          <div>
+            <p class="font-bold text-[20px]">Hotel Guests Spend 3x as much as local diners.</p>
+          </div>
+        </div>
+
+        <!-- Third Item -->
+        <div
+          class="flex h-full w-full flex-row items-center justify-left pl-0 md:pl-6 md:justify-center text-left gap-4">
+          <span
+            class="flex items-center justify-center text-center rounded-full w-[70px] h-[70px] bg-pink-600 text-white text-[20px] font-extrabold">
+            <span class="flex items-center justify-center w-[70px] h-[70px]">&lt;2%</span>
+          </span>
+          <div>
+            <p class="font-bold text-[20px]">PRIMA’s No-Show rate is under 2%</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- RESTAURANTS SECTION -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 md:p-8">
+      <div class="grid md:grid-cols-12 gap-10 items-center justify-center">
+        <div class="md:col-span-7 wow animate__animated fadeInLeftContainer">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">Restaurants</h2>
+          <p class="mb-6">Restaurants use PRIMA to optimize table utilization and reduce
+            no-shows while gaining access to high-value guests from hotels and concierge networks.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Fill tables with last-minute high-intent guests</li>
+            <li>Track performance with transparent reporting</li>
+            <li>Reduce no-shows with PRIMA’s bookings</li>
+          </ul>
+          <a href="restaurants.html"
+            class="inline-block mt-4 mr-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Learn
+            More</a>
+          <a type="button" data-target="panelHeader"
+            class="inline-block mt-4 cursor-pointer px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Join
+            PRIMA</a>
+        </div>
+        <div class="flex justify-center md:justify-start md:col-span-5 wow animate__animated fadeInRightContainer">
+          <img src="images/restaurants.webp" alt="Elegant restaurant interior"
+            class="w-full md:max-w-xl rounded-2xl shadow-2xl ring-1 md:-mb-0 mb-[-175px] border-2 border-white ring-white/20 object-cover aspect-[4/3]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCIERGES SECTION -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 md:mt-8 mt-[175px]">
+    <div class="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 md:p-8">
+      <div class="grid md:grid-cols-12 gap-10 items-center justify-center">
+        <div class="md:col-span-7 wow animate__animated fadeInLeftContainer">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">Hotel and Lifestyle Concierges</h2>
+          <p class="mb-6">Concierges benefit from transparent attribution and streamlined
+            booking processes, ensuring they are recognized and rewarded for driving guest reservations.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Get full credit for every reservation placed</li>
+            <li>Streamline workflows with real-time availability</li>
+            <li>Enhance guest experiences through premium access</li>
+          </ul>
+          <a href="concierges.html"
+            class="inline-block mt-4 mr-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Learn
+            More</a>
+          <a type="button" data-target="panelHeader"
+            class="inline-block mt-4 px-5 cursor-pointer px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Join
+            PRIMA</a>
+        </div>
+        <div class="flex justify-center md:justify-end md:col-span-5 wow animate__animated fadeInRightContainer">
+          <img src="images/concierge.jpg" alt="Concierge assisting guest at a hotel desk"
+            class="w-full md:max-w-xl rounded-2xl shadow-2xl ring-1 md:-mb-0 mb-[-175px] border-2 border-white ring-white/20 object-cover aspect-[4/3]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFLUENCERS SECTION -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16 md:mt-8 mt-[175px]">
+    <div
+      class="rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 shadow-md p-4 md:p-8 wow animate__animated fadeInUpContainer">
+      <div class="grid md:grid-cols-12 gap-10 items-center justify-center">
+        <div class="md:col-span-7">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">Food Influencers & Bloggers</h2>
+          <p class="mb-6">Influencers and bloggers can now prove their impact beyond likes
+            and views. With PRIMA, every post that drives bookings is tracked and reported, giving creators a clear way
+            to monetize influence.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Track bookings driven by your content</li>
+            <li>Monetize your influence with real results</li>
+            <li>Partner with top restaurants and hotels worldwide</li>
+          </ul>
+          <a href="influencers.html"
+            class="inline-block mt-4 mr-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Learn
+            More</a>
+          <a type="button" data-target="panelHeader"
+            class="inline-block mt-4 px-5 cursor-pointer px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white text-lg font-semibold shadow-[3px_3px_0_#047857] hover:opacity-90 active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all duration-150">Join
+            PRIMA</a>
+        </div>
+        <div class="flex justify-center md:justify-start md:col-span-5">
+          <img src="images/influencers.webp" alt="Food influencer capturing a restaurant dish"
+            class="w-full md:max-w-xl rounded-2xl shadow-2xl ring-1 md:-mb-0 mb-[-175px] ring-white/20 object-cover border-2 border-white aspect-[4/3]" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-100 border-t border-slate-200 py-6 md:mt-8 mt-[175px]">
+    <div
+      class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-black">
+      <a href="https://instagram.com/bookwithprima" target="_blank" class="flex items-center gap-2 mb-2 sm:mb-0">
+        <i data-lucide="instagram" class="w-5 h-5"></i>
+        @bookwithprima
+      </a>
+      <p class="text-sm">© 2025 PRIMA. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- WOW.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script>new WOW().init();</script>
+
+
+  <script>
+    // Initialize Lucide icons safely
+    function initIcons() {
+      try { if (window.lucide && typeof window.lucide.createIcons === 'function') { window.lucide.createIcons(); } }
+      catch (e) { console.warn('Lucide init failed', e); }
+    }
+
+    // Toggle helper for any element with data-target / data-close
+    function wireCollapsibles() {
+      document.querySelectorAll('[data-target]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-target');
+          const panel = document.getElementById(id);
+          const overlay = document.getElementById('modalOverlay');
+          if (!panel) return;
+          panel.classList.add('open');
+          overlay.classList.add('open');
+          overlay.onclick = function () {
+            panel.classList.remove('open');
+            overlay.classList.remove('open');
+          };
+          initIcons();
+        });
+      });
+      document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-close');
+          const panel = document.getElementById(id);
+          const overlay = document.getElementById('modalOverlay');
+          if (panel) {
+            panel.classList.remove('open');
+            // Wait for transition to finish before hiding overlay
+            setTimeout(() => {
+              if (overlay) { overlay.classList.remove('open'); }
+            }, 400);
+          } else {
+            if (overlay) { overlay.classList.remove('open'); }
+          }
+        });
+      });
+    }
+
+    // Mobile menu logic
+    function wireMobileMenu() {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMobileMenu = document.getElementById('closeMobileMenu');
+      const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+      if (mobileMenuBtn && mobileMenu && mobileMenuOverlay) {
+        mobileMenuBtn.addEventListener('click', function () {
+          mobileMenu.classList.remove('translate-x-full');
+          mobileMenuOverlay.classList.remove('hidden');
+          initIcons();
+        });
+      }
+      if (closeMobileMenu && mobileMenu && mobileMenuOverlay) {
+        closeMobileMenu.addEventListener('click', function () {
+          mobileMenu.classList.add('translate-x-full');
+          mobileMenuOverlay.classList.add('hidden');
+        });
+      }
+      // Close menu when clicking overlay
+      if (mobileMenuOverlay && mobileMenu) {
+        mobileMenuOverlay.addEventListener('click', function () {
+          mobileMenu.classList.add('translate-x-full');
+          mobileMenuOverlay.classList.add('hidden');
+        });
+      }
+      // Prevent closing when clicking inside menu
+      if (mobileMenu) {
+        mobileMenu.addEventListener('click', function (e) {
+          e.stopPropagation();
+        });
+      }
+    }
+
+    // Boot
+    window.addEventListener('DOMContentLoaded', () => {
+      wireCollapsibles();
+      wireMobileMenu();
+      initIcons();
+    });
+  </script>
+</body>
+
+</html>

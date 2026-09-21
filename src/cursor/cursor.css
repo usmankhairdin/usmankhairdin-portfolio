@@ -1,0 +1,93 @@
+/* ============================================================
+   LIVING MAGNETIC CURSOR — presentation.
+   Colours come from the existing theme tokens (--text, --bg, --accent-text), so light/dark follow the theme system with no
+   palette of their own. The corridor variant (data-mode="immersive") ignores the theme on purpose: it is neutral and
+   blend-based so it reads on the fixed corridor design in either theme. The layer never captures pointer events.
+   ============================================================ */
+.ukd-cursor{
+  --cur-ink:var(--text,#09111d);
+  --cur-ink-rgb:var(--text-rgb,9 17 29);
+  --cur-bg-rgb:var(--bg-rgb,238 232 220);
+  --cur-accent:var(--accent-text,#455dff);
+  --cur-accent-on:#fff;
+  position:fixed;
+  inset:0;
+  z-index:2147483646;             /* above the loader, the header and the menu drawer */
+  pointer-events:none;
+  contain:layout style;
+  opacity:0;
+  transition:opacity .28s ease;
+}
+html[data-theme="dark"] .ukd-cursor{--cur-accent-on:var(--bg,#0b111b)}
+.ukd-cursor.is-visible{opacity:1}
+
+.ukd-cursor__ring,.ukd-cursor__dot,.ukd-cursor__label{position:absolute;left:0;top:0;will-change:transform}
+.ukd-cursor__ring{width:0;height:0}
+
+/* Outer ring: an SVG path so its edge can breathe. It is scaled for size, but its stroke stays a hairline. */
+.ukd-cursor__svg{
+  position:absolute;
+  left:-50px;top:-50px;
+  width:100px;height:100px;
+  overflow:visible;
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 0 1px rgb(var(--cur-bg-rgb) / .6));   /* keeps the hairline readable on dark artwork in light theme, and vice versa */
+}
+.ukd-cursor__path{
+  fill:var(--cur-ink);
+  fill-opacity:0;
+  stroke:rgb(var(--cur-ink-rgb) / .5);
+  stroke-width:1.25px;
+  vector-effect:non-scaling-stroke;
+  transition:stroke .3s ease,fill .3s ease;
+}
+/* Plain interactive hover: the cobalt accent, as a hairline and a whisper of tint. */
+.ukd-cursor[data-state="hover"] .ukd-cursor__path{stroke:var(--cur-accent);fill:var(--cur-accent)}
+.ukd-cursor[data-state="label"] .ukd-cursor__path{stroke:transparent}
+.ukd-cursor[data-tone="accent"] .ukd-cursor__path{fill:var(--cur-accent)}
+
+/* Centre dot: the precise point. */
+.ukd-cursor__dot{
+  width:6px;height:6px;
+  margin:-3px 0 0 -3px;
+  border-radius:50%;
+  background:var(--cur-ink);
+  box-shadow:0 0 0 1px rgb(var(--cur-bg-rgb) / .55);
+}
+
+/* Contextual label: its own stable layer — never scaled with the ring, never distorted by the organic edge. */
+.ukd-cursor__label{
+  opacity:0;
+  font:650 10px/1 var(--mono,"DM Mono",ui-monospace,Menlo,Consolas,monospace);
+  letter-spacing:.16em;
+  padding-left:.16em;              /* balances the trailing letter-space so the word is optically centred */
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:rgb(var(--cur-bg-rgb));
+  -webkit-font-smoothing:antialiased;
+}
+.ukd-cursor[data-tone="accent"] .ukd-cursor__label{color:var(--cur-accent-on)}
+
+/* Corridor: use the native browser cursor. The 3D scene already switches body.cursor to `pointer` over doors,
+   which is clearer for camera navigation than an ornamental Web cursor. */
+.ukd-cursor[data-mode="immersive"]{display:none!important}
+
+/* Legacy immersive presentation values kept harmlessly below in case this mode is ever opt-in again. */
+.ukd-cursor[data-mode="immersive"]{
+  mix-blend-mode:difference;
+  --cur-ink:#fff;
+  --cur-ink-rgb:255 255 255;
+  --cur-bg-rgb:0 0 0;
+}
+.ukd-cursor[data-mode="immersive"] .ukd-cursor__svg{filter:none}
+.ukd-cursor[data-mode="immersive"] .ukd-cursor__dot{box-shadow:none;width:5px;height:5px;margin:-2.5px 0 0 -2.5px}
+.ukd-cursor[data-mode="immersive"] .ukd-cursor__path{stroke:rgb(255 255 255 / .7);fill:#fff;stroke-width:1px}
+.ukd-cursor[data-mode="immersive"][data-state="hover"] .ukd-cursor__path{stroke:rgb(255 255 255 / .85);fill:#fff}
+
+/* Hide the native cursor only while the custom one is running, and keep the native one wherever its semantics matter. */
+html.ukd-cursor-on,
+html.ukd-cursor-on *{cursor:none!important}
+html.ukd-cursor-on :is(input,textarea,select,option,[contenteditable="true"],[contenteditable=""],[data-cursor="native"]){cursor:revert!important}
+
+/* Touch-first and coarse pointers keep their normal behaviour: no custom cursor at all. */
+@media (hover:none),(pointer:coarse){.ukd-cursor{display:none}}

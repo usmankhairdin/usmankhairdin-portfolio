@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bum.Life - 5 bums. 1 bench. Infinite chaos.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Bubblegum Sans for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-transparent text-white fixed w-full z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/logobum.png" alt="Bum.Life"
+                        class="nav-logo h-20 w-auto transition-all duration-300">
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link nav-link-active hover:text-yellow-400 transition-colors duration-300">Home</a>
+                    <a href="characters.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Characters</a>
+                    <a href="videos.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Videos</a>
+                    <a href="photos.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Photos</a>
+                    <a href="about.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">About</a>
+                    <a href="producers.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">For
+                        Producers</a>
+                    <a href="contact.html" class="nav-link hover:text-yellow-400 transition-colors duration-300 flex items-center">
+                        Contact
+                    </a>
+                </div>
+                <button class="md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[100vh] text-white relative overflow-hidden flex items-center">
+        <div class="absolute inset-0 bg-center bg-cover bg-no-repeat"
+            style="background-image: url('images/actiondegraceenautomne.png'); opacity: 0.3; transform: scale(1.1);">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="animate-on-scroll">
+                <h1
+                    class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6 opacity-0 animate-fade-in tracking-tight drop-shadow-md leading-none">
+                    Bum.Life</h1>
+                <p
+                    class="text-2xl sm:text-4xl md:text-5xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-200 font-regular opacity-0 animate-fade-in-delay-1">
+                    5 bums. 1 bench. Infinite chaos.
+                </p>
+                <p class="text-xl sm:text-2xl md:text-3xl mb-2 opacity-0 animate-fade-in-delay-2 font-normal">Welcome to
+                    Bum Life.</p>
+                <p
+                    class="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-0 animate-fade-in-delay-3 leading-relaxed">
+                    A fast, funny cartoon world where five down-on-their-luck friends turn every bad idea into a wild
+                    adventure.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6 items-center">
+                    <a href="https://www.youtube.com/channel/UCRzQQn6_IV3ya6PiIZFwEKQ" target="_blank" class="btn-cartoon w-full sm:w-auto text-center">Watch Clips</a>
+                    <a href="characters.html" class="btn-secondary w-full sm:w-auto text-center">Meet the Cast</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Videos -->
+    <section class="featured-content py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="animate-on-scroll">
+                <h2 class="mx-auto text-5xl md:text-6xl font-bold text-center mb-8">Featured Videos</h2>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto text-center mb-16">Watch our hilarious misadventures and crazy schemes unfold</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="relative group cursor-pointer">
+                        <div
+                            class="aspect-video rounded-lg overflow-hidden shadow-lg card-cartoon card-frame">
+                            <img src="images/LaLuttepourlaBouteille.png" alt="Cart Wars"
+                                class="w-full h-full object-cover transform hover:scale-105 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <i data-lucide="play-circle"
+                                    class="w-20 h-20 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300"></i>
+                            </div>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold">Cart
+                            Wars</h3>
+                        <p class="text-gray-600 group-hover:text-gray-900 transition-colors duration-300">Episode 1</p>
+                    </div>
+
+                    <div class="relative group cursor-pointer">
+                        <div
+                            class="aspect-video rounded-lg overflow-hidden shadow-lg card-cartoon card-frame">
+                            <img src="images/GarageAnticsandFriendlyMischief.png" alt="Beer Bottle Orchestra"
+                                class="w-full h-full object-cover transform hover:scale-105 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <i data-lucide="play-circle"
+                                    class="w-20 h-20 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300"></i>
+                            </div>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold">Beer
+                            Bottle Orchestra</h3>
+                        <p class="text-gray-600 group-hover:text-gray-900 transition-colors duration-300">Episode 2</p>
+                    </div>
+
+                    <div class="relative group cursor-pointer">
+                        <div
+                            class="aspect-video rounded-lg overflow-hidden shadow-lg card-cartoon card-frame">
+                            <img src="images/SoireeLottoEclairee.png" alt="Bum Coin Pitch"
+                                class="w-full h-full object-cover transform hover:scale-105 transition-all duration-300">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <i data-lucide="play-circle"
+                                    class="w-20 h-20 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300"></i>
+                            </div>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold">Bum
+                            Coin Pitch</h3>
+                        <p class="text-gray-600 group-hover:text-gray-900 transition-colors duration-300">Episode 3</p>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="https://www.youtube.com/channel/UCRzQQn6_IV3ya6PiIZFwEKQ" target="_blank"
+                        class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-full font-bold transform hover:scale-105 hover:from-red-700 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        Watch More on YouTube
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2 animate-bounce"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet the Cast Preview -->
+    <section class="py-24 md:py-32" style="background-color: #191919;">
+        <div class="section-overlay"></div>
+        <div class="container mx-auto px-4">
+            <div class="animate-on-scroll">
+                <h2 class="mx-auto text-5xl md:text-6xl font-bold text-center mb-8">Meet the Cast</h2>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto text-center mb-16">Meet our lovable gang of misfits who turn everyday struggles into epic adventures.</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    <a href="phil.html"
+                        class="character-card p-4 text-center animate-fade-in transform hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        aria-label="Phil — view profile">
+                        <img src="images/characterspersonality/PhilthePhilosopher_sProfile.png" alt="Phil"
+                            class="w-full h-56 object-contain rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">Phil</h3>
+                        <p class="text-white">The philosopher</p>
+                    </a>
+                    <a href="roxy.html"
+                        class="character-card p-4 text-center animate-fade-in transform hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        aria-label="Roxy — view profile">
+                        <img src="images/characterspersonality/Roxy_TheBoldLeader.png" alt="Roxy"
+                            class="w-full h-56 object-contain rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">Roxy</h3>
+                        <p class="text-white">The Boss of the crew</p>
+                    </a>
+                    <a href="mikey.html"
+                        class="character-card p-4 text-center animate-fade-in transform hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        aria-label="Mikey — view profile">
+                        <img src="images/characterspersonality/Mikeycharactersprofile.png" alt="Mikey"
+                            class="w-full h-56 object-contain rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">Mikey</h3>
+                        <p class="text-white">The Prankster</p>
+                    </a>
+                    <a href="richie.html"
+                        class="character-card p-4 text-center animate-fade-in transform hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        aria-label="Richie — view profile">
+                        <img src="images/characterspersonality/Richie_TheDreamerinDecline.png" alt="Richie"
+                            class="w-full h-56 object-contain rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">Richie</h3>
+                        <p class="text-white">The Former rich guy</p>
+                    </a>
+                    <a href="jamal.html"
+                        class="character-card p-4 text-center animate-fade-in transform hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        aria-label="Jamal — view profile">
+                        <img src="images/characterspersonality/Jamal_sCharacterProfileIllustration.png" alt="Jamal"
+                            class="w-full h-56 object-contain rounded-lg mb-4">
+                        <h3 class="text-xl font-bold mb-2">Jamal</h3>
+                        <p class="text-white">The street Hustler</p>
+                    </a>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="characters.html" aria-label="See all characters"
+                        class="btn-cartoon">
+                        See All Characters
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Grid -->
+    <section class="py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <h2 class="mx-auto text-5xl md:text-6xl font-bold text-center mb-8">Gallery</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="gallery-item relative group cursor-pointer" data-caption="Bum Life Adventures">
+                    <img src="images/CampingNightbytheFire.png" alt="Bum Life Adventures"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Park Cooking">
+                    <img src="images/Cuisinerauparcavecenthousiasme.png" alt="Park Cooking"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Luxury Adventures">
+                    <img src="images/LuxeShowroomShenanigans.png" alt="Luxury Adventures"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Urban Night">
+                    <img src="images/NuitUrbaineetComptedeFous.png" alt="Urban Night"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="White House Adventure">
+                    <img src="images/SelfieinFrontoftheWhiteHouse.png" alt="White House Adventure"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Pet Rescue">
+                    <img src="images/Sauvetage-d_animauxchezBum_sPets.png" alt="Pet Rescue"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Garage Sale">
+                    <img src="images/Ventedegarageanimeeenjournee.png" alt="Garage Sale"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+                <div class="gallery-item relative group cursor-pointer" data-caption="Peaceful Life">
+                    <img src="images/Vietranquillesouslecielbleu.png" alt="Peaceful Life"
+                        class="w-full h-64 object-cover rounded-lg hover-scale">
+                    <div class="watermark-overlay">
+                        <span class="watermark-text">Bum.Life</span>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 md:py-32 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="mx-auto text-5xl md:text-6xl font-bold text-center mb-8">About</h2>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto text-center mb-16">
+                Inspired by shows like Family Guy — but dirtier, wiser, and broke. Bum.Life brings street humor and
+                heart to animation.
+            </p>
+            <a href="about.html"
+                class="btn-cartoon">
+                Learn More
+            </a>
+        </div>
+    </section>
+
+    <!-- Producer CTA -->
+    <section class="py-24 md:py-32 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black">
+        <div class="container mx-auto px-4 text-center">
+                <h2 class="mx-auto text-5xl md:text-6xl text-center mb-8">Looking to fund or produce the next cult animation hit?</h2>
+            <div class="flex justify-center gap-4">
+                <button
+                    class="bg-black text-white px-8 py-3 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    Request Screener
+                </button>
+                <button
+                    class="border-2 border-black px-8 py-3 rounded-full font-bold transform hover:scale-105 hover:bg-black hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl">
+                    Download One-Pager
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white py-12 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2">Bum.Life</h3>
+                    <p class="text-gray-400 italic tracking-wide">5 bums. 1 bench. Infinite chaos.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <ul class="flex flex-wrap justify-center gap-6">
+                        <li><a href="characters.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Characters</a></li>
+                        <li><a href="videos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Videos</a></li>
+                        <li><a href="photos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Photos</a></li>
+                        <li><a href="about.html" class="hover:text-yellow-400 transition-colors duration-300">About</a>
+                        </li>
+                        <li><a href="contact.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="flex justify-center md:justify-end space-x-6">
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="youtube" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-800">
+                <p>&copy; 2025 Bum.Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <div class="lightbox-content">
+            <button class="lightbox-close" aria-label="Close lightbox">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <img id="lightbox-image" src="" alt="" class="lightbox-image">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous image">
+                <i data-lucide="chevron-left" class="w-8 h-8"></i>
+            </button>
+            <button class="lightbox-nav lightbox-next" aria-label="Next image">
+                <i data-lucide="chevron-right" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>

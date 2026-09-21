@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+
+/* ==========================
+   Base Styles
+========================== */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+}
+
+a {
+    transition: color 0.3s, text-decoration-color 0.3s, background 0.3s;
+}
+
+/* .nav_menu-item:hover,.language-links a:hover, .active{
+  color:#4f46e5!important
+} */
+.nav_menu-item:hover,
+.active {
+    color: #4f46e5 !important
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Outfit;
+    font-weight: 700;
+}
+.splash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.25), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.25), transparent 40%);
+    z-index: 0;
+}
+.header-logo {
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+}
+
+
+/* Custom Stripe Section Gradient */
+.section-bg,
+.box-bg {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.25), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.25), transparent 40%);
+}
+
+.indigo-bg {
+    background-color: #4F46E5;
+}
+
+@keyframes fadeInFromLeftContainer {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+        /* Only 30px instead of full width */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fadeInLeftContainer {
+    animation: fadeInFromLeftContainer 1s ease forwards;
+}
+
+@keyframes fadeInFromRightContainer {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+        /* Only 30px instead of full width */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fadeInRightContainer {
+    animation: fadeInFromRightContainer 1s ease forwards;
+}
+
+@keyframes fadeInFromUpContainer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+        /* Slide up from 30px below */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeInUpContainer {
+    animation: fadeInFromUpContainer 1s ease forwards;
+}
+
+/* Hospitality Marquee Box Sizing */
+.hospitality-box {
+    width: 300px;
+    height: 200px;
+    min-width: 300px;
+    min-height: 200px;
+    max-width: 300px;
+    max-height: 200px;
+    box-sizing: border-box;
+    padding: 10px 25px
+}
+
+/* Hospitality Marquee Animation */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+/* ==========================
+       HowItWorks Connector Row
+    ========================== */
+.howitworks-bullet-connector {
+    border-radius: 50%;
+    width: 100%;
+    max-width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.howitworks-connector-line {
+    flex: 1;
+    height: 8px;
+    background: var(--purple-mix-gradiant);
+    min-width: 40px;
+    max-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .howitworks-connector-line {
+        display: none;
+        /* hide horizontal line on mobile */
+    }
+}
+
+.howitworks-bullet-connector-bg {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 50px;
+    min-width: 290px;
+    padding: 0 5px;
+    position: relative;
+    overflow: hidden;
+    /* ensure the animation doesnâ€™t overflow */
+}
+
+/* Keep content above overlay */
+.howitworks-bullet-connector-bg>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* Circle container with continuous pulse animation */
+.howitworks-bullet-connector-circle {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.howitworks-bullet-connector-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+}
+
+@media (max-width: 768px) {
+    .howitworks-connector-row>.flex.flex-col.items-center {
+        width: 100% !important;
+        align-items: stretch !important;
+        margin: 0 !important;
+    }
+
+    .howitworks-connector-row {
+        flex-direction: column !important;
+        width: 100% !important;
+        align-items: stretch !important;
+    }
+
+    .howitworks-bullet-connector-bg {
+        width: 100% !important;
+        margin: 0 0 24px 0 !important;
+        border-radius: 50px !important;
+    }
+}
+
+
+/* ==========================
+   Revenue Section Columns & Separator
+========================== */
+.revenue-col-large {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.benefits-seperator {
+    width: 2px;
+    min-width: 2px;
+    max-width: 2px;
+    height: 100%;
+    background: #B9B9B9;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

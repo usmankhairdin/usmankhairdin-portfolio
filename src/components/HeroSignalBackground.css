@@ -1,0 +1,57 @@
+/* Single Home grid + signal source. No tag, cursor, 3D or route logic. */
+.hero-signal-background{
+  --sb-pitch:var(--splash-pitch,72px);
+  --sb-grid:var(--splash-grid);
+  --sb-rgb:66 92 240;
+  --sb-tint:157 179 255;
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;contain:layout paint;background:var(--splash-surface);
+}
+.hero-signal-background:before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--sb-grid) 1px,transparent 1px);
+  background-size:var(--sb-pitch) 100%;background-position:0 0;
+}
+html[data-theme="dark"] .hero-signal-background{--sb-rgb:142 160 255;--sb-tint:150 170 255}
+/* Suppress legacy per-route pseudo grids; this component paints the only grid. */
+html body .route-page:not(.case-study) .route-hero:before{content:none}
+.route-page:not(.case-study) .route-hero{position:relative;isolation:isolate;overflow:clip}
+.route-page:not(.case-study) .route-hero__content{position:relative;z-index:2}
+
+/* Signal traces: a short luminous segment on a vertical line, travelling top to bottom. The layer is dimmed (not hidden) over the copy block,
+   using an ellipse measured from the copy, so a trace can never compete with the headline, paragraph or CTA text. */
+.hero-signal-background__traces{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(#000,#000),radial-gradient(ellipse var(--crx,0px) var(--cry,0px) at var(--ccx,-999px) var(--ccy,-999px),rgb(0 0 0 / .55) 54%,transparent 100%);
+  -webkit-mask-composite:source-out,source-over;
+  mask-image:linear-gradient(#000,#000),radial-gradient(ellipse var(--crx,0px) var(--cry,0px) at var(--ccx,-999px) var(--ccy,-999px),rgb(0 0 0 / .55) 54%,transparent 100%);
+  mask-composite:subtract,add;
+}
+.sb-trace{
+  position:absolute;
+  top:0;
+  left:calc(var(--col) * var(--sb-pitch,72px));
+  width:1px;
+  height:var(--len,110px);
+  opacity:0;
+  transform:translate3d(0,calc(var(--len,110px) * -1),0);
+  animation:sb-trace var(--cycle,9s) linear var(--delay,0s) infinite;
+  will-change:transform;
+}
+/* transparent → very soft pale blue → restrained cobalt highlight (peak 18%, so 16-20 traces together stay quiet) → soft fade → transparent; the leading end is at the bottom */
+.sb-trace:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgb(var(--sb-tint) / .06) 30%,rgb(var(--sb-rgb) / .09) 68%,rgb(var(--sb-rgb) / .18) 90%,transparent 100%)}
+.sb-trace:after{content:"";position:absolute;left:-4px;bottom:4%;width:9px;height:18px;border-radius:50%;background:radial-gradient(ellipse at center,rgb(var(--sb-rgb) / .06),transparent 70%)}
+/* 60% of the cycle is the descent (linear, top edge to below the viewport); the rest is rest, off screen, so the loop seam is never seen */
+@keyframes sb-trace{
+  0%{opacity:1;transform:translate3d(0,calc(var(--len,110px) * -1),0)}
+  60%{opacity:1;transform:translate3d(0,100dvh,0)}
+  60.1%,100%{opacity:0;transform:translate3d(0,100dvh,0)}
+}
+html[data-theme="dark"] .sb-trace:before{background:linear-gradient(to bottom,transparent 0%,rgb(var(--sb-tint) / .05) 30%,rgb(var(--sb-rgb) / .08) 68%,rgb(var(--sb-rgb) / .15) 90%,transparent 100%)}
+
+
+@media(max-width:1580px){.hero-signal-background .sb-trace--w{display:none}}
+@media(max-width:640px){.hero-signal-background .sb-trace:not(.sb-trace--m){display:none}}
+@media(prefers-reduced-motion:reduce){.hero-signal-background .sb-trace{display:none;animation:none}}

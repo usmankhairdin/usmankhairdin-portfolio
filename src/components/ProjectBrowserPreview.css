@@ -1,0 +1,28 @@
+/* ============================================================================
+   Project browser preview — the shared browser frame (BrowserFrame.css) plus the one thing that is specific to the detail hero:
+   the viewport scrolls the full-page capture instead of showing a cropped still.
+   ============================================================================ */
+.pbp{margin:0;min-width:0}
+
+/* On a dark project stage the shell, its hairline and the url text take the dark treatment; every painted property still
+   lives in the shared frame, so only its inputs are overridden here. */
+.pdh[data-tone="dark"] .pbp__frame{
+  --uf-fg-rgb:244 240 230;
+  --uf-muted:#8a90a0;
+  --uf-bg:color-mix(in srgb,var(--accent,#ffd51d) 7%,#1a2130);
+  --uf-shadow:0 0 0 1px rgb(255 255 255 / .09),0 46px 96px -36px rgb(0 0 0 / .7);
+}
+
+/* The viewport: the full-page capture is taller than the frame and is scrolled inside it by the component (GSAP). */
+.pbp__screen{position:relative;cursor:ns-resize}
+.pbp__shot{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:auto;
+  display:block;
+  pointer-events:none;
+  user-select:none;
+  will-change:transform;
+}

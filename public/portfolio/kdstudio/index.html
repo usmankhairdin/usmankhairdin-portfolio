@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>KD Studio - Software Agency</title>
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <header id="main-header" class="fixed-top transparent-header py-3">
+            <div
+                class="container-fluid d-flex align-items-center justify-content-between">
+
+                <!-- Logo -->
+                <h1 class="site-logo m-0">KD Studio</h1>
+
+                <!-- Mobile Toggle Button -->
+                <button class="d-lg-none border-0 bg-transparent"
+                    id="mobile-menu-toggle" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars fa-lg"></i>
+                </button>
+
+                <!-- Navigation -->
+                <nav class="main-nav d-none d-lg-flex gap-4 align-items-center">
+                    <a href="#" class="nav-link active">Home</a>
+                    <a href="#" class="nav-link">About</a>
+
+                    <!-- Dropdown -->
+                    <div class="dropdown-parent">
+                        <a href="#" class="nav-link">Services</a>
+                        <div class="dropdown-menu">
+                            <a href="web-development.html"
+                                class="dropdown-item">Web Development</a>
+                            <a href="ui-ux-design.html"
+                                class="dropdown-item">UI/UX Design</a>
+                            <a href="mobile-apps.html"
+                                class="dropdown-item">Mobile App Development</a>
+                        </div>
+                    </div>
+                    <a href="#" class="nav-link">Portfolio</a>
+                    <a href="#" class="nav-link">Contact</a>
+                </nav>
+
+                <!-- Call Info -->
+                <div class="d-none d-lg-flex align-items-center gap-4">
+                    <div
+                        class="call-info d-flex flex-column text-end text-lg-start">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-phone me-1"></i>
+                            <div>
+                                <div class="call-label">Call Anytime</div>
+                                <a href="tel:8888082227"
+                                    class="call-number text-decoration-none">888-808-2227</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobile-nav" class="d-lg-none mobile-nav">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">About</a>
+
+                <!-- Accordion Dropdown -->
+                <div class="dropdown-parent">
+                    <button class="nav-link dropdown-toggle">Services</button>
+                    <div class="dropdown-content">
+                        <a href="web-development.html" class="dropdown-item">Web
+                            Development</a>
+                        <a href="ui-ux-design.html" class="dropdown-item">UI/UX
+                            Design</a>
+                        <a href="mobile-apps.html" class="dropdown-item">Mobile
+                            App Development</a>
+                    </div>
+                </div>
+
+                <a href="#" class="nav-link">Portfolio</a>
+                <a href="#" class="nav-link">Contact</a>
+
+                <div class="nav-link mt-3">
+                    <strong>Call:</strong> <a
+                        href="tel:8888082227">888-808-2227</a>
+                </div>
+            </div>
+
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="owl-carousel hero-carousel">
+                <!-- Slide 1 -->
+                <div class="item">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0 left-col">
+                                <div class="hero-small-title">We Build Digital
+                                    Success</div>
+                                <h1 class="hero-heading">Custom Web Solutions
+                                    for Ambitious Brands</h1>
+                                <p class="hero-subtext">
+                                    From websites and web apps to e-commerce and
+                                    UI/UX design, we craft high-performance
+                                    digital experiences that grow your business.
+                                </p>
+                                <a class="theme-btn-black btn-style-two"
+                                    href="javascript:void(0)">
+                                    <i class="btn-curve"></i>
+                                    <span class="btn-title">Get Started</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-6 text-center right-col">
+                                <img src="images/hero-img.svg"
+                                    class="hero-image" alt="Web Development" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="item">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0 left-col">
+                                <div class="hero-small-title">Mobile-First.
+                                    Scalable. Secure.</div>
+                                <h1 class="hero-heading">Custom Mobile & Web App
+                                    Development</h1>
+                                <p class="hero-subtext">
+                                    From concept to launch, we build
+                                    high-performance mobile and web applications
+                                    tailored to your business goals and users'
+                                    needs.
+                                </p>
+                                <a class="theme-btn-black btn-style-two"
+                                    href="javascript:void(0)">
+                                    <i class="btn-curve"></i>
+                                    <span class="btn-title">Learn More</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-6 text-center right-col">
+                                <img src="images/mobileapp.svg"
+                                    class="hero-image"
+                                    alt="Digital Solutions" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="item">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0 left-col">
+                                <div class="hero-small-title">Design That Tells
+                                    Your Story</div>
+                                <h1 class="hero-heading">User-Centered UI/UX &
+                                    Branding</h1>
+                                <p class="hero-subtext">
+                                    We design intuitive, engaging interfaces and
+                                    memorable brand experiences that connect
+                                    with your audience and drive action.
+                                </p>
+                                <a class="theme-btn-black btn-style-two"
+                                    href="javascript:void(0)">
+                                    <i class="btn-curve"></i>
+                                    <span class="btn-title">Explore
+                                        Services</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-6 text-center right-col">
+                                <img src="images/designagency.svg"
+                                    class="hero-image"
+                                    alt="End-to-End Development" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Left Arrow (thin line) -->
+            <div class="hero-nav hero-next">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="-19.04 0 75.804 75.804">
+                    <g id="Group_65" data-name="Group 65"
+                        transform="translate(-831.568 -384.448)">
+                        <path id="Path_57" data-name="Path 57"
+                            d="M833.068,460.252a1.5,1.5,0,0,1-1.061-2.561l33.557-33.56a2.53,2.53,0,0,0,0-3.564l-33.557-33.558a1.5,1.5,0,0,1,2.122-2.121l33.556,33.558a5.53,5.53,0,0,1,0,7.807l-33.557,33.56A1.5,1.5,0,0,1,833.068,460.252Z"
+                            fill="#0c2c67" />
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Right Arrow (thin line) -->
+            <div class="hero-nav hero-prev">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="-19.04 0 75.803 75.803">
+                    <g id="Group_64" data-name="Group 64"
+                        transform="translate(-624.082 -383.588)">
+                        <path id="Path_56" data-name="Path 56"
+                            d="M660.313,383.588a1.5,1.5,0,0,1,1.06,2.561l-33.556,33.56a2.528,2.528,0,0,0,0,3.564l33.556,33.558a1.5,1.5,0,0,1-2.121,2.121L625.7,425.394a5.527,5.527,0,0,1,0-7.807l33.556-33.559A1.5,1.5,0,0,1,660.313,383.588Z"
+                            fill="#0c2c67" />
+                    </g>
+                </svg>
+            </div>
+            <!-- Wave Animated -->
+            <div class="wave__container">
+                <div class="wave"></div>
+            </div>
+
+            <!-- Hero Background Circles -->
+            <div class="hero-circles">
+                <div class="circle circle-top-right"></div>
+            </div>
+        </section>
+
+        <!-- Call To Section -->
+        <section class="call-to-section-two">
+            <div class="container">
+                <div class="row align-items-center">
+                    <!-- Heading -->
+                    <div class="col-lg-8 col-md-7">
+                        <h2 class="text-start">We’re Ready to Bring Bigger
+                            <br>&amp; Stronger Projects</h2>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="col-lg-4 col-md-5 text-md-end mt-4 mt-md-0">
+                        <div class="link-box">
+                            <a class="theme-btn-orange btn-style-one" href="#">
+                                <i class="btn-curve"></i>
+                                <span class="btn-title">Contact with us</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="display-6 fw-bold">Our Services</h2>
+                    <p class="lead">What we offer at KD Studio</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card h-100 shadow-sm">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png"
+                                alt="Web Dev" width="60" />
+                            <h5 class="mt-3">Web Development</h5>
+                            <p>Custom websites built for performance and
+                                scalability.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card h-100 shadow-sm">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/833/833472.png"
+                                alt="Mobile Dev" width="60" />
+                            <h5 class="mt-3">Mobile Apps</h5>
+                            <p>iOS & Android apps tailored for your users’
+                                experience.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card h-100 shadow-sm">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                                alt="UI UX" width="60" />
+                            <h5 class="mt-3">UI/UX Design</h5>
+                            <p>Modern, user-friendly interfaces for web and
+                                mobile.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card h-100 shadow-sm">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/3754/3754618.png"
+                                alt="Cloud Solutions" width="60" />
+                            <h5 class="mt-3">Cloud Solutions</h5>
+                            <p>Scalable cloud architecture & infrastructure
+                                deployment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Work Showcase with Tabs -->
+        <section class="portfolio-section py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-4">Our Work
+                    Showcase</h2>
+
+                <!-- Nav Tabs -->
+                <ul class="nav nav-tabs justify-content-center mb-4"
+                    id="portfolioTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="web-tab"
+                            data-bs-toggle="tab" data-bs-target="#web"
+                            type="button" role="tab">Web Development</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="mobile-tab"
+                            data-bs-toggle="tab" data-bs-target="#mobile"
+                            type="button" role="tab">Mobile App
+                            Development</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="frontend-tab"
+                            data-bs-toggle="tab" data-bs-target="#frontend"
+                            type="button" role="tab">Front End
+                            Development</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="design-tab"
+                            data-bs-toggle="tab" data-bs-target="#design"
+                            type="button" role="tab">Web / Product
+                            Design</button>
+                    </li>
+                </ul>
+
+                <!-- Tab Panes -->
+                <div class="tab-content" id="portfolioTabContent">
+                    <div class="tab-pane fade show active" id="web"
+                        role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Web Project
+                                    1</div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Web Project
+                                    2</div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Web Project
+                                    3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="mobile" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Mobile App
+                                    1</div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Mobile App
+                                    2</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="frontend" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="portfolio-placeholder">Front End
+                                    Showcase</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="design" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Design Sample
+                                    1</div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="portfolio-placeholder">Design Sample
+                                    2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Let’s Work Together</h2>
+                    <p class="lead">We’d love to hear about your project or
+                        idea. Reach out and let's make something great!</p>
+                </div>
+
+                <div class="row">
+                    <!-- Contact Form -->
+                    <div class="col-md-7">
+                        <form id="contact-form">
+                            <div class="mb-3">
+                                <input type="text" class="form-control"
+                                    id="name" name="name"
+                                    placeholder="Your Name" />
+                            </div>
+
+                            <!-- Service Dropdown -->
+                            <div class="mb-3">
+                                <select class="form-control" id="service"
+                                    name="service">
+                                    <option value disabled selected>Select a
+                                        Service</option>
+                                    <option value="Web Development">Web
+                                        Development</option>
+                                    <option
+                                        value="Mobile App Development">Mobile
+                                        App Development</option>
+                                    <option value="Front End Development">Front
+                                        End Development</option>
+                                    <option value="Web / Product Design">Web /
+                                        Product Design</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="email" class="form-control"
+                                    id="email" name="email"
+                                    placeholder="Your Email" />
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="message"
+                                    name="message" rows="5"
+                                    placeholder="Your Message"></textarea>
+                            </div>
+                            <button type="submit" class="theme-btn-black mt-3">
+                                <i class="btn-curve"></i>
+                                <span class="btn-title">Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="col-md-5 mt-4 mt-md-0">
+                        <div class="contact-info">
+                            <h5 class="mb-4">Head Office</h5>
+                            <p>123 KD Street, Tech City, PK</p>
+                            <p><strong>Email:</strong> hello@kdstudio.com</p>
+                            <p><strong>Phone:</strong> +92 888 808 2227</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer text-white py-5">
+            <div class="container">
+                <div class="row gy-4">
+                    <!-- Column 1: About -->
+                    <div class="col-md-12 col-lg-4">
+                        <h5 class="footer-title">KD Studio</h5>
+                        <p class="small">We help ambitious brands grow through
+                            modern web, mobile, and design solutions.</p>
+
+                        <!-- Social Icons -->
+                        <div class="footer-social mt-3 d-flex gap-3">
+                            <a href="#" class="text-white"
+                                aria-label="Facebook"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white"
+                                aria-label="Twitter"><i
+                                    class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white"
+                                aria-label="LinkedIn"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="text-white"
+                                aria-label="Instagram"><i
+                                    class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Services -->
+                    <div class="col-md-6 col-lg-2">
+                        <h6 class="footer-title">Services</h6>
+                        <ul class="footer-links">
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Mobile Apps</a></li>
+                            <li><a href="#">UI/UX Design</a></li>
+                            <li><a href="#">Cloud Solutions</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3: Quick Links -->
+                    <div class="col-md-6 col-lg-3">
+                        <h6 class="footer-title">Quick Links</h6>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Portfolio</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 4: Contact Info -->
+                    <div class="col-md-6 col-lg-3">
+                        <h6 class="footer-title">Get in Touch</h6>
+                        <p class="small mb-1"><i
+                                class="fa fa-envelope me-2"></i>
+                            hello@kdstudio.com</p>
+                        <p class="small mb-1"><i class="fa fa-phone me-2"></i>
+                            +92 888 808 2227</p>
+                        <p class="small"><i
+                                class="fa fa-map-marker-alt me-2"></i> 123 KD
+                            Street, Tech City, PK</p>
+                    </div>
+                </div>
+
+                <div class="footer-line my-4"></div>
+                <div class="text-center small mt-3">&copy; 2025 KD Studio. All
+                    rights reserved.</div>
+            </div>
+        </footer>
+
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Owl Carousel JS -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>

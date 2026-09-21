@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - Bum.Life</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <!-- Bubblegum Sans for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="bg-transparent text-white fixed w-full z-50 transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/logobum.png" alt="Bum.Life"
+                        class="nav-logo h-20 w-auto transition-all duration-300">
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Home</a>
+                    <a href="characters.html"
+                        class="nav-link hover:text-yellow-400 transition-colors duration-300">Characters</a>
+                    <a href="videos.html"
+                        class="nav-link nav-link-active hover:text-yellow-400 transition-colors duration-300">Videos</a>
+                    <a href="photos.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">Photos</a>
+                    <a href="about.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">About</a>
+                    <a href="producers.html" class="nav-link hover:text-yellow-400 transition-colors duration-300">For
+                        Producers</a>
+                    <a href="contact.html" class="nav-link hover:text-yellow-400 transition-colors duration-300 flex items-center">
+                        Contact
+                    </a>
+                </div>
+                <button class="md:hidden">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Videos Header -->
+    <section class="pt-32 pb-20 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-center bg-contain bg-repeat"
+            style="background-image: url('images/TexturedRedBrickWallClose-up.png'); opacity: 0.3;">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-gray-900/70"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h1
+                class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6">
+                Bum.Life Videos</h1>
+            <p
+                class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Watch the hilarious adventures of our favorite misfits on the bench.
+            </p>
+        </div>
+    </section>
+
+    <!-- Shorts Section -->
+    <section class="py-24 md:py-32">
+        <div class="container mx-auto px-4">
+            <h2 class="mx-auto text-5xl md:text-6xl font-bold text-center mb-8">Shorts</h2>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto text-center mb-16">Quick clips of pure chaos and hilarity</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Short 1 -->
+                <div class="card-cartoon overflow-hidden">
+                    <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                            title="Bum Life Short 1" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Cart Wars</h3>
+                        <p class="text-gray-600">When shopping cart theft turns into an epic battle.</p>
+                    </div>
+                </div>
+
+                <!-- Short 2 -->
+                <div class="card-cartoon overflow-hidden">
+                    <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/jNQXAC9IVRw" 
+                            title="Bum Life Short 2" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Beer Bottle Orchestra</h3>
+                        <p class="text-gray-600">Five misfits create a symphony with trash.</p>
+                    </div>
+                </div>
+
+                <!-- Short 3 -->
+                <div class="card-cartoon overflow-hidden">
+                    <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/9bZkp7q19f0" 
+                            title="Bum Life Short 3" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">Bum Coin Pitch</h3>
+                        <p class="text-gray-600">The cryptocurrency nobody asked for.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Subscribe Banner -->
+    <section class="py-20 md:py-28 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="mx-auto text-4xl md:text-5xl font-bold mb-4">Subscribe to Bum.Life</h2>
+            <p class="text-xl text-black mb-8 max-w-2xl mx-auto">
+                Never miss a moment of chaos. Subscribe to our YouTube channel for new episodes, shorts, and behind-the-scenes content.
+            </p>
+            <button
+                    class="inline-flex items-center border-2 border-black px-8 py-3 rounded-full font-bold transform hover:scale-105 hover:bg-black hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <i data-lucide="youtube" class="w-6 h-6 mr-3"></i>
+                Subscribe Now
+                </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white py-12" style="background-color: #0f0f0f;">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2">Bum.Life</h3>
+                    <p class="text-gray-400 italic tracking-wide">5 bums. 1 bench. Infinite chaos.</p>
+                </div>
+                <div class="md:col-span-2">
+                    <ul class="flex flex-wrap justify-center gap-6">
+                        <li><a href="characters.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Characters</a></li>
+                        <li><a href="videos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Videos</a></li>
+                        <li><a href="photos.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Photos</a></li>
+                        <li><a href="about.html" class="hover:text-yellow-400 transition-colors duration-300">About</a>
+                        </li>
+                        <li><a href="contact.html"
+                                class="hover:text-yellow-400 transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="flex justify-center md:justify-end space-x-6">
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="youtube" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="#" class="hover:text-yellow-400 transform hover:scale-110 transition-all duration-300"><i
+                            data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-gray-800">
+                <p>&copy; 2025 Bum.Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+
+</html>

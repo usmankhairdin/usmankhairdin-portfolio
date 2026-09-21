@@ -1,0 +1,22 @@
+/* ============================================================
+   WEB EXPERIENCE SCROLL SYSTEM — scoped styles.
+   Everything here is gated on the html.web-scroll marker, which the
+   shared controller sets ONLY while the standalone Web Experience owns
+   scrolling. The controller removes it whenever the corridor takes over
+   (and on touch-first devices), so none of this can reach the corridor,
+   its canvas, rooms, header or overlays. No rule targets body/root
+   overflow, canvas or any corridor wrapper.
+   ============================================================ */
+
+/* Native scrollbar: hidden visually only; the document remains the real scroller (wheel, trackpad, keyboard, touch,
+   anchors and Lenis all keep working). Orientation is given by the Back to Top progress ring instead. */
+html.web-scroll{scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:auto!important}
+html.web-scroll::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* Lenis needs the document to size itself naturally, and CSS smooth-scroll must never fight it. */
+html.web-scroll.lenis,html.web-scroll.lenis body{height:auto}
+html.web-scroll.lenis [data-lenis-prevent]{overscroll-behavior:contain}
+html.web-scroll.lenis iframe{pointer-events:none}
+
+/* Menu drawer open: the page stays where it is (set only by the shared controller's lock()). */
+html.web-scroll-locked{overflow:hidden}
