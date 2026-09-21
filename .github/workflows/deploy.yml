@@ -1,0 +1,57 @@
+name: Deploy Portfolio to Namecheap
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get website code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Keep legacy portfolio out of root deployment
+        run: rm -rf public/portfolio
+
+      - name: Build website
+        run: npm run build
+
+      - name: Make sure htaccess is included
+        run: cp public/.htaccess dist/.htaccess
+
+      - name: Prepare SSH connection
+        env:
+          NC_HOST: ${{ secrets.NC_HOST }}
+          NC_SSH_KEY: ${{ secrets.NC_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$NC_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 21098 -H "$NC_HOST" >> ~/.ssh/known_hosts
+
+      - name: Package website
+        run: tar -czf deploy.tar.gz -C dist .
+
+      - name: Upload website to Namecheap
+        env:
+          NC_HOST: ${{ secrets.NC_HOST }}
+          NC_USER: ${{ secrets.NC_USER }}
+        run: |
+          scp -P 21098 deploy.tar.gz "$NC_USER@$NC_HOST:~/deploy.tar.gz"
+          ssh -p 21098 "$NC_USER@$NC_HOST" "set -e; mkdir -p ~/public_html; rm -rf ~/public_html/assets; tar -xzf ~/deploy.tar.gz -C ~/public_html; rm -f ~/deploy.tar.gz"
+
+      - name: Deployment finished
+        run: echo "Portfolio deployed successfully."
