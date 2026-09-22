@@ -23,11 +23,35 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Stage audited Bum.Life updates
+        run: |
+          mkdir -p "$RUNNER_TEMP/bum-life-overlay"
+          cp \
+            public/portfolio/bum.life/about.html \
+            public/portfolio/bum.life/characters.html \
+            public/portfolio/bum.life/contact.html \
+            public/portfolio/bum.life/contact.php \
+            public/portfolio/bum.life/index.html \
+            public/portfolio/bum.life/jamal.html \
+            public/portfolio/bum.life/mikey.html \
+            public/portfolio/bum.life/phil.html \
+            public/portfolio/bum.life/photos.html \
+            public/portfolio/bum.life/producers.html \
+            public/portfolio/bum.life/richie.html \
+            public/portfolio/bum.life/roxy.html \
+            public/portfolio/bum.life/videos.html \
+            "$RUNNER_TEMP/bum-life-overlay/"
+
       - name: Keep legacy portfolio out of root deployment
         run: rm -rf public/portfolio
 
       - name: Build website
         run: npm run build
+
+      - name: Include audited Bum.Life updates
+        run: |
+          mkdir -p dist/portfolio/bum.life
+          cp "$RUNNER_TEMP/bum-life-overlay/"* dist/portfolio/bum.life/
 
       - name: Make sure htaccess is included
         run: cp public/.htaccess dist/.htaccess

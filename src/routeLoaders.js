@@ -1,4 +1,5 @@
 export const routeLoaders = {
+  home: () => import('./experience/HomeExperience.jsx'),
   work: () => import('./pages/Work.jsx'),
   project: () => import('./pages/Project.jsx'),
   about: () => import('./pages/About.jsx'),
@@ -11,5 +12,7 @@ export const routeLoaders = {
 // into an early, non-blocking fetch without changing route behavior.
 export function preloadRoute(route) {
   const load = routeLoaders[route]
-  if (load) void load()
+  // Preloading is best-effort. Navigation owns the visible retry/error path,
+  // so a transient speculative fetch must not become an unhandled rejection.
+  if (load) void load().catch(() => {})
 }

@@ -427,7 +427,8 @@ html[data-theme="dark"] .route-page--services .agency-steps--premium > div > b,
 html[data-theme="dark"] .route-page--agencies .agency-steps--premium > div > b{color:#fff}
 
 /* ---- 6. ROUTE FALLBACKS (shown while a lazy route loads) — themed so a switch can never flash the wrong colour ---- */
-.home-route-fallback,.standard-route-fallback{background:var(--bg)}
+.home-route-fallback{background:var(--splash-surface)}
+.standard-route-fallback{background:var(--bg)}
 
 /* About page adopts the Splash/Home palette while remaining page-scoped. */
 html[data-theme="dark"] .route-page--about{

@@ -27,7 +27,7 @@ function ExperienceHud() {
     <Header immersive />
     <div className="experience-intro">
       <span>THE INTERFACE GALLERY</span>
-      <b>Scroll to walk ┬╖ move the mouse to look</b>
+      <b>Scroll to walk · move the mouse to look</b>
       <small>{
         workRoom
           ? 'Scroll over the project wall to browse. Scroll back at the first project to return.'

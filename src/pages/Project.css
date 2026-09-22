@@ -81,7 +81,7 @@
 .case-study .cs-cards{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:var(--cs-gap)}
 .case-study .cs-card{min-width:0;padding:clamp(20px,2.2vw,28px);border-radius:16px}
 .case-study .cs-card__n{display:block;font:700 10px var(--mono);letter-spacing:.12em}
-.case-study .cs-card h4{margin:14px 0 0;font-size:var(--cs-h3);line-height:1.2;letter-spacing:-.03em}
+.case-study .cs-card h3{margin:14px 0 0;font-size:var(--cs-h3);line-height:1.2;letter-spacing:-.03em}
 .case-study .cs-card p{margin:10px 0 0;font-size:13px;line-height:1.65}
 
 /* Features: a repeated grid of equal items, each a capture with its own label, subheading and copy. */

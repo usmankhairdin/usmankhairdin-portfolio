@@ -197,13 +197,6 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
   .wk-frame:hover{transform:translate3d(0,-6px,0);box-shadow:0 0 0 1px rgb(var(--fg-rgb) / .12),0 2px 5px rgb(var(--shadow,24 20 14) / .06),0 60px 110px -36px rgb(var(--shadow,24 20 14) / .5)}
   .wk-project[data-tone="dark"] .wk-frame:hover{box-shadow:0 0 0 1px rgb(255 255 255 / .13),0 60px 110px -36px rgb(0 0 0 / .8)}
 }
-.wk-frame__screen img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:50% 0;
-}
 .wk-project__caption{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* ---- Tablet: stacked, still large; the sideways travel is shorter ---------- */

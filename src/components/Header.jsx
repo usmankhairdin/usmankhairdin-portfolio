@@ -36,6 +36,7 @@ const CTA = { label: 'Send a brief', to: '/contact/', door: 'contact' }
 const MENU_ITEMS = ITEMS.filter((item) => item.key !== 'contact')
 
 const routeForPath = {
+  '/': 'home',
   '/work/': 'work',
   '/services/': 'services',
   '/for-agencies/': 'agencies',
@@ -116,7 +117,11 @@ export default function Header({ immersive = false }) {
     navTimer.current = window.setTimeout(() => navigate(to), NAV_DELAY)
   }
   const goImmersive = (door, event) => {
-    if (!door) { if (plainClick(event)) skipBootOnce(); return }   // Home: a normal document load back to the entrance, exactly as before
+    if (!plainClick(event)) return
+    if (!door) { skipBootOnce(); return }   // Home: a normal document load back to the entrance, exactly as before
+    // Compact/coarse Corridor presentations intentionally use the static pages;
+    // the 3D room HTML is hidden there, so let the link perform its normal load.
+    if (window.matchMedia('(max-width: 650px), (pointer: coarse)').matches) return
     event.preventDefault()
     close()
     journey?.requestDoor(door)
@@ -129,7 +134,7 @@ export default function Header({ immersive = false }) {
   const logo = mode === 'web'
     ? (pathname === '/'
       ? <span className="site-logo site-logo--current" role="img" aria-label="Usman Khair Din — you are on the home page" aria-current="page" data-trap-skip>{logoImg}</span>
-      : <Link to="/" className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onClick={() => close()}>{logoImg}</Link>)
+      : <Link to="/" className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onPointerEnter={() => preloadRoute('home')} onFocus={() => preloadRoute('home')} onClick={() => close()}>{logoImg}</Link>)
     : <a href="/" className="site-logo" aria-label="Return to portfolio entrance" data-trap-skip onClick={(event) => { if (plainClick(event)) skipBootOnce() }}>{logoImg}</a>
 
   return <div className="site-header-root" data-mode={mode} data-menu-open={open ? 'true' : 'false'} ref={rootRef}>

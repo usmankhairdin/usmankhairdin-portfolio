@@ -95,7 +95,7 @@ function Slot({ slot, layout }) {
       return <div className={`cs-cards cs-cols-${cols}`} style={{ '--cols': cols }}>
         {slot.items.map((item, index) => <article className="cs-card" key={item.title}>
           <span className="cs-card__n">{slot.numbered ? String(index + 1).padStart(2, '0') : item.label}</span>
-          <h4>{item.title}</h4>
+          <h3>{item.title}</h3>
           <p>{item.text}</p>
         </article>)}
       </div>

@@ -1,6 +1,6 @@
 /* ============================================================================
-   Project browser preview — the shared browser frame (BrowserFrame.css) plus the one thing that is specific to the detail hero:
-   the viewport scrolls the full-page capture instead of showing a cropped still.
+   Project capture — shared by the Work showcase and project-detail hero.
+   A local crop remains visible while the larger full-page capture decodes.
    ============================================================================ */
 .pbp{margin:0;min-width:0}
 
@@ -13,16 +13,17 @@
   --uf-shadow:0 0 0 1px rgb(255 255 255 / .09),0 46px 96px -36px rgb(0 0 0 / .7);
 }
 
-/* The viewport: the full-page capture is taller than the frame and is scrolled inside it by the component (GSAP). */
-.pbp__screen{position:relative;cursor:ns-resize}
-.pbp__shot{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:auto;
-  display:block;
-  pointer-events:none;
-  user-select:none;
-  will-change:transform;
+.project-capture{position:relative;display:block;overflow:hidden;cursor:ns-resize}
+.project-capture__poster,
+.project-capture__placeholder,
+.project-capture__shot{position:absolute;top:0;left:0;display:block;width:100%;pointer-events:none;user-select:none}
+.project-capture__poster,
+.project-capture__placeholder{height:100%;object-fit:cover;object-position:50% 0;opacity:1;transition:opacity .24s ease}
+.project-capture__shot{height:auto;opacity:0;will-change:transform;transition:opacity .24s ease}
+.project-capture.is-loaded .project-capture__poster,
+.project-capture.is-loaded .project-capture__placeholder{opacity:0}
+.project-capture.is-loaded .project-capture__shot{opacity:1}
+
+@media(prefers-reduced-motion:reduce){
+  .project-capture__poster,.project-capture__placeholder,.project-capture__shot{transition:none}
 }

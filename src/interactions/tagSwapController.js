@@ -501,6 +501,7 @@ export function mountTagSwapController(root = document) {
       role: snapshotAttribute(el, 'role'),
       ariaLabel: snapshotAttribute(el, 'aria-label'),
       ariaPressed: snapshotAttribute(el, 'aria-pressed'),
+      ariaKeyShortcuts: snapshotAttribute(el, 'aria-keyshortcuts'),
     }
   }
 
@@ -514,6 +515,7 @@ export function mountTagSwapController(root = document) {
     restoreAttribute(el, 'role', original.role)
     restoreAttribute(el, 'aria-label', original.ariaLabel)
     restoreAttribute(el, 'aria-pressed', original.ariaPressed)
+    restoreAttribute(el, 'aria-keyshortcuts', original.ariaKeyShortcuts)
     el.classList.remove('is-tag-dragging')
   }
 
@@ -535,15 +537,16 @@ export function mountTagSwapController(root = document) {
     el.setAttribute('data-cursor-live', '')
     el.setAttribute('draggable', 'false')
     el.setAttribute('tabindex', '0')
-    el.setAttribute('role', 'button')
-    el.setAttribute('aria-label', `${el.textContent.trim()}. Drag freely within this tag group.`)
-    el.setAttribute('aria-pressed', 'false')
+    el.setAttribute('role', 'group')
+    el.removeAttribute('aria-pressed')
+    el.setAttribute('aria-label', `${el.textContent.trim()}. Draggable tag. Hold Alt and use the arrow keys to move it.`)
+    el.setAttribute('aria-keyshortcuts', 'Alt+ArrowLeft Alt+ArrowRight Alt+ArrowUp Alt+ArrowDown')
     return item
   }
 
   function measureGroup(gs, reset = false) {
     if (!gs.group.isConnected || (drag && drag.gs === gs)) return
-    gs.gap = Math.min(getGroupGap(gs.group), 5)
+    gs.gap = getGroupGap(gs.group)
     for (const item of gs.items) {
       item.w = item.el.offsetWidth
       item.h = item.el.offsetHeight
@@ -636,7 +639,6 @@ export function mountTagSwapController(root = document) {
     }
     item.el.classList.add('is-tag-dragging')
     gs.group.classList.add('is-tag-reordering')
-    item.el.setAttribute('aria-pressed', 'true')
     try { item.el.setPointerCapture(event.pointerId) } catch { /* non-capturable target */ }
     wake()
   }
@@ -656,7 +658,6 @@ export function mountTagSwapController(root = document) {
     try { item.el.releasePointerCapture(pointerId) } catch { /* already released */ }
     item.el.classList.remove('is-tag-dragging')
     gs.group.classList.remove('is-tag-reordering')
-    item.el.setAttribute('aria-pressed', 'false')
   }
 
   function findItem(target) {
@@ -732,7 +733,13 @@ export function mountTagSwapController(root = document) {
         }
         for (const gs of touched) {
           if (drag?.gs === gs) continue
-          measureGroup(gs, true)
+          measureGroup(gs, !gs.interacted)
+          if (gs.interacted) {
+            let legal = solveCollisions(gs)
+            if (!legal) legal = relocateResiduals(gs) && solveCollisions(gs)
+            if (!legal) measureGroup(gs, true)
+            for (const item of gs.items) place(item)
+          }
         }
       })
     : null

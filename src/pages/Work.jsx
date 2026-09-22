@@ -5,6 +5,7 @@ import { projects } from '../data/projects.js'
 import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
 import ProjectMetaRail from '../components/ProjectMetaRail.jsx'
 import { RouteSectionGraphic, WorkHeroBlueprint } from '../components/StandardVisuals.jsx'
+import { ProjectCapture } from '../components/ProjectBrowserPreview.jsx'
 import { disciplineFor, hostLabel, showcaseImage, surfacesFor, toneFor, useShowcaseMotion } from './workShowcase.js'
 import '../components/BrowserFrame.css'
 import './Work.css'
@@ -49,22 +50,17 @@ export default function Work(){
             </header>
 
             <div className="wk-project__stage">
-              <Link to={href} className="wk-frame ui-frame" data-cursor="view" aria-hidden="true" tabIndex={-1}>
-                <span className="ui-frame__bar"><i/><i/><i/><span className="ui-frame__url">{hostLabel(project.liveUrl)}</span></span>
-                <span className="wk-frame__screen ui-frame__screen">
-                  <img
-                    src={image.src}
-                    srcSet={image.srcSet}
-                    sizes="(max-width: 1099px) 92vw, 60vw"
-                    width="1440"
-                    height="900"
-                    alt=""
-                    loading={index===0?'eager':'lazy'}
-                    fetchPriority={index===0?'high':'auto'}
-                    decoding="async"
-                    onError={(event)=>{const img=event.currentTarget;if(img.dataset.fallback)return;img.dataset.fallback='1';img.removeAttribute('srcset');img.src=image.fallback}}
-                  />
-                </span>
+              <Link to={href} className="wk-frame ui-frame" data-cursor="view" aria-label={`View ${project.title} case study`}>
+                <span className="ui-frame__bar" aria-hidden="true"><i/><i/><i/><span className="ui-frame__url">{hostLabel(project.liveUrl)}</span></span>
+                <ProjectCapture
+                  key={project.slug}
+                  project={project}
+                  eager={index===0}
+                  className="wk-frame__screen ui-frame__screen"
+                  placeholderSource={image.src}
+                  placeholderSrcSet={image.srcSet}
+                  placeholderSizes="(max-width: 1099px) 92vw, 60vw"
+                />
               </Link>
               <span className="wk-project__caption">{project.mediaAlt.hero}</span>
             </div>

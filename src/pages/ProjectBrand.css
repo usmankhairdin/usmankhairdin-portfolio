@@ -38,7 +38,7 @@ html body .case-study.pj-branded main .section--project-close .kicker{color:var(
 html body .case-study.pj-branded main .section--project-close h2{color:#0c1830}
 html[data-theme="dark"] body .case-study.pj-branded main .section--project-close h2{color:#edf2fa}
 html body .case-study.pj-branded main .cs-head h2,
-html body .case-study.pj-branded main .cs-card h4,
+html body .case-study.pj-branded main .cs-card h3,
 html body .case-study.pj-branded main .cs-feature h3{color:var(--bt-ink)}
 html body .case-study.pj-branded main .cs-lead,
 html body .case-study.pj-branded main .cs-card p,

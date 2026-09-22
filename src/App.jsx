@@ -6,7 +6,7 @@ import { ThemeProvider } from './theme/ThemeProvider.jsx'
 import CursorLayer from './cursor/CursorLayer.jsx'
 import HorizontalTagReorderManager from './components/HorizontalTagReorderManager.jsx'
 
-const HomeExperience = lazy(() => import('./experience/HomeExperience.jsx'))
+const HomeExperience = lazy(routeLoaders.home)
 const Work = lazy(routeLoaders.work)
 const Project = lazy(routeLoaders.project)
 const About = lazy(routeLoaders.about)
@@ -27,10 +27,20 @@ function RouteEffects(){
   const navigationType=useNavigationType()
   const webScroll=useWebScroll()
   useEffect(()=>{
-    if(navigationType==='POP'){ webScroll?.syncPosition(); return }
-    if(webScroll) webScroll.resetToTop()
+    if(navigationType==='POP') webScroll?.syncPosition()
+    else if(webScroll) webScroll.resetToTop()
     else window.scrollTo({top:0,left:0,behavior:'auto'})
-    if(pathname!=='/') requestAnimationFrame(()=>document.querySelector('main')?.focus({preventScroll:true}))
+
+    if(pathname==='/') return undefined
+    let frame=0
+    let attempts=0
+    const focusMain=()=>{
+      const main=document.querySelector('main')
+      if(main){ main.focus({preventScroll:true}); return }
+      if(attempts++<60) frame=requestAnimationFrame(focusMain)
+    }
+    frame=requestAnimationFrame(focusMain)
+    return()=>cancelAnimationFrame(frame)
   },[pathname,navigationType,webScroll])
   return null
 }

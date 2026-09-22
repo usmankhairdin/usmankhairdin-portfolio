@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // Keep dependency discovery scoped to the portfolio app. Archived static
+  // captures under public/ ship as-is and are not application entry points.
+  optimizeDeps: { entries: ['index.html'] },
   server: { port: 3000 },
   build: {
     target: 'es2020',

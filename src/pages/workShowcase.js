@@ -106,6 +106,7 @@ export function useShowcaseMotion(rootRef) {
     let step = 1
     let width = 1
     let token = 0
+    let focusFrame = 0
 
     const positionOf = (i) => pinTop + i * step
     const smooth = () => !!controller && controller.getSnapshot().status === 'smooth'
@@ -160,12 +161,22 @@ export function useShowcaseMotion(rootRef) {
       }
     }
 
+    const flushQueuedFocus = () => {
+      const queued = wantIndex
+      wantIndex = -1
+      if (queued >= 0 && queued !== index) goTo(queued)
+    }
+
     const goTo = (next) => {
       if (busy || next < 0 || next > last || next === index) return
       armed = false
       accum = 0
       index = next                                        // the state is decided up front; the tween lands exactly on it
-      tweenTo(positionOf(next), PANEL_SECONDS, () => { armed = false; accum = 0 })
+      tweenTo(positionOf(next), PANEL_SECONDS, () => {
+        armed = false
+        accum = 0
+        flushQueuedFocus()
+      })
     }
 
     // While the stage owns the wheel the shared header stays visible (the project changes are programmatic scrolls; the header's
@@ -184,7 +195,8 @@ export function useShowcaseMotion(rootRef) {
       if (wantIndex >= 0) index = wantIndex
       else index = clamp(Math.round((y - pinTop) / step), 0, last)
       wantIndex = -1
-      if (Math.abs(y - positionOf(index)) > 1) tweenTo(positionOf(index), SETTLE_SECONDS)
+      if (Math.abs(y - positionOf(index)) > 1) tweenTo(positionOf(index), SETTLE_SECONDS, flushQueuedFocus)
+      else flushQueuedFocus()
     }
 
     const release = () => {
@@ -198,7 +210,7 @@ export function useShowcaseMotion(rootRef) {
       if (!on) return
       const y = window.scrollY
       render()
-      const inZone = y >= pinTop - 0.5 && y <= pinTop + travel + 0.5
+      const inZone = y >= pinTop - 2 && y <= pinTop + travel + 2
       if (!inZone) {
         if (owned && !busy) release()
         if (y < pinTop - 2 || y > pinTop + travel + 2) canAcquire = true
@@ -262,8 +274,21 @@ export function useShowcaseMotion(rootRef) {
       const panel = event.target instanceof Element ? event.target.closest('.wk-project') : null
       const target = panel ? panels.indexOf(panel) : -1
       if (target < 0) return
-      if (owned) { if (!busy && target !== index) goTo(target) }
-      else wantIndex = target
+      // The global smooth-scroll controller cancels any old glide on keyboard
+      // focus. Start this panel handoff on the next frame, after that cleanup,
+      // so the new transition is not mistaken for stale scrolling.
+      if (focusFrame) cancelAnimationFrame(focusFrame)
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = 0
+        if (!on) return
+        if (!owned) {
+          wantIndex = target
+          if (!locked()) acquire(window.scrollY)
+          return
+        }
+        if (busy) wantIndex = target
+        else if (target !== index) goTo(target)
+      })
     }
 
     const remeasure = () => {
@@ -306,7 +331,10 @@ export function useShowcaseMotion(rootRef) {
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(remeasure)
     observer?.observe(root)
     return () => {
+      on = false
       token += 1
+      if (focusFrame) cancelAnimationFrame(focusFrame)
+      focusFrame = 0
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('wheel', onWheel, { capture: true })
       window.removeEventListener('keydown', onKeyDown, { capture: true })

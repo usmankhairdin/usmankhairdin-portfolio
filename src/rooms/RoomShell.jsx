@@ -78,17 +78,33 @@ function WorkCarousel({ onExit }) {
   const hero = sectionHeroes.work
   const [index, setIndex] = useState(0)
   const lock = useRef(0)
+  const gesture = useRef({ armed: false, accumulated: 0, lastDir: 0, lastEventAt: -Infinity })
   const backwardBoundary = useRef({ armed: false, lastEventAt: -Infinity })
   const go = (next) => setIndex(Math.max(0, Math.min(projects.length - 1, next)))
 
   const onWheel = (e) => {
     e.stopPropagation()
     const now = performance.now()
-    if (now < lock.current || Math.abs(e.deltaY) < 6) return
+    const magnitude = Math.abs(e.deltaY)
+    if (magnitude < 6) return
     const dir = e.deltaY > 0 ? 1 : -1
+    const currentGesture = gesture.current
+    const fresh = now - currentGesture.lastEventAt >= 140 || dir !== currentGesture.lastDir
+    currentGesture.lastEventAt = now
+    currentGesture.lastDir = dir
+    if (fresh) {
+      currentGesture.armed = true
+      currentGesture.accumulated = 0
+    }
+    if (now < lock.current || !currentGesture.armed) return
+    currentGesture.accumulated += magnitude
+    if (currentGesture.accumulated < 30) return
+    currentGesture.armed = false
+    currentGesture.accumulated = 0
+
     const next = Math.max(0, Math.min(projects.length - 1, index + dir))
     if (next !== index) {
-      backwardBoundary.current = { armed: false, lastEventAt: now }
+      backwardBoundary.current = { armed: next === 0 && dir < 0, lastEventAt: now }
       lock.current = now + 620
       setIndex(next)
       return
@@ -104,8 +120,7 @@ function WorkCarousel({ onExit }) {
     // never both change a project and exit, and trackpad inertia cannot throw the visitor
     // through the doorway.
     const boundary = backwardBoundary.current
-    const newGesture = now - boundary.lastEventAt >= 180
-    if (boundary.armed && newGesture) {
+    if (boundary.armed && fresh) {
       backwardBoundary.current = { armed: false, lastEventAt: now }
       onExit()
       return

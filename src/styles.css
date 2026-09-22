@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap');
+﻿
 :root{--ink:#09111d;--paper:#eee8dc;--accent:#455dff;--blue:#5368ff;--muted:#66707e;--mono:'DM Mono',monospace;--sans:'Manrope',system-ui,sans-serif;--serif:'Playfair Display',serif}
 *{box-sizing:border-box}html,body,#root{margin:0;min-height:100%;font-family:var(--sans);color:var(--ink)}body{background:#f0f5fc}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}
 .experience-root{position:fixed;inset:0;background:#d7d0c3;overflow:hidden}.experience-root canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
@@ -130,6 +130,7 @@
 @media(max-width:950px){.room-wall-content{width:370px;max-width:370px}.room-wall-content h2{font-size:32px}.room-wall-content .room-steps{width:300px}.room-wall-content .route-diagram{max-width:310px}}
 
 /* Sharp room typography: screen-space HTML projected to the straight front wall, no perspective/stretch on content. */
+.room-aperture-layer{overflow:clip!important}
 .room-flat-html{position:relative;pointer-events:auto;text-align:center;color:#17202c;font-family:var(--sans);font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 .room-main{width:540px;max-width:540px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .room-main h2{margin:0 auto 16px;max-width:520px;font-size:43px;line-height:.94;letter-spacing:-.052em;font-weight:700;color:#142030;text-wrap:balance}
@@ -882,7 +883,7 @@
 .contact-form button:disabled{opacity:.62;cursor:wait;transform:none}
 .contact-form button b,.contact-room-form button b{display:inline-block;margin-left:6px;transition:transform .22s ease}
 .contact-form button:hover b,.contact-room-form button:hover b{transform:translate(3px,-3px)}
-.form-honey{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.form-honey{display:none!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important}
 .form-status{grid-column:1/-1;margin:0;padding:10px 12px;border-radius:10px;font-size:11px;line-height:1.45}
 .form-fields{display:contents;margin:0;padding:0;border:0;min-width:0}
 .form-status--sent{background:rgba(69,93,255,.10);color:#3549b8}
@@ -1192,7 +1193,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #455dff;outline-offset:4p
 .mobile-shot img{width:100%;height:auto;object-fit:contain;object-position:top center}
 
 /* Form hardening and invisible bot trap. */
-.form-honey{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.form-honey{display:none!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important}
 .contact-form button:disabled,.contact-room-form button:disabled{cursor:progress;opacity:.68;transform:none!important}
 .form-status{min-height:1.3em}
 
@@ -1298,8 +1299,8 @@ a:focus-visible,button:focus-visible{outline:2px solid #455dff;outline-offset:4p
 @media(prefers-reduced-motion:reduce){.brand-signal-art__composition *{animation:none!important}.brand-signal-art__services-panels>g,.brand-signal-art__contact-nodes>g{opacity:1!important;transform:none!important}}
 
 /* Keeps the lazy immersive route visually continuous while its code is requested. */
-.home-route-fallback{min-height:100svh;background:#0b121c}
-.standard-route-fallback{min-height:100svh;background:#eee8dc}
+.home-route-fallback{min-height:100svh;background:var(--splash-surface)}
+.standard-route-fallback{min-height:100svh;background:var(--bg)}
 
 /* Final cascade lock for the shared corridor-door proportions and finish. */
 .experience-root .entry-portal-frame{
@@ -2254,22 +2255,35 @@ a:focus-visible,button:focus-visible{outline:2px solid #455dff;outline-offset:4p
 }
 .footer-cta{align-self:center}
 .footer-meta{
-  width:min(100%,410px);
+  width:min(100%,430px);
   justify-self:end;
   align-self:center;
-  gap:12px;
+  gap:16px;
   color:#b9c5d6;
   font-size:12.5px;
   line-height:1.42;
 }
-.footer-meta__item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:center;min-height:36px}
-.footer-meta__item svg{
-  width:34px;height:34px;padding:8px;border:1px solid rgb(142 160 255 / .18);border-radius:11px;
-  background:rgb(142 160 255 / .07);color:#91a2ff
+.footer-meta__actions,.footer-meta__details{display:grid;gap:9px}
+.footer-meta__details{padding-top:14px;border-top:1px solid rgb(255 255 255 / .075)}
+.footer-meta__item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;min-height:38px}
+.footer-meta__icon{
+  display:grid;place-items:center;width:36px;height:36px;border:1px solid rgb(142 160 255 / .18);border-radius:11px;
+  background:rgb(142 160 255 / .07);color:#91a2ff;
+  transition:transform .25s ease,border-color .25s ease,background-color .25s ease
 }
-.footer-meta__item a,.footer-meta__item span{display:block;min-width:0}
-.footer-meta__item a{color:#d9e1ec;transition:color .25s ease}
-.footer-meta__item a:hover{color:#fff}
+.footer-meta__icon svg{width:19px;height:19px}
+.footer-meta__icon--mail{color:#a7b4ff;background:rgb(142 160 255 / .09)}
+.footer-meta__icon--call{color:#58b9ff;background:rgb(88 185 255 / .085);border-color:rgb(88 185 255 / .2)}
+.footer-meta__icon--whatsapp{color:#25d366;background:rgb(37 211 102 / .085);border-color:rgb(37 211 102 / .2)}
+.footer-meta__icon--linkedin{color:#4f9fe8;background:rgb(10 102 194 / .1);border-color:rgb(79 159 232 / .22)}
+.footer-meta__icon--upwork{color:#6fda44;background:rgb(20 168 0 / .095);border-color:rgb(111 218 68 / .2)}
+.footer-meta__icon--experience{color:#c49cff;background:rgb(154 99 255 / .085);border-color:rgb(196 156 255 / .2)}
+.footer-meta__icon--location{color:#ff9f7a;background:rgb(255 122 92 / .075);border-color:rgb(255 159 122 / .19)}
+.footer-meta__item>span{display:block;min-width:0}
+.footer-meta__item--action{color:#d9e1ec;transition:color .25s ease}
+.footer-meta__item--action:hover{color:#fff}
+.footer-meta__item--action:hover .footer-meta__icon{transform:translateY(-2px);border-color:currentColor;background:rgb(255 255 255 / .105)}
+.footer-meta__item--action:focus-visible{outline:2px solid #91a2ff;outline-offset:4px;border-radius:12px}
 .footer .kicker{color:#8290a5}
 .footer h2 em{color:var(--blue)}
 
@@ -2310,13 +2324,13 @@ a:focus-visible,button:focus-visible{outline:2px solid #455dff;outline-offset:4p
   .about-section-graphic{opacity:.09!important}
   .footer{padding:58px 22px;gap:44px}
   .footer-meta{gap:10px;font-size:12px}
-  .footer-meta__item{grid-template-columns:32px minmax(0,1fr);gap:10px}.footer-meta__item svg{width:32px;height:32px;padding:7px}
+  .footer-meta__item{grid-template-columns:34px minmax(0,1fr);gap:10px}.footer-meta__icon{width:34px;height:34px}.footer-meta__icon svg{width:18px;height:18px}
 }
 @media(prefers-reduced-motion:reduce){
   .about-hero-blueprint *,.about-section-graphic *{animation:none!important}
   .about-blueprint__flow-runner{display:none!important}
   .route-page--about .route-hero__ledger{animation:none!important;transform:none!important}
-  .route-page--about .timeline-list--premium article,.route-page--about .tool-grid--premium>div{transition:none!important}
+  .route-page--about .timeline-list--premium article,.route-page--about .tool-grid--premium>div,.footer-meta__icon{transition:none!important}
 }
 /* About owns its section artwork explicitly; suppress the older generic circle/dot/warm-glow pseudos. */
 .route-page--about .section--about-signature:before,
