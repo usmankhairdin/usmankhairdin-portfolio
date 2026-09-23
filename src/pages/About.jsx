@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom'
 import StandardPage from './StandardPage.jsx'
 import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
 import { AboutHeroBlueprint, AboutSectionGraphic } from '../components/AboutVisuals.jsx'
+import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
 
 const hero = sectionHeroes.about
 
@@ -20,7 +20,7 @@ export default function About(){
     intro={hero.intro}
     heroNote={hero.heroNote}
     heroVisual={<AboutHeroBlueprint/>}
-    heroAction={<Link className="pill pill--primary route-hero__cta" to="/work/">Explore selected work <span>↗</span></Link>}
+    heroAction={<ActionLink className="route-hero__cta" to="/work/">Explore selected work <span>↗</span></ActionLink>}
   >
     <section className="section section--about-signature about-section about-section--process">
       <AboutSectionGraphic variant="process"/>
@@ -39,7 +39,7 @@ export default function About(){
             <div><span>02 / SYSTEM</span><strong>Turn the direction into reusable components and responsive states.</strong></div>
             <div><span>03 / BUILD</span><strong>Carry the approved detail into a polished production interface.</strong></div>
           </div>
-          <Link className="text-cta" to="/work/">See selected work ↗</Link>
+          <TextCTA to="/work/">See selected work ↗</TextCTA>
         </div>
       </div>
     </section>

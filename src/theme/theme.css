@@ -13,9 +13,9 @@
 
 /* ---- 1. TOKENS ---------------------------------------------------------- */
 :root{
-  --ease-out:cubic-bezier(.22,.8,.18,1);
-  --ease-io:cubic-bezier(.65,0,.35,1);
-  --ease-drawer:cubic-bezier(.76,0,.16,1);
+  --ease-out:var(--motion-ease-out);
+  --ease-io:var(--motion-ease-in-out);
+  --ease-drawer:var(--motion-ease-drawer);
 
   /* LIGHT — warm cream foundation, navy type, cobalt accent */
   --bg:#eee8dc;            --bg-rgb:238 232 220;
@@ -98,7 +98,7 @@ html[data-theme="dark"] .route-page .pill--dark:hover{box-shadow:inset 0 0 0 1px
    become a flex/grid item of whatever page container it is rendered in (the splash gate is a flex column). */
 .site-header-root{
   display:contents;
-  --hdr-h:74px;
+  --hdr-h:var(--layout-header-height);
   --hdr-pad:clamp(24px,3.2vw,44px);
   --hdr-btn:46px;
 }
@@ -182,6 +182,30 @@ html[data-theme="dark"] .site-header-root[data-mode="web"]{
 html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter:invert(1) hue-rotate(180deg) brightness(1.06) saturate(1.15)}
 
 .site-header__controls{display:flex;align-items:center;gap:10px}
+
+/* Portfolio pill treatment with the SaaS UI Rescue brand colour. */
+.hdr-rescue{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+  flex:none;
+  min-height:var(--hdr-btn);
+  padding:0 17px;
+  border-radius:var(--radius-pill);
+  background:#ffd24d;
+  color:#10110e;
+  box-shadow:0 10px 22px rgb(208 157 0 / .17);
+  font:var(--type-button-weight) var(--type-button-size)/1 var(--font-sans);
+  text-decoration:none;
+  white-space:nowrap;
+  transition:box-shadow .28s ease,background-color .28s ease;
+}
+.hdr-rescue svg{display:block;flex:none;width:15px;height:15px;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.hdr-rescue:hover{box-shadow:0 13px 26px rgb(208 157 0 / .25)}
+.hdr-rescue:hover svg{transform:translate(3px,-3px)}
+.hdr-rescue:focus-visible{outline:2px solid var(--text);outline-offset:4px}
 
 /* Circular controls: identical size, radius, border, hover language and motion for Theme and Menu. */
 .hdr-btn{
@@ -400,11 +424,15 @@ html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter
 
 /* Tablet / mobile: the drawer takes the whole width; same system, same type, compact rhythm. */
 @media(max-width:640px){
-  .site-header-root{--hdr-btn:44px;--hdr-h:68px}
+  .site-header-root{--hdr-btn:44px;--hdr-h:var(--layout-header-height-mobile)}
   .site-logo{height:30px}
+  .hdr-rescue{padding-inline:10px;gap:6px}
+  .hdr-rescue svg{width:13px;height:13px}
   .menu-drawer__panel{width:100vw}
   .menu-drawer__link{grid-template-columns:30px minmax(0,1fr) auto}
 }
+@media(max-width:360px){.hdr-rescue{padding-inline:8px;font-size:10px;gap:5px}.hdr-rescue svg{width:12px;height:12px}}
+@media(max-width:340px){.site-header-root[data-mode="web"]{--hdr-pad:18px}.hdr-rescue{padding-inline:6px;font-size:9.5px;gap:4px}}
 @media(max-height:640px){
   .menu-drawer__nav{padding:14px 0}
   .menu-drawer__link{font-size:clamp(1.7rem,min(7.6vh,8.2vw),2.5rem)}
@@ -417,7 +445,8 @@ html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter
   .menu-drawer__panel,.menu-drawer[data-open="true"] .menu-drawer__panel{transform:none;opacity:0;transition:opacity .2s ease}
   .menu-drawer[data-open="true"] .menu-drawer__panel{opacity:1}
   .menu-drawer__eyebrow,.menu-drawer__item,.menu-drawer__foot{transform:none;transition:none;opacity:1}
-  .menu-drawer__label,.menu-drawer__arrow,.hdr-btn,.site-logo{transition-duration:.01ms}
+  .menu-drawer__label,.menu-drawer__arrow,.hdr-btn,.hdr-rescue,.hdr-rescue svg,.site-logo{transition-duration:.01ms}
+  .hdr-rescue:hover svg{transform:none}
 }
 
 /* ---- 5. WEB DARK — hand-tuned exceptions (things the role mapping cannot know) ---- */

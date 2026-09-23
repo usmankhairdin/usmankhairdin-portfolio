@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom'
+import { ActionLink } from './ui/Action.jsx'
+import MetaActionRow from './ui/MetaActionRow.jsx'
 
 const CONTACT_EMAIL = 'brief@usmankhairdin.com'
 const PHONE_DISPLAY = '+92-321-7247317'
 const PHONE_E164 = '+923217247317'
 const WHATSAPP_URL = 'https://wa.me/923217247317'
 const LINKEDIN_URL = 'https://pk.linkedin.com/in/usmankhairdin1'
-// Add the exact public profile URL when it is supplied; the action list already supports it.
-const UPWORK_URL = ''
+const UPWORK_URL = 'https://www.upwork.com/freelancers/~0172c60344ca2309b3'
 
-function FooterIcon({ name }) {
+export function FooterIcon({ name }) {
   const lineIcon = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.7', strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': 'true', focusable: 'false' }
   const brandIcon = { viewBox: '0 0 24 24', fill: 'currentColor', 'aria-hidden': 'true', focusable: 'false' }
   let icon
@@ -36,21 +36,28 @@ const contactActions = [
 export default function Footer() {
   return <footer className="footer">
     <div className="footer-cta">
-      <span className="kicker">WHITE-LABEL UI DESIGN + FRONTEND PRODUCTION</span>
+      <span className="kicker">PRODUCT DESIGN + FRONTEND PRODUCTION</span>
       <h2>Have a brief in <em>mind?</em></h2>
-      <Link className="pill pill--primary" to="/contact/">Start a paid pilot <span aria-hidden="true">↗</span></Link>
+      <ActionLink to="/contact/">Start a paid pilot <span aria-hidden="true">↗</span></ActionLink>
     </div>
-    <div className="footer-meta" role="group" aria-label="Contact and profile details">
-      <div className="footer-meta__actions">
-        {contactActions.map(({ name, label, text, href, external }) => <a className="footer-meta__item footer-meta__item--action" href={href} aria-label={`${label}: ${text.replace(/^.*? · /, '')}`} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} key={name}>
-          <FooterIcon name={name}/>
-          <span>{text}</span>
-        </a>)}
+    <div className="footer-info">
+      <div className="footer-meta footer-meta--contact" role="group" aria-label="Contact and profile links">
+        <div className="footer-meta__actions">
+          {contactActions.map(({ name, label, text, href, external }) => <MetaActionRow
+            icon={<FooterIcon name={name}/>}
+            href={href}
+            external={external}
+            ariaLabel={`${label}: ${text.replace(/^.*? · /, '')}`}
+            key={name}
+          >{text}</MetaActionRow>)}
+        </div>
       </div>
-      <div className="footer-meta__details">
-        <div className="footer-meta__item"><FooterIcon name="experience"/><span>16+ years · Product design · responsive frontend</span></div>
-        <div className="footer-meta__item"><FooterIcon name="location"/><span>Lahore, Pakistan · Working globally</span></div>
-        <div className="footer-meta__item"><FooterIcon name="copyright"/><span>© 2026 Usman Khair Din</span></div>
+      <div className="footer-meta footer-meta--information" role="group" aria-label="Experience and location details">
+        <div className="footer-meta__details">
+          <MetaActionRow icon={<FooterIcon name="experience"/>}>16+ years · Design + frontend</MetaActionRow>
+          <MetaActionRow icon={<FooterIcon name="location"/>}>Lahore, Pakistan · Working globally</MetaActionRow>
+          <MetaActionRow icon={<FooterIcon name="copyright"/>}>© 2026 Usman Khair Din</MetaActionRow>
+        </div>
       </div>
     </div>
   </footer>

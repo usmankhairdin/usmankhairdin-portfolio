@@ -47,7 +47,7 @@ html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
 
 /* Composition: identical proportions to the Work panel (3.5 : 8.5), same gap, same visual width rule. */
 .pdh__inner{
-  width:min(1720px,100%);
+  width:min(var(--layout-container-showcase),100%);
   display:grid;
   align-items:center;
   grid-template-columns:minmax(0,3.5fr) minmax(0,8.5fr);
@@ -97,8 +97,8 @@ html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
 .pdh__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
 .pdh__actions .text-cta{margin-top:0}
 .pdh[data-tone="dark"] .text-cta{color:#8ea0ff}
-.pdh__actions a:focus-visible{outline:2px solid var(--accent-text,#455dff);outline-offset:5px;border-radius:6px}
-.pdh__actions .pill:focus-visible{border-radius:999px}
+.pdh__actions a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,#455dff);outline-offset:5px;border-radius:var(--radius-xs)}
+.pdh__actions .pill:focus-visible{border-radius:var(--radius-pill)}
 
 /* Shorter desktop screens: the same composition, a little tighter (as on the Work panel). */
 @media(max-height:820px){

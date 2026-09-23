@@ -19,7 +19,7 @@
   --cs-measure:46ch;                          /* the readable width of any paragraph */
   --cs-eyebrow-gap:18px;                      /* eyebrow → heading */
   --cs-heading-gap:20px;                      /* heading → copy */
-  --cs-sticky:112px;                          /* sticky text column offset (clears the floating header) */
+  --cs-sticky:var(--layout-sticky-offset);    /* sticky text column offset (clears the floating header) */
 }
 /* The page wrapper clips horizontal overflow with `hidden`, which would make it the scroll container for sticky children; `clip` clips
    the same overflow without becoming one. */
@@ -114,7 +114,7 @@
 .case-study .case-deliverables p{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:baseline;margin:0;padding:18px 0;font-size:16px;line-height:1.5;font-weight:600}
 .case-study .case-deliverables p b{font:700 10px var(--mono);letter-spacing:.1em}
 
-.case-study .project-close{max-width:1320px}
+.case-study .project-close{max-width:var(--layout-container-standard)}
 .case-study .project-close h2{max-width:900px;font-size:clamp(2.7rem,5vw,5rem);line-height:1.02}
 
 /* ---- Tablet: the text column sits above its body; nothing is left floating ---- */
@@ -328,7 +328,7 @@ html[data-theme="dark"] .case-study{--pj-bg:var(--wk-bg-d,#0b111b)}
   grid-template-columns:minmax(0,1.06fr) minmax(340px,.94fr);
   gap:clamp(34px,6vw,88px);
   align-items:center;
-  max-width:1320px;
+  max-width:var(--layout-container-standard);
 }
 .case-study .project-close>div{display:block}
 .case-study .project-close__copy{position:relative;z-index:2}

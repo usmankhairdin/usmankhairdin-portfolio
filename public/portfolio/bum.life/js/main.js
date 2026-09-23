@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenu();
     setupVideoThumbnails();
     setupLightbox();
-    setupForms();
     setupAnimations();
     setupHeaderScroll();
     setupPhotoFilters();
@@ -172,67 +171,6 @@ function setupLightbox() {
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowLeft') prevImage();
         if (e.key === 'ArrowRight') nextImage();
-    });
-}
-
-// Form Handling
-function setupForms() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-
-            // Show loading state
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner mr-2"></span>Sending...';
-
-            try {
-                // Prepare form data
-                const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    // Show success message
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'text-green-500 mt-4';
-                    successMessage.textContent = 'Message sent successfully!';
-                    form.appendChild(successMessage);
-
-                    // Reset form
-                    form.reset();
-
-                    // Remove success message after 5 seconds
-                    setTimeout(() => {
-                        successMessage.remove();
-                    }, 5000);
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                console.error('Form submission error:', error);
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'text-red-500 mt-4';
-                errorMessage.textContent = 'There was an error sending your message. Please try again.';
-                form.appendChild(errorMessage);
-
-                // Remove error message after 5 seconds
-                setTimeout(() => {
-                    errorMessage.remove();
-                }, 5000);
-            } finally {
-                // Reset button state
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-            }
-        });
     });
 }
 

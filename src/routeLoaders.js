@@ -6,6 +6,9 @@ export const routeLoaders = {
   services: () => import('./pages/Services.jsx'),
   agencies: () => import('./pages/Agencies.jsx'),
   contact: () => import('./pages/Contact.jsx'),
+  designSystem: () => import('./pages/DesignSystem.jsx'),
+  personalPortfolioWeb: () => import('./pages/PersonalPortfolioWeb.jsx'),
+  personalPortfolio3d: () => import('./pages/PersonalPortfolio3D.jsx'),
 }
 
 // Browser module caching makes repeat calls free; hover/focus turns navigation

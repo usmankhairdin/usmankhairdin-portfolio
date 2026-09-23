@@ -43,19 +43,20 @@ function RoomHero({ spec, hero, className = '', y = 2.07, eyebrow = true, childr
 }
 
 function AboutRoom({ spec }) {
-  return <>
-    <RoomHero spec={spec} hero={sectionHeroes.about} className="room-main--about" />
-    <RoomCta spec={spec} href="/about/" y={1.10} className="room-bottom-cta--hero">Open the practice</RoomCta>
-  </>
+  return <RoomHero spec={spec} hero={sectionHeroes.about} className="room-main--about" y={1.80}>
+    <div className="room-bottom-cta room-bottom-cta--about">
+      <a href="/about/"><span>Explore the practice</span><b aria-hidden="true">↗</b></a>
+    </div>
+  </RoomHero>
 }
 
 // The six service titles, shown in the SERVICES room as a compact capability index.
 const serviceIndex = [
+  'Product / UI/UX Design',
   'Website & Landing Page Design',
   'SaaS / Dashboard UI',
   'Website Redesign',
   'Frontend Development',
-  'Design → React / Tailwind',
   'White-label Agency Production',
 ]
 

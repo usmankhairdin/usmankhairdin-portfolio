@@ -2,6 +2,8 @@ import StandardPage from './StandardPage.jsx'
 import ContactForm from '../components/ContactForm.jsx'
 import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
 import { ContactHeroBlueprint, RouteSectionGraphic } from '../components/StandardVisuals.jsx'
+import { ActionLink } from '../components/ui/Action.jsx'
+import SectionIntro from '../components/ui/SectionIntro.jsx'
 
 const hero = sectionHeroes.contact
 
@@ -24,21 +26,24 @@ export default function Contact(){
     intro={hero.intro}
     heroNote={hero.heroNote}
     heroVisual={<ContactHeroBlueprint/>}
-    heroAction={<a className="pill pill--primary route-hero__cta" href="#contact-form">Send a brief <span>↗</span></a>}
+    heroAction={<ActionLink className="route-hero__cta" href="#contact-form">Send a brief <span>↗</span></ActionLink>}
   >
     <section className="section section--contact-stage route-authored-section">
       <RouteSectionGraphic variant="contact"/>
       <div className="route-wrap contact-page-grid">
-        <div className="contact-page-copy route-section-intro">
-          <span className="kicker">DIRECT CONTACT</span>
-          <h2>Start with the real constraint.</h2>
-          <p className="contact-page-copy__lead">A rough scope, live URL, reference, delivery window or even a problem statement is enough. I can help turn that into a clear production starting point.</p>
+        <SectionIntro
+          className="contact-page-copy"
+          eyebrow="DIRECT CONTACT"
+          title="Start with the real constraint."
+          intro="A rough scope, live URL, reference, delivery window or even a problem statement is enough. I can help turn that into a clear production starting point."
+          introClassName="contact-page-copy__lead"
+        >
           <a className="contact-big contact-big--stacked" href="mailto:brief@usmankhairdin.com">brief@usmankhairdin.com <span>↗</span></a>
           <p>Lahore, Pakistan · Working with agencies and clients globally.</p>
-          <div className="contact-notes contact-notes--premium js-horizontal-reorder"><span>PRODUCT UI</span><span>FRONTEND</span><span>AI-ASSISTED BUILD</span><span>WHITE-LABEL</span><span>PAID PILOT</span></div>
+          <div className="contact-notes contact-notes--premium web-tag-group"><span>PRODUCT UI</span><span>FRONTEND</span><span>DESIGN + BUILD</span><span>WHITE-LABEL</span><span>PAID PILOT</span></div>
           <div className="contact-signal" aria-hidden="true"><b>BRIEF</b><i/><b>REVIEW</b><i/><b>START</b></div>
           <aside className="contact-intake-note"><span>USEFUL STARTING POINT</span><p>Share what exists, what needs to change and when you need it. If the brief is still forming, say that — clarity can be part of the first pass.</p></aside>
-        </div>
+        </SectionIntro>
         <div className="contact-form-shell" id="contact-form"><div className="contact-form-shell__glow" aria-hidden="true"/><ContactFormArt/><ContactForm source="Portfolio contact page" /></div>
       </div>
     </section>

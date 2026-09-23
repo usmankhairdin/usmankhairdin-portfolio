@@ -2,13 +2,13 @@ export const sectionHeroes = {
   about: {
     eyebrow: 'ABOUT / DESIGN × BUILD',
     title: ['I design the interface. Then I ', 'build it.', ''],
-    intro: 'I’m Usman Khair Din — a product designer and frontend developer with 16+ years across product UX, responsive interfaces and AI-assisted web delivery.',
+    intro: 'I’m Usman Khair Din — a product and UI/UX designer and frontend developer with 16+ years across digital products, responsive websites and production UI.',
     heroNote: { label: 'PRODUCT DESIGN → FRONTEND', value: '16+ YEARS', detail: 'Interface systems carried from design intent into responsive production.' },
   },
   services: {
     eyebrow: 'SERVICES / PRODUCT × BUILD',
     title: ['From product UX to ', 'production.', ''],
-    intro: 'Product UI, responsive websites and AI-assisted implementation for agencies and selected direct clients — from interface direction through production-ready build.',
+    intro: 'Product and UI/UX design, responsive websites and frontend implementation for agencies and selected direct clients — from interface direction through production-ready build.',
     heroNote: { label: 'DESIGN → BUILD', value: '6 SERVICE LINES', detail: 'A practical delivery range from product direction to responsive implementation.' },
   },
   work: {
@@ -20,7 +20,7 @@ export const sectionHeroes = {
   agencies: {
     eyebrow: 'FOR AGENCIES / WHITE-LABEL',
     title: ['More hands. ', 'Less complexity.', ''],
-    intro: 'Senior white-label product UI and frontend production that plugs into your agency workflow without stepping into the client relationship.',
+    intro: 'Senior white-label UI/UX design and frontend production that fits your agency workflow without stepping into the client relationship.',
     heroNote: { label: 'WHITE-LABEL DELIVERY', value: 'AGENCY LED', detail: 'Your relationship stays yours. I support the production layer.' },
   },
   contact: {

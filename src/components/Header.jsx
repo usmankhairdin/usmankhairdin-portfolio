@@ -21,6 +21,7 @@ import ThemeToggle from './ThemeToggle.jsx'
  * clears the flag and the corridor continues from exactly where it was. No camera, door or room logic is touched.
  */
 const LOGO_SRC = '/assets/ukd-logo.svg'
+const RESCUE_URL = 'https://rescue.usmankhairdin.com'
 const NAV_DELAY = 340   // ms: lets the drawer start leaving before the route swaps under it
 
 const ITEMS = [
@@ -144,6 +145,13 @@ export default function Header({ immersive = false }) {
       <div className="site-header__inner">
         {logo}
         <div className="site-header__controls">
+          {mode === 'web' && <a
+            className="hdr-rescue"
+            href={RESCUE_URL}
+            aria-label="Visit SaaS UI Rescue (opens in a new tab)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >SaaS UI Rescue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>}
           {mode === 'web' && <ThemeToggle />}
           <button
             type="button"

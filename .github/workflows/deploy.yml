@@ -26,6 +26,9 @@ jobs:
       - name: Stage audited Bum.Life updates
         run: |
           mkdir -p "$RUNNER_TEMP/bum-life-overlay"
+          cp public/portfolio/demo-forms.js "$RUNNER_TEMP/demo-forms.js"
+          mkdir -p "$RUNNER_TEMP/bum-life-overlay/js"
+          cp public/portfolio/bum.life/js/main.js "$RUNNER_TEMP/bum-life-overlay/js/main.js"
           cp \
             public/portfolio/bum.life/about.html \
             public/portfolio/bum.life/characters.html \
@@ -51,7 +54,10 @@ jobs:
       - name: Include audited Bum.Life updates
         run: |
           mkdir -p dist/portfolio/bum.life
-          cp "$RUNNER_TEMP/bum-life-overlay/"* dist/portfolio/bum.life/
+          cp "$RUNNER_TEMP/demo-forms.js" dist/portfolio/demo-forms.js
+          cp "$RUNNER_TEMP/bum-life-overlay/"*.html "$RUNNER_TEMP/bum-life-overlay/"*.php dist/portfolio/bum.life/
+          mkdir -p dist/portfolio/bum.life/js
+          cp "$RUNNER_TEMP/bum-life-overlay/js/main.js" dist/portfolio/bum.life/js/main.js
 
       - name: Make sure htaccess is included
         run: cp public/.htaccess dist/.htaccess

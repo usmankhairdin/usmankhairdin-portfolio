@@ -69,12 +69,12 @@ function IntroGate({ returning = false, departing = false, onEnter }) {
     <div className="entry-hero">
       <div className="entry-hero-inner">
         <main id="main-content" className="entry-intro-copy" tabIndex={-1}>
-          <span className="hero-eyebrow">USMAN KHAIR DIN / PRODUCT DESIGN × FRONTEND × AI BUILD</span>
+          <span className="hero-eyebrow">USMAN KHAIR DIN / PRODUCT DESIGN × UI/UX × FRONTEND</span>
           <h1 className="hero-headline">
             <span className="hero-line hero-line-1">From signal</span>
             <span className="hero-line hero-line-2">to <em className="hero-surface">surface.</em></span>
           </h1>
-          <p className="hero-supporting">I design and build polished digital products — from product UX and interface direction to responsive frontend and AI-assisted full-stack delivery.</p>
+          <p className="hero-supporting">I design product experiences and responsive interfaces, then carry the approved direction into production-ready frontend implementation.</p>
           <button type="button" className="entry-gallery-cta" onClick={commitEnter}>
             <span className="entry-gallery-cta__label">Enter the Experience</span>
             <span className="entry-gallery-cta__icon" aria-hidden="true">
@@ -135,8 +135,8 @@ function ExperienceShell() {
 
 export default function HomeExperience() {
   useEffect(()=>{
-    const title='Usman Khair Din — White-label UI Design & Frontend Production'
-    const description='White-label UI design and frontend production for digital agencies, backed by 16+ years of web, product UI and responsive frontend experience.'
+    const title='Usman Khair Din — Product Designer & Frontend Developer'
+    const description='Senior product and UI/UX designer and frontend developer for selected direct clients and white-label agency partners.'
     const url='https://www.usmankhairdin.com/'
     document.title=title
     document.querySelector('meta[name="description"]')?.setAttribute('content',description)

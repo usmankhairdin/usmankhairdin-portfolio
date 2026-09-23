@@ -88,7 +88,7 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
 .wk-project__inner{
   position:relative;
   z-index:1;
-  width:min(1720px,100%);
+  width:min(var(--layout-container-showcase),100%);
   display:grid;
   align-content:center;
   column-gap:clamp(28px,4vw,72px);
@@ -178,8 +178,8 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
    Only their placement in the row is set here. */
 .wk-project__actions .text-cta{margin-top:0}
 .wk-project[data-tone="dark"] .text-cta{color:#8ea0ff}          /* the site's dark-theme link blue, on a dark stage */
-.wk-project__actions a:focus-visible,.wk-project__title a:focus-visible{outline:2px solid var(--accent-text,#455dff);outline-offset:5px;border-radius:6px}
-.wk-project__actions .pill:focus-visible{border-radius:999px}
+.wk-project__actions a:focus-visible,.wk-project__title a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,#455dff);outline-offset:5px;border-radius:var(--radius-xs)}
+.wk-project__actions .pill:focus-visible{border-radius:var(--radius-pill)}
 
 /* ---- The large image: a restrained browser frame, never a mockup ---------- */
 /* The shared browser frame (src/components/BrowserFrame.css) with the Work panel's own inputs and its hover lift. */
@@ -221,6 +221,12 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
   .wk-project__actions{gap:10px 18px}
   .wk-project__actions .pill{flex:1 1 100%}
   .ui-frame__url{display:none}
+}
+
+@media(max-width:600px){
+  .wk-meta-rail{flex-wrap:wrap;gap:6px 12px;line-height:1.4;white-space:normal}
+  .wk-meta-rail i{display:none}
+  .wk-meta-rail__label,.wk-meta-rail__context,.wk-meta-rail__discipline{max-width:100%;overflow:visible;text-overflow:clip}
 }
 
 /* ---- Reduced motion: the pinned exhibition is not used at all (see useShowcaseMotion); projects are a plain, still sequence ---- */
@@ -324,3 +330,81 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
 /* Sept 21 feedback: the pinned showcase hands directly into the evidence band; no empty release runway below the progress line. */
 .route-page--work .section--work-showcase.wk-showcase{padding-bottom:0}
 .wk-showcase[data-wk-mode="horizontal"]{padding-bottom:0}
+
+/* Self-initiated work sits ahead of, but outside, the existing pinned client showcase. */
+.route-page--work .wk-featured{
+  padding:clamp(64px,7vw,96px) 0 clamp(56px,6vw,80px);
+  border-top:1px solid var(--web-line-soft);
+}
+.wk-featured__intro{margin-bottom:clamp(28px,3.5vw,48px)}
+.wk-featured__intro h2,.wk-selected h2{
+  margin:16px 0 0;
+  font-size:clamp(2.7rem,4.8vw,4.8rem);
+  line-height:.98;
+  letter-spacing:-.06em;
+  color:var(--web-ink);
+}
+.wk-featured__intro p,.wk-selected p{max-width:56ch;margin:17px 0 0;color:var(--web-muted);font-size:14.5px;line-height:1.7}
+.wk-featured__list{border-bottom:1px solid var(--web-line)}
+.wk-featured__item{
+  display:grid;
+  grid-template-columns:minmax(0,4fr) minmax(0,6fr);
+  align-items:center;
+  gap:clamp(32px,5vw,76px);
+  padding:clamp(28px,3.5vw,48px) 0;
+  border-top:1px solid var(--web-line);
+}
+.wk-featured__copy{min-width:0}
+.wk-featured__category{font:650 10px/1.5 var(--mono);letter-spacing:.13em;color:var(--web-muted)}
+.wk-featured__category span{padding:0 .35em;color:var(--accent-text)}
+.wk-featured__copy h3{
+  max-width:14ch;
+  margin:18px 0 20px;
+  font-size:clamp(2.2rem,3.4vw,3.8rem);
+  line-height:1.03;
+  letter-spacing:-.06em;
+  color:var(--web-ink);
+  text-wrap:balance;
+}
+.wk-featured__copy h3 a{color:inherit}
+.wk-featured__copy>p{max-width:42ch;margin:0;color:var(--web-muted);font-size:15px;line-height:1.65}
+.wk-featured__tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 28px;padding:0;list-style:none}
+.wk-featured__tags li{padding:8px 11px;border:1px solid var(--web-line);border-radius:var(--radius-pill);color:var(--web-muted);font:600 9px/1.2 var(--mono);white-space:nowrap}
+.wk-featured__copy .pill{width:max-content}
+.wk-featured__media{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--web-line);
+  border-radius:var(--radius-lg);
+  background:var(--panel-solid);
+  box-shadow:var(--shadow-panel);
+  transition:transform var(--motion-duration-slow) var(--motion-ease-out),box-shadow var(--motion-duration-slow) var(--motion-ease-out);
+}
+.wk-featured__media img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover}
+.wk-featured__copy a:focus-visible,.wk-featured__media:focus-visible{outline:var(--focus-ring);outline-offset:var(--focus-ring-offset)}
+@media(hover:hover){
+  .wk-featured__media:hover{transform:translateY(-4px);box-shadow:var(--shadow-floating)}
+  .wk-featured__copy h3 a:hover{color:var(--accent-text)}
+}
+.route-page--work .wk-selected{padding:clamp(42px,5vw,66px) 0 clamp(34px,4vw,54px);border-top:1px solid var(--web-line-soft)}
+.wk-selected h2{font-size:clamp(2.7rem,4.4vw,4.4rem)}
+
+@media(max-width:900px){
+  .wk-featured__item{grid-template-columns:minmax(0,1fr);gap:24px}
+  .wk-featured__copy h3{max-width:none;margin:14px 0;font-size:clamp(2.2rem,6vw,3.4rem)}
+  .wk-featured__tags{margin:18px 0 22px}
+}
+@media(max-width:600px){
+  .route-page--work .wk-featured{padding:58px 0 52px}
+  .wk-featured__intro h2,.wk-selected h2{font-size:clamp(2.55rem,10.5vw,3.25rem)}
+  .wk-featured__item{padding:30px 0 34px}
+  .wk-featured__category{font-size:9px}
+  .wk-featured__copy>p{font-size:14px}
+  .wk-featured__media{border-radius:var(--radius-md)}
+  .route-page--work .wk-selected{padding:44px 0 38px}
+}
+@media(prefers-reduced-motion:reduce){
+  .wk-featured__media{transition:none}
+  .wk-featured__media:hover{transform:none}
+}

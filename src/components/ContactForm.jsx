@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { FormField, FormStatus } from './ui/FormPrimitives.jsx'
 
 const CONTACT_EMAIL = 'brief@usmankhairdin.com'
 const ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`
@@ -212,7 +213,7 @@ export default function ContactForm({ immersive = false, source = 'Portfolio web
         setStatus('sent')
         setMessage('Thanks — your brief has been sent. I’ll reply by email.')
         startCooldown()
-      } else if (response.ok || activationPending) {
+      } else if (activationPending) {
         setStatus('setup')
         setMessage(`One-time setup: FormSubmit has sent an activation email to ${CONTACT_EMAIL}. Open that email, click Activate, then submit the form once more.`)
       } else {
@@ -246,32 +247,31 @@ export default function ContactForm({ immersive = false, source = 'Portfolio web
     <input type="text" name="_honey" tabIndex="-1" autoComplete="off" className="form-honey" aria-hidden="true" />
 
     <fieldset disabled={status === 'sending'} className="form-fields">
-    <label><span>Full name</span><input name="name" type="text" required maxLength={120} placeholder="Your name" autoComplete="name" /></label>
-    <label><span>Work email</span><input name="email" type="email" required maxLength={254} placeholder="you@company.com" autoComplete="email" /></label>
-    <label><span>Agency / company</span><input name="company" type="text" maxLength={160} placeholder="Company or project" autoComplete="organization" /></label>
+    <FormField label="Full name"><input name="name" type="text" required maxLength={120} placeholder="Your name" autoComplete="name" /></FormField>
+    <FormField label="Work email"><input name="email" type="email" required maxLength={254} placeholder="you@company.com" autoComplete="email" /></FormField>
+    <FormField label="Agency / company"><input name="company" type="text" maxLength={160} placeholder="Company or project" autoComplete="organization" /></FormField>
 
     {immersive
-      ? <label><span>What needs support</span>
+      ? <FormField label="What needs support">
           <select name="support" defaultValue="">
             <option value="" disabled>Select a service</option>
             {SUPPORT_OPTIONS.map((option) => <option key={option}>{option}</option>)}
           </select>
-        </label>
+        </FormField>
       : <div className="contact-form-field"><span id={supportLabelId}>What needs support</span><input type="hidden" name="support" value={support} readOnly /><SupportDropdown value={support} onChange={setSupport} labelId={supportLabelId} /></div>}
 
-    <label><span>Approx. scope / brief link</span><input name="scope" type="text" maxLength={800} placeholder={immersive ? 'Scope, screens or URL' : 'Pages, screens or a brief URL'} /></label>
-    <label><span>Preferred delivery window</span><input name="delivery_window" type="text" maxLength={120} placeholder="e.g. 2 weeks / this month" /></label>
+    <FormField label="Approx. scope / brief link"><input name="scope" type="text" maxLength={800} placeholder={immersive ? 'Scope, screens or URL' : 'Pages, screens or a brief URL'} /></FormField>
+    <FormField label="Preferred delivery window"><input name="delivery_window" type="text" maxLength={120} placeholder="e.g. 2 weeks / this month" /></FormField>
 
-    <label className={immersive ? 'contact-room-form__message' : 'contact-form__message'}>
-      <span>Project brief</span>
+    <FormField label="Project brief" className={immersive ? 'contact-room-form__message' : 'contact-form__message'}>
       <textarea name="message" required maxLength={5000} rows={immersive ? 4 : 6} placeholder="What are you looking to design or build?" />
-    </label>
+    </FormField>
     </fieldset>
 
     <button className="contact-submit" type="submit" disabled={submitLocked} aria-disabled={submitLocked}>
       {status === 'sending' ? 'Sending…' : coolingDown ? 'Brief sent' : 'Send a brief'} <b aria-hidden="true">{coolingDown ? '✓' : '↗'}</b>
     </button>
 
-    {message && <p className={`form-status form-status--${status}`} role="status" aria-live="polite">{message}</p>}
+    <FormStatus status={status}>{message}</FormStatus>
   </form>
 }

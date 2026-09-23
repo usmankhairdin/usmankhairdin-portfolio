@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
 import StandardPage from './StandardPage.jsx'
 import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
 import { RouteSectionGraphic, ServicesHeroBlueprint } from '../components/StandardVisuals.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
+import { ActionLink } from '../components/ui/Action.jsx'
+import SectionIntro from '../components/ui/SectionIntro.jsx'
 
 const hero = sectionHeroes.services
 
@@ -46,11 +47,11 @@ function ServiceTechVisual(){
 }
 
 const services = [
-  ['01','Product UX & interface design','Flows, responsive product screens and reusable UI systems shaped around the real workflow.','PRODUCT'],
-  ['02','Websites & landing pages','High-clarity marketing sites and landing pages designed for responsive production and conversion.','WEB'],
-  ['03','SaaS / dashboard systems','Dense dashboards, CRM/ERP/HRM-style interfaces and component-led application states.','SYSTEM'],
-  ['04','Frontend implementation','Responsive React, Tailwind CSS, HTML/CSS and Bootstrap implementation from approved design direction.','BUILD'],
-  ['05','AI-assisted full-stack builds','Modern web products assembled with AI-assisted development workflows while keeping UX, structure and production quality under control.','AI BUILD'],
+  ['01','Product / UI/UX design','Product flows, responsive screens and reusable UI systems shaped around real workflows.','PRODUCT'],
+  ['02','Websites & landing pages','Clear, responsive websites and landing pages designed for focused communication and conversion.','WEB'],
+  ['03','SaaS / dashboard UI','Dense application workflows, CRM/ERP/HRM-style dashboards and component-led states.','SYSTEM'],
+  ['04','Website redesign','Existing sites reworked for clearer hierarchy, stronger responsive behavior and a cleaner path to action.','REDESIGN'],
+  ['05','Frontend implementation','Responsive React, Tailwind CSS and HTML/CSS implementation from approved interface direction.','BUILD'],
   ['06','White-label agency production','Senior overflow support behind your agency brand — design, frontend or a defined slice of both.','AGENCY'],
 ]
 
@@ -62,7 +63,7 @@ export default function Services(){
     intro={hero.intro}
     heroNote={hero.heroNote}
     heroVisual={<ServicesHeroBlueprint/>}
-    heroAction={<Link className="pill pill--primary route-hero__cta" to="/contact/">Start a paid pilot <span>↗</span></Link>}
+    heroAction={<ActionLink className="route-hero__cta" to="/contact/">Start a paid pilot <span>↗</span></ActionLink>}
   >
     <section className="section section--service-stack route-authored-section">
       <RouteSectionGraphic variant="services-grid"/>
@@ -74,7 +75,13 @@ export default function Services(){
     <section className="section section--soft section--delivery-system route-authored-section">
       <RouteSectionGraphic variant="delivery"/>
       <div className="route-wrap split">
-        <div className="route-section-intro"><span className="kicker">DELIVERY SYSTEM</span><h2>A clear brief, then focused production.</h2><p>Start with the output that matters. The process stays compact enough for direct work and structured enough to plug into an agency workflow.</p><div className="delivery-modes js-horizontal-reorder"><span>DESIGN ONLY</span><span>FRONTEND ONLY</span><span>DESIGN + BUILD</span></div></div>
+        <SectionIntro
+          eyebrow="DELIVERY SYSTEM"
+          title="A clear brief, then focused production."
+          intro="Start with the output that matters. The process stays compact enough for direct work and structured enough to plug into an agency workflow."
+        >
+          <div className="delivery-modes web-tag-group"><span>DESIGN ONLY</span><span>FRONTEND ONLY</span><span>DESIGN + BUILD</span></div>
+        </SectionIntro>
         <div className="agency-steps agency-steps--premium">
           <div><b>01</b><span>Brief, references and required output</span></div>
           <div><b>02</b><span>Interface direction and reusable system logic</span></div>
@@ -90,9 +97,9 @@ export default function Services(){
         <div className="service-tech__copy">
           <span className="kicker">TOOLS & STACK</span>
           <h2>Design tools stay flexible. The build stack stays practical.</h2>
-          <p className="service-tech__lead">Figma and Photoshop sit alongside React, Vite, Tailwind CSS, HTML, CSS and JavaScript, with modern AI-assisted build tools used where they genuinely speed up production.</p>
-          <div className="contact-notes contact-notes--premium service-tech__tags js-horizontal-reorder">{stackTags.map(([id,label,tier])=><span key={id} className={`service-tech-tag service-tech-tag--t${tier}`} data-tech-id={id}>{TECH_TAG_MARKS[id]}{label}</span>)}</div>
-          <Link className="pill pill--primary page-cta" to="/contact/">Start a paid pilot <span>↗</span></Link>
+          <p className="service-tech__lead">Figma and Photoshop sit alongside React, Vite, Tailwind CSS, HTML, CSS and JavaScript. AI-assisted tools support production where they speed up iteration without replacing design judgment.</p>
+          <div className="contact-notes contact-notes--premium service-tech__tags web-tag-group">{stackTags.map(([id,label,tier])=><span key={id} className={`service-tech-tag service-tech-tag--t${tier}`} data-tech-id={id}>{TECH_TAG_MARKS[id]}{label}</span>)}</div>
+          <ActionLink className="page-cta" to="/contact/">Start a paid pilot <span>↗</span></ActionLink>
         </div>
         <ServiceTechVisual/>
       </div>

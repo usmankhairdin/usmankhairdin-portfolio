@@ -4,7 +4,6 @@ import { routeLoaders } from './routeLoaders.js'
 import { WebScrollProvider, useWebScroll } from './scroll/WebScrollProvider.jsx'
 import { ThemeProvider } from './theme/ThemeProvider.jsx'
 import CursorLayer from './cursor/CursorLayer.jsx'
-import HorizontalTagReorderManager from './components/HorizontalTagReorderManager.jsx'
 
 const HomeExperience = lazy(routeLoaders.home)
 const Work = lazy(routeLoaders.work)
@@ -13,6 +12,9 @@ const About = lazy(routeLoaders.about)
 const Services = lazy(routeLoaders.services)
 const Agencies = lazy(routeLoaders.agencies)
 const Contact = lazy(routeLoaders.contact)
+const DesignSystem = lazy(routeLoaders.designSystem)
+const PersonalPortfolioWeb = lazy(routeLoaders.personalPortfolioWeb)
+const PersonalPortfolio3D = lazy(routeLoaders.personalPortfolio3d)
 
 function HomeRouteFallback(){
   return <div className="home-route-fallback" aria-label="Loading interface gallery" aria-busy="true" />
@@ -49,15 +51,17 @@ export default function App(){
   return <ThemeProvider><WebScrollProvider>
     <RouteEffects/>
     <CursorLayer/>
-    <HorizontalTagReorderManager/>
     <Routes>
       <Route path="/" element={<Suspense fallback={<HomeRouteFallback/>}><HomeExperience/></Suspense>}/>
       <Route path="/work/" element={<Suspense fallback={<StandardRouteFallback/>}><Work/></Suspense>}/>
+      <Route path="/work/personal-portfolio-web/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolioWeb/></Suspense>}/>
+      <Route path="/work/personal-portfolio-3d/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolio3D/></Suspense>}/>
       <Route path="/work/:slug/" element={<Suspense fallback={<StandardRouteFallback/>}><Project/></Suspense>}/>
       <Route path="/about/" element={<Suspense fallback={<StandardRouteFallback/>}><About/></Suspense>}/>
       <Route path="/services/" element={<Suspense fallback={<StandardRouteFallback/>}><Services/></Suspense>}/>
       <Route path="/for-agencies/" element={<Suspense fallback={<StandardRouteFallback/>}><Agencies/></Suspense>}/>
       <Route path="/contact/" element={<Suspense fallback={<StandardRouteFallback/>}><Contact/></Suspense>}/>
+      <Route path="/design-system/" element={<Suspense fallback={<StandardRouteFallback/>}><DesignSystem/></Suspense>}/>
       <Route path="*" element={<Navigate to="/" replace/>}/>
     </Routes>
   </WebScrollProvider></ThemeProvider>

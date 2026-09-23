@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import ProjectDetailHero from '../components/ProjectDetailHero.jsx'
+import { ActionLink } from '../components/ui/Action.jsx'
 import { disciplineFor, hostLabel, projects, surfacesFor } from '../data/projects.js'
 import { brandFor, brandStyle } from '../data/projectBrands.js'
 import { caseStudyFor } from '../data/projectCaseStudies.js'
@@ -203,7 +204,7 @@ export default function Project(){
               <span className="kicker">PROJECT OVERVIEW</span>
               <h2>{study.overview.title}</h2>
               <p className="cs-lead">{study.overview.lead}</p>
-              <div className="project-tags js-horizontal-reorder">{project.tags.map(tag=><span key={tag}>{tag}</span>)}</div>
+              <div className="project-tags web-tag-group">{project.tags.map(tag=><span key={tag}>{tag}</span>)}</div>
             </header>
             <div className="cs-body">
               <div className="case-context__copy">
@@ -235,7 +236,7 @@ export default function Project(){
                   <div><dt>{project.contextLabel || 'ROLE / CONTEXT'}</dt><dd>{project.role}</dd></div>
                   {discipline&&<div><dt>DISCIPLINE</dt><dd>{discipline}</dd></div>}
                   <div><dt>STATUS</dt><dd>{project.status}</dd></div>
-                  <div><dt>LIVE PROJECT</dt><dd><a href={project.liveUrl} target="_blank" rel="noopener noreferrer">{hostLabel(project.liveUrl)} ↗</a></dd></div>
+                  <div><dt>PUBLIC PROJECT</dt><dd><a href={project.liveUrl} target="_blank" rel="noopener noreferrer">{hostLabel(project.liveUrl)} ↗</a></dd></div>
                 </dl>
                 <div className="case-deliverables cs-spec__list">
                   <span className="kicker">{project.deliverablesLabel || 'DELIVERED'}</span>
@@ -249,9 +250,9 @@ export default function Project(){
 
       <section className="section section--project-close"><div className="route-wrap project-close">
         <div className="project-close__copy">
-          <span className="kicker">WHITE-LABEL UI + FRONTEND</span>
-          <h2>Need this level of care behind your agency?</h2>
-          <div className="project-close__actions"><a className="pill pill--dark pill--cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open live project <span aria-hidden="true">↗</span></a><Link to="/contact/" className="pill pill--primary pill--cta">Send a brief <span aria-hidden="true">↗</span></Link></div>
+          <span className="kicker">PRODUCT UI + FRONTEND</span>
+          <h2>Need this level of care for your next interface?</h2>
+          <div className="project-close__actions"><ActionLink variant="dark" size="cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open public project <span aria-hidden="true">↗</span></ActionLink><ActionLink size="cta" to="/contact/">Send a brief <span aria-hidden="true">↗</span></ActionLink></div>
         </div>
         <ProjectCloseGraphic/>
       </div></section>

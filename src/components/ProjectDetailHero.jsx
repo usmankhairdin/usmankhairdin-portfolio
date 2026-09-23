@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import ProjectBrowserPreview from './ProjectBrowserPreview.jsx'
 import { disciplineFor, toneFor } from '../data/projects.js'
+import { ActionLink, TextCTA } from './ui/Action.jsx'
 import './ProjectDetailHero.css'
 
 /**
@@ -51,8 +51,8 @@ export default function ProjectDetailHero({ project }) {
           {discipline && <div><dt>DISCIPLINE</dt><dd>{discipline}</dd></div>}
         </dl>
         <div className="pdh__actions">
-          <a className="pill pill--primary route-hero__cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open live project <span aria-hidden="true">↗</span></a>
-          <Link className="text-cta" to="/work/">← All selected work</Link>
+          <ActionLink className="route-hero__cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open public project <span aria-hidden="true">↗</span></ActionLink>
+          <TextCTA to="/work/">← All selected work</TextCTA>
         </div>
       </div>
       <div className="pdh__visual">
