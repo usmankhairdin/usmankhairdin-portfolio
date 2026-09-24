@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
@@ -75,44 +74,6 @@ function TechTag({ id, children }) {
 }
 
 export default function PersonalPortfolioWeb() {
-  useEffect(() => {
-    const fields = {
-      description: document.querySelector('meta[name="description"]'),
-      canonical: document.querySelector('link[rel="canonical"]'),
-      ogTitle: document.querySelector('meta[property="og:title"]'),
-      ogDescription: document.querySelector('meta[property="og:description"]'),
-      ogUrl: document.querySelector('meta[property="og:url"]'),
-      ogImage: document.querySelector('meta[property="og:image"]'),
-      twitterTitle: document.querySelector('meta[name="twitter:title"]'),
-      twitterDescription: document.querySelector('meta[name="twitter:description"]'),
-      twitterImage: document.querySelector('meta[name="twitter:image"]'),
-    }
-    const previousTitle = document.title
-    const previous = Object.fromEntries(Object.entries(fields).map(([key, node]) => [key, node?.getAttribute(key === 'canonical' ? 'href' : 'content')]))
-    const title = 'Personal Portfolio — Web — Usman Khair Din'
-    const description = 'A self-initiated product design, UI/UX and responsive frontend case study for the current Usman Khair Din portfolio Web Experience.'
-    const url = 'https://www.usmankhairdin.com/work/personal-portfolio-web/'
-    const image = 'https://www.usmankhairdin.com/assets/case-studies/personal-portfolio-web/home-light-desktop.webp'
-
-    document.title = title
-    fields.description?.setAttribute('content', description)
-    fields.canonical?.setAttribute('href', url)
-    fields.ogTitle?.setAttribute('content', title)
-    fields.ogDescription?.setAttribute('content', description)
-    fields.ogUrl?.setAttribute('content', url)
-    fields.ogImage?.setAttribute('content', image)
-    fields.twitterTitle?.setAttribute('content', title)
-    fields.twitterDescription?.setAttribute('content', description)
-    fields.twitterImage?.setAttribute('content', image)
-
-    return () => {
-      document.title = previousTitle
-      Object.entries(fields).forEach(([key, node]) => {
-        if (!node || previous[key] == null) return
-        node.setAttribute(key === 'canonical' ? 'href' : 'content', previous[key])
-      })
-    }
-  }, [])
 
   return <div className="route-page ppw-page">
     <Header />

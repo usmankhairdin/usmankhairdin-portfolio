@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
@@ -70,44 +69,6 @@ function TechTag({ id, children }) {
 }
 
 export default function PersonalPortfolio3D() {
-  useEffect(() => {
-    const fields = {
-      description: document.querySelector('meta[name="description"]'),
-      canonical: document.querySelector('link[rel="canonical"]'),
-      ogTitle: document.querySelector('meta[property="og:title"]'),
-      ogDescription: document.querySelector('meta[property="og:description"]'),
-      ogUrl: document.querySelector('meta[property="og:url"]'),
-      ogImage: document.querySelector('meta[property="og:image"]'),
-      twitterTitle: document.querySelector('meta[name="twitter:title"]'),
-      twitterDescription: document.querySelector('meta[name="twitter:description"]'),
-      twitterImage: document.querySelector('meta[name="twitter:image"]'),
-    }
-    const previousTitle = document.title
-    const previous = Object.fromEntries(Object.entries(fields).map(([key, node]) => [key, node?.getAttribute(key === 'canonical' ? 'href' : 'content')]))
-    const title = 'Personal Portfolio — 3D — Usman Khair Din'
-    const description = 'A self-initiated spatial portfolio case study covering immersive navigation, interaction design and production WebGL implementation.'
-    const url = 'https://www.usmankhairdin.com/work/personal-portfolio-3d/'
-    const image = 'https://www.usmankhairdin.com/assets/case-studies/personal-portfolio-3d/corridor.webp'
-
-    document.title = title
-    fields.description?.setAttribute('content', description)
-    fields.canonical?.setAttribute('href', url)
-    fields.ogTitle?.setAttribute('content', title)
-    fields.ogDescription?.setAttribute('content', description)
-    fields.ogUrl?.setAttribute('content', url)
-    fields.ogImage?.setAttribute('content', image)
-    fields.twitterTitle?.setAttribute('content', title)
-    fields.twitterDescription?.setAttribute('content', description)
-    fields.twitterImage?.setAttribute('content', image)
-
-    return () => {
-      document.title = previousTitle
-      Object.entries(fields).forEach(([key, node]) => {
-        if (!node || previous[key] == null) return
-        node.setAttribute(key === 'canonical' ? 'href' : 'content', previous[key])
-      })
-    }
-  }, [])
 
   return <div className="route-page p3d-page">
     <Header />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Header from '../components/Header.jsx'
 import Footer, { FooterIcon } from '../components/Footer.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
@@ -105,23 +105,6 @@ function TechTag({ id, children }) {
 export default function DesignSystem() {
   const prima = projects.find((project) => project.slug === 'prima')
 
-  useEffect(() => {
-    const previousTitle = document.title
-    const description = document.querySelector('meta[name="description"]')
-    const canonical = document.querySelector('link[rel="canonical"]')
-    const previousDescription = description?.getAttribute('content')
-    const previousCanonical = canonical?.getAttribute('href')
-
-    document.title = 'Design System — Usman Khair Din'
-    description?.setAttribute('content', 'The visual, interaction and responsive system implemented across the Usman Khair Din portfolio.')
-    canonical?.setAttribute('href', 'https://www.usmankhairdin.com/design-system/')
-
-    return () => {
-      document.title = previousTitle
-      if (previousDescription) description?.setAttribute('content', previousDescription)
-      if (previousCanonical) canonical?.setAttribute('href', previousCanonical)
-    }
-  }, [])
 
   return <div className="route-page design-system-page">
     <Header />

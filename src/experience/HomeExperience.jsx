@@ -134,16 +134,5 @@ function ExperienceShell() {
 }
 
 export default function HomeExperience() {
-  useEffect(()=>{
-    const title='Usman Khair Din — Product Designer & Frontend Developer'
-    const description='Senior product and UI/UX designer and frontend developer for selected direct clients and white-label agency partners.'
-    const url='https://www.usmankhairdin.com/'
-    document.title=title
-    document.querySelector('meta[name="description"]')?.setAttribute('content',description)
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href',url)
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content',title)
-    document.querySelector('meta[property="og:description"]')?.setAttribute('content',description)
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content',url)
-  },[])
   return <JourneyProvider><ExperienceShell /></JourneyProvider>
 }

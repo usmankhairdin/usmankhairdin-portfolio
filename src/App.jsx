@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { routeLoaders } from './routeLoaders.js'
 import { WebScrollProvider, useWebScroll } from './scroll/WebScrollProvider.jsx'
 import { ThemeProvider } from './theme/ThemeProvider.jsx'
 import CursorLayer from './cursor/CursorLayer.jsx'
+import { applySeo } from './seo/applySeo.js'
 
 const HomeExperience = lazy(routeLoaders.home)
 const Work = lazy(routeLoaders.work)
@@ -28,6 +29,7 @@ function RouteEffects(){
   const { pathname }=useLocation()
   const navigationType=useNavigationType()
   const webScroll=useWebScroll()
+  useLayoutEffect(()=>{ applySeo(pathname) },[pathname])
   useEffect(()=>{
     if(navigationType==='POP') webScroll?.syncPosition()
     else if(webScroll) webScroll.resetToTop()

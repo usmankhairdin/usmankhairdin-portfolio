@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
@@ -10,8 +9,6 @@ import { caseStudyFor } from '../data/projectCaseStudies.js'
 import '../components/BrowserFrame.css'
 import './Project.css'
 import './ProjectBrand.css'
-
-const productionOrigin = 'https://www.usmankhairdin.com'
 
 // Responsive `sizes` per placement, so each capture is fetched at the width the grid actually gives it (12 columns, 1320px).
 const SIZES = {
@@ -139,46 +136,6 @@ export default function Project(){
   const {slug}=useParams()
   const project=projects.find(item=>item.slug===slug)
 
-  useEffect(()=>{
-    if(!project) return
-    const fields = {
-      description: document.querySelector('meta[name="description"]'),
-      canonical: document.querySelector('link[rel="canonical"]'),
-      ogTitle: document.querySelector('meta[property="og:title"]'),
-      ogDescription: document.querySelector('meta[property="og:description"]'),
-      ogUrl: document.querySelector('meta[property="og:url"]'),
-      ogImage: document.querySelector('meta[property="og:image"]'),
-      ogImageAlt: document.querySelector('meta[property="og:image:alt"]'),
-      twitterTitle: document.querySelector('meta[name="twitter:title"]'),
-      twitterDescription: document.querySelector('meta[name="twitter:description"]'),
-      twitterImage: document.querySelector('meta[name="twitter:image"]'),
-    }
-    const previous = Object.fromEntries(Object.entries(fields).map(([key,node])=>[key,node?.getAttribute(key==='canonical'?'href':'content')]))
-    const previousTitle=document.title
-    const title=`${project.title} — Selected Work — Usman Khair Din`
-    const canonical=`${productionOrigin}/work/${project.slug}/`
-    const image=`${productionOrigin}/assets/projects/${project.slug}/hero.webp`
-
-    document.title=title
-    fields.description?.setAttribute('content',project.summary)
-    fields.canonical?.setAttribute('href',canonical)
-    fields.ogTitle?.setAttribute('content',title)
-    fields.ogDescription?.setAttribute('content',project.summary)
-    fields.ogUrl?.setAttribute('content',canonical)
-    fields.ogImage?.setAttribute('content',image)
-    fields.ogImageAlt?.setAttribute('content',project.mediaAlt.hero)
-    fields.twitterTitle?.setAttribute('content',title)
-    fields.twitterDescription?.setAttribute('content',project.summary)
-    fields.twitterImage?.setAttribute('content',image)
-
-    return()=>{
-      document.title=previousTitle
-      Object.entries(fields).forEach(([key,node])=>{
-        if(!node || previous[key] == null) return
-        node.setAttribute(key==='canonical'?'href':'content',previous[key])
-      })
-    }
-  },[project])
 
   if(!project) return <Navigate to="/work/" replace/>
 
