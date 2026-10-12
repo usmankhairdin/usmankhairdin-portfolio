@@ -1,0 +1,25 @@
+/* Intro refinements only. Keep the approved project sequence and capture geometry. */
+.work-editorial__hero-media { margin: 0 0 0 25px; min-width: 0; perspective: 1600px; }
+.work-editorial__hero-media > a { display: block; overflow: hidden; border: 1px solid rgb(52 78 140 / .12); border-radius: 8px; transform: rotateY(-8deg) rotateZ(-2deg); box-shadow: 8px 10px 0 rgb(37 54 104 / .09), 13px 26px 32px rgb(24 49 96 / .18); transition: transform .5s var(--motion-ease-out); }
+.work-editorial__hero-media > a:hover { transform: rotateY(-3deg) rotateZ(-1deg); }
+.work-editorial__hero-media img { display: block; width: 100%; height: auto; }
+.work-editorial__hero-media figcaption { margin-top: 29px; color: var(--editorial-muted); font-size: 13px; }
+.work-editorial__hero-media a:focus-visible { outline: var(--focus-ring); outline-offset: 7px; }
+.work-editorial .wk-featured { padding-top: 50px; }
+.work-editorial :is(.wk-featured, .wk-selected) > .route-wrap { width: min(1320px, calc(100% - 112px)); }
+.work-editorial .wk-featured__intro h2 { font-size: clamp(36px, 3.8vw, 54px); line-height: 1.08; letter-spacing: -.055em; font-weight: 650; }
+.work-editorial .wk-featured__intro p { font-size: 18px; }
+.work-editorial .wk-featured__category { font: 600 13px/1.5 var(--sans); letter-spacing: -.015em; color: var(--editorial-muted); }
+.work-editorial .wk-featured__tags li { font: 500 12px/1.4 var(--sans); }
+.work-editorial #wk-selected-title { scroll-margin-top: 112px; }
+.work-editorial .editorial-engagement { --editorial-accent: #3157ff; }
+html[data-theme="dark"] .work-editorial__hero-media > a { box-shadow: 8px 10px 0 rgb(0 0 0 / .2), 13px 26px 32px rgb(0 0 0 / .35); }
+@media (max-width: 1100px) { .work-editorial :is(.wk-featured, .wk-selected) > .route-wrap { width: calc(100% - 64px); } }
+@media (max-width: 700px) {
+  .work-editorial :is(.wk-featured, .wk-selected) > .route-wrap { width: calc(100% - 44px); }
+  .work-editorial__hero-media { margin: 18px 6px 25px; }
+  .work-editorial .wk-featured { padding-top: 34px; }
+  .work-editorial .wk-featured__intro h2 { font-size: clamp(35px, 9.3vw, 52px); }
+  .work-editorial .wk-featured__intro p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .work-editorial__hero-media > a, .work-editorial__hero-media > a:hover { transition: none; transform: none; } }

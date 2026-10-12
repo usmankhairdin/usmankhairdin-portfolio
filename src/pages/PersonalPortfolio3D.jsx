@@ -1,5 +1,6 @@
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
+import CaseStudyNav from '../components/CaseStudyNav.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
@@ -84,7 +85,7 @@ export default function PersonalPortfolio3D() {
             <p>An immersive spatial counterpart to the responsive Web portfolio—designed as a working corridor of destinations, rooms and interaction.</p>
             <div className="p3d-hero__actions">
               <ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink>
-              <TextCTA href="#concept">Explore the case study ↓</TextCTA>
+              <TextCTA href="#concept">Read the case study ↓</TextCTA>
             </div>
             <Capture image={images.navigation} eager className="p3d-hero__preview" label="CORRIDOR / DIRECT ROOM ACCESS" />
           </div>
@@ -109,7 +110,7 @@ export default function PersonalPortfolio3D() {
               <div><dt>WEB</dt><dd>Fast scanning, direct routes and detailed project access.</dd></div>
               <div><dt>3D</dt><dd>Atmosphere, room-based storytelling and experiential discovery.</dd></div>
             </dl>
-            <TextCTA to="/work/personal-portfolio-web/">View Web Case Study →</TextCTA>
+            <TextCTA to="/work/personal-portfolio-web/">View the Web case study →</TextCTA>
           </div>
         </div>
       </CaseSection>
@@ -230,7 +231,7 @@ export default function PersonalPortfolio3D() {
         <HeroSignalBackground />
         <div className="route-wrap p3d-close__grid">
           <div><span className="kicker">ENTER THE LIVE SPACE</span><h2 id="p3d-close-title">The journey is the final artifact.</h2></div>
-          <div><p>Move through the current production Corridor, choose a room and experience the spatial navigation directly.</p><div><ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Start a conversation →</TextCTA></div></div>
+          <div><p>Move through the current production Corridor, choose a room and experience the spatial navigation directly.</p><div><ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-3d/" /></div>
         </div>
       </section>
     </main>

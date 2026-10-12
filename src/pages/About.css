@@ -1,0 +1,169 @@
+/* Selected editorial About concept. Layout and motion stay on this route. */
+.route-page.about-editorial {
+  --about-ink: #0c1830;
+  --about-muted: #4a5a76;
+  --about-surface: #f5f9ff;
+  --about-accent: #3157ff;
+  --about-rule: rgb(52 78 140 / .19);
+  padding-top: 0;
+  color: var(--about-ink);
+  background: var(--about-surface);
+}
+.about-editorial__wrap { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
+.about-editorial > main:focus { outline: none; }
+.about-editorial__hero { position: relative; isolation: isolate; overflow: clip; padding: 150px 0 66px; }
+/* Keep authored descending signals without the old static grid overlay. */
+.about-editorial__hero .hero-signal-background::before { content: none; }
+.about-editorial__hero-layout { position: relative; display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; gap: 12px; }
+.about-editorial__hero-copy { position: relative; z-index: 1; min-width: 0; }
+.about-editorial__hero h1 { margin: 0; font-size: clamp(54px, 6.5vw, 91px); line-height: .99; letter-spacing: -.069em; font-weight: 750; }
+.about-editorial__hero h1 > span { white-space: nowrap; }
+.about-editorial__hero h1 em,
+.about-editorial__work h2 em { font-family: var(--font-editorial); font-weight: 500; letter-spacing: -.07em; color: var(--about-accent); }
+.about-editorial__hero h1 em { letter-spacing: -.065em; }
+.about-editorial__hero-copy > p { margin: 26px 0 0; max-width: 530px; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.6; letter-spacing: -.025em; text-wrap: pretty; color: var(--about-muted); }
+.about-editorial__hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 30px; margin-top: 29px; }
+.about-editorial__hero-actions .pill { min-height: 52px; padding-inline: 25px; gap: 25px; font-size: 14px; font-weight: 650; background: var(--about-accent); color: #fff; }
+.about-editorial__link { display: inline-flex; align-items: center; gap: 17px; min-height: 44px; font-size: 15px; font-weight: 600; line-height: 1.5; letter-spacing: -.025em; color: var(--about-accent); }
+.about-editorial__link > span:first-child { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+.about-editorial__link > span:last-child { transition: transform .28s var(--motion-ease-out); }
+.about-editorial__link:hover > span:last-child { transform: translate(2px, -2px); }
+.about-editorial__link:hover > span:first-child { text-decoration-color: currentColor; }
+.about-editorial__link:focus-visible,
+.about-editorial__work-preview:focus-visible { outline: var(--focus-ring); outline-offset: 7px; }
+.about-editorial__work :is(.about-editorial__link, .about-editorial__work-preview):focus-visible { outline-color: #fff; }
+.about-editorial__hero-actions .about-editorial__link { color: var(--about-muted); font-size: 14px; }
+.about-editorial__sculpture { position: relative; width: 113%; margin-left: -7%; isolation: isolate; pointer-events: none; }
+.about-editorial__sculpture img { display: block; width: 100%; height: auto; }
+/* The supplied shadow reaches the export boundary. Blend only the canvas
+   perimeter, below/outside the object, to avoid a visible rectangular cutoff. */
+.about-editorial__sculpture {
+  mask-image: linear-gradient(to bottom, #000 92%, transparent 100%), linear-gradient(to right, transparent, #000 3%, #000 97%, transparent);
+  mask-composite: intersect;
+}
+/* The original PNG has the approved lighter shadow; the transparent export
+   contains a denser shadow. Use the original pixels on light, blending its
+   white matte once against the hero. Dark retains the transparent version. */
+html[data-theme="light"] .about-editorial__sculpture { mix-blend-mode: multiply; }
+.about-editorial__filter-defs { position: absolute; pointer-events: none; }
+/* Trim the supplied cutout matte by ~1.4 source pixels, then antialias that
+   boundary only. The filter preserves RGB and avoids multiplying shadow alpha
+   by itself. Apply after the image and masked illumination are composited. */
+html[data-theme="dark"] .about-editorial__sculpture { filter: url(#about-sculpture-edge-cleanup); }
+.about-editorial__practice { padding: 64px 0 62px; }
+.about-editorial__practice-layout { display: grid; grid-template-columns: .79fr 1.21fr; gap: clamp(42px, 5vw, 74px); align-items: center; }
+.about-editorial__portrait { min-width: 0; margin: 0; }
+.about-editorial__portrait-image { overflow: clip; aspect-ratio: 4 / 5; background: #ccd7e5; }
+.about-editorial__portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; transform: scale(1.5); transform-origin: 50% 8%; }
+.about-editorial__practice-copy { min-width: 0; }
+.about-editorial__practice h2 { margin: 0 0 26px; font-size: clamp(36px, 4.6vw, 64px); line-height: 1.05; letter-spacing: -.06em; font-weight: 650; }
+.about-editorial__body { max-width: 680px; }
+.about-editorial__body p { margin: 0 0 20px; font-size: clamp(17px, 1.55vw, 21px); line-height: 1.6; letter-spacing: -.025em; color: var(--about-muted); }
+.about-editorial__career { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: clamp(30px, 4vw, 64px); }
+.about-editorial__career > div + div { border-left: 1px solid var(--about-rule); padding-left: 26px; }
+.about-editorial__career h3 { font-size: 18px; font-weight: 600; letter-spacing: -.035em; line-height: 1.4; margin: 0 0 6px; }
+.about-editorial__career p { font-size: 14px; line-height: 1.6; margin: 0; color: var(--about-muted); }
+.about-editorial__career p span { display: block; }
+.about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(48 122 255 / .8), transparent 75%), #1954df; color: #fff; padding: 72px 0; overflow: clip; }
+.about-editorial__work-layout { display: grid; grid-template-columns: .69fr 1.31fr; gap: 44px; align-items: center; }
+.about-editorial__work-copy { min-width: 0; position: relative; z-index: 1; }
+.about-editorial__work h2 { margin: 0 0 24px; font-size: clamp(40px, 4.6vw, 66px); font-weight: 600; line-height: .99; letter-spacing: -.055em; }
+.about-editorial__work h2 em { color: #fff; }
+.about-editorial__work-copy > p { max-width: 330px; margin: 0 0 20px; font-size: 18px; line-height: 1.6; letter-spacing: -.02em; color: #f1f5ff; }
+.about-editorial__work .about-editorial__link { color: #fff; font-size: 16px; }
+.about-editorial__work-role { display: block; margin-top: 2px; font-size: 14px; line-height: 1.7; color: #e0e9ff; }
+.about-editorial__work-stage { min-width: 0; perspective: 1600px; padding-block: 28px; }
+.about-editorial__work-preview {
+  display: block; transform: rotateY(-10deg) rotateZ(-2deg); transform-origin: center;
+  overflow: hidden; border-radius: 6px; background: #edf2f9;
+  box-shadow: 7px 10px 0 rgb(8 37 108 / .13), 12px 32px 36px rgb(3 27 85 / .4);
+  outline-color: #fff;
+  animation: about-work-settle 9s ease-in-out infinite; animation-play-state: paused;
+}
+.about-editorial__work[data-running="true"] .about-editorial__work-preview { animation-play-state: running; }
+.about-editorial__work-preview img { display: block; width: 100%; height: auto; }
+.about-editorial__work-preview:hover,
+.about-editorial__work-preview:focus-visible { animation-play-state: paused !important; }
+@keyframes about-work-settle {
+  0%, 100% { transform: rotateY(-10deg) rotateZ(-2deg) translateY(0); }
+  50% { transform: rotateY(-7deg) rotateZ(-1deg) translateY(-7px); }
+}
+.about-editorial[data-page-visible="false"] .about-editorial__work-preview { animation-play-state: paused; }
+.about-editorial [data-editorial-waiting] { opacity: 0; }
+html[data-theme="dark"] .route-page.about-editorial { --about-ink: #eceff5; --about-muted: #b0bcd0; --about-surface: #0e1625; --about-accent: #94a7ff; --about-rule: rgb(188 204 242 / .2); }
+html[data-theme="dark"] .about-editorial__hero-actions .pill { color: #fff; background: #455dff; }
+html[data-theme="dark"] .about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(42 102 232 / .7), transparent 75%), #184bc5; }
+@media (min-width: 1600px) { .about-editorial__hero { padding-top: 156px; padding-bottom: 76px; } }
+@media (max-width: 1100px) {
+  .about-editorial__wrap { width: calc(100% - 64px); }
+  .about-editorial__hero { padding-top: 130px; padding-bottom: 50px; }
+  .about-editorial__hero h1 { font-size: 6.65vw; }
+  .about-editorial__hero-actions { gap: 10px 22px; }
+  .about-editorial__hero-actions .pill { padding-inline: 20px; font-size: 13px; min-height: 48px; }
+  .about-editorial__hero-actions .about-editorial__link { font-size: 13px; }
+  .about-editorial__practice { padding-block: 48px; }
+  .about-editorial__practice-layout { gap: 40px; }
+  .about-editorial__practice h2 { font-size: 5.3vw; }
+  .about-editorial__body p { font-size: 18px; }
+  .about-editorial__career { margin-top: 28px; gap: 18px; }
+  .about-editorial__career > div + div { padding-left: 18px; }
+  .about-editorial__career h3 { font-size: 16px; }
+  .about-editorial__career p { font-size: 12px; }
+  .about-editorial__work-layout { gap: 28px; }
+  .about-editorial__work { padding-block: 52px; }
+  .about-editorial__work-copy > p { font-size: 16px; }
+}
+@media (max-width: 800px) and (min-width: 701px) {
+  .about-editorial__hero { padding-top: 124px; padding-bottom: 44px; }
+  .about-editorial__hero-layout { grid-template-columns: 1.1fr .9fr; gap: 0; }
+  .about-editorial__hero h1 { font-size: 6.65vw; }
+  .about-editorial__hero-copy > p { font-size: 16px; }
+  .about-editorial__sculpture { width: 120%; margin-left: -10%; }
+  .about-editorial__hero-actions { gap: 8px; margin-top: 20px; }
+  .about-editorial__practice-layout { grid-template-columns: .84fr 1.16fr; gap: 28px; align-items: start; }
+  .about-editorial__practice h2 { font-size: 4.85vw; }
+  .about-editorial__body p { font-size: 15px; margin-bottom: 14px; }
+  .about-editorial__career { grid-template-columns: 1fr; gap: 15px; margin-top: 22px; }
+  .about-editorial__career > div + div { border: 0; padding: 0; }
+  .about-editorial__career p span { display: inline; margin-left: 6px; }
+  .about-editorial__work h2 { font-size: 4.9vw; }
+  .about-editorial__work-copy > p { font-size: 15px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .about-editorial__hero-copy > p { font-size: 18px; }
+  .about-editorial__body p { font-size: 19px; }
+  .about-editorial__career p { font-size: 14px; }
+  .about-editorial__work h2 { font-size: 5.4vw; }
+}
+@media (max-width: 700px) {
+  .about-editorial__wrap { width: calc(100% - 44px); }
+  .about-editorial__hero { padding-top: 119px; padding-bottom: 20px; }
+  .about-editorial__hero-layout { grid-template-columns: 1fr; gap: 15px; }
+  .about-editorial__hero h1 { font-size: clamp(40px, 11.8vw, 76px); line-height: 1.02; letter-spacing: -.066em; }
+  .about-editorial__hero-copy > p { margin-top: 22px; font-size: 16px; max-width: 430px; }
+  .about-editorial__hero-actions { margin-top: 22px; gap: 8px 20px; }
+  .about-editorial__hero-actions .pill { min-height: 46px; padding-inline: 20px; gap: 18px; }
+  .about-editorial__hero-actions .about-editorial__link { font-size: 13px; gap: 10px; }
+  .about-editorial__sculpture { width: min(108%, 580px); margin: -2px auto 0; justify-self: center; }
+  .about-editorial__practice { padding: 36px 0 45px; }
+  .about-editorial__practice-layout { grid-template-columns: 1fr; gap: 36px; }
+  .about-editorial__portrait { width: min(100%, 440px); }
+  .about-editorial__portrait-image { aspect-ratio: 5 / 5.3; }
+  .about-editorial__practice h2 { font-size: clamp(36px, 9.3vw, 52px); margin-bottom: 22px; }
+  .about-editorial__body p { font-size: 17px; line-height: 1.65; }
+  .about-editorial__career { margin-top: 30px; gap: 15px; }
+  .about-editorial__career > div + div { padding-left: 15px; }
+  .about-editorial__career h3 { font-size: 15px; }
+  .about-editorial__career p { font-size: 12px; }
+  .about-editorial__work { padding-block: 42px; }
+  .about-editorial__work-layout { grid-template-columns: 1fr; gap: 20px; }
+  .about-editorial__work h2 { font-size: clamp(46px, 12vw, 64px); }
+  .about-editorial__work-copy > p { max-width: 390px; font-size: 17px; }
+  .about-editorial__work-stage { padding-block: 12px; }
+  .about-editorial__work-preview { border-radius: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-editorial [data-editorial-waiting] { opacity: 1; }
+  .about-editorial__work-preview { animation: none; }
+  .about-editorial__link > span:last-child { transition: none; }
+}

@@ -201,6 +201,38 @@ export const projects = [
   },
 ]
 
+// The two self-initiated portfolio case studies featured ahead of the selected projects on the Work page.
+export const featuredProjects = [
+  {
+    title: 'Personal Portfolio — Web',
+    href: '/work/personal-portfolio-web/',
+    category: 'PRODUCT / WEB EXPERIENCE',
+    summary: 'A self-initiated portfolio designed and built to connect product thinking, responsive UI and production frontend work.',
+    tags: ['Product Design', 'UI/UX', 'Design System', 'Frontend'],
+    image: '/assets/case-studies/personal-portfolio-web/home-light-desktop.webp',
+    imageAlt: 'Personal Portfolio Web home experience with the design and build introduction',
+  },
+  {
+    title: 'Personal Portfolio — 3D',
+    href: '/work/personal-portfolio-3d/',
+    category: 'SPATIAL / 3D EXPERIENCE',
+    summary: 'An immersive counterpart that turns the same professional story into navigable rooms and purposeful interaction.',
+    tags: ['Spatial Experience', 'Interaction Design', 'WebGL', 'Frontend'],
+    image: '/assets/case-studies/personal-portfolio-3d/about-room.webp',
+    imageAlt: 'Personal Portfolio 3D About room with spatial typography, artwork and furniture',
+  },
+]
+
+// Every case-study route in Work-page order, so each detail page can point onward to the next one.
+const caseStudies = [
+  ...featuredProjects.map(({ title, href }) => ({ title, href })),
+  ...projects.map(({ title, slug }) => ({ title, href: `/work/${slug}/` })),
+]
+export const nextCaseStudy = (href) => {
+  const index = caseStudies.findIndex((item) => item.href === href)
+  return index < 0 ? null : caseStudies[(index + 1) % caseStudies.length]
+}
+
 export const doors = [
   { id:'about', label:'ABOUT', side:'left', z:-18, accent:'#455dff', route:'/about/' },
   { id:'services', label:'SERVICES', side:'right', z:-34, accent:'#455dff', route:'/services/' },

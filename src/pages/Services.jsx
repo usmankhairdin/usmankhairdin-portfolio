@@ -1,108 +1,117 @@
-import StandardPage from './StandardPage.jsx'
-import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
-import { RouteSectionGraphic, ServicesHeroBlueprint } from '../components/StandardVisuals.jsx'
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import Header from '../components/Header.jsx'
+import Footer from '../components/Footer.jsx'
+import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
-import SectionIntro from '../components/ui/SectionIntro.jsx'
-
-const hero = sectionHeroes.services
-
-const stackTags = [
-  ['react','React',1],['figma','Figma',1],['tailwind','Tailwind CSS',1],['vite','Vite',1],
-  ['html5','HTML5',1],['css3','CSS3',1],['javascript','JavaScript',1],['photoshop','Photoshop',1],
-  ['claude','Claude',2],['codex','Codex',2],['lovable','Lovable',2],['bolt','Bolt',2],['v0','v0',2],['builder','Builder',2],
-  ['more','And many more ...',3],
-]
-
-function ServiceTechVisual(){
-  return <div className="service-tech-visual" aria-hidden="true">
-    <svg viewBox="0 0 420 340" role="presentation" focusable="false">
-      <defs>
-        <linearGradient id="serviceTechAccent" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7d5cff"/><stop offset=".58" stopColor="#5368ff"/><stop offset="1" stopColor="#2fb4dd"/></linearGradient>
-      </defs>
-      <g className="stv-grid">
-        <path d="M42 62H378M42 112H378M42 162H378M42 212H378M42 262H378"/>
-        <path d="M82 32V300M142 32V300M202 32V300M262 32V300M322 32V300"/>
-      </g>
-      <g className="stv-panel stv-panel--design">
-        <rect x="54" y="62" width="124" height="104" rx="18"/>
-        <circle cx="82" cy="90" r="9"/><circle cx="104" cy="90" r="9"/><circle cx="82" cy="112" r="9"/><circle cx="104" cy="112" r="9"/><path d="M126 86h30M126 107h22M76 143h78"/>
-      </g>
-      <g className="stv-panel stv-panel--code">
-        <rect x="142" y="126" width="150" height="116" rx="20"/>
-        <path className="stv-code" stroke="url(#serviceTechAccent)" d="m170 160-18 17 18 17M264 160l18 17-18 17M214 153l-12 50"/>
-        <path d="M188 218h74"/>
-      </g>
-      <g className="stv-panel stv-panel--preview">
-        <rect x="268" y="78" width="104" height="156" rx="20"/>
-        <rect className="stv-preview-fill" x="284" y="100" width="72" height="48" rx="10"/>
-        <path d="M286 172h66M286 191h52M286 210h62"/>
-      </g>
-      <path className="stv-flow" d="M104 218 C148 276 244 282 330 238"/>
-      <circle className="stv-flow-dot" r="7"><animateMotion path="M104 218 C148 276 244 282 330 238" dur="8.5s" begin="-4.2s" repeatCount="indefinite"/></circle>
-      <g className="stv-badges"><rect x="52" y="254" width="66" height="26" rx="13"/><rect x="126" y="276" width="82" height="26" rx="13"/><rect x="300" y="258" width="70" height="26" rx="13"/></g>
-      <text x="85" y="271">DESIGN</text><text x="167" y="293">BUILD</text><text x="335" y="275">SHIP</text>
-    </svg>
-  </div>
-}
+import EditorialEngagement, { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
+import useEditorialMotion from '../components/editorial/useEditorialMotion.js'
+import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
+import './Services.css'
 
 const services = [
-  ['01','Product / UI/UX design','Product flows, responsive screens and reusable UI systems shaped around real workflows.','PRODUCT'],
-  ['02','Websites & landing pages','Clear, responsive websites and landing pages designed for focused communication and conversion.','WEB'],
-  ['03','SaaS / dashboard UI','Dense application workflows, CRM/ERP/HRM-style dashboards and component-led states.','SYSTEM'],
-  ['04','Website redesign','Existing sites reworked for clearer hierarchy, stronger responsive behavior and a cleaner path to action.','REDESIGN'],
-  ['05','Frontend implementation','Responsive React, Tailwind CSS and HTML/CSS implementation from approved interface direction.','BUILD'],
-  ['06','White-label agency production','Senior overflow support behind your agency brand — design, frontend or a defined slice of both.','AGENCY'],
+  { title: 'Product & UI/UX design', description: 'Make complex workflows feel clear. Product flows, SaaS dashboards and reusable interface systems shaped around the people using them.', scope: ['User flows', 'Responsive screens', 'Design systems'] },
+  { title: 'Websites & redesign', description: 'Give your business a clearer presence. Websites and landing pages with considered content, a distinct visual direction and a straightforward path to enquiry.', scope: ['Website design', 'Landing pages', 'Redesigns'] },
+  { title: 'Frontend implementation', description: 'Carry approved design into the browser. Responsive React, Tailwind CSS and HTML/CSS implementation, with careful attention to states, accessibility and interaction.', scope: ['Design-to-code', 'Reusable components', 'Responsive frontend'] },
+]
+const stackTags = [
+  ['figma', 'Figma'], ['react', 'React'], ['tailwind', 'Tailwind CSS'], ['vite', 'Vite'],
+  ['html5', 'HTML5'], ['css3', 'CSS3'], ['javascript', 'JavaScript'], ['photoshop', 'Photoshop'],
+]
+const supportingTags = [
+  ['claude', 'Claude'], ['codex', 'Codex'], ['lovable', 'Lovable'], ['bolt', 'Bolt'],
+  ['v0', 'v0'], ['builder', 'Builder'], ['more', 'And many more…'],
 ]
 
-export default function Services(){
-  return <StandardPage
-    eyebrow={hero.eyebrow}
-    accent="services"
-    title={<HeroTitle hero={hero}/>}
-    intro={hero.intro}
-    heroNote={hero.heroNote}
-    heroVisual={<ServicesHeroBlueprint/>}
-    heroAction={<ActionLink className="route-hero__cta" to="/contact/">Start a paid pilot <span>↗</span></ActionLink>}
-  >
-    <section className="section section--service-stack route-authored-section">
-      <RouteSectionGraphic variant="services-grid"/>
-      <div className="route-wrap service-list service-list--premium">
-        {services.map(([n,t,d,signal],index)=><article key={n} style={{'--service-index':index}}><span>{n}</span><h2>{t}</h2><p>{d}</p><i aria-hidden="true">{signal}</i></article>)}
-      </div>
-    </section>
+function StackTags({ items, label }) {
+  return <ul className="services-editorial__tags web-tag-group" aria-label={label}>
+    {items.map(([id, text]) => <li key={id}>{TECH_TAG_MARKS[id]}<span>{text}</span></li>)}
+  </ul>
+}
 
-    <section className="section section--soft section--delivery-system route-authored-section">
-      <RouteSectionGraphic variant="delivery"/>
-      <div className="route-wrap split">
-        <SectionIntro
-          eyebrow="DELIVERY SYSTEM"
-          title="A clear brief, then focused production."
-          intro="Start with the output that matters. The process stays compact enough for direct work and structured enough to plug into an agency workflow."
-        >
-          <div className="delivery-modes web-tag-group"><span>DESIGN ONLY</span><span>FRONTEND ONLY</span><span>DESIGN + BUILD</span></div>
-        </SectionIntro>
-        <div className="agency-steps agency-steps--premium">
-          <div><b>01</b><span>Brief, references and required output</span></div>
-          <div><b>02</b><span>Interface direction and reusable system logic</span></div>
-          <div><b>03</b><span>Responsive states and implementation</span></div>
-          <div><b>04</b><span>Async review and client-ready handoff</span></div>
+export default function Services() {
+  const root = useRef(null)
+  useEditorialMotion(root)
+  // The floor shadow is a separate layer; show it only once the artwork has loaded.
+  useEffect(() => {
+    const sculpture = root.current?.querySelector('.services-editorial__sculpture')
+    const image = sculpture?.querySelector('img')
+    if (!image) return undefined
+    const reveal = () => { sculpture.dataset.artworkReady = 'true' }
+    if (image.complete && image.naturalWidth) reveal()
+    else image.addEventListener('load', reveal, { once: true })
+    return () => image.removeEventListener('load', reveal)
+  }, [])
+  return <div className="route-page services-editorial" ref={root}>
+    <Header />
+    <main id="main-content" tabIndex={-1}>
+      <section className="services-editorial__hero" aria-labelledby="services-title">
+        <HeroSignalBackground measureCopy />
+        <div className="services-editorial__wrap services-editorial__hero-layout">
+          <div className="services-editorial__hero-copy route-hero__copy">
+            <h1 id="services-title">From UX to<br /><em>production.</em></h1>
+            <p>Product &amp; UI/UX design, websites and responsive frontend. One&nbsp;partner, from first screen to finished build.</p>
+            <div className="services-editorial__actions">
+              <ActionLink to="/contact/">Discuss your project <span aria-hidden="true">↗</span></ActionLink>
+              <EditorialLink to="/work/">Explore the work</EditorialLink>
+            </div>
+          </div>
+          <GroundedSculpture src="/assets/services/interface-sculpture.webp" className="services-editorial__sculpture" surfaceLightOnly />
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section className="section section--tech-stage route-authored-section">
-      <RouteSectionGraphic variant="stack"/>
-      <div className="route-wrap service-tech">
-        <div className="service-tech__copy">
-          <span className="kicker">TOOLS & STACK</span>
-          <h2>Design tools stay flexible. The build stack stays practical.</h2>
-          <p className="service-tech__lead">Figma and Photoshop sit alongside React, Vite, Tailwind CSS, HTML, CSS and JavaScript. AI-assisted tools support production where they speed up iteration without replacing design judgment.</p>
-          <div className="contact-notes contact-notes--premium service-tech__tags web-tag-group">{stackTags.map(([id,label,tier])=><span key={id} className={`service-tech-tag service-tech-tag--t${tier}`} data-tech-id={id}>{TECH_TAG_MARKS[id]}{label}</span>)}</div>
-          <ActionLink className="page-cta" to="/contact/">Start a paid pilot <span>↗</span></ActionLink>
+      <section className="services-editorial__offerings" aria-labelledby="services-offerings-title">
+        <div className="services-editorial__wrap services-editorial__offerings-layout">
+          <div className="services-editorial__intro" data-editorial-reveal>
+            <h2 id="services-offerings-title">The right help,<br />at the <em>right stage.</em></h2>
+            <p>A new product, an existing website or an approved design ready to build. Bring me in where you need the work.</p>
+            <p className="services-editorial__modes">Design only. Frontend only.<br />Or design and build, together.</p>
+          </div>
+          <div className="services-editorial__list">
+            {services.map(({ title, description, scope }) => <article key={title} data-editorial-reveal>
+              <h3>{title}</h3><p>{description}</p>
+              <ul aria-label={`${title} includes`}>{scope.map((item) => <li key={item}>{item}</li>)}</ul>
+            </article>)}
+          </div>
         </div>
-        <ServiceTechVisual/>
-      </div>
-    </section>
-  </StandardPage>
+      </section>
+
+      <section className="services-editorial__proof" data-editorial-loop aria-labelledby="services-proof-title">
+        <div className="services-editorial__wrap services-editorial__proof-layout">
+          <div className="services-editorial__proof-copy" data-editorial-reveal>
+            <h2 id="services-proof-title">Clarity,<br />carried into<br />the <em>browser.</em></h2>
+            <p>Rantle brings product information and sourcing enquiries into one responsive website.</p>
+            <EditorialLink to="/work/rantle/">Explore Rantle</EditorialLink>
+            <span className="services-editorial__credit">Website design · Frontend</span>
+          </div>
+          <div className="services-editorial__preview-stage" data-editorial-reveal>
+            <Link to="/work/rantle/" className="services-editorial__preview" aria-label="Explore the Rantle case study">
+              <img src="/assets/projects/rantle/showcase.webp" srcSet="/assets/projects/rantle/showcase-1x.webp 1440w, /assets/projects/rantle/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="Rantle electronics sourcing website with product navigation and enquiry action" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="services-editorial__delivery" aria-labelledby="services-delivery-title">
+        <div className="services-editorial__wrap services-editorial__delivery-layout">
+          <div className="services-editorial__toolkit" data-editorial-reveal>
+            <h2 id="services-delivery-title">Thoughtful tools.<br /><em>Practical delivery.</em></h2>
+            <p>Figma for the design. A component-based frontend for the build. The stack follows the brief, not the other way around.</p>
+            <StackTags items={stackTags} label="Core design and frontend tools" />
+            <p className="services-editorial__support-note">AI-assisted tools support iteration. Design judgment stays human.</p>
+            <StackTags items={supportingTags} label="Supporting production tools" />
+          </div>
+          <div className="services-editorial__delivery-copy" data-editorial-reveal>
+            <div><h3>A clear brief</h3><p>Agree the output, references and scope before production begins.</p></div>
+            <div><h3>Focused production</h3><p>Review the direction, then work through the screens, components and responsive states.</p></div>
+            <div><h3>A considered handoff</h3><p>Async review and organised design files or frontend work, ready for your next step.</p></div>
+            <aside><h3>Part of your agency team.</h3><p>Behind-the-scenes design and frontend production, delivered under your brand.</p><EditorialLink to="/for-agencies/">How white-label work fits</EditorialLink></aside>
+          </div>
+        </div>
+      </section>
+      <EditorialEngagement />
+    </main>
+    <Footer />
+  </div>
 }

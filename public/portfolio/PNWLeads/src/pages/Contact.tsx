@@ -23,13 +23,6 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-  };
-
   if (isSubmitted) {
     return (
       <div className="pt-16 min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center">
@@ -92,7 +85,7 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="bg-white rounded-3xl shadow-2xl p-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Get Your Free Consultation</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="firstName" className="block text-sm font-bold text-gray-700 mb-2">

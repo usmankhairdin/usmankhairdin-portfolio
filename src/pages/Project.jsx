@@ -2,6 +2,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import ProjectDetailHero from '../components/ProjectDetailHero.jsx'
+import CaseStudyNav from '../components/CaseStudyNav.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
 import { disciplineFor, hostLabel, projects, surfacesFor } from '../data/projects.js'
 import { brandFor, brandStyle } from '../data/projectBrands.js'
@@ -210,6 +211,7 @@ export default function Project(){
           <span className="kicker">PRODUCT UI + FRONTEND</span>
           <h2>Need this level of care for your next interface?</h2>
           <div className="project-close__actions"><ActionLink variant="dark" size="cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open public project <span aria-hidden="true">↗</span></ActionLink><ActionLink size="cta" to="/contact/">Send a brief <span aria-hidden="true">↗</span></ActionLink></div>
+          <CaseStudyNav current={`/work/${project.slug}/`}/>
         </div>
         <ProjectCloseGraphic/>
       </div></section>

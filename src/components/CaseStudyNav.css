@@ -1,0 +1,3 @@
+/* Uses the site's own blue .text-cta; only the row is set here. */
+.case-study-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; margin-top: 28px; }
+.case-study-nav .text-cta { margin: 0; }

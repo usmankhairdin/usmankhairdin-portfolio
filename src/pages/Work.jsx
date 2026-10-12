@@ -1,70 +1,49 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import StandardPage from './StandardPage.jsx'
-import { projects } from '../data/projects.js'
-import { HeroTitle, sectionHeroes } from '../data/sectionHeroes.jsx'
+import EditorialPage, { EditorialHero } from '../components/editorial/EditorialPage.jsx'
+import EditorialEngagement, { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
+import { featuredProjects, projects } from '../data/projects.js'
 import ProjectMetaRail from '../components/ProjectMetaRail.jsx'
-import { RouteSectionGraphic, WorkHeroBlueprint } from '../components/StandardVisuals.jsx'
 import { ProjectCapture } from '../components/ProjectBrowserPreview.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
 import SectionIntro from '../components/ui/SectionIntro.jsx'
 import { disciplineFor, hostLabel, showcaseImage, surfacesFor, toneFor, useShowcaseMotion } from './workShowcase.js'
 import '../components/BrowserFrame.css'
 import './Work.css'
-
-const hero = sectionHeroes.work
-
-const featuredProjects = [
-  {
-    title: 'Personal Portfolio — Web',
-    href: '/work/personal-portfolio-web/',
-    category: 'PRODUCT / WEB EXPERIENCE',
-    summary: 'A self-initiated portfolio designed and built to connect product thinking, responsive UI and production frontend work.',
-    tags: ['Product Design', 'UI/UX', 'Design System', 'Frontend'],
-    image: '/assets/case-studies/personal-portfolio-web/home-light-desktop.webp',
-    imageAlt: 'Personal Portfolio Web home experience with the design and build introduction',
-  },
-  {
-    title: 'Personal Portfolio — 3D',
-    href: '/work/personal-portfolio-3d/',
-    category: 'SPATIAL / 3D EXPERIENCE',
-    summary: 'An immersive counterpart that turns the same professional story into navigable rooms and purposeful interaction.',
-    tags: ['Spatial Experience', 'Interaction Design', 'WebGL', 'Frontend'],
-    image: '/assets/case-studies/personal-portfolio-3d/about-room.webp',
-    imageAlt: 'Personal Portfolio 3D About room with spatial typography, artwork and furniture',
-  },
-]
+import './WorkEditorial.css'
 
 export default function Work(){
   const showcaseRef=useRef(null)
   useShowcaseMotion(showcaseRef)
 
-  return <StandardPage
-    eyebrow={hero.eyebrow}
-    accent="work"
-    title={<HeroTitle hero={hero}/>}
-    intro={hero.intro}
-    heroNote={hero.heroNote}
-    heroVisual={<WorkHeroBlueprint/>}
-  >
+  return <EditorialPage className="route-page--work work-editorial">
+    <EditorialHero
+      id="work-title"
+      title={<>The thinking.<br />The craft.<br /><em>The work.</em></>}
+      intro="Product interfaces, websites and responsive frontend. Explore the decisions, the context and the finished work."
+      actions={<><ActionLink href="#wk-selected-title">Explore selected work <span aria-hidden="true">↗</span></ActionLink><EditorialLink to="/contact/">Discuss a project</EditorialLink></>}
+      visual={<figure className="work-editorial__hero-media">
+        <Link to="/work/prima/" aria-label="Explore the PRIMA case study"><img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 48vw" width="1440" height="900" alt="PRIMA hospitality website: Welcome to the Recommendation Economy" fetchPriority="high" decoding="async" /></Link>
+        <figcaption>PRIMA · UI direction and frontend</figcaption>
+      </figure>}
+    />
     <section className="wk-featured" aria-labelledby="wk-featured-title">
       <div className="route-wrap">
         <SectionIntro
           className="wk-featured__intro"
-          eyebrow="THE PORTFOLIO AS PROJECT"
-          title={<span id="wk-featured-title">Featured / Self-Initiated</span>}
+          title={<span id="wk-featured-title">One practice.<br /><em>Two experiences.</em></span>}
           intro="Two connected expressions of the same design and frontend practice, created as independent portfolio projects."
         />
         <div className="wk-featured__list">
           {featuredProjects.map((project) => <article className="wk-featured__item" key={project.href}>
             <div className="wk-featured__copy">
-              <span className="wk-featured__category">SELF-INITIATED <span aria-hidden="true">/</span> {project.category}</span>
+              <span className="wk-featured__category">{project.href.includes('-3d') ? 'Spatial experience' : 'Web experience'} · Self-initiated</span>
               <h3><Link to={project.href} data-cursor="view">{project.title}</Link></h3>
               <p>{project.summary}</p>
               <ul className="wk-featured__tags web-tag-group" aria-label="Project disciplines">
                 {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
               </ul>
-              <ActionLink to={project.href} aria-label={`View ${project.title} case study`}>View case study <span aria-hidden="true">↗</span></ActionLink>
+              <ActionLink to={project.href} aria-label={`View case study: ${project.title}`}>View case study <span aria-hidden="true">↗</span></ActionLink>
             </div>
             <Link className="wk-featured__media" to={project.href} data-cursor="view" aria-label={`View ${project.title} case study`}>
               <img src={project.image} width="1440" height="900" alt={project.imageAlt} loading="lazy" decoding="async" />
@@ -76,7 +55,6 @@ export default function Work(){
 
     <section className="wk-selected" aria-labelledby="wk-selected-title">
       <div className="route-wrap">
-        <span className="kicker">CLIENT / PRODUCT PROJECTS</span>
         <h2 id="wk-selected-title">Selected Work</h2>
         <p>Six projects presented through real interface captures and clearly stated context.</p>
       </div>
@@ -130,8 +108,8 @@ export default function Work(){
                 <div><dt>INTERFACE EVIDENCE</dt><dd className="wk-project__evidence">{project.evidenceTitle}</dd></div>
               </dl>
               <div className="wk-project__actions">
-                <ActionLink to={href} className="route-hero__cta" aria-label={`View ${project.title} case study`}>View case study <span aria-hidden="true">↗</span></ActionLink>
-                <TextCTA href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open public project ↗</TextCTA>
+                <ActionLink to={href} className="route-hero__cta" aria-label={`View case study: ${project.title}`}>View case study <span aria-hidden="true">↗</span></ActionLink>
+                <TextCTA href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open public project: ${project.title} (opens in a new tab)`}>Open public project ↗</TextCTA>
               </div>
             </div>
           </div>
@@ -143,9 +121,8 @@ export default function Work(){
       </div>
     </section>
 
-    <section className="section section--soft section--evidence-band route-authored-section"><RouteSectionGraphic variant="work-evidence"/><div className="route-wrap split">
+    <section className="section section--soft section--evidence-band route-authored-section"><div className="route-wrap split">
       <div className="evidence-band__main">
-        <span className="kicker">VERIFIED INTERFACE EVIDENCE</span>
         <h2>The interface is the proof.</h2>
         <div className="evidence-frame" aria-hidden="true">
           <div className="evidence-frame__bar"><i/><i/><i/><span>PUBLIC PROJECT ↗</span></div>
@@ -169,5 +146,6 @@ export default function Work(){
         <div className="contact-notes contact-notes--premium evidence-band__tags web-tag-group"><span>LOCAL CAPTURES</span><span>PUBLIC PROJECT LINKS</span><span>SCOPE STATED</span></div>
       </div>
     </div></section>
-  </StandardPage>
+    <EditorialEngagement />
+  </EditorialPage>
 }

@@ -1,5 +1,6 @@
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
+import CaseStudyNav from '../components/CaseStudyNav.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
@@ -248,7 +249,7 @@ export default function PersonalPortfolioWeb() {
         <HeroSignalBackground />
         <div className="route-wrap ppw-close__grid">
           <div><span className="kicker">THE LIVE RESULT</span><h2 id="ppw-close-title">The case study ends where the experience begins.</h2></div>
-          <div><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p><div><ActionLink to="/">View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Start a conversation →</TextCTA></div></div>
+          <div><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p><div><ActionLink to="/">View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-web/" /></div>
         </div>
       </section>
     </main>

@@ -1,0 +1,28 @@
+.grounded-sculpture { position: relative; isolation: isolate; pointer-events: none; }
+.grounded-sculpture img { display: block; width: 100%; height: auto; }
+.grounded-sculpture__light {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 37%, rgb(207 225 255 / .15) 43%, rgb(255 255 255 / .8) 48%, rgb(162 197 255 / .22) 53%, transparent 61%);
+  background-size: 320% 100%; background-position: 150% 0;
+  mask: var(--sculpture-image) center / contain no-repeat;
+  -webkit-mask: var(--sculpture-image) center / contain no-repeat;
+  mix-blend-mode: screen; opacity: 0;
+  animation: grounded-sculpture-light 8s ease-in-out infinite paused;
+}
+.grounded-sculpture[data-running="true"] .grounded-sculpture__light { animation-play-state: running; }
+/* These assets include the floor shadow in their alpha. Fade illumination out
+   before the earliest floor contact so the screen blend never whitens it. */
+.grounded-sculpture--surface-light .grounded-sculpture__light {
+  background-image: linear-gradient(115deg, transparent 37%, rgb(207 225 255 / .1) 43%, rgb(255 255 255 / .45) 48%, rgb(162 197 255 / .15) 53%, transparent 61%);
+  -webkit-mask-image: linear-gradient(#000 35%, transparent 60%), var(--sculpture-image);
+  mask-image: linear-gradient(#000 35%, transparent 60%), var(--sculpture-image);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+[data-page-visible="false"] .grounded-sculpture .grounded-sculpture__light { animation-play-state: paused; }
+@keyframes grounded-sculpture-light {
+  0%, 8% { background-position: 145% 0; opacity: 0; }
+  18% { opacity: .65; } 46% { opacity: .5; }
+  58%, 100% { background-position: -45% 0; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .grounded-sculpture__light { display: none; } }

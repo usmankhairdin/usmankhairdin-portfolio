@@ -5,25 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lucide.createIcons();
     }
     
-    // Contact form functionality
-    const contactForm = document.getElementById('contactForm');
-    const successMessage = document.getElementById('successMessage');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show success message
-            if (successMessage) {
-                successMessage.classList.remove('d-none');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            // Reset form
-            contactForm.reset();
-        });
-    }
-    
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -126,34 +107,6 @@ document.addEventListener('DOMContentLoaded', function() {
         statsObserver.observe(statsSection);
     }
     
-    // Form validation enhancement
-    const forms = document.querySelectorAll('.needs-validation');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        });
-    });
-    
-    // Add loading state to buttons
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            if (this.type === 'submit') {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Loading...';
-                this.disabled = true;
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                }, 2000);
-            }
-        });
-    });
-
     // Enhanced button hover effects
     document.querySelectorAll('.btn').forEach(btn => {
         btn.addEventListener('mouseenter', function() {
