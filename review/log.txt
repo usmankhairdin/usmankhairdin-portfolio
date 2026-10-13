@@ -1,0 +1,33 @@
+Capturing prima...
+prima
+  ! prima/live-inventory: landmark "Live inventory, not a waiting list" not found
+  ! prima/recommendation: landmark "Word of mouth already moves trillions" not found
+  ! prima/rail: landmark "One rail beneath the whole night out" not found
+  ! prima/markets: landmark "Please select your market" not found
+  ! prima/roadmap: landmark "Boston" not found
+  ✓ prima/ev-city  (y=0)
+  ✓ prima/ev-restaurants  (y=0)
+  ✓ prima/ev-hotels  (y=0)
+  ✓ prima/ev-curators  (y=0)
+  ✓ prima/ev-m-home  (y=0)
+  ! prima/m-live: landmark "Live inventory, not a waiting list" not found
+  ✓ prima/ev-m-city  (y=0)
+{"status":"dims","width":1440,"height":900}
+{"status":"png_saved","file":"/home/runner/work/usmankhairdin-portfolio/usmankhairdin-portfolio/public/assets/projects/prima/fullpage.png","size":665044}
+{"status":"intermediate_meta","width":1440,"height":900}
+{"status":"saved","file":"/home/runner/work/usmankhairdin-portfolio/usmankhairdin-portfolio/public/assets/projects/prima/fullpage.webp","width":1440,"height":900}
+showcase saved
+review desktop_web
+review desktop_work
+review desktop_work_prima
+review desktop_services
+review desktop_about
+review desktop_work_personal-portfolio-web
+review desktop_work_personal-portfolio-3d
+review mobile_web
+review mobile_work
+review mobile_work_prima
+review mobile_services
+review mobile_about
+review mobile_work_personal-portfolio-web
+review mobile_work_personal-portfolio-3d
