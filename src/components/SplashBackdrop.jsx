@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './SplashBackdrop.css'
 import HeroSignalBackground from './HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from './TechTagMarks.jsx'
@@ -46,9 +46,9 @@ const FIT = 70          // a tier-2 token that would have to sit further than th
 const WIDE = 300        // ... but before a token is dropped it may still travel this far (px) to the nearest legal place, so a shorter viewport
                         // (the portrait is sized in vh, so its units shrink) never costs a tag that has room elsewhere
 
-// The portrait art (head, floating cards, badge, script) is one opaque silhouette; these rectangles, in portrait units, cover it. Tokens are never
-// left on them.
-const PORTRAIT_ZONES = [[-150, -455, 360, -375], [-250, -375, 352, -300], [-372, -300, 386, 452]]
+// The hero art is the entrance door (frame, leaf and the shadow at its foot); this rectangle, in its units, covers it. Tokens are never
+// left on it.
+const PORTRAIT_ZONES = [[-300, -432, 300, 452]]
 const COPY_ZONES = ['.hero-eyebrow', '.hero-headline', '.hero-supporting']
 
 const GAP = 10          // minimum visual gap between two tokens (px), measured between their boxes INCLUDING the idle drift, so it holds at every moment
@@ -69,7 +69,24 @@ const smooth = (t) => { const c = clamp(t, 0, 1); return c * c * (3 - 2 * c) }
 
 const fmt = (v) => v.toFixed(2)
 
-export default function SplashBackdrop() {
+/*
+ * Where the tokens live and what they keep clear of. The defaults are the Splash gate as it was (the entrance door as the hero
+ * art); a page with another hero passes its own: `scope` the positioned box the tokens are laid out in, `anchor` the hero art
+ * their homes are measured from, `artZones` the art's no-go rectangles in its units ('box' = the anchor's own box), `copyZones`
+ * and `cta` the text and actions to keep clear, `copy` the block the traces dim behind, `scroller` an inner scroll box if any,
+ * and `homes` - { id: { d, t, m } } - which tokens it shows and where (the others are not drawn there).
+ */
+export default function SplashBackdrop({
+  scope = '.entry-gate',
+  anchor = '.entry-door-stage',
+  artZones = PORTRAIT_ZONES,
+  copyZones = COPY_ZONES,
+  cta = '.entry-gallery-cta',
+  copy: copySelector = '.entry-intro-copy',
+  scroller = '.entry-hero',
+  homes = null,
+} = {}) {
+  const tokens = useMemo(() => (homes ? TOKENS.filter((t) => homes[t.id]).map((t) => ({ ...t, ...homes[t.id] })) : TOKENS), [homes])
   const hostRef = useRef(null)
   const hitRef = useRef(null)
   const [reduced, setReduced] = useState(() => typeof window !== 'undefined' && window.matchMedia(reducedQuery).matches)
@@ -85,17 +102,18 @@ export default function SplashBackdrop() {
   useEffect(() => {
     const host = hostRef.current
     const hitHost = hitRef.current
-    const gate = host?.closest('.entry-gate')
-    const image = gate?.querySelector('.entry-portrait img')
-    const hero = gate?.querySelector('.entry-hero')
-    const copy = gate?.querySelector('.entry-intro-copy')
+    const gate = host?.closest(scope)
+    // The hero art the token homes are measured from (by default the entrance door's stage).
+    const image = gate?.querySelector(anchor)
+    const hero = scroller ? gate?.querySelector(scroller) : null
+    const copy = gate?.querySelector(copySelector)
     if (!host || !hitHost || !gate || !image) return undefined
 
     const stacked = window.matchMedia('(max-width: 1024px)')
     const compact = window.matchMedia('(max-width: 640px)')
     const precise = window.matchMedia('(hover: hover) and (pointer: fine)')
 
-    const items = TOKENS.map((token) => {
+    const items = tokens.map((token) => {
       const el = host.querySelector(`.sbt[data-id="${token.id}"]`)
       return { ...token, el, body: el?.querySelector('.sbt__body'), hit: hitHost.querySelector(`.sbt-hit[data-id="${token.id}"]`), w: 0, h: 0, ew: 0, eh: 0, x: 0, y: 0, hx: 0, hy: 0, tx: 0, ty: 0, softX: 0, softY: 0, sx: 1, sy: 1, on: false, fit: true, blocked: false, placed: false }
     })
@@ -104,7 +122,7 @@ export default function SplashBackdrop() {
     const units = { d: {}, t: {}, m: {} }
     for (const s of items) for (const tier of ['d', 't', 'm']) units[tier][s.id] = s[tier] ? [...s[tier]] : null
 
-    const geo = { cx: 0, cy: 0, k: 1, tier: 'd', draggable: false, dirty: true, zones: [], W: 0, H: 0, gx: 0, gy: 0, top: 80, signature: '' }
+    const geo = { cx: 0, cy: 0, k: 1, tier: 'd', draggable: false, dirty: true, zones: [], W: 0, H: 0, top: 80, signature: '' }
     const pointer = { x: 0, y: 0 }
     let drag = null      // { s, id, ox, oy }
     let hovered = null
@@ -132,10 +150,13 @@ export default function SplashBackdrop() {
     }
     const buildZones = () => {
       const zones = []
-      for (const selector of COPY_ZONES) { const el = gate.querySelector(selector); if (el) zones.push(textBox(el)) }
-      const cta = gate.querySelector('.entry-gallery-cta')
-      if (cta) { const [x, y] = offsetIn(cta); zones.push([x - ZONE_PAD, y - ZONE_PAD, x + cta.offsetWidth + ZONE_PAD, y + cta.offsetHeight + ZONE_PAD]) }
-      for (const [x0, y0, x1, y1] of PORTRAIT_ZONES) zones.push([geo.cx + x0 * geo.k - ART_PAD, geo.cy + y0 * geo.k - ART_PAD, geo.cx + x1 * geo.k + ART_PAD, geo.cy + y1 * geo.k + ART_PAD])
+      for (const selector of copyZones) { const el = gate.querySelector(selector); if (el) zones.push(textBox(el)) }
+      const action = cta && gate.querySelector(cta)
+      if (action) { const [x, y] = offsetIn(action); zones.push([x - ZONE_PAD, y - ZONE_PAD, x + action.offsetWidth + ZONE_PAD, y + action.offsetHeight + ZONE_PAD]) }
+      if (artZones === 'box') {
+        const [x, y] = offsetIn(image)
+        zones.push([x - ART_PAD, y - ART_PAD, x + image.offsetWidth + ART_PAD, y + image.offsetHeight + ART_PAD])
+      } else for (const [x0, y0, x1, y1] of artZones) zones.push([geo.cx + x0 * geo.k - ART_PAD, geo.cy + y0 * geo.k - ART_PAD, geo.cx + x1 * geo.k + ART_PAD, geo.cy + y1 * geo.k + ART_PAD])
       geo.zones = zones
     }
 
@@ -194,9 +215,6 @@ export default function SplashBackdrop() {
       const [ix, iy] = offsetIn(image)
       geo.cx = ix + image.offsetWidth / 2
       geo.cy = iy + height / 2
-      const box = gate.getBoundingClientRect()
-      geo.gx = box.left
-      geo.gy = box.top
       geo.W = gate.clientWidth
       geo.H = gate.clientHeight
       if (copy) { // the quiet zone for signal traces: an ellipse over the copy block
@@ -390,7 +408,11 @@ export default function SplashBackdrop() {
       wake()
     }
 
-    const toGate = (event) => { pointer.x = event.clientX - geo.gx; pointer.y = event.clientY - geo.gy }
+    const toGate = (event) => {
+      const box = gate.getBoundingClientRect()   // where the gate is now: it scrolls with the page when it is not fixed
+      pointer.x = event.clientX - box.left
+      pointer.y = event.clientY - box.top
+    }
     const onDown = (event) => {
       if (event.button !== 0 || !geo.draggable || drag) return
       const s = items.find((it) => it.hit === event.currentTarget)
@@ -464,14 +486,14 @@ export default function SplashBackdrop() {
         s.el.classList.remove('is-dragging', 'is-hover', 'is-blocked')
       }
     }
-  }, [reduced])
+  }, [reduced, scope, anchor, artZones, copyZones, cta, copySelector, scroller, tokens])
 
   return <>
     <div className="splash-bg" ref={hostRef} aria-hidden="true">
       <HeroSignalBackground/>
 
       <div className="splash-bg__tokens">
-        {TOKENS.map((token) => {
+        {tokens.map((token) => {
           const [dur, dx, dy, dr, s0, s1] = token.drift
           return <div key={token.id} className={`sbt sbt--t${token.tier} is-off`} data-id={token.id}>
             <div className="sbt__drift" style={{ '--dur': `${dur}s`, '--delay': `${-(dur * 0.37).toFixed(1)}s`, '--dx': `${dx}px`, '--dy': `${dy}px`, '--dr': `${dr}deg`, '--s0': s0, '--s1': s1 }}>
@@ -483,7 +505,7 @@ export default function SplashBackdrop() {
     </div>
 
     <div className="splash-hit" ref={hitRef} aria-hidden="true">
-      {TOKENS.map((token) => <div key={token.id} className="sbt-hit is-off" data-id={token.id} data-cursor="drag" data-cursor-live="" />)}
+      {tokens.map((token) => <div key={token.id} className="sbt-hit is-off" data-id={token.id} data-cursor="drag" data-cursor-live="" />)}
     </div>
   </>
 }

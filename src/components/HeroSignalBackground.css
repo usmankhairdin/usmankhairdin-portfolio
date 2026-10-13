@@ -13,10 +13,6 @@
   background-size:var(--sb-pitch) 100%;background-position:0 0;
 }
 html[data-theme="dark"] .hero-signal-background{--sb-rgb:142 160 255;--sb-tint:150 170 255}
-/* Suppress legacy per-route pseudo grids; this component paints the only grid. */
-html body .route-page:not(.case-study) .route-hero:before{content:none}
-.route-page:not(.case-study) .route-hero{position:relative;isolation:isolate;overflow:clip}
-.route-page:not(.case-study) .route-hero__content{position:relative;z-index:2}
 
 /* Signal traces: a short luminous segment on a vertical line, travelling top to bottom. The layer is dimmed (not hidden) over the copy block,
    using an ellipse measured from the copy, so a trace can never compete with the headline, paragraph or CTA text. */
@@ -50,7 +46,6 @@ html body .route-page:not(.case-study) .route-hero:before{content:none}
   60.1%,100%{opacity:0;transform:translate3d(0,100dvh,0)}
 }
 html[data-theme="dark"] .sb-trace:before{background:linear-gradient(to bottom,transparent 0%,rgb(var(--sb-tint) / .05) 30%,rgb(var(--sb-rgb) / .08) 68%,rgb(var(--sb-rgb) / .15) 90%,transparent 100%)}
-
 
 @media(max-width:1580px){.hero-signal-background .sb-trace--w{display:none}}
 @media(max-width:640px){.hero-signal-background .sb-trace:not(.sb-trace--m){display:none}}

@@ -234,9 +234,9 @@ export const nextCaseStudy = (href) => {
 }
 
 export const doors = [
-  { id:'about', label:'ABOUT', side:'left', z:-18, accent:'#455dff', route:'/about/' },
-  { id:'services', label:'SERVICES', side:'right', z:-34, accent:'#455dff', route:'/services/' },
-  { id:'work', label:'WORK', side:'left', z:-50, accent:'#455dff', route:'/work/' },
-  { id:'agencies', label:'FOR AGENCIES', side:'right', z:-66, accent:'#455dff', route:'/for-agencies/' },
-  { id:'contact', label:'CONTACT', side:'left', z:-82, accent:'#455dff', route:'/contact/' }
+  { id:'about', label:'ABOUT', side:'left', z:-12, accent:'#455dff', route:'/about/' },
+  { id:'services', label:'SERVICES', side:'right', z:-24, accent:'#455dff', route:'/services/' },
+  { id:'work', label:'WORK', side:'left', z:-36, accent:'#455dff', route:'/work/' },
+  // Contact is the hall straight ahead, through the door in the corridor's end wall
+  { id:'contact', label:'CONTACT', side:'end', z:-48, accent:'#455dff', route:'/contact/' }
 ]

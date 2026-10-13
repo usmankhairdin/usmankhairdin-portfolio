@@ -1,5 +1,3 @@
-import React from 'react'
-
 // Shared, presentation-only brand marks used by the Home atmospheric tokens and
 // any authored Tech Stack tag group. Keeping one mark source prevents the Home
 // and Services versions from drifting visually while each page retains its own

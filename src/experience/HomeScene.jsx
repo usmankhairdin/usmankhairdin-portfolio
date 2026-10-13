@@ -1,7 +1,11 @@
+import { useMemo } from 'react'
 import Corridor from './Corridor.jsx'
 import CameraRig from './CameraRig.jsx'
 import Rooms from '../rooms/Rooms.jsx'
 import { FabricationProvider } from './GalleryFabrication.jsx'
+import { ReflectionPass } from './CorridorAtmosphere.jsx'
+import NightSky from './NightSky.jsx'
+import CityView from '../rooms/CityView.jsx'
 
 /* One global rig lights the whole building, and it never changes.
    It used to be cross-faded against a duplicate rig owned by the room, which meant the
@@ -18,10 +22,18 @@ function BuildingLights() {
   </>
 }
 
-export default function HomeScene({enabled=true}){return <>
-  <color attach="background" args={['#c9c1b4']}/>
-  <fog attach="fog" args={['#c9c1b4',26,94]}/>
-  <BuildingLights />
-  <FabricationProvider><Corridor animate={enabled}/><Rooms/></FabricationProvider>
-  <CameraRig enabled={enabled}/>
-</>}
+/* The far corridor falls away into deep navy, so the lit pieces along it read as a sequence
+   of reveals; the fog only begins well beyond any room's depth, so the rooms read as before. */
+export default function HomeScene({enabled=true}){
+  const reflectionScale = useMemo(() => (window.matchMedia?.('(max-width: 760px), (pointer: coarse)').matches ? .35 : .5), [])
+  return <>
+    <color attach="background" args={['#05070c']}/>
+    <NightSky/>
+    <fog attach="fog" args={['#0b0e17',30,124]}/>
+    <BuildingLights />
+    <FabricationProvider><Corridor animate={enabled}/><Rooms/></FabricationProvider>
+    <CityView/>
+    <CameraRig enabled={enabled}/>
+    <ReflectionPass scale={reflectionScale} />
+  </>
+}

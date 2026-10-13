@@ -1,506 +1,466 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { doors } from '../data/projects.js'
 import { useJourney } from './JourneyContext.jsx'
 import useReducedMotion from './useReducedMotion.js'
 import { motionEase } from './doorSystem.js'
-import { ROOM_CAMERA_X } from '../rooms/roomCoordinates.js'
+import { LEAD_M, LEAD_TOUCH_M, METERS_PER_PX, WALK, WALK_TOUCH, createMomentumFilter, stepMotion, walkToward } from './walkMotion.js'
+import { headQuaternion, heading, look, lookDragEnd, lookDragStart, lookMove, setLook, steerLook, stepLook } from './freeLook.js'
+import { START_Z, isOutside, locate, routeTo, slide } from './walkable.js'
+import { PLAZA_STAND_Z } from './corridorLayout.js'
+import { SIGN } from './CorridorExterior.jsx'
+import { doorOpen, resetDoors, updateDoors } from './doorStates.js'
+import { ENTRANCE_OPENING } from './EntranceDoor.jsx'
+import { followLink, linkState, linkTargets, pointLink } from '../rooms/linkTargets.js'
+import { consumeReturn, saveReturn } from './corridorReturn.js'
 
-const MIN_Z=-90.2
-const MAX_Z=12.15
-const OUTSIDE_Z=17.25
-const INSIDE_START_Z=10.1
-const clamp=(v,a,b)=>Math.min(b,Math.max(a,v))
-const ease=t=>t*t*(3-2*t)
-const shortestTurn=(from,to)=>{
-  let delta=(to-from)%(Math.PI*2)
-  if(delta>Math.PI) delta-=Math.PI*2
-  if(delta<-Math.PI) delta+=Math.PI*2
-  return delta
-}
-const moveTowards=(value,target,maxDelta)=>{
-  if(Math.abs(target-value)<=maxDelta) return target
-  return value+Math.sign(target-value)*maxDelta
-}
+/*
+ * The visitor's body and eyes.
+ *
+ * The building stands on a tower; the visitor arrives on its roof terrace, facing the door.
+ * Terrace and building are one continuous floor: the wheel walks the visitor exactly where the
+ * cursor points - across the terrace to its railing, up to the door (it slides open), through it,
+ * down the corridor, through a room's door, round a room, and back out again - and they stop
+ * the moment the wheel stops, wherever that is. Scrolling back steps back.
+ *
+ * Looking, game style: the click on the door (or any click on the scene) captures the mouse.
+ * The cursor hides, a small dot marks the middle, and the view turns exactly as far as the
+ * mouse moves, all the way round; the walk goes where the dot is. A click that is not on a
+ * link, or Esc, gives the cursor back; a click on the scene takes it again. Out on the terrace,
+ * before any click, the view only leans a little toward the cursor. A touch screen drags.
+ */
+const EYE = 1.58
+const INSIDE_START_Z = 10.1
+const DOOR_FACE_Z = START_Z + 0.22  // the entrance portal's outside face
+const DOOR_HALF = 1.1               // half the portal's width
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
+const DOOR_CORNERS = [[-DOOR_HALF, -0.075, DOOR_FACE_Z], [DOOR_HALF, -0.075, DOOR_FACE_Z], [DOOR_HALF, ENTRANCE_OPENING.height - 0.075, DOOR_FACE_Z], [-DOOR_HALF, ENTRANCE_OPENING.height - 0.075, DOOR_FACE_Z]]
+// the Web Experience sign on the plaza: the eight corners of its pylon
+const SIGN_CORNERS = (() => {
+  const c = Math.cos(SIGN.rotY)
+  const s = Math.sin(SIGN.rotY)
+  const out = []
+  for (const lx of [-SIGN.w / 2, SIGN.w / 2]) for (const ly of [0, SIGN.h]) for (const lz of [-SIGN.d / 2, SIGN.d / 2]) out.push([SIGN.x + lx * c + lz * s, -0.075 + ly, SIGN.z - lx * s + lz * c])
+  return out
+})()
+// On the terrace before the mouse is captured, the head leans gently toward the cursor: to the
+// cursor's own direction scaled down by half, so about 23 degrees at a side of the screen.
+const LEAN = 0.5
+const TAN_H = Math.tan((62 * Math.PI) / 360)
+const followYaw = (x) => -LEAN * Math.atan(x * TAN_H * (window.innerWidth / Math.max(1, window.innerHeight)))
+const followPitch = (y) => -LEAN * Math.atan(y * TAN_H)
 
-export default function useCorridorCamera(enabled=true){
-  const {camera} = useThree()
+export default function useCorridorCamera(enabled = true) {
+  const { camera, gl, scene, size, invalidate } = useThree()
+  const navigate = useNavigate()
   const {
-    activeDoor,phase,setPhase,setActiveDoor,
-    navigationTarget,setNavigationTarget,
-    autoMoving,setAutoMoving,
-    corridorFacing,setCorridorFacing,
-    experiencePhase,setExperiencePhase,navigationOpen
+    activeDoor, phase, setPhase, setActiveDoor,
+    navigationTarget, setNavigationTarget,
+    setAutoMoving, setCorridorFacing,
+    experiencePhase, setExperiencePhase, navigationOpen,
   } = useJourney()
-  const reducedMotion=useReducedMotion()
-  const controlsEnabled=enabled&&!navigationOpen
+  const reducedMotion = useReducedMotion()
+  const controlsEnabled = enabled && !navigationOpen
 
-  const targetZ = useRef(INSIDE_START_Z)
-  const currentZ = useRef(INSIDE_START_Z)
-  const zVelocity = useRef(0)
-  const parallax = useRef({x:0,y:0})
-  const targetParallax = useRef({x:0,y:0})
-  const glance = useRef(0)
-  const roomReadyAt = useRef(0)
+  const pos = useRef({ x: 0, z: PLAZA_STAND_Z })        // arriving on the terrace, facing the door
+  const track = useRef({ value: 0, target: 0, vel: 0 })     // metres walked (an odometer)
+  const walkInput = useRef('wheel')
+  const momentumWeight = useRef(createMomentumFilter())
+  const stepState = useRef({ speed: 0, phase: 0 })
+  const stepClock = useRef(0)
+  const route = useRef(null)
   const touchY = useRef(null)
   const tween = useRef(null)
-  const facingRef = useRef('forward')
-  const turningRef = useRef(false)
-  const autoTargetRef = useRef(null)
-  const navigationSettle = useRef({doorId:null,elapsed:0})
-  const roomEntryState = useRef({z:INSIDE_START_Z,facing:'forward'})
-  const lookRig = useRef(new THREE.PerspectiveCamera())
-  const curvePosition = useRef(new THREE.Vector3())
-  const curveLook = useRef(new THREE.Vector3())
-  const roomDoor = doors.find(d=>d.id===activeDoor)
+  const scripted = useRef(null)                               // the walk in or out, driven by a tween
+  const where = useRef({ door: null, facing: null })
+  const out = useRef([0, 0])
+  const corner = useRef(new THREE.Vector3())
+  const pointer = useRef({ x: 0, y: 0, sx: 0, sy: 0 })
+  const ray = useRef(new THREE.Vector3())
+  // leaning toward the cursor on the terrace: on or off, and the head's direction when it began
+  const follow = useRef({ on: true, active: false, baseYaw: 0, basePitch: 0 })
+  const freedAt = useRef(0)
+  const raycaster = useRef(new THREE.Raycaster())
+  const frameCount = useRef(0)
+  const arrived = useRef(false)
+  const hotspot = useRef({ el: null, box: '' })
+  const signSpot = useRef({ el: null, box: '' })
 
-  const applyCurvePose = useCallback((positionCurve, lookCurve, progress) => {
-    positionCurve.getPointAt(progress, curvePosition.current)
-    lookCurve.getPointAt(progress, curveLook.current)
-    camera.position.copy(curvePosition.current)
-    lookRig.current.position.copy(curvePosition.current)
-    lookRig.current.lookAt(curveLook.current)
-    camera.quaternion.copy(lookRig.current.quaternion)
-    return curvePosition.current
-  }, [camera])
+  const outside = experiencePhase === 'gated'           // on the terrace
+  const walking = outside || experiencePhase === 'inside'
 
-  /* Doorway moves aim procedurally instead of following a second spline. The aim is
-     always carried a set distance in front of the camera and swung from the heading it
-     already has to the heading of the room, so it can never pass through the camera and
-     invert the view - the one thing that threw a single-frame whip at the threshold. */
-  const applyDoorwayPose = useCallback((positionCurve, progress, aim) => {
-    positionCurve.getPointAt(progress, curvePosition.current)
-    const swing = motionEase(progress)
-    const yaw = aim.yaw + aim.turn * swing
-    const lead = aim.lead + (aim.leadEnd - aim.lead) * swing
-    curveLook.current.set(
-      curvePosition.current.x + Math.sin(yaw) * lead,
-      aim.height + (aim.heightEnd - aim.height) * swing,
-      curvePosition.current.z - Math.cos(yaw) * lead,
-    )
-    camera.position.copy(curvePosition.current)
-    lookRig.current.position.copy(curvePosition.current)
-    lookRig.current.lookAt(curveLook.current)
-    camera.quaternion.copy(lookRig.current.quaternion)
-    return curvePosition.current
-  }, [camera])
-
-  /* The camera's live heading and the distance it is already aiming at, so a doorway
-     move always begins from exactly the pose that is on screen. */
-  const readAim = useCallback((lead) => {
-    const dir = new THREE.Vector3()
-    camera.getWorldDirection(dir)
-    return {
-      yaw: Math.atan2(dir.x, -dir.z),
-      height: camera.position.y + dir.y * lead,
-      lead,
+  /* ---------------------------------------------------------------- the cursor */
+  const fine = () => !window.matchMedia?.('(pointer: coarse)').matches
+  useEffect(() => {
+    const canvas = gl.domElement
+    // the head follows the cursor over the scene, and holds while it is over the page's own controls
+    const onMove = (e) => {
+      if (e.pointerType !== 'mouse') return
+      if (e.target !== canvas && !e.target.closest?.('.entry-door-hotspot, .exterior-sign-hotspot')) return
+      pointer.current.x = clamp((e.clientX / window.innerWidth) * 2 - 1, -1, 1)
+      pointer.current.y = clamp((e.clientY / window.innerHeight) * 2 - 1, -1, 1)
     }
-  }, [camera])
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [gl])
+  // a fresh arrival faces the door
+  useEffect(() => {
+    if (!outside || arrived.current) return
+    arrived.current = true
+    setLook(0, 0)
+    pointer.current.x = 0
+    pointer.current.y = 0
+    follow.current.active = false
+  }, [outside])
 
-  useEffect(()=>{ facingRef.current=corridorFacing },[corridorFacing])
-  useEffect(()=>{ if(!autoMoving && !navigationTarget) zVelocity.current=0 },[autoMoving,navigationTarget])
-  useEffect(()=>{ if(phase==='room') roomReadyAt.current=performance.now()+420 },[phase])
+  // The page's door button and sign link sit exactly over the door and the sign as they stand on screen.
+  const placeHotspot = useCallback(() => {
+    const W = gl.domElement.clientWidth
+    const H = gl.domElement.clientHeight
+    camera.updateMatrixWorld()
+    const put = (h, selector, corners) => {
+      if (!h.el || !h.el.isConnected) h.el = document.querySelector(selector)
+      if (!h.el) return
+      let x0 = Infinity; let x1 = -Infinity; let y0 = Infinity; let y1 = -Infinity
+      let behind = false
+      for (const [x, y, z] of corners) {
+        corner.current.set(x, y, z).project(camera)
+        if (corner.current.z > 1) behind = true
+        const sx = (corner.current.x * 0.5 + 0.5) * W
+        const sy = (-corner.current.y * 0.5 + 0.5) * H
+        x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy)
+      }
+      if (behind) { x0 = x1 = y0 = y1 = -10 }
+      const box = `${x0.toFixed(0)},${y0.toFixed(0)},${(x1 - x0).toFixed(0)},${(y1 - y0).toFixed(0)}`
+      if (box === h.box) return
+      h.box = box
+      h.el.style.transform = `translate3d(${x0.toFixed(1)}px, ${y0.toFixed(1)}px, 0)`
+      h.el.style.width = `${(x1 - x0).toFixed(1)}px`
+      h.el.style.height = `${(y1 - y0).toFixed(1)}px`
+    }
+    put(hotspot.current, '.entry-door-hotspot', DOOR_CORNERS)
+    put(signSpot.current, '.exterior-sign-hotspot', SIGN_CORNERS)
+  }, [camera, gl])
 
-  useEffect(()=>{
-    if(phase!=='room'||!navigationTarget) return
-    if(navigationTarget===activeDoor){ setNavigationTarget(null); return }
-    setPhase('exiting')
-  },[phase,navigationTarget,activeDoor,setNavigationTarget,setPhase])
-
-  const finishFacing = useCallback((next)=>{
-    facingRef.current=next
-    setCorridorFacing(next)
-    turningRef.current=false
-    setAutoMoving(Boolean(autoTargetRef.current))
-  },[setCorridorFacing,setAutoMoving])
-
-  const turnTo = useCallback((next,onDone)=>{
-    if(turningRef.current || facingRef.current===next){ onDone?.(); return }
-    turningRef.current=true
-    setAutoMoving(true)
+  /* ---------------------------------------------------------------- walking in */
+  useLayoutEffect(() => {
+    if (experiencePhase !== 'entering') return undefined
     tween.current?.kill()
-
-    // Slerp the actual current camera quaternion instead of rebuilding an Euler yaw.
-    // This preserves the tiny door glance/parallax already on screen and removes the
-    // one-frame orientation snap that can happen when a user reverses direction.
-    const startQ=camera.quaternion.clone()
-    const startParallax={...parallax.current}
-    const startGlance=glance.current
-    const targetObject=new THREE.PerspectiveCamera()
-    targetObject.position.set(0,1.58,currentZ.current)
-    const targetLookZ=next==='forward'?currentZ.current-9.4:currentZ.current+9.4
-    targetObject.lookAt(0,1.50,targetLookZ)
-    const endQ=targetObject.quaternion.clone()
-    const proxy={p:0}
-    const tw=gsap.to(proxy,{p:1,duration:reducedMotion?.01:1.24,ease:motionEase,onUpdate:()=>{
-      parallax.current.x=THREE.MathUtils.lerp(startParallax.x,0,proxy.p)
-      parallax.current.y=THREE.MathUtils.lerp(startParallax.y,0,proxy.p)
-      glance.current=THREE.MathUtils.lerp(startGlance,0,proxy.p)
-      camera.position.set(parallax.current.x,1.58+parallax.current.y,currentZ.current)
-      camera.quaternion.slerpQuaternions(startQ,endQ,proxy.p)
-    },onComplete:()=>{
-      parallax.current={x:0,y:0}
-      targetParallax.current={x:0,y:0}
-      glance.current=0
-      camera.position.set(0,1.58,currentZ.current)
-      camera.quaternion.copy(endQ)
-      finishFacing(next)
-      onDone?.()
-    }})
-    tween.current=tw
-  },[camera,finishFacing,setAutoMoving,reducedMotion])
-
-  useEffect(()=>()=>tween.current?.kill(),[])
-  useEffect(()=>{ if(!controlsEnabled) touchY.current=null },[controlsEnabled])
-
-  /* One continuous spline carries the camera through the entrance. A single progress
-     tween removes the velocity breaks that multi-stage camera tweens can introduce. */
-  useLayoutEffect(()=>{
-    if(experiencePhase!=='entering') return
-    tween.current?.kill()
-    turningRef.current=false
-    autoTargetRef.current=null
+    route.current = null
     setNavigationTarget(null)
     setActiveDoor(null)
     setPhase('corridor')
     setAutoMoving(true)
-    facingRef.current='forward'
     setCorridorFacing('forward')
-    glance.current=0
-    parallax.current={x:0,y:0}
-    targetParallax.current={x:0,y:0}
-    currentZ.current=OUTSIDE_Z
-    targetZ.current=OUTSIDE_Z
-    zVelocity.current=0
+    resetDoors()
+    // turn the short way round to face down the corridor; the captured mouse takes over inside
+    const walk = { p: 0, from: { x: pos.current.x, z: pos.current.z, yaw: Math.atan2(Math.sin(look.yaw), Math.cos(look.yaw)), pitch: look.pitch } }
+    scripted.current = walk
+    const tw = gsap.to(walk, {
+      p: 1, delay: reducedMotion ? 0 : 0.12, duration: reducedMotion ? 0.01 : 3.4, ease: 'sine.inOut',
+      onComplete: () => {
+        scripted.current = null
+        pos.current = { x: 0, z: INSIDE_START_Z }
+        track.current = { value: 0, target: 0, vel: 0 }
+        setLook(0, 0)
+        setAutoMoving(false)
+        setExperiencePhase('inside')
+      },
+    })
+    tween.current = tw
+    return () => tw.kill()
+  }, [experiencePhase, camera, reducedMotion, setActiveDoor, setAutoMoving, setCorridorFacing, setExperiencePhase, setNavigationTarget, setPhase])
 
-    const posCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0,1.58,OUTSIDE_Z),
-      new THREE.Vector3(0,1.575,15.55),
-      new THREE.Vector3(0,1.58,13.55),
-      new THREE.Vector3(0,1.58,11.70),
-      new THREE.Vector3(0,1.58,INSIDE_START_Z),
-    ],false,'centripetal',.5)
-    const lookCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0,1.50,11.55),
-      new THREE.Vector3(0,1.50,9.70),
-      new THREE.Vector3(0,1.50,6.10),
-      new THREE.Vector3(0,1.50,3.40),
-      new THREE.Vector3(0,1.50,INSIDE_START_Z-9.4),
-    ],false,'centripetal',.5)
-    const proxy={p:0}
-    const update=()=>{
-      const pos=applyCurvePose(posCurve,lookCurve,proxy.p)
-      currentZ.current=pos.z
-      targetZ.current=pos.z
-    }
-    update()
-    const tw=gsap.to(proxy,{p:1,duration:reducedMotion?.01:2.18,ease:motionEase,onUpdate:update,onComplete:()=>{
-      applyCurvePose(posCurve,lookCurve,1)
-      currentZ.current=INSIDE_START_Z
-      targetZ.current=INSIDE_START_Z
-      setAutoMoving(false)
-      setExperiencePhase('inside')
-    }})
-    tween.current=tw
-    return()=>tw.kill()
-  },[experiencePhase,camera,setActiveDoor,setAutoMoving,setCorridorFacing,setExperiencePhase,setNavigationTarget,setPhase,reducedMotion,applyCurvePose])
+  /* One frame of the walk in from a click on the door: where the body is, where the head looks, the step. */
+  const walkScripted = useCallback((dt) => {
+    const w = scripted.current
+    if (!w) return
+    const p = w.p
+    const f = w.from
+    const settle = motionEase(clamp(p * 2.2, 0, 1))
+    const x = THREE.MathUtils.lerp(f.x, 0, settle)
+    const z = THREE.MathUtils.lerp(f.z, INSIDE_START_Z, p)
+    const yaw = f.yaw * (1 - settle)
+    const pitch = f.pitch * (1 - settle)
+    const moved = Math.hypot(x - pos.current.x, z - pos.current.z)
+    pos.current = { x, z }
+    setLook(yaw, pitch)
+    // the entrance's own sensor: it opens as they come up to it and shuts once they are clear
+    updateDoors(x, z, dt)
+    stepClock.current += dt
+    const s = stepMotion(stepState.current, moved, dt, stepClock.current, reducedMotion)
+    const [hx, hz] = heading()
+    camera.position.set(x - hz * s.sway, EYE + s.bobY + s.breath, z + hx * s.sway)
+    headQuaternion(camera.quaternion, s.roll, s.nod)
+  }, [camera, reducedMotion])
 
-  /* The return journey is the same continuous motion in reverse spatial logic. */
-  useLayoutEffect(()=>{
-    if(experiencePhase!=='exiting') return
-    tween.current?.kill()
-    turningRef.current=false
-    zVelocity.current=0
-    setAutoMoving(true)
-    const start=new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z)
-    const posCurve=new THREE.CatmullRomCurve3([
-      start,
-      new THREE.Vector3(0,1.58,Math.max(start.z,11.65)),
-      new THREE.Vector3(0,1.58,13.55),
-      new THREE.Vector3(0,1.575,15.55),
-      new THREE.Vector3(0,1.58,OUTSIDE_Z),
-    ],false,'centripetal',.5)
-    const exitDir=new THREE.Vector3()
-    camera.getWorldDirection(exitDir)
-    const currentLook=camera.position.clone().add(exitDir.multiplyScalar(9.4))
-    const lookCurve=new THREE.CatmullRomCurve3([
-      currentLook,
-      new THREE.Vector3(0,1.50,18.0),
-      new THREE.Vector3(0,1.50,20.0),
-      new THREE.Vector3(0,1.50,22.0),
-      new THREE.Vector3(0,1.50,OUTSIDE_Z+8.0),
-    ],false,'centripetal',.5)
-    const proxy={p:0}
-    const update=()=>{
-      const pos=applyCurvePose(posCurve,lookCurve,proxy.p)
-      currentZ.current=pos.z
-      targetZ.current=pos.z
-    }
-    const tw=gsap.to(proxy,{p:1,duration:reducedMotion?.01:1.96,ease:motionEase,onUpdate:update,onComplete:()=>{
-      applyCurvePose(posCurve,lookCurve,1)
-      currentZ.current=OUTSIDE_Z
-      targetZ.current=OUTSIDE_Z
-      setAutoMoving(false)
-      setExperiencePhase('intro-return')
-    }})
-    tween.current=tw
-    return()=>tw.kill()
-  },[experiencePhase,camera,setAutoMoving,setExperiencePhase,reducedMotion,applyCurvePose])
-
-
-  const applyTravelDelta = useCallback((rawDelta, eventTarget) => {
-    const delta=Math.max(-140,Math.min(140,rawDelta))
-
-    if(experiencePhase==='entering') {
-      if(delta < -7){ setExperiencePhase('exiting'); return true }
-      return false
-    }
-    if(experiencePhase!=='inside') return false
-    if(eventTarget?.closest?.('[data-room-interactive="true"]')) return false
-
-    if(phase==='corridor'){
-      if(turningRef.current || navigationTarget || autoMoving) return true
-      if(facingRef.current==='forward' && currentZ.current>=MAX_Z-.08 && targetZ.current>=MAX_Z-.02 && delta<-8){
-        setExperiencePhase('exiting'); return true
-      }
-      if(facingRef.current==='return' && currentZ.current>=MAX_Z-.08 && targetZ.current>=MAX_Z-.02 && delta>8){
-        setExperiencePhase('exiting'); return true
-      }
-      const dir=facingRef.current==='forward'?-1:1
-      targetZ.current=clamp(targetZ.current+delta*.0175*dir,MIN_Z,MAX_Z)
-      return true
-    }
-
-    if(phase==='room' && performance.now()>roomReadyAt.current && delta<-7){
-      setPhase('exiting'); return true
-    }
-    return false
-  },[experiencePhase,phase,activeDoor,setPhase,navigationTarget,autoMoving,setExperiencePhase])
-
-  const onWheel = useCallback((e)=>{
-    if(!controlsEnabled || e.defaultPrevented) return
-    if(applyTravelDelta(e.deltaY,e.target)) e.preventDefault()
-  },[controlsEnabled,applyTravelDelta])
-
-  const onTouchStart = useCallback((e)=>{
-    if(!controlsEnabled || e.touches.length!==1 || e.target?.closest?.('[data-room-interactive="true"]')) return
-    touchY.current=e.touches[0].clientY
-  },[controlsEnabled])
-
-  const onTouchMove = useCallback((e)=>{
-    if(!controlsEnabled || touchY.current==null || e.touches.length!==1) return
-    const y=e.touches[0].clientY
-    const delta=(touchY.current-y)*1.35
-    if(Math.abs(delta)<1.5) return
-    touchY.current=y
-    if(applyTravelDelta(delta,e.target)) e.preventDefault()
-  },[controlsEnabled,applyTravelDelta])
-
-  const onTouchEnd = useCallback(()=>{ touchY.current=null },[])
-
-  const onMove = useCallback((e)=>{
-    if(!controlsEnabled || reducedMotion || experiencePhase!=='inside' || phase!=='corridor' || autoMoving || navigationTarget || turningRef.current) return
-    targetParallax.current.x=((e.clientX/window.innerWidth)*2-1)*.19
-    targetParallax.current.y=-((e.clientY/window.innerHeight)*2-1)*.085
-  },[controlsEnabled,reducedMotion,experiencePhase,phase,autoMoving,navigationTarget])
-
-  useEffect(()=>{
-    window.addEventListener('wheel',onWheel,{passive:false})
-    window.addEventListener('pointermove',onMove,{passive:true})
-    window.addEventListener('touchstart',onTouchStart,{passive:true})
-    window.addEventListener('touchmove',onTouchMove,{passive:false})
-    window.addEventListener('touchend',onTouchEnd,{passive:true})
-    window.addEventListener('touchcancel',onTouchEnd,{passive:true})
-    return()=>{
-      window.removeEventListener('wheel',onWheel)
-      window.removeEventListener('pointermove',onMove)
-      window.removeEventListener('touchstart',onTouchStart)
-      window.removeEventListener('touchmove',onTouchMove)
-      window.removeEventListener('touchend',onTouchEnd)
-      window.removeEventListener('touchcancel',onTouchEnd)
-    }
-  },[onWheel,onMove,onTouchStart,onTouchMove,onTouchEnd])
-
-  /* Room entry and exit are one continuous centripetal spline each. Because the room now
-     stands behind the door that was chosen, the same relative path serves every door: the
-     control points are expressed in the active door's own terms (its z, its side of the
-     corridor and the direction of travel), so a mirrored door produces a mirrored move of
-     identical quality instead of a different route.
-
-     The route is a spline; where the camera looks is solved rather than splined, so the
-     aim stays a set distance ahead of the move and swings once, evenly, into the room. */
-  useLayoutEffect(()=>{
-    if(experiencePhase!=='inside' || phase!=='entering'||!roomDoor) return
-    tween.current?.kill()
-    zVelocity.current=0
-    setAutoMoving(true)
-
-    const entryFacing=facingRef.current
-    const entryZ=currentZ.current
-    roomEntryState.current={z:entryZ,facing:entryFacing}
-    const side=roomDoor.side==='right'?1:-1
-    const travel=entryFacing==='forward'?1:-1
-    const doorZ=roomDoor.z
-    const approachOffset=travel*2.55
-    const nearOffset=travel*.52
-
-    const posCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z),
-      new THREE.Vector3(0,1.58,doorZ+approachOffset),
-      new THREE.Vector3(side*.38,1.58,doorZ+nearOffset),
-      new THREE.Vector3(side*2.25,1.59,doorZ),
-      new THREE.Vector3(side*5.15,1.59,doorZ),
-      new THREE.Vector3(side*ROOM_CAMERA_X,1.58,doorZ),
-    ],false,'centripetal',.5)
-    const aim={...readAim(9.4),turn:0,leadEnd:4.28,heightEnd:1.72}
-    aim.turn=shortestTurn(aim.yaw,side*Math.PI/2)
-    const proxy={p:0}
-    const update=()=>applyDoorwayPose(posCurve,proxy.p,aim)
-    const tw=gsap.to(proxy,{p:1,duration:reducedMotion?.01:2.34,ease:motionEase,onUpdate:update,onComplete:()=>{
-      applyDoorwayPose(posCurve,1,aim)
-      setAutoMoving(false)
-      setPhase('room')
-    }})
-    tween.current=tw
-    return()=>tw.kill()
-  },[experiencePhase,phase,activeDoor,roomDoor,camera,setPhase,setAutoMoving,reducedMotion,applyDoorwayPose,readAim])
-
-  /* The exit is the same move read backwards: out through the same opening, into the
-     same corridor position the visitor left from, with the aim leading the retreat so the
-     turn back down the corridor stays continuous. */
-  useLayoutEffect(()=>{
-    if(experiencePhase!=='inside' || phase!=='exiting'||!roomDoor) return
-    tween.current?.kill()
-    zVelocity.current=0
-    setAutoMoving(true)
-    const side=roomDoor.side==='right'?1:-1
-    const restore=roomEntryState.current
-    const restoreFacing=restore.facing || 'forward'
-    const restoreZ=restore.z
-    const travel=restoreFacing==='forward'?1:-1
-    const doorZ=roomDoor.z
-    const nearOffset=travel*.52
-
-    const posCurve=new THREE.CatmullRomCurve3([
-      new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z),
-      new THREE.Vector3(side*5.0,1.59,doorZ),
-      new THREE.Vector3(side*2.1,1.59,doorZ),
-      new THREE.Vector3(side*.36,1.58,doorZ+nearOffset),
-      new THREE.Vector3(0,1.58,restoreZ),
-    ],false,'centripetal',.5)
-    const aim={...readAim(4.28),turn:0,leadEnd:9.4,heightEnd:1.50}
-    aim.turn=shortestTurn(aim.yaw,travel===1?0:Math.PI)
-    const proxy={p:0}
-    const update=()=>applyDoorwayPose(posCurve,proxy.p,aim)
-    const tw=gsap.to(proxy,{p:1,duration:reducedMotion?.01:2.18,ease:motionEase,onUpdate:update,onComplete:()=>{
-      applyDoorwayPose(posCurve,1,aim)
-      currentZ.current=restoreZ
-      targetZ.current=restoreZ
-      glance.current=0
-      facingRef.current=restoreFacing
-      setCorridorFacing(restoreFacing)
-      setActiveDoor(null)
-      setPhase('corridor')
-      setAutoMoving(Boolean(navigationTarget))
-    }})
-    tween.current=tw
-    return()=>tw.kill()
-  },[experiencePhase,phase,activeDoor,roomDoor,camera,setActiveDoor,setPhase,setAutoMoving,setCorridorFacing,navigationTarget,reducedMotion,applyDoorwayPose,readAim])
-
-
-  useEffect(()=>{
-    if(!navigationTarget){ autoTargetRef.current=null; return }
-    autoTargetRef.current=navigationTarget
-    navigationSettle.current={doorId:navigationTarget,elapsed:0}
-    targetParallax.current={x:0,y:0}
-    setAutoMoving(true)
-  },[navigationTarget,setAutoMoving])
-
-  useFrame((_,dt)=>{
-    if(!controlsEnabled || experiencePhase!=='inside' || phase!=='corridor' || turningRef.current) return
-
-    const navDoor=navigationTarget?doors.find(d=>d.id===navigationTarget):null
-    let navZ=null
-    if(navDoor){
-      const travelDir=navDoor.z<currentZ.current?'forward':'return'
-      navZ=navDoor.z+(travelDir==='forward'?2.72:-2.72)
-      if(facingRef.current!==travelDir){
-        turnTo(travelDir)
-        return
-      }
-      targetZ.current=clamp(navZ,MIN_Z,MAX_Z)
-    }
-
-    const frameDt=Math.min(dt,.05)
-    const distance=targetZ.current-currentZ.current
-    if(reducedMotion){
-      currentZ.current=targetZ.current
-      zVelocity.current=0
-    }else{
-      const maxSpeed=navDoor?22:10
-      const acceleration=navDoor?16:28
-      const braking=navDoor?19:32
-      const stoppingSpeed=Math.sqrt(Math.max(0,2*braking*Math.abs(distance)))
-      const desiredSpeed=Math.sign(distance)*Math.min(maxSpeed,stoppingSpeed,Math.abs(distance)*(navDoor?4.2:7.5))
-      zVelocity.current=moveTowards(zVelocity.current,desiredSpeed,acceleration*frameDt)
-      const step=zVelocity.current*frameDt
-      if(Math.abs(step)>=Math.abs(distance)){
-        currentZ.current=targetZ.current
-        zVelocity.current=0
-      }else currentZ.current+=step
-    }
-    let navigationArrived=false
-    if(navDoor && navZ!==null && Math.abs(currentZ.current-navZ)<.035 && Math.abs(zVelocity.current)<.16){
-      currentZ.current=navZ
-      targetZ.current=navZ
-      zVelocity.current=0
-      if(navigationSettle.current.doorId!==navDoor.id) navigationSettle.current={doorId:navDoor.id,elapsed:0}
-      navigationSettle.current.elapsed+=frameDt
-      navigationArrived=true
-    }else if(navDoor) navigationSettle.current.elapsed=0
-
-    const lookSmooth=1-Math.exp(-7.2*frameDt)
-    parallax.current.x=reducedMotion?0:THREE.MathUtils.lerp(parallax.current.x,targetParallax.current.x,1-Math.exp(-5.8*frameDt))
-    parallax.current.y=reducedMotion?0:THREE.MathUtils.lerp(parallax.current.y,targetParallax.current.y,1-Math.exp(-5.8*frameDt))
-
-    const z=currentZ.current
-    let desiredGlance=0
-    const nearest=doors.reduce((winner,d)=>{
-      if(!winner) return d
-      return Math.abs(z-d.z)<Math.abs(z-winner.z)?d:winner
-    },null)
-    const best=nearest?Math.abs(z-nearest.z):Infinity
-    if(!navDoor&&nearest&&best<5.8){
-      const side=nearest.side==='right'?1:-1
-      const proximity=ease(1-best/5.8)
-      desiredGlance=side*proximity*1.05
-    }
-    glance.current=THREE.MathUtils.lerp(glance.current,desiredGlance,lookSmooth)
-    camera.position.set(parallax.current.x,1.58+parallax.current.y,z)
-    const lookZ=facingRef.current==='forward'?z-9.4:z+9.4
-    lookRig.current.position.copy(camera.position)
-    lookRig.current.lookAt(glance.current+parallax.current.x*.16,1.50+parallax.current.y*.42,lookZ)
-    camera.quaternion.slerp(lookRig.current.quaternion,lookSmooth)
-
-    if(navigationArrived && (reducedMotion || navigationSettle.current.elapsed>=.12)){
-      autoTargetRef.current=null
-      navigationSettle.current={doorId:null,elapsed:0}
+  /* ---------------------------------------------------------------- input */
+  const applyTravelDelta = useCallback((rawDelta, source = 'wheel') => {
+    if (!walking || !controlsEnabled) return false
+    const delta = clamp(rawDelta, -240, 240)
+    const t = track.current
+    walkInput.current = source
+    if (route.current) {            // the visitor takes over from a menu walk
+      route.current = null
       setNavigationTarget(null)
       setAutoMoving(false)
-      setActiveDoor(navDoor.id)
-      setPhase('entering')
-      return
+    }
+    // forward the way the head faces; scrolling back steps back a little more slowly
+    const lead = source === 'touch' ? LEAD_TOUCH_M : LEAD_M
+    const next = t.target + delta * METERS_PER_PX * (delta < 0 ? 0.6 : 1)
+    t.target = clamp(next, t.value - lead * 0.6, t.value + lead)
+    return true
+  }, [walking, controlsEnabled, setNavigationTarget, setAutoMoving])
+
+  useEffect(() => {
+    const onWheel = (e) => {
+      if (e.defaultPrevented || !walking) return
+      let dy = e.deltaY
+      if (e.deltaMode === 1) dy *= 16
+      else if (e.deltaMode === 2) dy *= window.innerHeight
+      if (applyTravelDelta(clamp(dy, -240, 240) * momentumWeight.current(dy), 'wheel')) e.preventDefault()
+    }
+    const onTouchStart = (e) => { if (e.touches.length === 1) touchY.current = e.touches[0].clientY }
+    const onTouchMove = (e) => {
+      if (touchY.current == null || e.touches.length !== 1) return
+      const y = e.touches[0].clientY
+      const delta = (touchY.current - y) * 1.45
+      if (Math.abs(delta) < 1.5) return
+      touchY.current = y
+      if (applyTravelDelta(delta, 'touch')) e.preventDefault()
+    }
+    const onTouchEnd = () => { touchY.current = null }
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+      window.removeEventListener('touchcancel', onTouchEnd)
+    }
+  }, [applyTravelDelta, walking])
+
+  // Looking. A click on the scene captures the mouse (the door's click does too). While captured,
+  // a click on a link follows it and any other click frees the mouse, as does Esc. With the mouse
+  // free, a plain click on the scene captures it again - never in the same breath as freeing it.
+  // A touch, or a pen, drags the view round.
+  useEffect(() => {
+    const canvas = gl.domElement
+    const show = () => document.body.classList.toggle('looking', look.locked)
+    const onLockChange = () => {
+      const was = look.locked
+      look.locked = document.pointerLockElement === canvas
+      document.body.classList.toggle('look-locked', look.locked)
+      if (was && !look.locked) {
+        freedAt.current = performance.now()
+        follow.current.on = false            // the cursor is the visitor's own again
+      }
+      if (!look.locked) pointLink('aimed', null)
+      show()
+    }
+    const onDown = (e) => {
+      if (!walking || !controlsEnabled || e.button !== 0) return
+      if (look.locked) {
+        e.preventDefault()
+        const aimed = linkState.aimed
+        if (aimed && linkTargets.has(aimed)) followLink(linkTargets.get(aimed), navigate)
+        else document.exitPointerLock?.()
+        return
+      }
+      if (e.target === canvas && !linkState.hovered && e.pointerType !== 'mouse') lookDragStart(e)
+    }
+    const onClick = (e) => {
+      if (!walking || !controlsEnabled || look.locked || look.dragging || e.button !== 0) return
+      if (e.target !== canvas || linkState.hovered || e.pointerType === 'touch') return
+      if (performance.now() - freedAt.current < 900) return
+      const ask = canvas.requestPointerLock?.()
+      if (ask?.catch) ask.catch(() => {})
+    }
+    const onMove = (e) => {
+      if (!walking || !controlsEnabled) return
+      lookMove(e)
+    }
+    onLockChange()
+    document.addEventListener('pointerlockchange', onLockChange)
+    window.addEventListener('pointerdown', onDown)
+    window.addEventListener('click', onClick)
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointerup', lookDragEnd, { passive: true })
+    window.addEventListener('pointercancel', lookDragEnd, { passive: true })
+    return () => {
+      document.removeEventListener('pointerlockchange', onLockChange)
+      window.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('click', onClick)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', lookDragEnd)
+      window.removeEventListener('pointercancel', lookDragEnd)
+    }
+  }, [gl, navigate, walking, controlsEnabled])
+
+  // Before following a link to a page, note where the visitor stands, for Back to return to.
+  useEffect(() => {
+    linkState.save = () => saveReturn({ x: pos.current.x, z: pos.current.z, yaw: look.yaw, pitch: look.pitch })
+    return () => { linkState.save = null }
+  }, [])
+
+  // Back from a page: stand where the visitor stood, looking where they looked.
+  useLayoutEffect(() => {
+    if (experiencePhase !== 'inside') return
+    const spot = consumeReturn()
+    if (!spot) return
+    pos.current = { x: spot.x, z: spot.z }
+    track.current = { value: 0, target: 0, vel: 0 }
+    setLook(spot.yaw || 0, spot.pitch || 0)
+    camera.position.set(spot.x, EYE, spot.z)
+    headQuaternion(camera.quaternion)
+  }, [experiencePhase, camera])
+
+  useEffect(() => () => {
+    if (document.pointerLockElement) document.exitPointerLock?.()
+    document.body.classList.remove('look-locked', 'looking', 'look-aim', 'link-hover')
+  }, [])
+  useEffect(() => { if (navigationOpen && document.pointerLockElement) document.exitPointerLock?.() }, [navigationOpen])
+
+  // A room chosen from the menu: walk there along the corridor, through its door.
+  useEffect(() => {
+    if (!navigationTarget || experiencePhase !== 'inside') return
+    const target = doors.find((d) => d.id === navigationTarget)
+    if (!target) { setNavigationTarget(null); return }
+    route.current = routeTo(target, pos.current.x, pos.current.z)
+    setAutoMoving(true)
+  }, [navigationTarget, experiencePhase, setNavigationTarget, setAutoMoving])
+
+  /* ---------------------------------------------------------------- every frame */
+  useFrame((_, dt) => {
+    const frameDt = Math.min(dt, 0.05)
+    if (experiencePhase === 'entering') { walkScripted(frameDt); return }
+    if (!walking) return
+    // on the terrace, before the mouse is captured, the head leans toward the cursor, starting from where it already looks
+    const f = follow.current
+    const following = outside && f.on && !look.locked && fine() && controlsEnabled && !route.current
+    if (following) {
+      if (!f.active) {
+        f.baseYaw = look.yaw - followYaw(pointer.current.x)
+        f.basePitch = look.pitch - followPitch(pointer.current.y)
+      }
+      look.targetYaw = f.baseYaw + followYaw(pointer.current.x)
+      look.targetPitch = clamp(f.basePitch + followPitch(pointer.current.y), -1.2, 1.2)
+    }
+    f.active = following
+    const t = track.current
+    const p = pos.current
+
+    // A menu walk heads for its next waypoint; the head turns toward it as a person's would.
+    if (route.current) {
+      const [wx, wz] = route.current[0]
+      const dx = wx - p.x
+      const dz = wz - p.z
+      const dist = Math.hypot(dx, dz)
+      if (dist < 0.3) {
+        route.current.shift()
+        if (!route.current.length) {
+          route.current = null
+          t.target = t.value
+          setNavigationTarget(null)
+          setAutoMoving(false)
+        }
+      } else {
+        const want = Math.atan2(-dx, -dz)
+        steerLook(want, frameDt, 3.6)
+        // walk on only as the head comes round to the waypoint - a person turns to face where they
+        // are going, then goes - so a waypoint behind or beside them is never circled at speed
+        const off = Math.atan2(Math.sin(want - look.yaw), Math.cos(want - look.yaw))
+        const ahead = Math.max(0, Math.cos(off))
+        t.target = t.value + Math.min(dist, LEAD_M) * ahead * ahead
+      }
     }
 
-    if(!navDoor && facingRef.current==='forward' && currentZ.current<=MIN_Z+.08 && targetZ.current<=MIN_Z+.01){
-      targetZ.current=MIN_Z
-      currentZ.current=MIN_Z
-      zVelocity.current=0
-      turnTo('return')
-    }
-  })
+    stepLook(frameDt)
 
-  return {targetZ,currentZ}
+    // Walk exactly where the cursor points: along the horizontal part of the ray from the eye
+    // through the cursor, so whatever is under the cursor stays under it, coming closer. On a
+    // touch screen, in a menu walk, or pointing nearly straight up or down, the view's own heading.
+    const walkDir = () => {
+      if (look.locked || route.current || !fine() || walkInput.current === 'touch') return heading()
+      const v = ray.current.set(pointer.current.x, -pointer.current.y, 0.5).unproject(camera).sub(camera.position)
+      const flat = Math.hypot(v.x, v.z)
+      const [hx, hz] = heading()
+      const w = THREE.MathUtils.clamp(flat / v.length() / 0.35, 0, 1)
+      const dx = (v.x / Math.max(flat, 1e-6)) * w + hx * (1 - w)
+      const dz = (v.z / Math.max(flat, 1e-6)) * w + hz * (1 - w)
+      const n = Math.hypot(dx, dz) || 1
+      return [dx / n, dz / n]
+    }
+    // Walk - or step back.
+    const before = t.value
+    if (reducedMotion) { t.value = t.target; t.vel = 0 } else walkToward(t, walkInput.current === 'touch' ? WALK_TOUCH : WALK, frameDt)
+    const step = t.value - before
+    let moved = 0
+    if (step !== 0) {
+      const [hx, hz] = walkDir()
+      const free = slide(p.x, p.z, hx * step, hz * step, doorOpen, out.current)
+      moved = Math.hypot(out.current[0] - p.x, out.current[1] - p.z)
+      p.x = out.current[0]
+      p.z = out.current[1]
+      if (!free || moved < Math.abs(step) * 0.15) { t.target = t.value; t.vel = Math.sign(t.vel) * Math.min(Math.abs(t.vel), 0.4) }
+    }
+
+    updateDoors(p.x, p.z, frameDt)
+
+    // Through the entrance, either way: out onto the terrace, or in from it.
+    if (!outside && p.z > START_Z + 0.6) { setExperiencePhase('gated'); return }
+    if (outside && !isOutside(p.z)) { setExperiencePhase('inside'); return }
+
+    // Which room the visitor is standing in (for the menu and the hints).
+    const door = locate(p.x, p.z)
+    if ((door?.id ?? null) !== where.current.door) {
+      where.current.door = door?.id ?? null
+      setActiveDoor(door?.id ?? null)
+      setPhase(door ? 'room' : 'corridor')
+    }
+    const facing = Math.cos(look.yaw) >= 0 ? 'forward' : 'return'
+    if (facing !== where.current.facing) { where.current.facing = facing; setCorridorFacing(facing) }
+
+    // The human step: bob, weight shift, a hint of roll and nod, and breathing when still.
+    stepClock.current += frameDt
+    const s = stepMotion(stepState.current, moved, frameDt, stepClock.current, reducedMotion)
+    const [hx, hz] = heading()
+    camera.position.set(p.x - hz * s.sway, EYE + s.bobY + s.breath, p.z + hx * s.sway)
+    headQuaternion(camera.quaternion, s.roll, s.nod)
+    if (outside) placeHotspot()
+
+    // With the mouse captured, the centre dot finds what it rests on (every few frames).
+    if (look.locked && (frameCount.current++ & 3) === 0) {
+      raycaster.current.setFromCamera({ x: 0, y: 0 }, camera)
+      raycaster.current.far = 22
+      const shown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true }
+      const hit = raycaster.current.intersectObjects(scene.children, true).find((h) => shown(h.object))
+      const aimed = hit && linkTargets.has(hit.object) ? hit.object : null
+      if (aimed !== linkState.aimed) pointLink('aimed', aimed)
+    }
+  }, -2) // before the floor reflection pass, so the mirror always uses this frame's camera
+
+  // Keep the menu's notion of "here" honest when the visitor leaves the experience.
+  useEffect(() => {
+    if (experiencePhase === 'inside') return
+    where.current = { door: null, facing: null }
+    if (activeDoor) setActiveDoor(null)
+  }, [experiencePhase, activeDoor, setActiveDoor])
+  useEffect(() => { if (phase !== 'room' && phase !== 'corridor') setPhase('corridor') }, [phase, setPhase])
+  useEffect(() => { invalidate() }, [size, invalidate])
+  // development only: lets a test script see where the walker is
+  useEffect(() => {
+    if (!import.meta.env.DEV) return undefined
+    window.__walker = { pos, route, track, look, follow, pointer }
+    return () => { delete window.__walker }
+  }, [])
+
+  return { pos }
 }

@@ -30,12 +30,3 @@ export const sectionHeroes = {
     heroNote: { label: 'BRIEF → SCOPE', value: 'CLEAR START', detail: 'A practical note, reference or delivery window is enough to begin.' },
   },
 }
-
-export function HeroTitle({ hero }) {
-  const [before, accent, after] = hero.title
-  return <>{before}<em>{accent}</em>{after}</>
-}
-
-export function heroTitleText(hero) {
-  return hero.title.join('').trim()
-}

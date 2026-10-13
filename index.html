@@ -132,8 +132,8 @@
 
     /* While the loader is up, the homepage is already mounted underneath but its own reveal is held. It resumes a beat after the
        loader starts to recede (data-hero-go), so the page arrives as the loader leaves, without the two identities overlapping. */
-    html[data-boot="on"] .entry-intro-copy,html[data-boot="on"] .entry-portrait,
-    html[data-boot="leaving"]:not([data-hero-go]) .entry-intro-copy,html[data-boot="leaving"]:not([data-hero-go]) .entry-portrait{animation-play-state:paused}
+    html[data-boot="on"] .exterior-gate,html[data-boot="on"] .look-mode--outside,
+    html[data-boot="leaving"]:not([data-hero-go]) .exterior-gate,html[data-boot="leaving"]:not([data-hero-go]) .look-mode--outside{animation-play-state:paused}
 
     @media (max-width:640px){
       .boot__logo{width:clamp(210px,64vw,300px)}

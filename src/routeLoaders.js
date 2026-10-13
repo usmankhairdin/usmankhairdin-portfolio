@@ -1,5 +1,6 @@
 export const routeLoaders = {
   home: () => import('./experience/HomeExperience.jsx'),
+  homeClassic: () => import('./pages/HomeClassic.jsx'),
   work: () => import('./pages/Work.jsx'),
   project: () => import('./pages/Project.jsx'),
   about: () => import('./pages/About.jsx'),

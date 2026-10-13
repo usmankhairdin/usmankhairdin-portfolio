@@ -1,23 +1,24 @@
 import { useRef } from 'react'
-import { useJourney } from '../experience/JourneyContext.jsx'
+import { useFrame } from '@react-three/fiber'
 import { doors } from '../data/projects.js'
 import RoomShell from './RoomShell.jsx'
-import RoomApertureClip from './RoomApertureClip.jsx'
 
-// One physical room instance: every door supplies its content to the same stage, and
-// the stage itself stands behind whichever door is active.
-//
-// The placement holds after a room is left, until another door is actually chosen. The
-// visitor is still in front of the doorway they just came out of while its leaf closes,
-// so moving the room away at that moment would empty the opening in plain sight; by the
-// time a new door becomes active the camera is at that new door and the old leaf is shut.
-export default function Rooms() {
-  const { activeDoor } = useJourney()
-  const placed = useRef('services')
-  if (activeDoor) placed.current = activeDoor
-  const spec = doors.find((door) => door.id === (activeDoor || placed.current))
-  return <>
+// Every room stands behind its own door, all the time - one building, walked into through
+// glass. A room is only drawn while the visitor is inside it or near enough to its door to
+// see in, so four rooms cost about what one does.
+const SEE_IN = 24          // metres along the corridor from which a room shows through its door
+
+function PlacedRoom({ spec }) {
+  const group = useRef()
+  // the widest room reaches 12 m either side of its door, so this also covers being inside
+  useFrame(({ camera }) => {
+    if (group.current) group.current.visible = Math.abs(camera.position.z - spec.z) < SEE_IN
+  })
+  return <group ref={group}>
     <RoomShell spec={spec} />
-    <RoomApertureClip />
-  </>
+  </group>
+}
+
+export default function Rooms() {
+  return <>{doors.map((spec) => <PlacedRoom key={spec.id} spec={spec} />)}</>
 }

@@ -20,12 +20,7 @@ export default defineConfig({
           if (normalizedId.includes('vite/preload-helper')) return 'vite-preload'
           if (!normalizedId.includes('/node_modules/')) return undefined
           if (normalizedId.includes('/node_modules/three/')) return 'three-core'
-          if (
-            normalizedId.includes('/@react-three/') ||
-            normalizedId.includes('/three-stdlib/') ||
-            normalizedId.includes('/three-mesh-bvh/') ||
-            normalizedId.includes('/troika-three-')
-          ) return 'immersive-3d'
+          if (normalizedId.includes('/@react-three/')) return 'immersive-3d'
           if (normalizedId.includes('/gsap/')) return 'immersive-motion'
           if (normalizedId.includes('/react/') || normalizedId.includes('/react-dom/') || normalizedId.includes('/react-router-dom/')) return 'react-vendor'
           return undefined

@@ -45,7 +45,6 @@ const stack = [
   ['lenis', 'Lenis'],
   ['r3f', 'React Three Fiber'],
   ['three', 'Three.js'],
-  ['drei', 'Drei'],
 ]
 
 function GuideSection({ id, index, eyebrow, title, intro, className = '', children }) {

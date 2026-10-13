@@ -29,7 +29,6 @@ const stack = [
   ['css3', 'CSS'],
   ['r3f', 'React Three Fiber'],
   ['three', 'Three.js'],
-  ['drei', 'Drei'],
   ['gsap', 'GSAP'],
 ]
 

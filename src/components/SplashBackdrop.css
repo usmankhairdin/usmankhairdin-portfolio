@@ -1,46 +1,13 @@
 /* ============================================================================
-   SPLASH / HOME — cool atmospheric palette and animated background. Scoped to the Splash gate (.entry-gate--intro) only: nothing here
-   reaches the corridor, the rooms, or any standard or project page, and the site's own theme tokens are not changed.
+   SPLASH — the homepage hero's atmosphere (SplashBackdrop): the signal traces and the drifting Tech Stack tokens. Nothing here
+   reaches the corridor, the rooms or any other page, and the site's own theme tokens are not changed.
 
    The background is secondary to the hero: the content is read first, the traces are noticed a moment later, the tech tokens last.
 
-   PALETTE (light)  frosted blue-white  #f8fbff   → icy pearl  #f0f5fc   → silver-blue  #e7eef8
-                    cobalt accents (66 92 240) at low opacity · deep navy type #0c1830 · slate-blue supporting type
-   PALETTE (dark)   the site's deep navy, a whisper of cobalt behind the portrait, cool blue-grey lines
-
-   LEVELS           1  base             the gate background
-                    2  vertical lines   1px, 72px pitch, ~5% — static, top to bottom (no horizontal lines)
-                    3  signal traces    16–20 short segments, 4.6–7.5s each, ~9–10 on screen at any time, at different heights; dimmed behind the copy
-                    4  tech tokens      nine small frosted tokens (React, Vite, …) in negative space: slow drift around a home; draggable on a desktop
-                    5  hero content     `.entry-hero` (z-index 1) is always above all of this
+   LEVELS  1  vertical lines and signal traces (HeroSignalBackground)
+           2  tech tokens: small frosted tokens in negative space, a slow drift around a home, draggable on a desktop
+           3  hero content, always above all of this
    ============================================================================ */
-
-/* ---- The gate: base, lines, and the type colours that belong to the palette ---- */
-html body .entry-gate.entry-gate--intro:not(.entry-gate--loading){--sb-pitch:var(--splash-pitch,72px)}
-
-/* light */
-html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading){
-  --sb-rgb:66 92 240;                          /* cobalt */
-  --sb-tint:157 179 255;                       /* pale blue */
-  --sb-grid:var(--splash-grid);
-  background:var(--splash-surface);
-  color:#0c1830;
-}
-html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-headline,
-html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-line{color:#0c1830}
-html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-eyebrow{color:#546480}
-html:not([data-theme="dark"]) body .entry-gate.entry-gate--intro:not(.entry-gate--loading) .hero-supporting{color:#4a5a76}
-
-/* dark: the site's deep navy with the same language, quieter (its text colours stay the site's own dark-theme tokens) */
-html[data-theme="dark"] body .entry-gate.entry-gate--intro:not(.entry-gate--loading){
-  --sb-rgb:142 160 255;
-  --sb-tint:150 170 255;
-  --sb-grid:var(--splash-grid);
-  background:var(--splash-surface);
-}
-
-/* The shared HeroSignalBackground now owns the grid (no second gate grid). */
-html body .entry-gate.entry-gate--intro:not(.entry-gate--loading):before{content:none}
 
 /* ---- The backdrop layer sits above the lines and below the hero (which is z-index 1). It never takes pointer events. ---- */
 .splash-bg{
@@ -173,8 +140,7 @@ html[data-theme="dark"] .sbt[data-id="codex"] .sbt__mark rect,html[data-theme="d
 .splash-hit.is-draggable .sbt-hit.is-dragging{cursor:grabbing}
 
 /* wide screens get the extra columns of traces (beyond the 1440px design width), smaller ones do not; a phone keeps three traces and smaller tokens */
-@media(max-width:1580px){
-}
+
 @media(max-width:640px){
   .sbt__body,.sbt--t2 .sbt__body,.sbt--t3 .sbt__body{--tk-h:28px;--tk-mark:13px;gap:5px;padding:0 9px 0 6px;border-radius:9px;font-size:10px}
   b.sbt__mark{font-size:7px}
@@ -184,39 +150,4 @@ html[data-theme="dark"] .sbt[data-id="codex"] .sbt__mark rect,html[data-theme="d
 @media(prefers-reduced-motion:reduce){
   .sbt__drift{animation:none}
   .sbt__body{transition:none}
-}
-
-/* ============================================================================
-   CTA icon — "Enter the Experience": a thin arrow entering an open portal frame (approved). Only its SIZE is refined: the icon canvas is
-   27.5px (was 25.1px) and the drawn glyph is enlarged a further 18% (~22px wide, was ~20px). The icon box keeps the button's height, and a
-   matching negative end margin keeps the button's width, so the pill is exactly the size it was. The stroke is set so the line stays ~2px,
-   and the hover travel is set so the arrow still moves ~3px on screen. The hover motion, timing, easing and the press are unchanged.
-   ============================================================================ */
-html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:27.5px;margin-left:-1.8px;margin-right:-3.6px}
-.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon svg{
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.5;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  overflow:visible;
-  transform:scale(1.18);
-}
-.entry-gate--intro:not(.entry-gate--loading) .cta-arrow{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.entry-gate--intro:not(.entry-gate--loading) .cta-portal{opacity:.72;transition:opacity .3s ease}
-@media(hover:hover){
-  .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:hover .cta-arrow{transform:translateX(2.3px)}
-  .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:hover .cta-portal{opacity:1}
-}
-.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:focus-visible .cta-arrow{transform:translateX(2.3px)}
-.entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta:focus-visible .cta-portal{opacity:1}
-@media(max-width:560px){
-  html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:23.4px;margin-left:-1.6px;margin-right:-3px}
-}
-@media(max-width:380px){
-  html body .entry-gate--intro:not(.entry-gate--loading) .entry-gallery-cta__icon{width:20.7px;margin-left:-1.4px;margin-right:-2.7px}
-}
-@media(prefers-reduced-motion:reduce){
-  .entry-gate--intro:not(.entry-gate--loading) .cta-arrow,
-  .entry-gate--intro:not(.entry-gate--loading) .cta-portal{transition:none}
 }

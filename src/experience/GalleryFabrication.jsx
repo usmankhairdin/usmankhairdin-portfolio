@@ -8,6 +8,9 @@ import { useSurface } from './surfaces.js'
 export const PALETTE = { blue: '#455dff', ink: '#202936', brass: '#ad8755', ivory: '#e9dfd0', wood: '#68503c', paper: '#f5eddf' }
 export const rectangle = (w, h) => [[-w/2,-h/2],[w/2,-h/2],[w/2,h/2],[-w/2,h/2]]
 const FabricationContext = createContext(null)
+// The corridor supplies real material finishes (brushed brass, cobalt lacquer, stone, oak)
+// for the palette colours. Pieces outside it - the rooms - keep their own finishes.
+export const GalleryFinishContext = createContext(null)
 export function FabricationProvider({ children }) {
   const grain = useSurface('joinery', .7, .7, 152)
   return <FabricationContext.Provider value={grain}>{children}</FabricationContext.Provider>
@@ -16,6 +19,7 @@ export function FabricationProvider({ children }) {
 // Solid, beveled CNC profiles. Cutouts are actual holes, not painted silhouettes.
 export function Profile({ outline, holes = [], depth = .065, bevel = .009, color = PALETTE.ivory, position, rotation, metalness = .08, roughness = .51, smoothEdges = false }) {
   const grain = useContext(FabricationContext)
+  const finish = useContext(GalleryFinishContext)?.[color]
   const isWood = color === PALETTE.wood && grain
   const shapeKey = JSON.stringify([outline, holes])
   const geometry = useMemo(() => {
@@ -27,15 +31,21 @@ export function Profile({ outline, holes = [], depth = .065, bevel = .009, color
     return smoothEdges ? toCreasedNormals(solid, .35) : solid
   }, [shapeKey, depth, bevel, smoothEdges])
   useEffect(() => () => geometry.dispose(), [geometry])
+  if (finish) return <mesh geometry={geometry} position={position} rotation={rotation} material={finish} />
   return <mesh geometry={geometry} position={position} rotation={rotation}>
     <meshStandardMaterial color={isWood?'#c4b29a':color} map={isWood?grain:null} bumpMap={isWood?grain:null} bumpScale={.002} metalness={isWood?0:metalness} roughness={isWood?.62:roughness} />
   </mesh>
 }
 export function Plate({ w, h, depth = .05, ...props }) { return <Profile outline={rectangle(w,h)} depth={depth} {...props} /> }
-export function Frame({ w, h, rim = .065, ...props }) { return <Profile outline={rectangle(w,h)} holes={[rectangle(w-rim*2,h-rim*2)]} {...props} /> }
 
 // Real standoff shaft and correctly oriented, slotted head. Back meets wall.
 export function Fastener({ position = [0,0,0], length = .10 }) {
+  const finishes = useContext(GalleryFinishContext)
+  if (finishes) return <group position={position}>
+    <mesh position={[0,0,length/2]} rotation={[Math.PI/2,0,0]} material={finishes[PALETTE.brass]}><cylinderGeometry args={[.012,.012,length,12]}/></mesh>
+    <mesh position={[0,0,length]} rotation={[Math.PI/2,0,0]} material={finishes[PALETTE.brass]}><cylinderGeometry args={[.026,.026,.016,20]}/></mesh>
+    <mesh position={[0,0,length+.009]} material={finishes[PALETTE.ink]}><boxGeometry args={[.026,.004,.001]}/></mesh>
+  </group>
   return <group position={position}>
     <mesh position={[0,0,length/2]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.012,.012,length,8]}/><meshStandardMaterial color={PALETTE.brass} metalness={.68} roughness={.32}/></mesh>
     <mesh position={[0,0,length]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.026,.026,.016,12]}/><meshStandardMaterial color={PALETTE.brass} metalness={.68} roughness={.32}/></mesh>
@@ -60,30 +70,6 @@ export function PictureLight({ power = 5 }) {
     <object3D ref={target} position={[0,-.15,.02]}/>
     <spotLight ref={light} position={[0,1.02,.52]} intensity={power} distance={4} angle={1.05} penumbra={.65} decay={2} color="#ffe9c7" />
   </group>
-}
-
-// Texture and physical plane use the same aspect ratio; type is fitted, never stretched.
-export function ArtLabel({ text, width = 1.7, height = .11, position = [0,-.88,.018], color = '#575149', align = 'center' }) {
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas')
-    canvas.width = 1536
-    canvas.height = Math.max(32, Math.round(canvas.width * height / width))
-    const ctx = canvas.getContext('2d')
-    let size = canvas.height * .58
-    ctx.font = `500 ${size}px Arial, sans-serif`
-    size *= Math.min(1, canvas.width * .95 / ctx.measureText(text).width)
-    ctx.font = `500 ${size}px Arial, sans-serif`
-    ctx.textAlign = align
-    ctx.textBaseline = 'middle'
-    ctx.fillStyle = color
-    ctx.fillText(text, align === 'left' ? 4 : canvas.width/2, canvas.height/2)
-    const map = new THREE.CanvasTexture(canvas)
-    map.colorSpace = THREE.SRGBColorSpace
-    map.anisotropy = 8
-    return map
-  }, [text, width, height, color, align])
-  useEffect(() => () => texture.dispose(), [texture])
-  return <mesh position={position}><planeGeometry args={[width,height]}/><meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false}/></mesh>
 }
 
 const smooth = t => t*t*t*(t*(t*6-15)+10)

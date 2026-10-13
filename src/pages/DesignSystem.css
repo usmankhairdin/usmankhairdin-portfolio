@@ -35,7 +35,7 @@
 /* Hero */
 .ds-hero{position:relative;overflow:hidden;padding:clamp(148px,12vw,180px) 0 clamp(72px,7vw,92px);background:var(--splash-surface)}
 .ds-hero:after{content:"";position:absolute;inset:auto 0 0;height:1px;background:var(--ds-line)}
-.ds-hero .hero-signal-bg{opacity:.76}
+
 .ds-hero__grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.28fr) minmax(300px,.72fr);gap:clamp(56px,8vw,120px);align-items:end}
 .ds-hero__copy{max-width:830px}
 .ds-hero h1{margin:var(--space-5) 0 var(--space-6);font-size:var(--type-section-size);line-height:var(--type-section-line);letter-spacing:var(--type-section-tracking);text-wrap:balance}

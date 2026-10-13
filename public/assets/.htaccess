@@ -1,0 +1,8 @@
+# The build's scripts and stylesheets carry a content hash in their names (index-B5t-eVzs.css):
+# a file with a given name never changes, so browsers may keep it for a year and skip the
+# round trip on every later visit. Images and other files here keep the server's defaults.
+<IfModule mod_headers.c>
+  <FilesMatch "-[A-Za-z0-9_-]{8}\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

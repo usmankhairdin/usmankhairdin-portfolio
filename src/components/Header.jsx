@@ -11,7 +11,7 @@ import ThemeToggle from './ThemeToggle.jsx'
  * The ONE shared, frameless navigation system.
  *
  *   web        logo left · Theme + Menu right · auto-hides on scroll · drawer follows the selected theme
- *   immersive  logo left · Menu right only    · fixed HUD (no auto-hide) · drawer is a fixed neutral presentation
+ *   immersive  Menu right only (no logo)     · fixed HUD (no auto-hide) · drawer is a fixed neutral presentation
  *
  * Same logo, same Menu control, same drawer, same motion language in both. Immersive mode never mounts the Theme control.
  * The header has no background of its own: only the two circular controls carry a surface.
@@ -29,11 +29,14 @@ const ITEMS = [
   { key: 'about', label: 'About', to: '/about/', door: 'about' },
   { key: 'work', label: 'Work', to: '/work/', door: 'work' },
   { key: 'services', label: 'Services', to: '/services/', door: 'services' },
-  { key: 'agencies', label: 'For Agencies', to: '/for-agencies/', door: 'agencies' },
+  // In the corridor, For Agencies is a wall of the Services room.
+  { key: 'agencies', label: 'For Agencies', to: '/for-agencies/', door: 'services' },
   { key: 'contact', label: 'Contact', to: '/contact/', door: 'contact' },
 ]
-const CTA = { label: 'Send a brief', to: '/contact/', door: 'contact' }
-// Contact is reached through the CTA in the drawer footer, so it is not repeated in the list. It stays in ITEMS for routing and the current-page state.
+const CTA = { label: 'Send a brief', to: '/contact/' }
+// On the Web, Contact is reached through the CTA in the drawer footer, so it is not repeated in the list. It stays in ITEMS for routing and the current-page state.
+// The corridor has no form of its own, so there the CTA leads to the Contact page (Back returns to the same spot), and the
+// list keeps Contact: it walks to the Contact hall.
 const MENU_ITEMS = ITEMS.filter((item) => item.key !== 'contact')
 
 const routeForPath = {
@@ -99,9 +102,9 @@ export default function Header({ immersive = false }) {
   useEffect(() => () => window.clearTimeout(navTimer.current), [])
 
   const items = useMemo(() => (
-    mode === 'web' ? MENU_ITEMS.map((item) => ({ ...item, warm: () => preloadRoute(routeForPath[item.to]) })) : MENU_ITEMS
+    mode === 'web' ? MENU_ITEMS.map((item) => ({ ...item, warm: () => preloadRoute(routeForPath[item.to]) })) : ITEMS
   ), [mode])
-  const cta = useMemo(() => (mode === 'web' ? { ...CTA, warm: () => preloadRoute('contact') } : CTA), [mode])
+  const cta = useMemo(() => ({ ...CTA, warm: () => preloadRoute('contact') }), [])
 
   const activeKey = mode === 'web'
     ? activeKeyForPath(pathname)
@@ -128,15 +131,23 @@ export default function Header({ immersive = false }) {
     journey?.requestDoor(door)
   }
   const onSelect = (item, event) => (mode === 'web' ? goWeb(item.to, event) : goImmersive(item.door, event))
-  const onCta = (event) => (mode === 'web' ? goWeb(CTA.to, event) : goImmersive(CTA.door, event))
+  const onCta = (event) => {
+    if (mode === 'web') { goWeb(CTA.to, event); return }
+    if (!plainClick(event)) return
+    event.preventDefault()
+    close()
+    // the corridor's own link module (already loaded there; kept out of the Web pages' bundle)
+    import('../rooms/linkTargets.js').then(({ followLink }) => followLink(CTA.to, navigate))
+  }
 
-  // Web: on the homepage the logo is only a mark (you are already home); everywhere else it leads home. Corridor: it always leads out.
+  // Web: on the homepage the logo is only a mark (you are already home); everywhere else it leads home.
+  // The corridor shows no logo over the scene - only the Menu, whose Home item leads back out.
   const logoImg = <img src={LOGO_SRC} width="1362" height="564" alt="" decoding="async" draggable="false" />
   const logo = mode === 'web'
     ? (pathname === '/'
       ? <span className="site-logo site-logo--current" role="img" aria-label="Usman Khair Din — you are on the home page" aria-current="page" data-trap-skip>{logoImg}</span>
       : <Link to="/" className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onPointerEnter={() => preloadRoute('home')} onFocus={() => preloadRoute('home')} onClick={() => close()}>{logoImg}</Link>)
-    : <a href="/" className="site-logo" aria-label="Return to portfolio entrance" data-trap-skip onClick={(event) => { if (plainClick(event)) skipBootOnce() }}>{logoImg}</a>
+    : null
 
   return <div className="site-header-root" data-mode={mode} data-menu-open={open ? 'true' : 'false'} ref={rootRef}>
     {mode === 'web' && <a className="skip-link" href="#main-content" data-trap-skip>Skip to content</a>}
@@ -174,7 +185,7 @@ export default function Header({ immersive = false }) {
       onClose={() => close(true)}
       onSelect={onSelect}
       cta={cta}
-      ctaActive={activeKey === 'contact'}
+      ctaActive={mode === 'web' && activeKey === 'contact'}
       onCta={onCta}
       containerRef={rootRef}
     />

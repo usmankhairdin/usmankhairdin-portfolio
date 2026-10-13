@@ -182,6 +182,8 @@ html[data-theme="dark"] .site-header-root[data-mode="web"]{
 html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter:invert(1) hue-rotate(180deg) brightness(1.06) saturate(1.15)}
 
 .site-header__controls{display:flex;align-items:center;gap:10px}
+/* The corridor HUD carries only the Menu: keep it at the right with no logo beside it. */
+.site-header-root[data-mode="immersive"] .site-header__controls{margin-left:auto}
 
 /* Portfolio pill treatment with the SaaS UI Rescue brand colour. */
 .hdr-rescue{
@@ -450,22 +452,7 @@ html[data-theme="dark"] .site-header-root[data-mode="web"] .site-logo img{filter
 }
 
 /* ---- 5. WEB DARK — hand-tuned exceptions (things the role mapping cannot know) ---- */
-/* White numerals on the cobalt number badges must survive the generic "muted text" mapping of their base rules. */
-html[data-theme="dark"] .route-page--services .service-list--premium article > span,
-html[data-theme="dark"] .route-page--services .agency-steps--premium > div > b,
-html[data-theme="dark"] .route-page--agencies .agency-steps--premium > div > b{color:#fff}
 
 /* ---- 6. ROUTE FALLBACKS (shown while a lazy route loads) — themed so a switch can never flash the wrong colour ---- */
 .home-route-fallback{background:var(--splash-surface)}
 .standard-route-fallback{background:var(--bg)}
-
-/* About page adopts the Splash/Home palette while remaining page-scoped. */
-html[data-theme="dark"] .route-page--about{
-  --about-ink:var(--text);
-  --about-muted:var(--text-2);
-  --about-line:rgb(170 190 255 / .15);
-  --about-line-soft:rgb(170 190 255 / .075);
-  --about-panel:rgb(255 255 255 / .055);
-  --about-panel-strong:rgb(255 255 255 / .08);
-  --about-accent:var(--accent-text);
-}

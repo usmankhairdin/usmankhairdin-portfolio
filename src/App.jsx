@@ -7,6 +7,7 @@ import CursorLayer from './cursor/CursorLayer.jsx'
 import { applySeo } from './seo/applySeo.js'
 
 const HomeExperience = lazy(routeLoaders.home)
+const HomeClassic = lazy(routeLoaders.homeClassic)
 const Work = lazy(routeLoaders.work)
 const Project = lazy(routeLoaders.project)
 const About = lazy(routeLoaders.about)
@@ -55,6 +56,8 @@ export default function App(){
     <CursorLayer/>
     <Routes>
       <Route path="/" element={<Suspense fallback={<HomeRouteFallback/>}><HomeExperience/></Suspense>}/>
+      {/* the marketing homepage (the Web Experience), reached from the Corridor's terrace sign; unlisted, not indexed */}
+      <Route path="/home-classic/" element={<Suspense fallback={<StandardRouteFallback/>}><HomeClassic/></Suspense>}/>
       <Route path="/work/" element={<Suspense fallback={<StandardRouteFallback/>}><Work/></Suspense>}/>
       <Route path="/work/personal-portfolio-web/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolioWeb/></Suspense>}/>
       <Route path="/work/personal-portfolio-3d/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolio3D/></Suspense>}/>
