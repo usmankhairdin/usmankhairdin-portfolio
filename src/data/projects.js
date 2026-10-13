@@ -1,6 +1,6 @@
 // When a project's captures are replaced under the same file names, bump its version here: every page and the
 // Corridor ask for the new files instead of reusing the copies browsers already cached.
-const MEDIA_VERSION = { prima: '20261013' }
+const MEDIA_VERSION = { prima: '20261013b' }
 export const projectAsset = (slug, file) => `/assets/projects/${slug}/${file}${MEDIA_VERSION[slug] ? `?v=${MEDIA_VERSION[slug]}` : ''}`
 
 const localMedia = (slug, { mobile = true } = {}) => ({
