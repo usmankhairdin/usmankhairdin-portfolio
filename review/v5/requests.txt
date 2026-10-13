@@ -1,0 +1,11 @@
+corridor /  /assets/projects/prima/showcase-1x.webp?v=20261013
+shot review/v5/corridor-1-outside.jpg
+shot review/v5/corridor-2-inside.jpg
+menu: locator.click: Timeout 20000ms exceeded.
+work: locator.click: Timeout 20000ms exceeded.
+shot review/v5/corridor-3-work-1.jpg
+shot review/v5/corridor-3-work-2.jpg
+shot review/v5/corridor-3-work-3.jpg
+shot review/v5/corridor-3-work-4.jpg
+shot review/v5/corridor-4-look-left.jpg
+shot review/v5/corridor-4-look-right.jpg
