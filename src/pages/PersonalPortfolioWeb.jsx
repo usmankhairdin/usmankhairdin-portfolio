@@ -5,6 +5,7 @@ import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
 import SectionIntro from '../components/ui/SectionIntro.jsx'
+import { WEB_HOME } from '../routeLoaders.js'
 import '../components/BrowserFrame.css'
 import './PersonalPortfolioWeb.css'
 
@@ -89,7 +90,7 @@ export default function PersonalPortfolioWeb() {
           <div className="ppw-hero__summary">
             <p>A responsive, motion-led portfolio designed and built as one continuous practice—from positioning and interface direction through production-ready frontend.</p>
             <div className="ppw-hero__actions">
-              <ActionLink to="/">View Web Experience <span aria-hidden="true">↗</span></ActionLink>
+              <ActionLink to={WEB_HOME}>View Web Experience <span aria-hidden="true">↗</span></ActionLink>
               <TextCTA href="#overview">Read the case study ↓</TextCTA>
             </div>
           </div>
@@ -249,7 +250,7 @@ export default function PersonalPortfolioWeb() {
         <HeroSignalBackground />
         <div className="route-wrap ppw-close__grid">
           <div><span className="kicker">THE LIVE RESULT</span><h2 id="ppw-close-title">The case study ends where the experience begins.</h2></div>
-          <div><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p><div><ActionLink to="/">View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-web/" /></div>
+          <div><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p><div><ActionLink to={WEB_HOME}>View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-web/" /></div>
         </div>
       </section>
     </main>

@@ -9,6 +9,7 @@ import { hintEntrance, setEntranceOpen } from './entranceDoor.js'
 import { releaseBootLoader } from '../loader/bootLoader.js'
 import { useWebScrollSuspension } from '../scroll/WebScrollProvider.jsx'
 import { Link, useNavigationType } from 'react-router-dom'
+import { WEB_HOME } from '../routeLoaders.js'
 import { takeReturn } from './corridorReturn.js'
 import { floorReflection } from './floorReflection.js'
 import { markSceneCompiled } from './probeEnv.js'
@@ -144,7 +145,7 @@ function ExteriorGate({ departing = false, onEnter }) {
         onPointerLeave={() => setDoorHover(false)}
       />
       <Link
-        to="/home-classic/"
+        to={WEB_HOME}
         className="exterior-sign-hotspot"
         data-cursor="open"
         data-cursor-live=""
@@ -155,7 +156,7 @@ function ExteriorGate({ departing = false, onEnter }) {
         onBlur={() => signHover(false)}
       />
       {/* on a narrow screen the sign stands outside the view, so it is named here as well */}
-      <Link to="/home-classic/" className="exterior-web-link">Web Experience <span aria-hidden="true">↗</span></Link>
+      <Link to={WEB_HOME} className="exterior-web-link">Web Experience <span aria-hidden="true">↗</span></Link>
       <div className="look-reticle" aria-hidden="true" />
       <LookModeLabel outside />
     </main>

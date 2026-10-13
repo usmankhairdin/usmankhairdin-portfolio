@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useJourney } from '../experience/JourneyContext.jsx'
 import { useWebScroll } from '../scroll/WebScrollProvider.jsx'
-import { preloadRoute } from '../routeLoaders.js'
+import { preloadRoute, WEB_HOME } from '../routeLoaders.js'
 import useHeaderAutoHide from '../hooks/useHeaderAutoHide.js'
 import MenuDrawer from './MenuDrawer.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
@@ -37,10 +37,12 @@ const CTA = { label: 'Send a brief', to: '/contact/' }
 // On the Web, Contact is reached through the CTA in the drawer footer, so it is not repeated in the list. It stays in ITEMS for routing and the current-page state.
 // The corridor has no form of its own, so there the CTA leads to the Contact page (Back returns to the same spot), and the
 // list keeps Contact: it walks to the Contact hall.
-const MENU_ITEMS = ITEMS.filter((item) => item.key !== 'contact')
+// On the Web, Home is the Web Experience's own homepage; in the corridor it leads back out to the entrance at '/'.
+const MENU_ITEMS = ITEMS.filter((item) => item.key !== 'contact').map((item) => (item.key === 'home' ? { ...item, to: WEB_HOME } : item))
 
 const routeForPath = {
   '/': 'home',
+  [WEB_HOME]: 'homeWeb',
   '/work/': 'work',
   '/services/': 'services',
   '/for-agencies/': 'agencies',
@@ -49,7 +51,7 @@ const routeForPath = {
 }
 
 const activeKeyForPath = (pathname) => {
-  if (pathname === '/') return 'home'
+  if (pathname === '/' || pathname === WEB_HOME) return 'home'
   return ITEMS.find((item) => item.to !== '/' && pathname.startsWith(item.to))?.key
 }
 
@@ -144,9 +146,9 @@ export default function Header({ immersive = false }) {
   // The corridor shows no logo over the scene - only the Menu, whose Home item leads back out.
   const logoImg = <img src={LOGO_SRC} width="1362" height="564" alt="" decoding="async" draggable="false" />
   const logo = mode === 'web'
-    ? (pathname === '/'
+    ? (pathname === WEB_HOME
       ? <span className="site-logo site-logo--current" role="img" aria-label="Usman Khair Din — you are on the home page" aria-current="page" data-trap-skip>{logoImg}</span>
-      : <Link to="/" className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onPointerEnter={() => preloadRoute('home')} onFocus={() => preloadRoute('home')} onClick={() => close()}>{logoImg}</Link>)
+      : <Link to={WEB_HOME} className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onPointerEnter={() => preloadRoute('homeWeb')} onFocus={() => preloadRoute('homeWeb')} onClick={() => close()}>{logoImg}</Link>)
     : null
 
   return <div className="site-header-root" data-mode={mode} data-menu-open={open ? 'true' : 'false'} ref={rootRef}>

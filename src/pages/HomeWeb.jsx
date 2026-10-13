@@ -5,10 +5,10 @@ import { ActionLink } from '../components/ui/Action.jsx'
 import SplashBackdrop from '../components/SplashBackdrop.jsx'
 import { hostLabel, projects } from '../data/projects.js'
 import '../components/BrowserFrame.css'
-import './HomeClassic.css'
+import './HomeWeb.css'
 
 /*
- * The marketing homepage (the Web Experience), reached from the Corridor's terrace sign. The
+ * The marketing homepage (the Web Experience, at /web/), reached from the Corridor's terrace sign. The
  * Corridor is the first experience at '/'; this page is the site as a website: who I am for in a
  * line, real interfaces as the proof, what I do, how the work moves, and the way to start.
  * Every fact here is the site's own (projects.js, Services, Agencies, Contact); the portrait and
@@ -68,7 +68,7 @@ function Browser({ project, image, url, alt, sizes, eager = false, className = '
   </span>
 }
 
-export default function HomeClassic() {
+export default function HomeWeb() {
   return <EditorialPage className="home-web">
     <section className="home-hero" aria-labelledby="home-title">
       <SplashBackdrop scope=".home-hero" anchor=".home-hero__visual" artZones="box" copyZones={HERO_TEXT} cta=".home-hero__actions" copy=".home-hero__copy" scroller={null} homes={HERO_TAGS} />

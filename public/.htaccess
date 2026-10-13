@@ -5,6 +5,9 @@
   RewriteCond %{HTTP_HOST} ^usmankhairdin\.com$ [NC]
   RewriteRule ^ https://www.usmankhairdin.com%{REQUEST_URI} [R=301,L,NE]
 
+  # The Web Experience homepage moved from /home-classic/ to /web/.
+  RewriteRule ^home-classic/?$ /web/ [R=301,L]
+
   # Preserve real files and folders already on the host (including /portfolio/).
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d

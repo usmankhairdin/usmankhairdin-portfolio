@@ -1,6 +1,6 @@
 export const routeLoaders = {
   home: () => import('./experience/HomeExperience.jsx'),
-  homeClassic: () => import('./pages/HomeClassic.jsx'),
+  homeWeb: () => import('./pages/HomeWeb.jsx'),
   work: () => import('./pages/Work.jsx'),
   project: () => import('./pages/Project.jsx'),
   about: () => import('./pages/About.jsx'),
@@ -20,3 +20,7 @@ export function preloadRoute(route) {
   // so a transient speculative fetch must not become an unhandled rejection.
   if (load) void load().catch(() => {})
 }
+
+// The Web Experience's own homepage. '/' is the Corridor (the immersive entrance), so the
+// website's home lives here; the Corridor's terrace sign and the Web header both lead to it.
+export const WEB_HOME = '/web/'

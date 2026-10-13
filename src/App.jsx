@@ -1,13 +1,13 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
-import { routeLoaders } from './routeLoaders.js'
+import { routeLoaders, WEB_HOME } from './routeLoaders.js'
 import { WebScrollProvider, useWebScroll } from './scroll/WebScrollProvider.jsx'
 import { ThemeProvider } from './theme/ThemeProvider.jsx'
 import CursorLayer from './cursor/CursorLayer.jsx'
 import { applySeo } from './seo/applySeo.js'
 
 const HomeExperience = lazy(routeLoaders.home)
-const HomeClassic = lazy(routeLoaders.homeClassic)
+const HomeWeb = lazy(routeLoaders.homeWeb)
 const Work = lazy(routeLoaders.work)
 const Project = lazy(routeLoaders.project)
 const About = lazy(routeLoaders.about)
@@ -56,8 +56,10 @@ export default function App(){
     <CursorLayer/>
     <Routes>
       <Route path="/" element={<Suspense fallback={<HomeRouteFallback/>}><HomeExperience/></Suspense>}/>
-      {/* the marketing homepage (the Web Experience), reached from the Corridor's terrace sign; unlisted, not indexed */}
-      <Route path="/home-classic/" element={<Suspense fallback={<StandardRouteFallback/>}><HomeClassic/></Suspense>}/>
+      {/* the Web Experience's homepage, reached from the Corridor's terrace sign and the Web header; unlisted, not indexed */}
+      <Route path={WEB_HOME} element={<Suspense fallback={<StandardRouteFallback/>}><HomeWeb/></Suspense>}/>
+      {/* the page's former address, kept so old links still arrive */}
+      <Route path="/home-classic/" element={<Navigate to={WEB_HOME} replace/>}/>
       <Route path="/work/" element={<Suspense fallback={<StandardRouteFallback/>}><Work/></Suspense>}/>
       <Route path="/work/personal-portfolio-web/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolioWeb/></Suspense>}/>
       <Route path="/work/personal-portfolio-3d/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolio3D/></Suspense>}/>

@@ -57,4 +57,13 @@ for (const path of seoPaths) {
   await writeFile(join(directory, 'index.html'), render(page))
 }
 
-console.log('Generated direct-load SEO HTML for ' + seoPaths.length + ' routes.')
+// Unlisted routes still need a real file to load directly (the host answers unknown URLs with a 404),
+// but they stay out of search: the plain app shell, marked noindex.
+const UNLISTED = ['/web/']
+for (const path of UNLISTED) {
+  const directory = join(dist, path.slice(1))
+  await mkdir(directory, { recursive: true })
+  await writeFile(join(directory, 'index.html'), replaceMeta(template, 'name', 'robots', 'noindex,follow'))
+}
+
+console.log('Generated direct-load SEO HTML for ' + seoPaths.length + ' routes and ' + UNLISTED.length + ' unlisted route(s).')

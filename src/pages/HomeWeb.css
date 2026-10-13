@@ -1,4 +1,4 @@
-/* The marketing homepage (/home-classic/), in the editorial family of About and Services. Every rule is scoped to .home-web; the
+/* The marketing homepage (/web/), in the editorial family of About and Services. Every rule is scoped to .home-web; the
    colours are the editorial page's own variables, so the light and dark themes follow the rest of the Web pages. */
 .home-web .home-wrap { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 .home-web .home-eyebrow { margin: 0; font: 500 11px/1.5 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--editorial-muted); }
