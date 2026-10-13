@@ -37,10 +37,9 @@ const CTA = { label: 'Send a brief', to: '/contact/' }
 // On the Web, Contact is reached through the CTA in the drawer footer, so it is not repeated in the list. It stays in ITEMS for routing and the current-page state.
 // The corridor has no form of its own, so there the CTA leads to the Contact page (Back returns to the same spot), and the
 // list keeps Contact: it walks to the Contact hall.
-// On the Web, Home is the Web Experience's own homepage, and the last item leads into the Corridor at '/'.
+// On the Web, Home is the Web Experience's own homepage. Corridor entry lives directly in the header.
 const MENU_ITEMS = [
   ...ITEMS.filter((item) => item.key !== 'contact').map((item) => (item.key === 'home' ? { ...item, to: WEB_HOME } : item)),
-  { key: 'corridor', label: '3D Corridor', to: '/' },
 ]
 // In the Corridor, a Home item would only reload the page back out at the entrance, so its place goes to the Web
 // Experience. It leaves the way the room links do: the walker's spot is kept, and Back returns them to it.
@@ -177,7 +176,15 @@ export default function Header({ immersive = false }) {
             aria-label="Visit SaaS UI Rescue (opens in a new tab)"
             target="_blank"
             rel="noopener noreferrer"
-          >SaaS UI Rescue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>}
+          ><span>SaaS UI<span className="hdr-rescue__suffix"> Rescue</span></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>}
+          {mode === 'web' && <Link
+            className="hdr-corridor"
+            to="/"
+            aria-label="Enter the 3D Corridor"
+            onPointerEnter={() => preloadRoute('home')}
+            onFocus={() => preloadRoute('home')}
+            onClick={() => close()}
+          ><svg className="hdr-corridor__cube" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z M4 7.5l8 4.5 8-4.5 M12 12v9 M8 5.25l8 4.5" /></svg><span>3D Corridor</span><svg className="hdr-corridor__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5" /></svg></Link>}
           {mode === 'web' && <ThemeToggle />}
           <button
             type="button"

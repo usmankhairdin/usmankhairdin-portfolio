@@ -9,6 +9,7 @@ import useEditorialMotion from '../components/editorial/useEditorialMotion.js'
 import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
 import { useTheme } from '../theme/ThemeProvider.jsx'
 import { projectAsset } from '../data/projects.js'
+import { portrait } from '../data/portrait.js'
 import './About.css'
 
 function EditorialLink({ to, children }) {
@@ -60,7 +61,7 @@ export default function About() {
         <div className="about-editorial__wrap about-editorial__practice-layout">
           <figure className="about-editorial__portrait" data-editorial-reveal>
             <div className="about-editorial__portrait-image">
-              <img src="/assets/about/portrait-editorial.webp" alt="Usman Khair Din" width="1122" height="1402" loading="lazy" decoding="async" />
+              <img src={portrait.src} alt="Usman Khair Din" width={portrait.width} height={portrait.height} style={{ '--portrait-zoom': portrait.zoom }} loading="lazy" decoding="async" />
             </div>
           </figure>
           <div className="about-editorial__practice-copy" data-editorial-reveal>

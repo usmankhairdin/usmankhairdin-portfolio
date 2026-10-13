@@ -20,8 +20,7 @@
 }
 @media (max-width: 850px) {
   .contact-editorial__layout { grid-template-columns: 1fr; gap: 36px; }
-  .contact-editorial__copy { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
-  .contact-editorial__copy h2 { grid-row: span 2; }
+  .contact-editorial__copy { max-width: 640px; }
   .contact-editorial__copy > p { margin: 0 0 16px; }
   .contact-editorial__copy > .contact-editorial__location { margin-top: 0; }
 }

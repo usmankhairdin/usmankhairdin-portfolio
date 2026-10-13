@@ -98,9 +98,7 @@ html[data-theme="dark"] .services-editorial__tags li { background: rgb(255 255 2
   .services-editorial__actions { gap: 8px; margin-top: 20px; }
   .services-editorial__intro h2, .services-editorial__toolkit h2 { font-size: 36px; }
   .services-editorial__offerings-layout { grid-template-columns: 1fr; gap: 35px; }
-  .services-editorial__intro { display: grid; grid-template-columns: 1fr 1fr; column-gap: 36px; }
-  .services-editorial__intro h2 { grid-row: span 2; }
-  .services-editorial__intro > p { margin: 0; }
+  .services-editorial__intro { max-width: 640px; }
   .services-editorial__intro > .services-editorial__modes { margin-top: 16px; }
   .services-editorial__delivery-layout { grid-template-columns: 1fr 1fr; gap: 36px; }
   .services-editorial__toolkit > p { font-size: 16px; }

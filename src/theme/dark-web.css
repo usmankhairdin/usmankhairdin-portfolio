@@ -58,8 +58,8 @@ html[data-theme="dark"] :is(.route-page,.entry-gate--intro).case-deliverables{bo
 html[data-theme="dark"] :is(.route-page,.entry-gate--intro) .case-deliverables p,
 html[data-theme="dark"] :is(.route-page,.entry-gate--intro).case-deliverables p{border-bottom:1px solid rgb(255 255 255 / 0.1)}
 @media (prefers-reduced-motion:no-preference) and (hover:hover) and (pointer:fine){
-html[data-theme="dark"] :is(.route-page,.entry-gate--intro) .site-header-root[data-mode="web"] .hdr-rescue::after,
-html[data-theme="dark"] :is(.route-page,.entry-gate--intro).site-header-root[data-mode="web"] .hdr-rescue::after{background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgb(255 255 255 / 0.064) 50%,rgba(255,255,255,0) 100%)}
+html[data-theme="dark"] :is(.route-page,.entry-gate--intro) .site-header-root[data-mode="web"] :is(.hdr-rescue,.hdr-corridor)::after,
+html[data-theme="dark"] :is(.route-page,.entry-gate--intro).site-header-root[data-mode="web"] :is(.hdr-rescue,.hdr-corridor)::after{background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgb(255 255 255 / 0.064) 50%,rgba(255,255,255,0) 100%)}
 }
 html[data-theme="dark"] .route-page--work .evidence-frame{border:1px solid rgb(255 255 255 / 0.13);background:rgb(255 255 255 / 0.08);box-shadow:0 22px 60px rgb(0 0 0 / 0.161)}
 html[data-theme="dark"] .route-page--work .evidence-frame__bar{border-bottom:1px solid rgb(255 255 255 / 0.09)}

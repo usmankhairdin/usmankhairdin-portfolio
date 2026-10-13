@@ -108,11 +108,11 @@ export default function HomeWeb() {
     <section className="home-section home-work" aria-labelledby="home-work-title">
       <div className="home-wrap">
         <header className="home-section__head" data-editorial-reveal>
-          <h2 id="home-work-title">Selected <em>work.</em></h2>
-          <div className="home-section__aside">
+          <div className="home-work__intro">
+            <h2 id="home-work-title">Selected <em>work.</em></h2>
             <p>Three live public sites where I set the interface direction and built the frontend.</p>
-            <EditorialLink to="/work/">See all work</EditorialLink>
           </div>
+          <ActionLink to="/work/">See all work <span aria-hidden="true">↗</span></ActionLink>
         </header>
         <div className="home-work__list">
           {SELECTED.map(({ project, image, url }, index) => <article key={project.slug} className={`home-work__item${index === 0 ? ' home-work__item--lead' : ''}`} data-editorial-reveal>

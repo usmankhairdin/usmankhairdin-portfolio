@@ -13,7 +13,7 @@ import './PersonalPortfolioWeb.css'
 const assetRoot = '/assets/case-studies/personal-portfolio-web'
 
 // Captures of the current site. Re-captured files keep their names; CAPTURES versions their URLs so browsers fetch them again.
-const CAPTURES = '20261013-2'
+const CAPTURES = '20261013-3'
 const shot = (file) => `${assetRoot}/${file}?v=${CAPTURES}`
 
 const images = {
@@ -97,11 +97,9 @@ export default function PersonalPortfolioWeb() {
       <section className="ppw-hero" aria-labelledby="ppw-title">
         <HeroSignalBackground />
         <div className="route-wrap ppw-hero__content">
-          <div className="ppw-hero__heading">
+          <div className="ppw-hero__heading route-heading-copy">
             <span className="kicker">SELF-INITIATED / PRODUCT DESIGN + FRONTEND</span>
             <h1 id="ppw-title">Personal Portfolio <em>— Web</em></h1>
-          </div>
-          <div className="ppw-hero__summary">
             <p>A responsive, motion-led portfolio designed and built as one continuous practice—from positioning and interface direction through production-ready frontend.</p>
             <div className="ppw-hero__actions">
               <ActionLink to={WEB_HOME}>View Web Experience <span aria-hidden="true">↗</span></ActionLink>
@@ -267,8 +265,8 @@ export default function PersonalPortfolioWeb() {
       <section className="ppw-close" aria-labelledby="ppw-close-title">
         <HeroSignalBackground />
         <div className="route-wrap ppw-close__grid">
-          <div><span className="kicker">THE LIVE RESULT</span><h2 id="ppw-close-title">The case study ends where the experience begins.</h2></div>
-          <div><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p><div><ActionLink to={WEB_HOME}>View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-web/" /></div>
+          <div className="route-heading-copy"><span className="kicker">THE LIVE RESULT</span><h2 id="ppw-close-title">The case study ends where the experience begins.</h2><p>Explore the production portfolio as a visitor: switch themes, browse the selected work and move between the Web and spatial experiences.</p></div>
+          <div><div><ActionLink to={WEB_HOME}>View Web Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-web/" /></div>
         </div>
       </section>
     </main>

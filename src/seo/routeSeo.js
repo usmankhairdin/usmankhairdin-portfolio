@@ -1,4 +1,5 @@
 import { projects } from '../data/projects.js'
+import { portrait } from '../data/portrait.js'
 
 export const SITE_ORIGIN = 'https://www.usmankhairdin.com'
 const PERSON_ID = `${SITE_ORIGIN}/#person`
@@ -186,7 +187,7 @@ export function structuredDataFor(page) {
         '@id': PERSON_ID,
         name: 'Usman Khair Din',
         url: `${SITE_ORIGIN}/`,
-        image: `${SITE_ORIGIN}/assets/profile-web.png`,
+        image: `${SITE_ORIGIN}${portrait.src}`,
         jobTitle: 'Product Designer, UI/UX Designer and Frontend Developer',
         description: 'Product and UI/UX design with responsive frontend implementation for selected direct clients and agency partners.',
         email: 'brief@usmankhairdin.com',

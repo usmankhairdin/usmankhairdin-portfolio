@@ -341,8 +341,8 @@ export default function DesignSystem() {
 
       <section className="ds-close" aria-labelledby="ds-close-title">
         <div className="route-wrap ds-close__grid">
-          <div><span className="kicker">SYSTEM IN PRACTICE</span><h2 id="ds-close-title">Built to support the work, not compete with it.</h2></div>
-          <div><p>The design system keeps the portfolio coherent while preserving the identity and interaction needs of each experience.</p><div><ActionLink to="/work/">Explore the work <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Start a conversation ↗</TextCTA></div></div>
+          <div className="route-heading-copy"><span className="kicker">SYSTEM IN PRACTICE</span><h2 id="ds-close-title">Built to support the work, not compete with it.</h2><p>The design system keeps the portfolio coherent while preserving the identity and interaction needs of each experience.</p></div>
+          <div><div><ActionLink to="/work/">Explore the work <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Start a conversation ↗</TextCTA></div></div>
         </div>
       </section>
     </main>

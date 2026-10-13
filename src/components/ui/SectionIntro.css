@@ -1,0 +1,11 @@
+/* Heading and its explanation are one reading unit, never separate grid columns.
+   Page-specific typography, brand colours and centred variants stay authored. */
+.route-page .route-section-intro__copy{display:block;min-width:0}
+.route-page .route-heading-copy>p{
+  max-width:640px;
+  margin:20px 0 0;
+  color:var(--section-intro-muted,var(--web-muted,var(--text-2)));
+  font-size:16px;
+  line-height:1.72;
+}
+@media(max-width:650px){.route-page .route-heading-copy>p{font-size:14px}}

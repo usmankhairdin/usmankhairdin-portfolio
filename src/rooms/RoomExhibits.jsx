@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { projectAsset, projects } from '../data/projects.js'
+import { portrait, portraitTextureCrop } from '../data/portrait.js'
 import { sectionHeroes } from '../data/sectionHeroes.jsx'
 import { look } from '../experience/freeLook.js'
 import { ON_DARK, ON_LIGHT, body, eyebrow, paintGraphic, titleRuns, traceLettering, useFontsReady } from './roomGraphics.js'
@@ -218,13 +219,40 @@ function FramedPortrait({ url, position, rotation }) {
   const board = useDisposable(useMemo(() => roomLit(new THREE.MeshStandardMaterial({ color: '#efe8dc', roughness: 0.9 }), 1, { key: 0.4 }), []))
   const pw = W - bar * 2 - mat * 2
   const ph = H - bar * 2 - mat * 2
+  const source = useCoverTexture(url, pw, ph)
+  const texture = useDisposable(useMemo(() => {
+    const t = source.clone()
+    const crop = portraitTextureCrop(pw, ph)
+    t.repeat.set(crop.repeatX, crop.repeatY)
+    t.offset.set(crop.offsetX, crop.offsetY)
+    t.needsUpdate = true
+    return t
+  }, [source, pw, ph]))
+  const photo = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: texture, transparent: true, toneMapped: false }), [texture]))
+  // Paint only the backdrop; never retouch or flatten the portrait itself.
+  const backdrop = useDisposable(useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = canvas.height = 256
+    const ctx = canvas.getContext('2d')
+    const base = ctx.createLinearGradient(0, 0, 256, 256)
+    base.addColorStop(0, '#edf3ff'); base.addColorStop(1, '#9abcf1')
+    ctx.fillStyle = base; ctx.fillRect(0, 0, 256, 256)
+    const glow = ctx.createRadialGradient(123, 77, 0, 123, 77, 185)
+    glow.addColorStop(0, '#f0f6ff'); glow.addColorStop(0.55, '#d8e6ff'); glow.addColorStop(1, 'rgba(216,230,255,0)')
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, 256, 256)
+    const t = new THREE.CanvasTexture(canvas)
+    t.colorSpace = THREE.SRGBColorSpace
+    return t
+  }, []))
+  const backdropMaterial = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: backdrop, toneMapped: false }), [backdrop]))
   return <group position={position} rotation={rotation}>
     <mesh material={board} position={[0, 0, 0.01]}><boxGeometry args={[W - bar, H - bar, 0.02]} /></mesh>
     {[-1, 1].map((s) => <mesh key={`v${s}`} material={wood} position={[s * (W / 2 - bar / 2), 0, 0.035]}><boxGeometry args={[bar, H, 0.07]} /></mesh>)}
     {[-1, 1].map((s) => <mesh key={`h${s}`} material={wood} position={[0, s * (H / 2 - bar / 2), 0.035]}><boxGeometry args={[W, bar, 0.07]} /></mesh>)}
     {[-1, 1].map((s) => <mesh key={`fv${s}`} material={fillet} position={[s * (W / 2 - bar - 0.006), 0, 0.03]}><boxGeometry args={[0.012, H - bar * 2, 0.012]} /></mesh>)}
     {[-1, 1].map((s) => <mesh key={`fh${s}`} material={fillet} position={[0, s * (H / 2 - bar - 0.006), 0.03]}><boxGeometry args={[W - bar * 2, 0.012, 0.012]} /></mesh>)}
-    <Picture url={url} width={pw} height={ph} position={[0, 0, 0.022]} />
+    <mesh material={backdropMaterial} position={[0, 0, 0.022]}><planeGeometry args={[pw, ph]} /></mesh>
+    <mesh material={photo} position={[0, 0, 0.023]}><planeGeometry args={[pw, ph]} /></mesh>
   </group>
 }
 
@@ -524,7 +552,7 @@ function ServicesExhibit() {
 /* ------------------------------------------------------------------ About */
 const NICHE = { x: 18.875, y: 2.325, w: 2.34, h: 2.94, z: [-5.1, -1.7, 1.7, 5.1] }
 // Usman's portrait; swap the file for the original photo when it arrives
-const PORTRAIT = '/assets/about/portrait-editorial.webp'
+const PORTRAIT = portrait.src
 
 function AboutExhibit() {
   const hero = sectionHeroes.about

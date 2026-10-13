@@ -1,4 +1,5 @@
 .p3d-page{
+  --section-intro-muted:var(--p3d-muted);
   --p3d-canvas:#f0f5fc;
   --p3d-ink:#0c1830;
   --p3d-muted:#4b5b76;
@@ -29,7 +30,6 @@
 .p3d-hero__heading h1{max-width:960px;margin:var(--space-5) 0 0;font-size:var(--type-section-size);line-height:var(--type-section-line);letter-spacing:var(--type-section-tracking);text-wrap:balance}
 .p3d-hero__heading h1 em{display:block;font-family:var(--font-editorial);font-weight:var(--type-editorial-weight);color:var(--blue)}
 .p3d-hero__summary{padding-bottom:8px}
-.p3d-hero__summary>p{max-width:520px;margin:0;color:var(--p3d-muted);font-size:16px;line-height:1.72}
 .p3d-hero__actions{display:flex;align-items:center;gap:var(--space-6);margin-top:var(--space-7);flex-wrap:wrap}
 .p3d-hero__actions .text-cta{margin:0}
 .p3d-hero__preview{width:min(100%,330px);height:140px;margin-top:var(--space-6);border-radius:var(--radius-md);box-shadow:var(--shadow-card)}
@@ -44,14 +44,9 @@
 .p3d-section:nth-of-type(odd){background:linear-gradient(180deg,rgb(232 240 251 / .7),rgb(242 247 253 / .56))}
 .p3d-section__intro{max-width:920px;margin-bottom:clamp(32px,4vw,52px)}
 .p3d-section__intro h2{max-width:900px;margin:var(--space-5) 0 0;font-size:clamp(3rem,5vw,4.5rem);line-height:1.03;letter-spacing:-.058em;text-wrap:balance}
-.p3d-section__intro>p{max-width:740px;margin-top:var(--space-5);color:var(--p3d-muted);font-size:var(--type-body-medium-size);line-height:1.72}
+.p3d-section__intro .route-section-intro__copy>p{max-width:740px;margin-top:var(--space-5);color:var(--p3d-muted);font-size:var(--type-body-medium-size);line-height:1.72}
 .p3d-section--centered .p3d-section__intro{margin-inline:auto;text-align:center}
 .p3d-section--centered .p3d-section__intro :is(h2,p){margin-inline:auto}
-@media(min-width:1101px){
-  .p3d-section:not(.p3d-section--centered) .p3d-section__intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);column-gap:var(--space-8);align-items:end;max-width:none}
-  .p3d-section:not(.p3d-section--centered) .p3d-section__intro .kicker{grid-column:1/-1}
-  .p3d-section:not(.p3d-section--centered) .p3d-section__intro>p{margin:0 0 4px}
-}
 
 .p3d-concept{display:grid;grid-template-columns:minmax(0,1.36fr) minmax(300px,.64fr);gap:clamp(32px,5vw,72px);align-items:center}
 .p3d-concept__copy{display:grid;gap:var(--space-6)}
@@ -125,7 +120,6 @@
 
 .p3d-close__grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.65fr);gap:clamp(54px,8vw,110px);align-items:end}
 .p3d-close h2{max-width:800px;margin:var(--space-5) 0 0;font-size:var(--type-section-size);line-height:var(--type-section-line);letter-spacing:var(--type-section-tracking);text-wrap:balance}
-.p3d-close__grid>div:last-child>p{max-width:480px;margin:0;color:var(--p3d-muted);font-size:14px;line-height:1.72}
 .p3d-close__grid>div:last-child>div{display:flex;align-items:center;gap:var(--space-6);margin-top:var(--space-6);flex-wrap:wrap}
 .p3d-close .text-cta{margin:0}
 
@@ -176,9 +170,9 @@ html[data-theme="dark"] .p3d-page .p3d-tech{background:rgb(var(--tk) / .14);bord
 }
 
 @media(max-width:520px){
-  .p3d-hero{padding-top:108px}.p3d-hero__content{gap:var(--space-7)}.p3d-hero__heading h1{font-size:clamp(3.1rem,13vw,4rem);line-height:.94}.p3d-hero__summary>p{font-size:14px}.p3d-hero__actions{align-items:flex-start;flex-direction:column;gap:var(--space-5)}.p3d-hero__preview{height:108px;margin-top:var(--space-5)}
+  .p3d-hero{padding-top:108px}.p3d-hero__content{gap:var(--space-7)}.p3d-hero__heading h1{font-size:clamp(3.1rem,13vw,4rem);line-height:.94}.p3d-hero__actions{align-items:flex-start;flex-direction:column;gap:var(--space-5)}.p3d-hero__preview{height:108px;margin-top:var(--space-5)}
   .p3d-hero__media{margin-top:var(--space-4);padding:8px;border-radius:20px}.p3d-hero__media .p3d-capture{border-radius:14px}.p3d-hero__index{right:15px;bottom:15px;gap:6px;padding:8px 9px;font-size:5px}.p3d-hero__index i{width:10px}
-  .p3d-section{padding:56px 0}.p3d-section__intro h2{font-size:clamp(2.4rem,10vw,3.2rem)}.p3d-section__intro>p{font-size:13.5px}
+  .p3d-section{padding:56px 0}.p3d-section__intro h2{font-size:clamp(2.4rem,10vw,3.2rem)}.p3d-section__intro .route-section-intro__copy>p{font-size:13.5px}
   .p3d-capture{border-radius:18px}.p3d-capture figcaption{left:10px;bottom:10px;padding:7px 8px;font-size:7px}
   .p3d-flow li{padding:var(--space-4)}.p3d-flow strong{margin-top:var(--space-5);font-size:18px}
   .p3d-rooms{grid-template-columns:1fr}

@@ -14,7 +14,7 @@ const images = {
   terrace: { src: `${assetRoot}/terrace.webp`, width: 1440, height: 900, alt: 'The roof terrace at night: the building front lit from below, the glass door and the UKD mark above it' },
   corridor: { src: `${assetRoot}/corridor-hall.webp`, width: 1440, height: 900, alt: 'The corridor: travertine walls, a polished chevron floor and glass doors to the rooms, with the Contact door at the far end' },
   navigation: { src: `${assetRoot}/corridor-menu.webp`, width: 1440, height: 900, alt: 'The Corridor menu open over the corridor: Web Experience, About, Work, Services, For Agencies and Contact' },
-  about: { src: `${assetRoot}/room-about.webp`, width: 1440, height: 900, alt: 'About room: a walnut wall of framed niches with experience, a portrait and a short bio, above a long table' },
+  about: { src: `${assetRoot}/room-about.webp?v=20261013-portrait`, width: 1440, height: 900, alt: 'About room: a walnut wall of framed niches with experience, the original Usman portrait and a short bio, above a long table' },
   services: { src: `${assetRoot}/room-services.webp`, width: 1440, height: 900, alt: 'Services room: six lit monoliths in an arc, one for each line of work, under brass lettering' },
   work: { src: `${assetRoot}/room-work.webp`, width: 1440, height: 900, alt: 'Work room: project screens along a travertine gallery, framed by lit gates' },
   contact: { src: `${assetRoot}/room-contact.webp`, width: 1440, height: 900, alt: 'Contact hall: a glass wall over the night city, a lounge and a desk' },
@@ -78,16 +78,16 @@ export default function PersonalPortfolio3D() {
       <section className="p3d-hero" aria-labelledby="p3d-title">
         <HeroSignalBackground />
         <div className="route-wrap p3d-hero__content">
-          <div className="p3d-hero__heading">
+          <div className="p3d-hero__heading route-heading-copy">
             <span className="kicker">SELF-INITIATED / SPATIAL EXPERIENCE</span>
             <h1 id="p3d-title">Personal Portfolio <em>— 3D</em></h1>
-          </div>
-          <div className="p3d-hero__summary">
             <p>An immersive counterpart to the Web portfolio: a building on a tower above a night city, entered from its roof terrace, with a walkable corridor and four rooms that hold the same professional story.</p>
             <div className="p3d-hero__actions">
               <ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink>
               <TextCTA href="#concept">Read the case study ↓</TextCTA>
             </div>
+          </div>
+          <div className="p3d-hero__summary">
             <Capture image={images.navigation} eager className="p3d-hero__preview" label="MENU / A DIRECT ROUTE TO EVERY ROOM" />
           </div>
           <div className="p3d-hero__media">
@@ -231,8 +231,8 @@ export default function PersonalPortfolio3D() {
       <section className="p3d-close" aria-labelledby="p3d-close-title">
         <HeroSignalBackground />
         <div className="route-wrap p3d-close__grid">
-          <div><span className="kicker">ENTER THE LIVE SPACE</span><h2 id="p3d-close-title">The journey is the final artifact.</h2></div>
-          <div><p>Move through the current production Corridor, choose a room and experience the spatial navigation directly.</p><div><ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-3d/" /></div>
+          <div className="route-heading-copy"><span className="kicker">ENTER THE LIVE SPACE</span><h2 id="p3d-close-title">The journey is the final artifact.</h2><p>Move through the current production Corridor, choose a room and experience the spatial navigation directly.</p></div>
+          <div><div><ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-3d/" /></div>
         </div>
       </section>
     </main>

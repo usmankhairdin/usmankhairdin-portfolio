@@ -102,31 +102,29 @@ html[data-theme="dark"] .route-page .pill--dark:hover{box-shadow:inset 0 0 0 1px
   --hdr-pad:clamp(24px,3.2vw,44px);
   --hdr-btn:46px;
 }
-/* Web controls and primary actions share the solid blue sampled from the logo. */
+/* Utility controls stay flat and neutral, separate from the blue navigation action. */
 .site-header-root[data-mode="web"]{
   --hdr-surface:rgb(246 249 253 / .9);
   --hdr-surface-line:rgb(12 27 50 / .08);
   --hdr-surface-shadow:0 5px 24px rgb(12 27 50 / .035);
-  --hdr-fg:#fff;
-  --hdr-bg:var(--brand-blue);                 --hdr-bg-hover:color-mix(in srgb,var(--brand-blue) 88%,#09111d);
-  --hdr-border:color-mix(in srgb,var(--brand-blue) 78%,#fff);
-  --hdr-border-hover:color-mix(in srgb,var(--brand-blue) 68%,#fff);
-  --hdr-shadow:0 4px 14px rgb(52 78 140 / .14);
-  --hdr-accent:#fff;
+  --hdr-fg:#253449;
+  --hdr-bg:#eef2f7;                         --hdr-bg-hover:#e0e7f0;
+  --hdr-border:#cdd6e2;                     --hdr-border-hover:#a8b7ca;
+  --hdr-shadow:0 3px 10px rgb(20 34 55 / .07);
+  --hdr-accent:#09111d;
 }
 html[data-theme="dark"] .site-header-root[data-mode="web"]{
   --hdr-surface:rgb(11 17 27 / .9);
   --hdr-surface-line:rgb(218 230 250 / .1);
   --hdr-surface-shadow:0 5px 24px rgb(0 0 0 / .12);
-  --hdr-fg:#fff;
-  --hdr-bg:var(--brand-blue);                 --hdr-bg-hover:color-mix(in srgb,var(--brand-blue) 88%,#09111d);
-  --hdr-border:color-mix(in srgb,var(--brand-blue) 72%,#fff);
-  --hdr-border-hover:color-mix(in srgb,var(--brand-blue) 58%,#fff);
+  --hdr-fg:#e8edf5;
+  --hdr-bg:#243145;                          --hdr-bg-hover:#324158;
+  --hdr-border:#40506a;                      --hdr-border-hover:#62758e;
   --hdr-shadow:0 4px 16px rgb(0 0 0 / .24);
   --hdr-accent:#fff;
 }
 /* hover is a hair of scale and a hair of value; the icon animations are the existing ones */
-.site-header-root[data-mode="web"] .hdr-btn:hover{transform:scale(1.02)}
+.site-header-root[data-mode="web"] .hdr-btn:hover{transform:none}
 .site-header-root[data-mode="web"] .hdr-btn:active{transform:scale(.95)}
 /* Immersive: a fixed, theme-independent HUD look that suits the corridor. Never reads a theme token. */
 .site-header-root[data-mode="immersive"]{

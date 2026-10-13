@@ -366,7 +366,7 @@ a:focus-visible,button:focus-visible{outline:var(--focus-ring);outline-offset:va
    (.entry-gate--intro). The corridor, its rooms, doors and immersive header
    live outside both wrappers, so none of this can reach them.
    Only CTA-style controls get it (not text links or navigation): the .pill CTAs,
-   the Web header Rescue CTA, the splash "Enter the Experience" button, the
+   the Web header Rescue and Corridor CTAs, the splash "Enter the Experience" button, the
    Contact form submit button and the Work "View the project" pill.
    Desktop pointers with motion allowed only; touch and reduced-motion are untouched.
    ============================================================ */
@@ -376,13 +376,13 @@ a:focus-visible,button:focus-visible{outline:var(--focus-ring);outline-offset:va
 
   /* Clips the glare to the button's own shape. `clip` (not `hidden`) so baseline alignment stays exactly as before. */
   :is(.route-page, .entry-gate--intro, .menu-drawer[data-mode="web"]) :is(.pill, .entry-gallery-cta, .contact-form button[type="submit"]),
-  .site-header-root[data-mode="web"] .hdr-rescue{
+  .site-header-root[data-mode="web"] :is(.hdr-rescue,.hdr-corridor){
     overflow:hidden;
     overflow:clip;
   }
 
   :is(.route-page, .entry-gate--intro, .menu-drawer[data-mode="web"]) :is(.pill, .entry-gallery-cta, .contact-form button[type="submit"])::after,
-  .site-header-root[data-mode="web"] .hdr-rescue::after{
+  .site-header-root[data-mode="web"] :is(.hdr-rescue,.hdr-corridor)::after{
     content:"";
     position:absolute;
     top:0;
@@ -397,7 +397,7 @@ a:focus-visible,button:focus-visible{outline:var(--focus-ring);outline-offset:va
   }
 
   :is(.route-page, .entry-gate--intro, .menu-drawer[data-mode="web"]) :is(.pill, .entry-gallery-cta, .contact-form button[type="submit"]):hover:not(:disabled):not([aria-disabled="true"])::after,
-  .site-header-root[data-mode="web"] .hdr-rescue:hover::after{
+  .site-header-root[data-mode="web"] :is(.hdr-rescue,.hdr-corridor):hover::after{
     left:150%;
     transition:left .9s ease-in-out;
   }
@@ -634,7 +634,7 @@ a:focus-visible,button:focus-visible{outline:var(--focus-ring);outline-offset:va
 :is(.route-page--services,.route-page--agencies,.route-page--contact) .section--soft{background:linear-gradient(180deg,rgb(232 240 251 / .82),rgb(241 246 252 / .72))}
 :is(.route-page--services,.route-page--agencies,.route-page--contact) .section h2,
 .route-page--work .section--evidence-band h2{font-size:clamp(3rem,5vw,4.5rem);line-height:1.03;letter-spacing:-.058em;text-wrap:balance}
-.route-section-intro>p{max-width:620px;margin:18px 0 0;color:var(--web-muted);font-size:14.5px;line-height:1.72}
+.route-section-intro__copy>p{max-width:620px;margin:18px 0 0;color:var(--web-muted);font-size:14.5px;line-height:1.72}
 
 /* CONTACT */
 

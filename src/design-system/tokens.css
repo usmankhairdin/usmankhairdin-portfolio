@@ -8,6 +8,8 @@
   /* The logo's brighter outer ribbon keeps small blue text readable on dark surfaces. */
   --brand-blue-on-dark:#017ffc;
   --brand-blue-on-dark-rgb:1 127 252;
+  /* Only the blue portion of g1 (65–100%): no navy/near-black at the base. */
+  --brand-action-gradient:linear-gradient(0deg,#0650ed 0%,#0161fc 42%,#006afd 70%,#017ffc 100%);
   /* Color */
   --color-canvas:var(--bg);
   --color-panel:var(--panel-solid);
