@@ -1,0 +1,4 @@
+/restaurants: 7 screens, 1440x5471
+/hotels: 8 screens, 1440x6675
+/curators: 10 screens, 1440x8477
+/companies: 8 screens, 1440x6686
