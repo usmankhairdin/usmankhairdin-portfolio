@@ -3,7 +3,7 @@ import EditorialPage from '../components/editorial/EditorialPage.jsx'
 import { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
 import SplashBackdrop from '../components/SplashBackdrop.jsx'
-import { hostLabel, projects } from '../data/projects.js'
+import { hostLabel, projectAsset, projects } from '../data/projects.js'
 import '../components/BrowserFrame.css'
 import './HomeWeb.css'
 
@@ -21,8 +21,8 @@ const PRIMA = bySlug('prima')
 // Three live public sites, each with the interface direction and the frontend in my hands. PRIMA's homepage is already the
 // hero, so here it shows its hotels page (a case-study capture).
 const showcase = (slug) => ({
-  src: `/assets/projects/${slug}/showcase-1x.webp`,
-  srcSet: `/assets/projects/${slug}/showcase-1x.webp 1440w, /assets/projects/${slug}/showcase.webp 2880w`,
+  src: projectAsset(slug, 'showcase-1x.webp'),
+  srcSet: `${projectAsset(slug, 'showcase-1x.webp')} 1440w, ${projectAsset(slug, 'showcase.webp')} 2880w`,
   width: 1440,
   height: 900,
 })
@@ -31,7 +31,7 @@ const SELECTED = [
   {
     project: PRIMA,
     url: 'primaapp.com/hotels',
-    image: { src: '/assets/projects/prima/ev-hotels-1x.webp', srcSet: '/assets/projects/prima/ev-hotels-1x.webp 960w, /assets/projects/prima/ev-hotels.webp 1920w', width: 1920, height: 1200 },
+    image: { src: projectAsset('prima', 'ev-hotels-1x.webp'), srcSet: `${projectAsset('prima', 'ev-hotels-1x.webp')} 960w, ${projectAsset('prima', 'ev-hotels.webp')} 1920w`, width: 1920, height: 1200 },
   },
   { project: bySlug('rantle'), image: showcase('rantle') },
 ]
@@ -86,7 +86,7 @@ export default function HomeWeb() {
           <Link to={`/work/${PRIMA.slug}/`} className="home-hero__screens" aria-label={`${PRIMA.title} case study: ${PRIMA.category}, ${PRIMA.role}`}>
             <Browser project={PRIMA} image={showcase(PRIMA.slug)} alt={PRIMA.mediaAlt.hero} sizes="(max-width: 1024px) 92vw, 52vw" eager className="home-hero__desktop" />
             <span className="home-hero__phone">
-              <img src={`/assets/projects/${PRIMA.slug}/mobile.webp`} width="390" height="844" alt={PRIMA.mediaAlt.mobile} decoding="async" />
+              <img src={projectAsset(PRIMA.slug, 'mobile.webp')} width="390" height="844" alt={PRIMA.mediaAlt.mobile} decoding="async" />
             </span>
           </Link>
           <figcaption className="home-hero__caption"><b>{PRIMA.title}</b> {PRIMA.category} · {PRIMA.role}</figcaption>

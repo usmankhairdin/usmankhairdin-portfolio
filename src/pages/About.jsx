@@ -8,6 +8,7 @@ import EditorialEngagement from '../components/editorial/EditorialEngagement.jsx
 import useEditorialMotion from '../components/editorial/useEditorialMotion.js'
 import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
 import { useTheme } from '../theme/ThemeProvider.jsx'
+import { projectAsset } from '../data/projects.js'
 import './About.css'
 
 function EditorialLink({ to, children }) {
@@ -86,7 +87,7 @@ export default function About() {
           </div>
           <div className="about-editorial__work-stage" data-editorial-reveal>
             <Link to="/work/prima/" className="about-editorial__work-preview" aria-label="Explore the PRIMA case study">
-              <img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="PRIMA hospitality platform: the recommendation network homepage" />
+              <img src={projectAsset('prima', 'showcase.webp')} srcSet={`${projectAsset('prima', 'showcase-1x.webp')} 1440w, ${projectAsset('prima', 'showcase.webp')} 2880w`} sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="PRIMA hospitality platform: the recommendation network homepage" />
             </Link>
           </div>
         </div>

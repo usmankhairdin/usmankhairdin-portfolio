@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react'
 import { useWebScroll } from '../scroll/WebScrollProvider.jsx'
-import { surfacesFor, toneFor, disciplineFor, hostLabel } from '../data/projects.js'
+import { surfacesFor, toneFor, disciplineFor, hostLabel, projectAsset } from '../data/projects.js'
 
 /*
  * Work showcase — composition config and scroll motion.
@@ -11,10 +11,10 @@ import { surfacesFor, toneFor, disciplineFor, hostLabel } from '../data/projects
 
 // Fresh captures of the SAME live URLs: 1440x900 viewport, 1x and 2x, one capture system for the whole set.
 export const showcaseImage = (project) => {
-  const base = `/assets/projects/${project.slug}`
+  const asset = (file) => projectAsset(project.slug, file)
   return {
-    src: `${base}/showcase-1x.webp`,
-    srcSet: `${base}/showcase-1x.webp 1440w, ${base}/showcase.webp 2880w`,
+    src: asset('showcase-1x.webp'),
+    srcSet: `${asset('showcase-1x.webp')} 1440w, ${asset('showcase.webp')} 2880w`,
     fallback: project.media?.preview?.[0] || project.poster,
   }
 }

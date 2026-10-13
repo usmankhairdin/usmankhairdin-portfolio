@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber'
 import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
-import { projects } from '../data/projects.js'
+import { projectAsset, projects } from '../data/projects.js'
 import { sectionHeroes } from '../data/sectionHeroes.jsx'
 import { look } from '../experience/freeLook.js'
 import { ON_DARK, ON_LIGHT, body, eyebrow, paintGraphic, titleRuns, traceLettering, useFontsReady } from './roomGraphics.js'
@@ -592,7 +592,7 @@ function ProjectExhibit({ project, index, x, side }) {
   const rotation = side === 'left' ? FACE.left : FACE.right
   const link = `/work/${project.slug}/`
   return <>
-    <LedScreen url={`/assets/projects/${project.slug}/showcase-1x.webp`} width={SCREEN.w} height={SCREEN.h} position={[x, SCREEN.y, z]} rotation={rotation} link={link} />
+    <LedScreen url={projectAsset(project.slug, 'showcase-1x.webp')} width={SCREEN.w} height={SCREEN.h} position={[x, SCREEN.y, z]} rotation={rotation} link={link} />
     <Board width={SCREEN.w} height={0.62} position={[x, 0.86, z]} rotation={rotation} link={link} ppm={400} draw={(pen, { width }) => {
       const ink = ON_DARK
       pen.text(`${String(index + 1).padStart(2, '0')} / ${project.category.toUpperCase()}`, 0.06, 0.06, eyebrow(0.05, ink.brass))

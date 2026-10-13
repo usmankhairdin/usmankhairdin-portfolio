@@ -1,12 +1,17 @@
+// When a project's captures are replaced under the same file names, bump its version here: every page and the
+// Corridor ask for the new files instead of reusing the copies browsers already cached.
+const MEDIA_VERSION = { prima: '20261013' }
+export const projectAsset = (slug, file) => `/assets/projects/${slug}/${file}${MEDIA_VERSION[slug] ? `?v=${MEDIA_VERSION[slug]}` : ''}`
+
 const localMedia = (slug, { mobile = true } = {}) => ({
-  gallery: [`/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
-  preview: [`/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
-  hero: [`/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
-  fullpage: [`/assets/projects/${slug}/fullpage.webp`, `/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
-  detail: [`/assets/projects/${slug}/detail.webp`, `/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
+  gallery: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+  preview: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+  hero: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+  fullpage: [projectAsset(slug, 'fullpage.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+  detail: [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
   mobile: mobile
-    ? [`/assets/projects/${slug}/mobile.webp`, `/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`]
-    : [`/assets/projects/${slug}/detail.webp`, `/assets/projects/${slug}/hero.webp`, `/assets/posters/${slug}.svg`],
+    ? [projectAsset(slug, 'mobile.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`]
+    : [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
 })
 
 // Each project carries the ONE solid surface it is presented on, per theme (a refined tint of its real palette, curated once).

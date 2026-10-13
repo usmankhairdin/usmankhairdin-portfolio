@@ -1,3 +1,4 @@
+import { projectAsset } from './projects.js'
 /*
  * Case-study content for the BODY of each project's detail page (everything below the hero), keyed by the project's slug.
  *
@@ -26,14 +27,13 @@
  * Captures live in public/assets/projects/<slug>/ev-<name>.webp (+ -1x) and are produced by scripts/capture-case-study-evidence.mjs.
  */
 
-const ASSETS = '/assets/projects'
 
 // A capture reference for one project: `at(name, alt, path)` for a desktop page moment, `phone(name, alt, path)` for a mobile view.
 // `path` is the live page the capture was taken from (it labels the browser frame's address bar).
 const captures = (slug, origin) => {
   const make = (name, alt, path, [small, large, height]) => ({
-    src: `${ASSETS}/${slug}/ev-${name}.webp`,
-    srcSet: `${ASSETS}/${slug}/ev-${name}-1x.webp ${small}w, ${ASSETS}/${slug}/ev-${name}.webp ${large}w`,
+    src: projectAsset(slug, `ev-${name}.webp`),
+    srcSet: `${projectAsset(slug, `ev-${name}-1x.webp`)} ${small}w, ${projectAsset(slug, `ev-${name}.webp`)} ${large}w`,
     width: large,
     height,
     alt,
