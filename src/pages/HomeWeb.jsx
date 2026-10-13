@@ -30,7 +30,7 @@ const SELECTED = [
   { project: bySlug('bansar'), image: showcase('bansar') },
   {
     project: PRIMA,
-    url: 'primaapp.com/for-hotels',
+    url: 'primaapp.com/hotels',
     image: { src: '/assets/projects/prima/ev-hotels-1x.webp', srcSet: '/assets/projects/prima/ev-hotels-1x.webp 960w, /assets/projects/prima/ev-hotels.webp 1920w', width: 1920, height: 1200 },
   },
   { project: bySlug('rantle'), image: showcase('rantle') },

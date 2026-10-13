@@ -120,9 +120,9 @@ export const CASE_STUDIES = {
           {
             type: 'features',
             items: [
-              { image: prima.at('restaurants', 'PRIMA restaurants page hero headed Fill your floor on your terms', '/for-restaurants'), label: 'FOR RESTAURANTS', title: 'Fill prime tables on your terms', text: 'Set prime slots and pricing, distribute to a vetted network, get paid on prime bookings. Reservations flow into the system already in use.' },
-              { image: prima.at('hotels', 'PRIMA hotels page hero headed Offer your guests the one amenity they actually want', '/for-hotels'), label: 'FOR HOTELS', title: 'Give guests the hardest tables', text: 'Concierges secure prime reservations across the stay, earn on every booking, and pay nothing to join.' },
-              { image: prima.at('curators', 'PRIMA curators page hero headed Turn recommendations into revenue', '/website/concierges'), label: 'FOR CURATORS', title: 'Turn a taste for places into income', text: 'Curate favourites, share one link, and follow clicks, bookings and pending payouts on a live dashboard.' },
+              { image: prima.at('restaurants', 'PRIMA restaurants page hero headed Fill more tables. Pay only when we deliver.', '/restaurants'), label: 'FOR RESTAURANTS', title: 'Fill prime tables on your terms', text: 'Set prime slots and pricing, distribute to a vetted network, get paid on prime bookings. Reservations flow into the system already in use.' },
+              { image: prima.at('hotels', 'PRIMA hotels page hero headed The amenity that actually pays', '/hotels'), label: 'FOR HOTELS', title: 'Give guests the hardest tables', text: 'Concierges secure prime reservations across the stay, earn on every booking, and pay nothing to join.' },
+              { image: prima.at('curators', 'PRIMA curators page hero headed Turn your restaurant recommendations into revenue', '/curators'), label: 'FOR CURATORS', title: 'Turn a taste for places into income', text: 'Curate favourites, share one link, and follow clicks, bookings and pending payouts on a live dashboard.' },
             ],
           },
         ],
@@ -161,7 +161,7 @@ export const CASE_STUDIES = {
           {
             type: 'phones',
             items: [
-              { image: prima.phone('m-home', 'PRIMA homepage on a phone with the recommendation economy headline and city market cards', '/'), caption: 'HOME' },
+              { image: prima.phone('m-home', 'PRIMA homepage on a phone with the recommendation network around the PRIMA mark', '/'), caption: 'HOME' },
               { image: prima.phone('m-live', 'PRIMA live inventory section on a phone with the app view below the copy', '/'), caption: 'LIVE APP' },
               { image: prima.phone('m-city', 'PRIMA Miami city page on a phone with the restaurant map', '/city/miami'), caption: 'CITY GUIDE' },
             ],

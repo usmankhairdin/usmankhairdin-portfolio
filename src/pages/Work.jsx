@@ -23,7 +23,7 @@ export default function Work(){
       intro="Product interfaces, websites and responsive frontend. Explore the decisions, the context and the finished work."
       actions={<><ActionLink href="#wk-selected-title">Explore selected work <span aria-hidden="true">↗</span></ActionLink><EditorialLink to="/contact/">Discuss a project</EditorialLink></>}
       visual={<figure className="work-editorial__hero-media">
-        <Link to="/work/prima/" aria-label="Explore the PRIMA case study"><img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 48vw" width="1440" height="900" alt="PRIMA hospitality website: Welcome to the Recommendation Economy" fetchPriority="high" decoding="async" /></Link>
+        <Link to="/work/prima/" aria-label="Explore the PRIMA case study"><img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 48vw" width="1440" height="900" alt="PRIMA hospitality website: the recommendation network homepage" fetchPriority="high" decoding="async" /></Link>
         <figcaption>PRIMA · UI direction and frontend</figcaption>
       </figure>}
     />

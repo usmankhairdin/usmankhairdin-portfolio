@@ -55,9 +55,9 @@ export const projects = [
     tags: ['Hospitality', 'UI design', 'Frontend'],
     media: localMedia('prima'),
     mediaAlt: {
-      hero: 'PRIMA homepage showing the Recommendation Economy hero and city market navigation',
+      hero: 'PRIMA homepage showing its recommendation network, with Hotels, Curators and Companies around the PRIMA mark',
       detail: 'PRIMA interface section explaining access, attribution and settlement',
-      mobile: 'PRIMA responsive homepage showing the recommendation economy introduction and market cards',
+      mobile: 'PRIMA responsive homepage showing the recommendation network and its introduction on a phone',
     },
     evidenceTitle: 'Access, attribution and settlement, on one rail.',
     evidenceCopy: 'The public site moves from a live view of the booking app to a three-part model of access, attribution and settlement, then to a page for each side of the network.',

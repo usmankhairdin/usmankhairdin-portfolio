@@ -86,7 +86,7 @@ export default function About() {
           </div>
           <div className="about-editorial__work-stage" data-editorial-reveal>
             <Link to="/work/prima/" className="about-editorial__work-preview" aria-label="Explore the PRIMA case study">
-              <img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="PRIMA hospitality platform: Welcome to the Recommendation Economy" />
+              <img src="/assets/projects/prima/showcase.webp" srcSet="/assets/projects/prima/showcase-1x.webp 1440w, /assets/projects/prima/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="PRIMA hospitality platform: the recommendation network homepage" />
             </Link>
           </div>
         </div>
