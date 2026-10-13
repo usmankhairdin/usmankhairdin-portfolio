@@ -1,0 +1,10 @@
+URL /for-hotels -> https://primaapp.com/hotels 200 height 900 :: Welcome to the recommendation economy | The amenity that actually pays | Your page. Your offering first. | Where should we eat tonight?
+URL /for-restaurants -> https://primaapp.com/restaurants 200 height 900 :: Fill more tables. Pay only when we deliver. | Full rooms, on your terms | More diners. Less guesswork. | One platform, two ways to earn
+URL /website/concierges -> https://primaapp.com/curators 200 height 900 :: Welcome to the recommendation economy | Turn your restaurant recommendations into revenue | Turn your restaurant recommendations into revenue | How it works
+URL /city/miami -> https://primaapp.com/city/miami 200 height 15337 :: Miami restaurants | Featured | All restaurants
+URL /hotels -> https://primaapp.com/hotels 200 height 900 :: Welcome to the recommendation economy | The amenity that actually pays | Your page. Your offering first. | Where should we eat tonight?
+URL /restaurants -> https://primaapp.com/restaurants 200 height 900 :: Welcome to the recommendation economy | Fill more tables. Pay only when we deliver. | Full rooms, on your terms | More diners. Less guesswork.
+URL /curators -> https://primaapp.com/curators 200 height 900 :: Welcome to the recommendation economy | Turn your restaurant recommendations into revenue | Turn your restaurant recommendations into revenue | How it works
+URL /companies -> https://primaapp.com/companies 200 height 900 :: Welcome to the recommendation economy | Bring more to the table | Great tables. A reason to come back. | Your brand. Powered by PRIMA.
+home text: About PRIMA Restaurants Hotels Curators Companies Our restaurant partners Book a call Log in Privacy Terms DPA Sub-processors Accessibility RESTAURANTS HOTELS CURATORS COMPANIES BOOK A CALL LOG IN WATCH THE FILM DRAG TO EXPLORE OUR RESTAURANT PARTNERS Connecting the best guests to the best restaurants and rewarding the recommendations that bring them there. Restaurants today. Anything worth recommending tomorrow.
+no visible Learn more
