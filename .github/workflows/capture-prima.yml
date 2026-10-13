@@ -5,8 +5,12 @@ on:
     branches:
       - capture/prima-screens
 
+permissions:
+  contents: write
+
 jobs:
   capture:
+    if: "!startsWith(github.event.head_commit.message, 'Captured')"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -30,26 +34,25 @@ jobs:
           done
 
       - name: hero, detail, mobile (capture-portfolio-media.mjs)
-        run: node scripts/capture-portfolio-media.mjs prima
+        run: mkdir -p review && node scripts/capture-portfolio-media.mjs prima 2>&1 | tee -a review/log.txt
 
       - name: case-study evidence ev-* (capture-case-study-evidence.mjs)
-        run: node scripts/capture-case-study-evidence.mjs prima
+        run: mkdir -p review && node scripts/capture-case-study-evidence.mjs prima 2>&1 | tee -a review/log.txt
 
       - name: fullpage (capture-prima-fullpage.mjs)
-        run: node scripts/capture-prima-fullpage.mjs
+        run: mkdir -p review && node scripts/capture-prima-fullpage.mjs 2>&1 | tee -a review/log.txt
 
       - name: showcase (homepage top, 1440x900 at 2x)
-        run: node .github/capture/showcase.mjs
+        run: mkdir -p review && node .github/capture/showcase.mjs 2>&1 | tee -a review/log.txt
 
       - name: Current portfolio pages, for reviewing where PRIMA appears
-        run: node .github/capture/review.mjs
+        run: mkdir -p review && node .github/capture/review.mjs 2>&1 | tee -a review/log.txt
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: prima-assets
-          path: public/assets/projects/prima/
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: review
-          path: review/
+      - name: Commit the captures back to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git checkout -- scripts
+          git add public/assets/projects/prima review
+          git commit -m "Captured PRIMA screenshots ($GITHUB_RUN_ID)"
+          git push
