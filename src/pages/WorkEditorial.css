@@ -12,7 +12,7 @@
 .work-editorial .wk-featured__category { font: 600 13px/1.5 var(--sans); letter-spacing: -.015em; color: var(--editorial-muted); }
 .work-editorial .wk-featured__tags li { font: 500 12px/1.4 var(--sans); }
 .work-editorial #wk-selected-title { scroll-margin-top: 112px; }
-.work-editorial .editorial-engagement { --editorial-accent: #3157ff; }
+.work-editorial .editorial-engagement { --editorial-accent: var(--brand-blue-text); }
 html[data-theme="dark"] .work-editorial__hero-media > a { box-shadow: 8px 10px 0 rgb(0 0 0 / .2), 13px 26px 32px rgb(0 0 0 / .35); }
 @media (max-width: 1100px) { .work-editorial :is(.wk-featured, .wk-selected) > .route-wrap { width: calc(100% - 64px); } }
 @media (max-width: 700px) {

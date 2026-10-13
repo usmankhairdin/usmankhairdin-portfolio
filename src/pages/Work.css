@@ -55,12 +55,12 @@ html[data-theme="dark"] .wk-project{--wk-bg:var(--wk-bg-d,#0b111b)}   /* ...and 
   inset:0;
   z-index:-2;
   background:
-    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,#455dff) 20%,transparent),transparent 72%),
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,var(--brand-blue)) 20%,transparent),transparent 72%),
     radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
 }
 html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosphere{
   background:
-    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,#455dff) 24%,transparent),transparent 72%),
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--wk-accent,var(--brand-blue)) 24%,transparent),transparent 72%),
     radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
 }
 .wk-project[data-tone="dark"] .wk-project__atmosphere{
@@ -177,14 +177,14 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
 /* The controls are the site's own, untouched: the cobalt .pill.pill--primary (same size as the hero CTAs) and the blue .text-cta link.
    Only their placement in the row is set here. */
 .wk-project__actions .text-cta{margin-top:0}
-.wk-project[data-tone="dark"] .text-cta{color:#8ea0ff}          /* the site's dark-theme link blue, on a dark stage */
-.wk-project__actions a:focus-visible,.wk-project__title a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,#455dff);outline-offset:5px;border-radius:var(--radius-xs)}
+.wk-project[data-tone="dark"] .text-cta{color:var(--brand-blue-text)}          /* the site's dark-theme link blue, on a dark stage */
+.wk-project__actions a:focus-visible,.wk-project__title a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,var(--brand-blue));outline-offset:5px;border-radius:var(--radius-xs)}
 .wk-project__actions .pill:focus-visible{border-radius:var(--radius-pill)}
 
 /* ---- The large image: a restrained browser frame, never a mockup ---------- */
 /* The shared browser frame (src/components/BrowserFrame.css) with the Work panel's own inputs and its hover lift. */
 .wk-frame{
-  --uf-accent:var(--wk-accent,#455dff);
+  --uf-accent:var(--wk-accent,var(--brand-blue));
   --uf-fg-rgb:var(--fg-rgb);
   --uf-muted:var(--fg-3);
   transition:transform .9s cubic-bezier(.22,.8,.18,1),box-shadow .9s cubic-bezier(.22,.8,.18,1);
@@ -308,7 +308,7 @@ html[data-theme="dark"] .wk-project:not([data-tone="dark"]) .wk-project__atmosph
   background:rgb(var(--text-rgb,9 17 29) / .14);
   pointer-events:none;
 }
-.wk-showcase[data-wk-mode="horizontal"] .wk-progress b{position:absolute;inset:0;background:var(--accent-text,#455dff);transform-origin:0 50%;transform:scaleX(var(--wk-t,0))}
+.wk-showcase[data-wk-mode="horizontal"] .wk-progress b{position:absolute;inset:0;background:var(--accent-text,var(--brand-blue));transform-origin:0 50%;transform:scaleX(var(--wk-t,0))}
 
 /* Shorter screens: the same composition, a little tighter. */
 @media(max-height:820px){

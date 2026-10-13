@@ -16,6 +16,10 @@
  *   cta / ctaInk the primary button on it           deco      decorative glow colour
  */
 export const PROJECT_BRANDS = {
+  sanaira: {
+    light: { ink: '#223c36', ink2: '#51665e', s1: '#f7f4e9', s2: '#e2e9d9', panel: '#fffcf3', line: '#b9c7b4', accent: '#3a6c61', soft: '#dce5d3', close: '#203e32', closeInk: '#f3f0df', closeInk2: '#c5d2be', closeAccent: '#dec79f', cta: '#d0dabb', ctaInk: '#253d2d', deco: '#8eaa99' },
+    dark: { ink: '#f0eddf', ink2: '#b8cbc0', s1: '#142d27', s2: '#203e32', panel: '#233d33', line: '#466759', accent: '#d9bb91', soft: '#2d4a3c', close: '#132f24', closeInk: '#f0f1df', closeInk2: '#bad0b2', closeAccent: '#d9c9a0', cta: '#d1dfb7', ctaInk: '#203729', deco: '#a2c4b7' },
+  },
   // primaapp.com — cool white UI, ink #0a0c10, blue #2563eb / #1d4ed8, theme gradient cyan #4bcfff → navy #002454
   prima: {
     light: { ink: '#0a0c10', ink2: '#475569', s1: '#f3f6fc', s2: '#e5ecf9', panel: '#fbfcff', line: '#c9d6ee', accent: '#1d4ed8', soft: '#dbe6fc', close: '#002454', closeInk: '#f4f8ff', closeInk2: '#b7c9e8', closeAccent: '#4bcfff', cta: '#4bcfff', ctaInk: '#00193d', deco: '#4bcfff' },

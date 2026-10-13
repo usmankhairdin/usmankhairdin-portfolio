@@ -1,7 +1,7 @@
 /* The approved About art direction, shared only by standalone editorial pages. */
 .route-page.editorial-page {
   --editorial-ink: #0c1830; --editorial-muted: #4a5a76; --editorial-surface: #f5f9ff;
-  --editorial-accent: #3157ff; --editorial-rule: rgb(52 78 140 / .19);
+  --editorial-accent: var(--brand-blue-text); --editorial-rule: rgb(52 78 140 / .19);
   color: var(--editorial-ink); background: var(--editorial-surface); padding-top: 0;
 }
 .editorial-page > main:focus { outline: none; }
@@ -14,11 +14,11 @@
 .editorial-page main :is(h1, h2, h3) em { font-family: var(--font-editorial); font-weight: 500; letter-spacing: -.065em; color: var(--editorial-accent); }
 .editorial-page .editorial-hero__copy > p { margin: 26px 0 0; max-width: 530px; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.6; letter-spacing: -.025em; color: var(--editorial-muted); }
 .editorial-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 29px; }
-.editorial-hero__actions .pill { min-height: 52px; padding-inline: 25px; gap: 25px; font-size: 14px; font-weight: 650; background: #3157ff; color: #fff; }
+.editorial-hero__actions .pill { min-height: 52px; padding-inline: 25px; gap: 25px; font-size: 14px; font-weight: 650; background: var(--brand-blue); color: #fff; }
 .editorial-hero__actions .editorial-link { font-size: 14px; color: var(--editorial-muted); }
 .editorial-hero__sculpture { width: 110%; margin-left: -5%; }
 .editorial-page [data-editorial-waiting] { opacity: 0; }
-html[data-theme="dark"] .route-page.editorial-page { --editorial-ink: #eceff5; --editorial-muted: #b0bcd0; --editorial-surface: #0e1625; --editorial-accent: #94a7ff; --editorial-rule: rgb(188 204 242 / .2); }
+html[data-theme="dark"] .route-page.editorial-page { --editorial-ink: #eceff5; --editorial-muted: #b0bcd0; --editorial-surface: #0e1625; --editorial-accent: var(--brand-blue-text); --editorial-rule: rgb(188 204 242 / .2); }
 @media (max-width: 1100px) {
   .editorial-wrap { width: calc(100% - 64px); }
   .editorial-hero { padding: 130px 0 50px; }

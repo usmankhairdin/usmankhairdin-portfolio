@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import EditorialPage, { EditorialHero } from '../components/editorial/EditorialPage.jsx'
 import EditorialEngagement, { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
-import { featuredProjects, projectAsset, projects } from '../data/projects.js'
+import { featuredProjects, projects } from '../data/projects.js'
 import ProjectMetaRail from '../components/ProjectMetaRail.jsx'
 import { ProjectCapture } from '../components/ProjectBrowserPreview.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
@@ -15,6 +15,8 @@ import './WorkEditorial.css'
 export default function Work(){
   const showcaseRef=useRef(null)
   useShowcaseMotion(showcaseRef)
+  const latestProject = projects[0]
+  const latestImage = showcaseImage(latestProject)
 
   return <EditorialPage className="route-page--work work-editorial">
     <EditorialHero
@@ -23,8 +25,8 @@ export default function Work(){
       intro="Product interfaces, websites and responsive frontend. Explore the decisions, the context and the finished work."
       actions={<><ActionLink href="#wk-selected-title">Explore selected work <span aria-hidden="true">↗</span></ActionLink><EditorialLink to="/contact/">Discuss a project</EditorialLink></>}
       visual={<figure className="work-editorial__hero-media">
-        <Link to="/work/prima/" aria-label="Explore the PRIMA case study"><img src={projectAsset('prima', 'showcase.webp')} srcSet={`${projectAsset('prima', 'showcase-1x.webp')} 1440w, ${projectAsset('prima', 'showcase.webp')} 2880w`} sizes="(max-width: 700px) 90vw, 48vw" width="1440" height="900" alt="PRIMA hospitality website: the recommendation network homepage" fetchPriority="high" decoding="async" /></Link>
-        <figcaption>PRIMA · UI direction and frontend</figcaption>
+        <Link to={`/work/${latestProject.slug}/`} aria-label={`Explore the ${latestProject.title} case study`}><img src={latestImage.src} srcSet={latestImage.srcSet} sizes="(max-width: 700px) 90vw, 48vw" width="1440" height="900" alt={latestProject.mediaAlt.hero} fetchPriority="high" decoding="async" /></Link>
+        <figcaption>{latestProject.title} · {latestProject.role}</figcaption>
       </figure>}
     />
     <section className="wk-featured" aria-labelledby="wk-featured-title">

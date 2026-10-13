@@ -18,9 +18,9 @@ $captures = [ordered]@{
   bansar = 'projects/bansar/hero.webp'
   rantle = 'projects/rantle/hero.webp'
   'bum-life' = 'projects/bum-life/hero.webp'
-  'pnw-leads' = 'projects/pnw-leads/hero.webp'
+  sanaira = 'projects/sanaira/hero.webp'
   'personal-portfolio-web' = 'case-studies/personal-portfolio-web/home-light-desktop.webp'
-  'personal-portfolio-3d' = 'case-studies/personal-portfolio-3d/navigation-hud.webp'
+  'personal-portfolio-3d' = 'case-studies/personal-portfolio-3d/corridor-menu.webp'
 }
 
 foreach ($entry in $captures.GetEnumerator()) {

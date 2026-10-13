@@ -38,7 +38,7 @@
 .p3d-hero__media{grid-column:1/-1;position:relative;margin-top:var(--space-3);padding:clamp(10px,2vw,24px);border:1px solid var(--p3d-line);border-radius:calc(var(--radius-xl) + 8px);background:var(--p3d-deep);box-shadow:var(--shadow-floating)}
 .p3d-hero__media .p3d-capture{border:0;border-radius:var(--radius-lg);box-shadow:none}
 .p3d-hero__index{position:absolute;z-index:3;right:clamp(25px,4vw,56px);bottom:clamp(24px,4vw,52px);display:flex;align-items:center;gap:10px;padding:12px 15px;border:1px solid rgb(255 255 255 / .18);border-radius:var(--radius-pill);background:rgb(7 14 24 / .82);color:#eef2f7;font:650 7px/1 var(--font-mono);letter-spacing:.12em;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-.p3d-hero__index i{display:block;width:24px;height:1px;background:#5368ff}
+.p3d-hero__index i{display:block;width:24px;height:1px;background:var(--brand-blue)}
 
 .p3d-section{position:relative;isolation:isolate;padding:clamp(68px,7vw,92px) 0;border-top:1px solid var(--p3d-line-soft);background:rgb(248 251 255 / .6)}
 .p3d-section:nth-of-type(odd){background:linear-gradient(180deg,rgb(232 240 251 / .7),rgb(242 247 253 / .56))}
@@ -82,7 +82,7 @@
 .p3d-interaction__notes p{margin:0;color:var(--p3d-muted);font-size:12px;line-height:1.62}
 
 .p3d-material{position:relative;overflow:hidden;padding:clamp(72px,7vw,96px) 0;background:var(--p3d-deep);color:var(--p3d-deep-text)}
-.p3d-material:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgb(83 104 255 / .12),transparent 42%),repeating-linear-gradient(90deg,transparent 0,transparent calc(12.5% - 1px),rgb(255 255 255 / .035) calc(12.5% - 1px),rgb(255 255 255 / .035) 12.5%);pointer-events:none}
+.p3d-material:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgb(var(--brand-blue-rgb) / .12),transparent 42%),repeating-linear-gradient(90deg,transparent 0,transparent calc(12.5% - 1px),rgb(255 255 255 / .035) calc(12.5% - 1px),rgb(255 255 255 / .035) 12.5%);pointer-events:none}
 .p3d-material__grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.52fr);gap:clamp(32px,5vw,72px);align-items:center}
 .p3d-material__copy h2{max-width:760px;margin:var(--space-5) 0 var(--space-6);font-size:var(--type-section-size);line-height:var(--type-section-line);letter-spacing:var(--type-section-tracking);text-wrap:balance}
 .p3d-material__copy p{max-width:620px;margin:0;color:var(--p3d-deep-muted);font-size:15px;line-height:1.72}

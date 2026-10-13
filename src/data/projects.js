@@ -1,17 +1,17 @@
 // When a project's captures are replaced under the same file names, bump its version here: every page and the
 // Corridor ask for the new files instead of reusing the copies browsers already cached.
-const MEDIA_VERSION = { prima: '20261013b' }
+const MEDIA_VERSION = { prima: '20261013c' }
 export const projectAsset = (slug, file) => `/assets/projects/${slug}/${file}${MEDIA_VERSION[slug] ? `?v=${MEDIA_VERSION[slug]}` : ''}`
 
-const localMedia = (slug, { mobile = true } = {}) => ({
-  gallery: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
-  preview: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
-  hero: [projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
-  fullpage: [projectAsset(slug, 'fullpage.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
-  detail: [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+const localMedia = (slug, { mobile = true, poster = `/assets/posters/${slug}.svg` } = {}) => ({
+  gallery: [projectAsset(slug, 'hero.webp'), poster],
+  preview: [projectAsset(slug, 'hero.webp'), poster],
+  hero: [projectAsset(slug, 'hero.webp'), poster],
+  fullpage: [projectAsset(slug, 'fullpage.webp'), projectAsset(slug, 'hero.webp'), poster],
+  detail: [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), poster],
   mobile: mobile
-    ? [projectAsset(slug, 'mobile.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`]
-    : [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), `/assets/posters/${slug}.svg`],
+    ? [projectAsset(slug, 'mobile.webp'), projectAsset(slug, 'hero.webp'), poster]
+    : [projectAsset(slug, 'detail.webp'), projectAsset(slug, 'hero.webp'), poster],
 })
 
 // Each project carries the ONE solid surface it is presented on, per theme (a refined tint of its real palette, curated once).
@@ -42,6 +42,34 @@ export const hostLabel = (url) => {
 
 export const projects = [
   {
+    slug: 'sanaira',
+    title: 'Sanaira Health',
+    category: 'Healthcare website + application',
+    status: 'Self-initiated template · Public demo',
+    liveUrl: 'https://sanaira.usmankhairdin.com/',
+    appUrl: 'https://sanaira.usmankhairdin.com/app/broker/',
+    poster: '/assets/projects/sanaira/hero.webp',
+    accent: '#3a6c61',
+    surface: '#e2e9d9',
+    surfaceLight: '#e2e9d9',
+    surfaceDark: '#142d27',
+    presentation: 'care',
+    summary: 'A complete healthcare frontend package: a cinematic coverage website and a connected application for brokers, members and employers.',
+    role: 'Product design · UI/UX · Frontend',
+    contribution: 'A self-initiated website and companion application, designed and built as one coherent healthcare template: shared branding, responsive interfaces, coverage discovery and connected workspace journeys.',
+    deliverables: ['Responsive healthcare marketing website', 'Broker, member and employer application interfaces', 'Coverage finder, plan comparison and enrollment demo flows', 'Animated 3D Care Weave and shared light/dark design system'],
+    tags: ['Healthcare', 'SaaS UI', 'Product design', 'Frontend'],
+    media: { ...localMedia('sanaira', { poster: '/assets/projects/sanaira/care-weave-still-light.webp' }), showcaseWidths: [1440, 1440] },
+    mediaAlt: {
+      hero: 'Sanaira Health homepage: Coverage for your kind of life, beside its animated Care Weave and member coverage preview',
+      detail: 'Sanaira broker application overview with workload, client follow-up and recent activity',
+      mobile: 'Sanaira Health responsive homepage on a phone',
+    },
+    evidenceTitle: 'One brand, from discovery to workspace.',
+    evidenceCopy: 'Coverage discovery and comparison lead into application interfaces for client records, quotes, enrollment, documents, messages and renewals.',
+    sourceNote: 'Sanaira is a fictional healthcare brand and an interactive frontend template. Plans, prices, people and metrics are illustrative demo content; no live insurance quoting, enrollment, accounts or backend service is claimed.',
+  },
+  {
     slug: 'prima',
     title: 'PRIMA',
     category: 'Hospitality network',
@@ -55,17 +83,17 @@ export const projects = [
     presentation: 'atlas',
     summary: 'A hospitality network pairing live restaurant booking with tracked, rewarded recommendations from concierges and hotels.',
     role: 'UI direction · Frontend',
-    contribution: 'Interface direction and responsive frontend work for a hospitality product where access, attribution and settlement need to read as one coherent experience.',
+    contribution: 'Interface direction and responsive frontend work for a hospitality product where booking, recommendations and payouts need to read as one coherent experience.',
     deliverables: ['Website and product-interface direction', 'Responsive frontend production', 'Interaction and content presentation'],
     tags: ['Hospitality', 'UI design', 'Frontend'],
     media: localMedia('prima'),
     mediaAlt: {
       hero: 'PRIMA homepage showing its recommendation network, with Hotels, Curators and Companies around the PRIMA mark',
-      detail: 'PRIMA interface section explaining access, attribution and settlement',
+      detail: 'PRIMA hotels page section explaining what a property earns from free and prime table fees',
       mobile: 'PRIMA responsive homepage showing the recommendation network and its introduction on a phone',
     },
-    evidenceTitle: 'Access, attribution and settlement, on one rail.',
-    evidenceCopy: 'The public site moves from a live view of the booking app to a three-part model of access, attribution and settlement, then to a page for each side of the network.',
+    evidenceTitle: 'Two kinds of table, one shared fee.',
+    evidenceCopy: 'The public site moves from a network of recommenders to a booking app with live times, explains how free and prime table fees are shared, and gives each kind of partner its own page.',
   },
   {
     slug: 'bizcare',
@@ -175,35 +203,6 @@ export const projects = [
     evidenceTitle: 'From cast and clips to a producer pitch.',
     evidenceCopy: 'The site moves from the series premise to featured clips, the cast, a gallery and a dedicated page for producers.',
   },
-  {
-    slug: 'pnw-leads',
-    title: 'PNWLeads',
-    category: 'Lead-generation website',
-    status: 'Public portfolio concept',
-    liveUrl: 'https://www.usmankhairdin.com/portfolio/PNWLeads/',
-    poster: '/assets/posters/pnw-leads.svg',
-    accent: '#2e68f1',
-    surface: '#eef3ff',
-    surfaceLight: '#e2edfa',
-    surfaceDark: '#0b1a35',
-    presentation: 'signal',
-    summary: 'A responsive single-page concept for a Pacific Northwest lead-generation offer built on local SEO, paid ads and canvassing.',
-    role: 'Public portfolio presentation',
-    contextLabel: 'PROJECT CONTEXT',
-    deliverablesLabel: 'VISIBLE SURFACES',
-    contribution: 'The public portfolio concept structures a lead-generation offer, its three-part acquisition process and contact path into a responsive marketing interface.',
-    deliverables: ['Lead-generation service overview', 'Three-part acquisition process', 'Responsive public website'],
-    tags: ['Lead generation', 'Services', 'Responsive web'],
-    media: localMedia('pnw-leads'),
-    mediaAlt: {
-      hero: 'PNWLeads responsive marketing homepage with lead-generation positioning and dashboard composition',
-      detail: 'PNWLeads interface section presenting its three-part acquisition process',
-      mobile: 'PNWLeads responsive hero with qualified-leads positioning and calls to action',
-    },
-    evidenceTitle: 'One offer, three acquisition paths.',
-    evidenceCopy: 'The page moves from a dashboard-led hero to a proof band, a three-part process, testimonials and a contact call to action.',
-    sourceNote: 'Figures and testimonials visible inside the public concept are interface content, not verified client results, and are not claimed here as outcomes.',
-  },
 ]
 
 // The two self-initiated portfolio case studies featured ahead of the selected projects on the Work page.
@@ -214,8 +213,8 @@ export const featuredProjects = [
     category: 'PRODUCT / WEB EXPERIENCE',
     summary: 'A self-initiated portfolio designed and built to connect product thinking, responsive UI and production frontend work.',
     tags: ['Product Design', 'UI/UX', 'Design System', 'Frontend'],
-    image: '/assets/case-studies/personal-portfolio-web/home-light-desktop.webp',
-    imageAlt: 'Personal Portfolio Web home experience with the design and build introduction',
+    image: '/assets/case-studies/personal-portfolio-web/home-light-desktop.webp?v=20261013-2',
+    imageAlt: 'Personal Portfolio Web: the Web Experience homepage, its headline beside a real PRIMA interface',
   },
   {
     title: 'Personal Portfolio — 3D',
@@ -223,8 +222,8 @@ export const featuredProjects = [
     category: 'SPATIAL / 3D EXPERIENCE',
     summary: 'An immersive counterpart that turns the same professional story into navigable rooms and purposeful interaction.',
     tags: ['Spatial Experience', 'Interaction Design', 'WebGL', 'Frontend'],
-    image: '/assets/case-studies/personal-portfolio-3d/about-room.webp',
-    imageAlt: 'Personal Portfolio 3D About room with spatial typography, artwork and furniture',
+    image: '/assets/case-studies/personal-portfolio-3d/corridor-hall.webp',
+    imageAlt: 'Personal Portfolio 3D: the corridor, with glass doors to the rooms and the Contact door at the far end',
   },
 ]
 

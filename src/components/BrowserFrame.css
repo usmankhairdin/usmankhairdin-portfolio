@@ -13,7 +13,7 @@
      --uf-shadow    the shell shadow      (override wholesale for a dark project stage)
    ============================================================================ */
 .ui-frame{
-  --uf-accent:var(--accent,#455dff);
+  --uf-accent:var(--accent,var(--brand-blue));
   --uf-fg-rgb:var(--text-rgb,9 17 29);
   --uf-muted:var(--text-3,#7b8490);
   --uf-bg:color-mix(in srgb,var(--uf-accent) 8%,var(--panel-solid,#fff));

@@ -8,7 +8,8 @@
  * Run:  node scripts/capture-case-study-evidence.mjs [slug | slug:name ...]      (no argument = every project; slug:name = one capture)
  *
  * Desktop shots are 1440x900 (the 16:10 proportion of the site's browser frame) at 2x, saved 1920 px wide; mobile shots are
- * 390x844 at 3x, saved 780 px wide. Fixed headers are hidden on scrolled shots so each crop is clean.
+ * 390x844 at 3x, saved 780 px wide. Fixed headers are hidden on scrolled shots so each crop is clean. A page that scrolls inside
+ * its own container instead of the document (PRIMA's partner and About pages) is measured and scrolled through that container.
  */
 import { createRequire } from 'node:module'
 import { mkdir } from 'node:fs/promises'
@@ -33,17 +34,20 @@ const PNW = 'https://www.usmankhairdin.com/portfolio/PNWLeads/'
 // { name, url, at: { text | y }, top: px above the landmark, mobile?: true, wait?: extra ms before the shot, prep?: async (page) => void }
 const SHOTS = {
   prima: [
-    { name: 'live-inventory', url: `${PRIMA}/`, at: { text: 'Live inventory, not a waiting list' }, top: 150 },
-    { name: 'recommendation', url: `${PRIMA}/`, at: { text: 'Word of mouth already moves trillions' }, top: 120 },
-    { name: 'rail', url: `${PRIMA}/`, at: { text: 'One rail beneath the whole night out' }, top: 100 },
-    { name: 'markets', url: `${PRIMA}/`, at: { text: 'Please select your market' }, top: 90 },
-    { name: 'roadmap', url: `${PRIMA}/`, at: { text: 'Boston' }, top: 60 },
+    { name: 'economy', url: `${PRIMA}/about`, at: { y: 0 } },
+    // These sections reveal as they scroll in, so their landmarks measure off; the crops are set by position instead.
+    { name: 'find-table', url: `${PRIMA}/about`, at: { y: 1258 } },
+    { name: 'markets', url: `${PRIMA}/about`, at: { text: "Where you'll find us" }, top: 90 },
+    { name: 'who-sent', url: `${PRIMA}/restaurants`, at: { y: 1700 } },
+    { name: 'earnings', url: `${PRIMA}/hotels`, at: { text: 'How you earn' }, top: 24 },
     { name: 'city', url: `${PRIMA}/city/miami`, at: { y: 0 } },
-    { name: 'restaurants', url: `${PRIMA}/for-restaurants`, at: { y: 0 } },
-    { name: 'hotels', url: `${PRIMA}/for-hotels`, at: { y: 0 } },
-    { name: 'curators', url: `${PRIMA}/website/concierges`, at: { y: 0 } },
+    { name: 'restaurant', url: `${PRIMA}/restaurant/miami-zuma`, at: { y: 0 } },
+    { name: 'restaurants', url: `${PRIMA}/restaurants`, at: { y: 0 } },
+    { name: 'hotels', url: `${PRIMA}/hotels`, at: { y: 0 } },
+    { name: 'curators', url: `${PRIMA}/curators`, at: { y: 0 } },
+    { name: 'companies', url: `${PRIMA}/companies`, at: { y: 0 } },
     { name: 'm-home', url: `${PRIMA}/`, at: { y: 0 }, mobile: true },
-    { name: 'm-live', url: `${PRIMA}/`, at: { text: 'Live inventory, not a waiting list' }, top: 40, mobile: true },
+    { name: 'm-restaurant', url: `${PRIMA}/restaurant/miami-zuma`, at: { y: 0 }, mobile: true },
     { name: 'm-city', url: `${PRIMA}/city/miami`, at: { y: 0 }, mobile: true },
   ],
   bizcare: [
@@ -124,12 +128,21 @@ async function decline(page) {
 }
 
 // Wait until the page's images have actually painted (the Bum.Life build serves large PNGs), then return to the top.
+// The element that really scrolls is marked first: the document, or a full-height container that scrolls further than it.
 async function settle(page) {
   await page.waitForTimeout(2600)
   await decline(page)
   await page.evaluate(async () => {
+    let scroller = document.scrollingElement
+    let extra = scroller.scrollHeight - scroller.clientHeight
+    for (const el of document.querySelectorAll('body *')) {
+      if (!/(auto|scroll)/.test(getComputedStyle(el).overflowY) || el.clientHeight < innerHeight * 0.6) continue
+      if (el.scrollHeight - el.clientHeight > extra + 200) { scroller = el; extra = el.scrollHeight - el.clientHeight }
+    }
+    document.querySelectorAll('[data-shot-scroller]').forEach((el) => el.removeAttribute('data-shot-scroller'))
+    if (scroller !== document.scrollingElement) scroller.setAttribute('data-shot-scroller', '1')
     const step = Math.round(innerHeight * 0.6)
-    for (let y = 0; y < document.documentElement.scrollHeight; y += step) { window.scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 160)) }
+    for (let y = 0; y < scroller.scrollHeight; y += step) { scroller.scrollTo({ top: y, behavior: 'instant' }); await new Promise((r) => setTimeout(r, 160)) }
     const deadline = Date.now() + 70000
     while (Date.now() < deadline) {
       const pending = [...document.images].filter((i) => !(i.complete && i.naturalWidth > 0) && i.getBoundingClientRect().width > 8 && getComputedStyle(i).display !== 'none')
@@ -137,18 +150,19 @@ async function settle(page) {
       pending.forEach((i) => i.scrollIntoView({ block: 'center', behavior: 'instant' }))
       await new Promise((r) => setTimeout(r, 500))
     }
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    scroller.scrollTo({ top: 0, behavior: 'instant' })
   })
   await page.waitForTimeout(1200)
 }
 
-// Absolute page-Y of the landmark: the first heading whose text contains the phrase, else the deepest element that does.
-// Whitespace is ignored so a heading split by <br> or spans still matches.
+// Absolute page-Y of the landmark (in the scrolling container, when the page has one): the first heading whose text contains
+// the phrase, else the deepest element that does. Whitespace is ignored so a heading split by <br> or spans still matches.
 const locate = (page, phrase) => page.evaluate((needle) => {
   const norm = (value) => value.replace(/\s+/g, '').toLowerCase()
   const want = norm(needle)
   const shown = (el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== 'hidden' }
-  const top = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY)
+  const scroller = document.querySelector('[data-shot-scroller]')
+  const top = (el) => Math.round(el.getBoundingClientRect().top + (scroller ? scroller.scrollTop - scroller.getBoundingClientRect().top : window.scrollY))
   for (const el of document.querySelectorAll('h1,h2,h3,h4')) if (shown(el) && norm(el.textContent).includes(want)) return top(el)
   let best = null
   for (const el of document.querySelectorAll('body *')) {
@@ -197,20 +211,24 @@ async function run(slug, browser, only) {
         }
         if (shot.prep) await shot.prep(page)
         if (shot.wait) await page.waitForTimeout(shot.wait)
-        const total = await page.evaluate(() => document.documentElement.scrollHeight)
-        y = Math.min(y, Math.max(0, total - viewport.height))
-        await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y)
+        const furthest = await page.evaluate(() => { const s = document.querySelector('[data-shot-scroller]') || document.scrollingElement; return s.scrollHeight - s.clientHeight })
+        y = Math.min(y, Math.max(0, furthest))
+        await page.evaluate((top) => (document.querySelector('[data-shot-scroller]') || document.scrollingElement).scrollTo({ top, behavior: 'instant' }), y)
         await page.waitForTimeout(900)
         // Hide fixed/sticky chrome so each crop is a clean page moment: bottom-anchored banners always, top bars once scrolled
-        // (the very top of a page keeps its own header).
+        // (the very top of a page keeps its own header). A fixed layer that holds the page itself (its scrolling container, or a
+        // full-screen backdrop) is page, not chrome, and stays.
         await page.evaluate(({ scrolled, height }) => {
           document.querySelectorAll('[data-shot-hidden]').forEach((el) => { el.style.visibility = ''; el.removeAttribute('data-shot-hidden') })
+          const scroller = document.querySelector('[data-shot-scroller]')
           for (const el of document.querySelectorAll('body *')) {
             const position = getComputedStyle(el).position
             if (position !== 'fixed' && position !== 'sticky') continue
             const r = el.getBoundingClientRect()
             if (r.width < 60 || r.height < 12) continue
-            const bottomAnchored = r.top > height * 0.5
+            if ((scroller && el.contains(scroller)) || r.height > height * 0.6) continue
+            // a sticky panel low in the view (a booking column) is page content; only fixed layers there are banners
+            const bottomAnchored = position === 'fixed' && r.top > height * 0.5
             if (bottomAnchored || (scrolled && (r.width > 200 || r.height > 20))) { el.style.visibility = 'hidden'; el.setAttribute('data-shot-hidden', '1') }
           }
         }, { scrolled: y > 40, height: viewport.height })

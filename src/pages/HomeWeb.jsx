@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import EditorialPage from '../components/editorial/EditorialPage.jsx'
 import { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
+import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
 import SplashBackdrop from '../components/SplashBackdrop.jsx'
 import { hostLabel, projectAsset, projects } from '../data/projects.js'
@@ -68,7 +70,16 @@ function Browser({ project, image, url, alt, sizes, eager = false, className = '
   </span>
 }
 
+// Each section that leads to Services, For Agencies or Contact carries that page's own 3D sculpture, smaller, as its sign.
+const SCULPTURE = {
+  services: '/assets/services/interface-sculpture.webp',
+  agencies: '/assets/agencies/partnership-sculpture.webp',
+  contact: '/assets/contact/conversation-sculpture.webp',
+}
+
 export default function HomeWeb() {
+  // the Services sculpture's floor shadow is its own layer: shown once the artwork has loaded, as on Services
+  const [servicesArtwork, setServicesArtwork] = useState(false)
   return <EditorialPage className="home-web">
     <section className="home-hero" aria-labelledby="home-title">
       <SplashBackdrop scope=".home-hero" anchor=".home-hero__visual" artZones="box" copyZones={HERO_TEXT} cta=".home-hero__actions" copy=".home-hero__copy" scroller={null} homes={HERO_TAGS} />
@@ -126,6 +137,7 @@ export default function HomeWeb() {
           <h2 id="home-capabilities-title">Design and development, <em>in the same hands.</em></h2>
           <p>Figma for the design. A component-based frontend for the build.</p>
           <EditorialLink to="/services/">Services in detail</EditorialLink>
+          <GroundedSculpture src={SCULPTURE.services} className={`home-sculpture home-sculpture--services${servicesArtwork ? ' is-ready' : ''}`} surfaceLightOnly loading="lazy" onLoad={() => setServicesArtwork(true)} />
         </header>
         <div className="home-capabilities__body">
           <ul className="home-capabilities__list">
@@ -158,12 +170,14 @@ export default function HomeWeb() {
     <section className="home-section home-close" aria-label="Agencies and new projects">
       <div className="home-wrap home-close__layout">
         <div className="home-close__agency" data-editorial-reveal>
+          <GroundedSculpture src={SCULPTURE.agencies} className="home-sculpture home-sculpture--close" loading="lazy" />
           <p className="home-eyebrow">For agencies</p>
           <h2>Working with an <em>agency?</em></h2>
           <p>I work from your brief, within your process, on a defined scope. Bring me in for UI design, frontend, or a focused slice of both.</p>
           <EditorialLink to="/for-agencies/">See the agency model</EditorialLink>
         </div>
         <div className="home-close__contact" data-editorial-reveal>
+          <GroundedSculpture src={SCULPTURE.contact} className="home-sculpture home-sculpture--close" loading="lazy" />
           <h2>Let’s talk about your next <em>project.</em></h2>
           <p>A clear brief is enough to start.</p>
           <ActionLink to="/contact/">Discuss a project <span aria-hidden="true">↗</span></ActionLink>

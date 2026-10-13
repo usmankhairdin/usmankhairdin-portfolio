@@ -1,4 +1,5 @@
 import { projectAsset } from './projects.js'
+import { sanairaCaseStudy } from './sanairaCaseStudy.js'
 /*
  * Case-study content for the BODY of each project's detail page (everything below the hero), keyed by the project's slug.
  *
@@ -53,18 +54,19 @@ const bumLife = captures('bum-life', 'https://www.usmankhairdin.com/portfolio/bu
 const pnw = captures('pnw-leads', 'https://www.usmankhairdin.com/portfolio/PNWLeads/')
 
 export const CASE_STUDIES = {
+  sanaira: sanairaCaseStudy,
   prima: {
     overview: {
       title: 'Bookings, recommendations and payouts on one network.',
       lead: 'A hospitality network where guests book held tables, concierges and curators share recommendations, and every introduction is tracked and rewarded.',
       paragraphs: [
-        'The public site opens on the idea of a “recommendation economy”, proves it with a live view of the real booking app, then explains the model in three parts: access, attribution and settlement.',
-        'Restaurants, hotels and curators each get their own page, and city pages list partner venues market by market.',
+        'The public site opens on a single interactive screen: a network of the people and places that recommend restaurants, from concierges and creators to hotels and companies, drawn around the PRIMA mark. Its About page names the idea, a “recommendation economy”, and shows the booking app with live times at real restaurants.',
+        'Restaurants, hotels, curators and companies each get their own page explaining what a booking earns them. City pages map partner venues market by market, and every restaurant has a booking page of its own.',
       ],
       facts: [
-        ['AUDIENCE', 'Guests, concierges and advisors, restaurants and hotels'],
-        ['MARKETS', 'Seven live cities, with more announced'],
-        ['PAGE TYPES', 'Home, city guides, partner pages, sign-in'],
+        ['AUDIENCE', 'Guests, restaurants, hotels, curators and companies'],
+        ['MARKETS', 'Seven live cities, eight more announced'],
+        ['PAGE TYPES', 'Network home, partner pages, city guides, restaurant booking'],
       ],
     },
     chapters: [
@@ -73,20 +75,20 @@ export const CASE_STUDIES = {
         layout: 'aside',
         kicker: 'THE PROPOSITION',
         title: 'Word of mouth, made visible.',
-        intro: 'The homepage frames recommending a restaurant as an economy nobody was paid for, then shows the product that pays it: the real PRIMA app, running inside the page.',
+        intro: 'The About page frames recommending a restaurant as an economy of its own, then shows the product behind it: a phone running the PRIMA app, with tonight’s open times at real Miami restaurants.',
         points: [
-          ['Held inventory', 'Tables at partner restaurants that are otherwise closed'],
-          ['Updating live', 'Availability changes on screen, with no calling ahead or waiting for a reply'],
-          ['Try it', 'Scroll the list and tap a time before any sign-in'],
+          ['Real-time availability', 'Times shown live and booked directly, with no waiting for a call back'],
+          ['One network, every city', 'The same app at home and when travelling'],
+          ['A reward for recommending', 'Earn when someone books a restaurant you shared'],
         ],
         slots: [
           {
             type: 'media',
-            image: prima.at('live-inventory', 'PRIMA homepage section with a phone showing the live PRIMA app listing partner restaurant tables in Paris', '/'),
-            caption: 'HOME / LIVE INVENTORY',
+            image: prima.at('find-table', 'PRIMA About page section A better way to find your next table, with a phone showing tonight’s times at Miami restaurants between the benefits', '/about'),
+            caption: 'ABOUT / FIND YOUR NEXT TABLE',
             support: [
-              { image: prima.at('recommendation', 'PRIMA homepage section explaining that word of mouth moves value but rarely returns it to the person who recommended', '/'), caption: 'HOME / THE ARGUMENT' },
-              { note: { label: 'THE ARGUMENT', text: 'Introductions between people already drive spend that advertising usually gets credit for. PRIMA positions itself as the route that sends that value back to the people who created it.' } },
+              { image: prima.at('economy', 'PRIMA About page hero headed Welcome to the recommendation economy, over a still from its film', '/about'), caption: 'ABOUT / THE ARGUMENT' },
+              { note: { label: 'THE ARGUMENT', text: 'Getting a good table should not mean endless searching, unanswered calls or calling in favours. PRIMA puts live availability in one app, and rewards the people whose recommendations bring the guest.' } },
             ],
           },
         ],
@@ -95,17 +97,25 @@ export const CASE_STUDIES = {
         id: 'model',
         layout: 'top',
         kicker: 'CORE MODEL',
-        title: 'Access, attribution and settlement.',
-        intro: 'One three-part rail sits beneath every booking. The site gives each part its own card and keeps the language calm and specific.',
+        title: 'Two kinds of table, one shared fee.',
+        intro: 'Every partner page explains the same model in its own terms: free tables, paid for by the restaurant; prime tables, paid for by the guest; and a share of that fee for whoever sent the booking.',
         slots: [
-          { type: 'media', image: prima.at('rail', 'PRIMA homepage section titled One rail beneath the whole night out, with three cards for access, attribution and settlement', '/'), caption: 'HOME / THE RAIL' },
+          {
+            type: 'media',
+            image: prima.at('earnings', 'PRIMA hotels page section How you earn: a property keeps 50% of the fee on a free table and 20% on a prime table, above a calculator for its own numbers', '/hotels'),
+            caption: 'HOTELS / HOW YOU EARN',
+            support: [
+              { image: prima.at('who-sent', 'PRIMA restaurants page section More diners. Less guesswork., beside a booking card marked Recommended by a concierge', '/restaurants'), caption: 'RESTAURANTS / WHO SENT THEM' },
+              { note: { label: 'ATTRIBUTION', text: 'Once a guest books through a hotel, their later PRIMA reservations stay attributed to it, in the same city or anywhere else in the network. A curator’s bookings are tracked back to their link.' } },
+            ],
+          },
           {
             type: 'cards',
             numbered: true,
             items: [
-              { title: 'Access', text: 'Held inventory at partner restaurants, across every live market, under a single membership.' },
-              { title: 'Attribution', text: 'Every introduction is recognised and recorded. Concierges, advisors and members all carry credit, and a guest is resolved once, then remembered.' },
-              { title: 'Settlement', text: 'Whoever moved the guest is paid automatically, in real time and on an auditable record.' },
+              { title: 'Standard tables', text: 'Free for the guest. The restaurant pays a per-guest fee only when guests arrive, and whoever sent them keeps half of it.' },
+              { title: 'Prime tables', text: 'On sold-out nights the guest pays a separate fee for a top table. The restaurant keeps 60%, and PRIMA and whoever sent the guest take 20% each.' },
+              { title: 'Attribution', text: 'Every booking is traced to the hotel, curator or company that sent it, and credited to their account.' },
             ],
           },
         ],
@@ -113,16 +123,17 @@ export const CASE_STUDIES = {
       {
         id: 'audiences',
         layout: 'top',
-        kicker: 'THREE SIDES OF THE NETWORK',
+        kicker: 'EVERY SIDE OF THE NETWORK',
         title: 'A page for each side of it.',
-        intro: 'Restaurants, hotels and curators each have a dedicated entry: a hero built around their own goal, three steps, the benefits, and straight answers to the questions they would ask.',
+        intro: 'Restaurants, hotels, curators and companies each have a dedicated page: a hero built around their own goal, how it works for them, and what a booking earns them.',
         slots: [
           {
             type: 'features',
             items: [
-              { image: prima.at('restaurants', 'PRIMA restaurants page hero headed Fill more tables. Pay only when we deliver.', '/restaurants'), label: 'FOR RESTAURANTS', title: 'Fill prime tables on your terms', text: 'Set prime slots and pricing, distribute to a vetted network, get paid on prime bookings. Reservations flow into the system already in use.' },
-              { image: prima.at('hotels', 'PRIMA hotels page hero headed The amenity that actually pays', '/hotels'), label: 'FOR HOTELS', title: 'Give guests the hardest tables', text: 'Concierges secure prime reservations across the stay, earn on every booking, and pay nothing to join.' },
-              { image: prima.at('curators', 'PRIMA curators page hero headed Turn your restaurant recommendations into revenue', '/curators'), label: 'FOR CURATORS', title: 'Turn a taste for places into income', text: 'Curate favourites, share one link, and follow clicks, bookings and pending payouts on a live dashboard.' },
+              { image: prima.at('restaurants', 'PRIMA restaurants page hero headed Fill more tables. Pay only when we deliver.', '/restaurants'), label: 'FOR RESTAURANTS', title: 'Fill more tables, pay on arrival', text: 'Choose which tables to offer and what they cost, night by night. Bookings land in SevenRooms, OpenTable or the system already in use, with nothing new to install.' },
+              { image: prima.at('hotels', 'PRIMA hotels page hero headed The amenity that actually pays', '/hotels'), label: 'FOR HOTELS', title: 'A dining page that pays', text: 'A booking page in the property’s own brand puts its restaurants, spa and events first, then the city’s hard-to-book tables, and goes live in 14 days or less.' },
+              { image: prima.at('curators', 'PRIMA curators page hero headed Turn your restaurant recommendations into revenue', '/curators'), label: 'FOR CURATORS', title: 'Turn a taste for places into income', text: 'Pick restaurants from every city PRIMA holds tables in, share one link to a page of them, and earn on every booking made through it.' },
+              { image: prima.at('companies', 'PRIMA companies page hero headed Bring more to the table', '/companies'), label: 'FOR COMPANIES', title: 'Great tables as a benefit', text: 'Customers, members or employees book through the company’s own app, website or benefits program, and the company earns a share of every booking fee.' },
             ],
           },
         ],
@@ -132,21 +143,22 @@ export const CASE_STUDIES = {
         layout: 'aside',
         aside: 4,
         kicker: 'CITY DISCOVERY',
-        title: 'From market picker to city guide.',
-        intro: 'Location is the main way into the product: a market selector on the homepage leads to city pages that pair a map with featured and complete restaurant lists.',
+        title: 'From city tabs to a booked table.',
+        intro: 'Location is the main way in. City tabs on the About page open each market’s restaurants, city pages pair a map with featured and complete lists, and every restaurant has a booking page with its available times.',
         points: [
-          ['Market cards', 'Seven live cities, each a tall photograph with its restaurant count'],
+          ['City tabs', 'Seven live cities, each opening a row of its partner restaurants'],
           ['City pages', 'A map above featured and complete restaurant lists'],
-          ['Roadmap', 'Upcoming cities appear as “coming soon” cards'],
+          ['Restaurant pages', 'Photographs, a short introduction and the times open today, tomorrow or on a chosen date'],
+          ['Coming soon', 'Eight more destinations listed beneath the tabs'],
         ],
         slots: [
           {
             type: 'media',
-            image: prima.at('markets', 'PRIMA homepage market selector showing photographic city cards for Miami, New York, Los Angeles, Ibiza, London, Paris and Barcelona', '/'),
-            caption: 'HOME / SELECT A MARKET',
+            image: prima.at('markets', 'PRIMA About page section Where you’ll find us, with tabs for Miami, NY, London, Ibiza, Paris, Barcelona and LA above Miami restaurant photographs and the cities coming soon', '/about'),
+            caption: 'ABOUT / WHERE YOU’LL FIND US',
             support: [
               { image: prima.at('city', 'PRIMA city page for Miami with a map of partner restaurants above a featured list', '/city/miami'), caption: 'CITY PAGE / MIAMI' },
-              { image: prima.at('roadmap', 'PRIMA homepage section showing upcoming cities marked coming soon', '/'), caption: 'ROADMAP / COMING SOON' },
+              { image: prima.at('restaurant', 'PRIMA restaurant page for Zuma Miami: photographs, an About text and the Available times panel', '/restaurant/miami-zuma'), caption: 'RESTAURANT PAGE / ZUMA MIAMI' },
             ],
           },
         ],
@@ -156,13 +168,13 @@ export const CASE_STUDIES = {
         layout: 'aside',
         kicker: 'RESPONSIVE PRESENTATION',
         title: 'The same product, on the phone people book from.',
-        intro: 'On a phone, the market picker, the live app view and the city map all reflow into a single column. Headline, selector and proof keep their order, and the city guide leads with its map.',
+        intro: 'On a phone the network homepage, a restaurant’s booking page and the city guide each reflow into a single column. The booking page brings its available times straight under the restaurant’s name, and the city guide leads with its map.',
         slots: [
           {
             type: 'phones',
             items: [
               { image: prima.phone('m-home', 'PRIMA homepage on a phone with the recommendation network around the PRIMA mark', '/'), caption: 'HOME' },
-              { image: prima.phone('m-live', 'PRIMA live inventory section on a phone with the app view below the copy', '/'), caption: 'LIVE APP' },
+              { image: prima.phone('m-restaurant', 'PRIMA restaurant page for Zuma Miami on a phone, with the times open today, tomorrow and Thursday', '/restaurant/miami-zuma'), caption: 'RESTAURANT PAGE' },
               { image: prima.phone('m-city', 'PRIMA Miami city page on a phone with the restaurant map', '/city/miami'), caption: 'CITY GUIDE' },
             ],
           },

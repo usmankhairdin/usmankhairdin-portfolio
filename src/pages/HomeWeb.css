@@ -12,7 +12,7 @@
 .home-web .home-hero__title { margin: 22px 0 0; max-width: 8.6em; font-size: clamp(54px, 6.3vw, 94px); line-height: .98; letter-spacing: -.069em; font-weight: 750; text-wrap: balance; }
 .home-web .home-hero__lede { margin: 28px 0 0; max-width: 500px; font-size: clamp(17px, 1.45vw, 20px); line-height: 1.6; letter-spacing: -.025em; text-wrap: pretty; color: var(--editorial-muted); }
 .home-web .home-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 34px; }
-.home-web main .pill { min-height: 52px; padding-inline: 25px; gap: 25px; font-size: 14px; font-weight: 650; background: var(--editorial-accent-solid, #3157ff); color: #fff; box-shadow: 0 14px 30px rgb(49 87 255 / .2); }
+.home-web main .pill { min-height: 52px; padding-inline: 25px; gap: 25px; font-size: 14px; font-weight: 650; background: var(--editorial-accent-solid, var(--brand-blue)); color: #fff; box-shadow: 0 14px 30px rgb(var(--brand-blue-rgb) / .2); }
 .home-web .home-hero__actions .editorial-link { font-size: 14px; color: var(--editorial-muted); }
 
 .home-web .home-hero__visual { position: relative; margin: 0; min-width: 0; }
@@ -71,6 +71,16 @@
 .home-web .home-capabilities__toolkit span { max-width: 460px; }
 .home-web .home-capabilities__toolkit .editorial-link { font-size: 14px; color: var(--editorial-ink); }
 
+/* The 3D sculptures of the pages these sections lead to, smaller, as their signs (the same artwork, light sweep and floor shadow) */
+.home-web .home-sculpture { position: relative; }
+.home-web .home-sculpture--services { width: min(100%, 470px); margin: clamp(28px, 4vw, 52px) 0 0 -3%; }
+.home-web .home-sculpture--services::before {
+  content: ""; position: absolute; top: 0; left: 0; z-index: -1; width: 100%; aspect-ratio: 1400 / 997;
+  background: url("/assets/services/interface-sculpture-shadow.webp") top left / 100% 100% no-repeat; opacity: 0; pointer-events: none;
+}
+.home-web .home-sculpture--services.is-ready::before { opacity: 1; }
+.home-web .home-sculpture--close { width: min(70%, 290px); margin: 0 0 18px -3%; }
+
 /* How the work moves: one line, three stations, a signal travelling along it */
 .home-web .home-process__steps { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: clamp(48px, 5vw, 72px) 0 0; padding: 0; list-style: none; }
 .home-web .home-process__steps::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--editorial-rule); }
@@ -109,6 +119,7 @@
   .home-web .home-close__layout { grid-template-columns: minmax(0, 1fr); gap: 64px; }
   .home-web .home-close__agency { padding-right: 0; }
   .home-web .home-close__contact { padding: 56px 0 0; border-left: 0; border-top: 1px solid var(--editorial-rule); }
+  .home-web .home-sculpture--services { width: min(80%, 420px); margin-top: 24px; }
 }
 @media (max-width: 800px) {
   .home-web .home-work__list { grid-template-columns: minmax(0, 1fr); }

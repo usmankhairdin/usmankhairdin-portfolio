@@ -3,6 +3,7 @@ import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import ProjectDetailHero from '../components/ProjectDetailHero.jsx'
 import CaseStudyNav from '../components/CaseStudyNav.jsx'
+import SanairaBrandMoment from '../components/sanaira/SanairaBrandMoment.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
 import { disciplineFor, hostLabel, projects, surfacesFor } from '../data/projects.js'
 import { brandFor, brandStyle } from '../data/projectBrands.js'
@@ -43,8 +44,8 @@ function ProjectCloseGraphic(){
   return <div className="project-close-graphic" aria-hidden="true">
     <svg viewBox="0 0 520 330" role="presentation" focusable="false">
       <defs>
-        <linearGradient id="pcgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#795cff"/><stop offset="1" stopColor="#5368ff"/></linearGradient>
-        <linearGradient id="pcgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#2fb4dd"/><stop offset="1" stopColor="#5368ff"/></linearGradient>
+        <linearGradient id="pcgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="color-mix(in srgb, var(--brand-blue) 70%, white)"/><stop offset="1" stopColor="var(--brand-blue)"/></linearGradient>
+        <linearGradient id="pcgB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#2fb4dd"/><stop offset="1" stopColor="var(--brand-blue)"/></linearGradient>
         <linearGradient id="pcgC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ff8a5c"/><stop offset="1" stopColor="#ff5f9e"/></linearGradient>
       </defs>
       <g className="pcg-grid"><path d="M56 52H468M56 106H468M56 160H468M56 214H468M56 268H468"/><path d="M98 28V300M164 28V300M230 28V300M296 28V300M362 28V300M428 28V300"/></g>
@@ -67,6 +68,8 @@ function Points({ items }) {
 // The slots a chapter body is made of (see src/data/projectCaseStudies.js for their shapes).
 function Slot({ slot, layout }) {
   switch (slot.type) {
+    case 'sanaira-brand':
+      return <SanairaBrandMoment />
     case 'media':
       return <div className="cs-media">
         <Figure image={slot.image} caption={slot.caption} sizes={SIZES[layout]} />

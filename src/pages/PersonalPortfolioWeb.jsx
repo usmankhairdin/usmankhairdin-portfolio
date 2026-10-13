@@ -5,24 +5,38 @@ import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
 import { TECH_TAG_MARKS } from '../components/TechTagMarks.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
 import SectionIntro from '../components/ui/SectionIntro.jsx'
+import { ProjectCapture } from '../components/ProjectBrowserPreview.jsx'
 import { WEB_HOME } from '../routeLoaders.js'
 import '../components/BrowserFrame.css'
 import './PersonalPortfolioWeb.css'
 
 const assetRoot = '/assets/case-studies/personal-portfolio-web'
 
+// Captures of the current site. Re-captured files keep their names; CAPTURES versions their URLs so browsers fetch them again.
+const CAPTURES = '20261013-2'
+const shot = (file) => `${assetRoot}/${file}?v=${CAPTURES}`
+
 const images = {
-  homeLight: { src: `${assetRoot}/home-light-desktop.webp`, width: 1440, height: 900, alt: 'Personal portfolio Home experience in the light theme' },
-  homeDark: { src: `${assetRoot}/home-dark-desktop.webp`, width: 1440, height: 900, alt: 'Personal portfolio Home experience in the dark theme' },
-  about: { src: `${assetRoot}/about-desktop.webp`, width: 1440, height: 900, alt: 'About page showing the design and frontend positioning' },
-  agencies: { src: `${assetRoot}/agencies-desktop.webp`, width: 1440, height: 900, alt: 'For Agencies page showing the white-label production offer' },
-  contact: { src: `${assetRoot}/contact-desktop.webp`, width: 1440, height: 900, alt: 'Contact page showing the brief-led enquiry experience' },
-  designSystem: { src: `${assetRoot}/design-system-desktop.webp`, width: 1440, height: 900, alt: 'Implemented portfolio Design System page' },
+  homeLight: { src: shot('home-light-desktop.webp'), width: 1440, height: 900, alt: 'Web Experience homepage in the light theme: the headline, the two actions and a real PRIMA interface' },
+  homeDark: { src: shot('home-dark-desktop.webp'), width: 1440, height: 900, alt: 'Web Experience homepage in the dark theme' },
+  about: { src: shot('about-desktop.webp'), width: 1440, height: 900, alt: 'About page hero: Thoughtfully designed and built, beside the UKD sculpture' },
+  agencies: { src: shot('agencies-desktop.webp'), width: 1440, height: 900, alt: 'For Agencies page hero: Your agency, one team, beside the linked-rings sculpture' },
+  contact: { src: shot('contact-desktop.webp'), width: 1440, height: 900, alt: 'Contact page hero with the envelope sculpture, above the brief form' },
+  designSystem: { src: shot('design-system-desktop.webp'), width: 1440, height: 900, alt: 'Implemented portfolio Design System page' },
   prima: { src: `${assetRoot}/project-prima-desktop.webp?v=20261013`, width: 1440, height: 900, alt: 'PRIMA project detail page with shared browser presentation' },
-  work: { src: `${assetRoot}/work-project-desktop.webp?v=20261013`, width: 1440, height: 900, alt: 'Work page project panel showing PRIMA in the shared showcase geometry' },
-  tablet: { src: `${assetRoot}/about-tablet.webp`, width: 768, height: 1024, alt: 'About experience at a tablet viewport in the dark theme' },
-  mobileHome: { src: `${assetRoot}/home-mobile.webp`, width: 390, height: 844, alt: 'Home experience adapted for a mobile viewport' },
-  mobileServices: { src: `${assetRoot}/services-mobile.webp`, width: 390, height: 844, alt: 'Services experience adapted for a mobile viewport in the dark theme' },
+  work: { src: `${assetRoot}/work-project-desktop.webp?v=20261013c`, width: 1440, height: 900, alt: 'Work page project panel showing PRIMA in the shared showcase geometry' },
+  tablet: { src: shot('about-tablet.webp'), width: 768, height: 1024, alt: 'About page at a tablet viewport in the dark theme' },
+  mobileHome: { src: shot('home-mobile.webp'), width: 390, height: 844, alt: 'Web Experience homepage adapted for a mobile viewport' },
+  mobileServices: { src: shot('services-mobile.webp'), width: 390, height: 844, alt: 'Services page adapted for a mobile viewport in the dark theme' },
+}
+
+// The homepage top to bottom, shown the way every portfolio item shows its main page: a real full-page capture in a fixed
+// browser frame, read by moving the pointer over it.
+const WEB_PAGE = {
+  slug: 'personal-portfolio-web',
+  title: 'Web Experience',
+  media: { fullpage: [shot('web-fullpage.webp')] },
+  mediaAlt: { hero: 'The Web Experience homepage, top to bottom: the hero with a real PRIMA interface, selected work, capabilities, how the work moves, and the agency and contact routes' },
 }
 
 const stack = [
@@ -95,7 +109,10 @@ export default function PersonalPortfolioWeb() {
             </div>
           </div>
           <div className="ppw-hero__media">
-            <BrowserCapture image={images.homeLight} eager className="ppw-hero__browser" />
+            <figure className="ppw-browser ui-frame ppw-hero__browser">
+              <div className="ui-frame__bar" aria-hidden="true"><i /><i /><i /><span className="ui-frame__url">usmankhairdin.com/web</span></div>
+              <ProjectCapture project={WEB_PAGE} eager className="ppw-browser__screen ui-frame__screen" placeholderSource={images.homeLight.src} />
+            </figure>
             <figure className="ppw-device ppw-hero__device"><CaptureImage image={images.mobileHome} eager /></figure>
             <div className="ppw-hero__stamp" aria-hidden="true"><span>DESIGN</span><i /><span>BUILD</span><i /><span>SHIP</span></div>
           </div>
@@ -113,6 +130,7 @@ export default function PersonalPortfolioWeb() {
           <div className="ppw-overview__copy">
             <p>The Web Experience gives selected direct clients a clear view of what can be hired, while giving agency partners a separate white-label pathway. The visual system supports both audiences without changing voice or diluting the work.</p>
             <p>It also acts as the stable editorial layer around the broader portfolio. The immersive Corridor remains a distinct spatial experience; the Web route carries the detailed service, project and contact narrative.</p>
+            <p>Its homepage leads with evidence rather than a portrait: a real project interface, three live projects, the capabilities in a line each, how the work moves, and the routes for agencies and new projects.</p>
           </div>
           <dl className="ppw-facts">
             <div><dt>PROJECT</dt><dd>Self-initiated portfolio</dd></div>
@@ -173,8 +191,8 @@ export default function PersonalPortfolioWeb() {
         className="ppw-section--centered"
       >
         <div className="ppw-theme-pair">
-          <article><span>LIGHT / DEFAULT</span><BrowserCapture image={images.homeLight} eager /></article>
-          <article><span>DARK</span><BrowserCapture image={images.homeDark} eager /></article>
+          <article><span>LIGHT / DEFAULT</span><BrowserCapture image={images.homeLight} label="usmankhairdin.com/web" /></article>
+          <article><span>DARK</span><BrowserCapture image={images.homeDark} label="usmankhairdin.com/web" /></article>
         </div>
       </CaseSection>
 
@@ -242,7 +260,7 @@ export default function PersonalPortfolioWeb() {
         <div className="ppw-stack">
           <span className="kicker">WEB EXPERIENCE STACK</span>
           <div className="web-tag-group" aria-label="Web Experience stack tags">{stack.map(([id, label]) => <TechTag id={id} key={label}>{label}</TechTag>)}</div>
-          <p>React Three Fiber, Three.js and Drei power the separate Corridor experience; they are not presented as the primary Web stack.</p>
+          <p>React Three Fiber and Three.js power the separate Corridor experience; they are not presented as the primary Web stack.</p>
         </div>
       </CaseSection>
 

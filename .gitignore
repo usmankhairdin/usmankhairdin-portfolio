@@ -10,3 +10,4 @@ dist/
 logs/
 coverage/
 .nyc_output/
+.tmp-sanaira-captures/

@@ -27,7 +27,7 @@ html body .case-study.pj-branded main .cs-chapter--b,
 html body .case-study.pj-branded main .cs-scope--b{background:var(--bt-s1);color:var(--bt-ink)}
 html body .case-study.pj-branded main .section--project-close{background:var(--splash-surface);color:#0c1830;position:relative;isolation:isolate;overflow:hidden}
 html body .case-study.pj-branded main .section--project-close:before{content:"";position:absolute;inset:0;z-index:0;background-image:linear-gradient(90deg,var(--splash-grid) 1px,transparent 1px);background-size:var(--splash-pitch) 100%;opacity:.82;pointer-events:none}
-html body .case-study.pj-branded main .section--project-close:after{content:"";position:absolute;right:-5%;top:14%;width:min(34vw,460px);aspect-ratio:1.5;border:1px solid rgb(83 104 255 / .13);border-radius:28px;box-shadow:inset 0 0 0 28px rgb(83 104 255 / .025);transform:rotate(-7deg);animation:projectCloseFloat 9s ease-in-out -3s infinite alternate;pointer-events:none}
+html body .case-study.pj-branded main .section--project-close:after{content:"";position:absolute;right:-5%;top:14%;width:min(34vw,460px);aspect-ratio:1.5;border:1px solid rgb(var(--brand-blue-rgb) / .13);border-radius:28px;box-shadow:inset 0 0 0 28px rgb(var(--brand-blue-rgb) / .025);transform:rotate(-7deg);animation:projectCloseFloat 9s ease-in-out -3s infinite alternate;pointer-events:none}
 html body .case-study.pj-branded main .section--project-close>.route-wrap{position:relative;z-index:2}
 html[data-theme="dark"] body .case-study.pj-branded main .section--project-close{color:#edf2fa}
 @keyframes projectCloseFloat{from{transform:translate3d(0,-4px,0) rotate(-7deg)}to{transform:translate3d(-8px,7px,0) rotate(-5deg)}}
@@ -101,9 +101,9 @@ html body .case-study.pj-branded main .case-deliverables p b{color:var(--bt-acce
 html body .case-study.pj-branded main .section--project-close .pill--primary{
   background:var(--blue);
   color:#fff;
-  box-shadow:0 10px 22px rgb(83 104 255 / .22);
+  box-shadow:0 10px 22px rgb(var(--brand-blue-rgb) / .22);
 }
-html body .case-study.pj-branded main .section--project-close .pill--primary:hover{box-shadow:0 13px 28px rgb(83 104 255 / .3)}
+html body .case-study.pj-branded main .section--project-close .pill--primary:hover{box-shadow:0 13px 28px rgb(var(--brand-blue-rgb) / .3)}
 html body .case-study.pj-branded main .section--project-close .pill--dark{
   background:rgb(255 255 255 / .54);
   color:#0c1830;
@@ -111,7 +111,7 @@ html body .case-study.pj-branded main .section--project-close .pill--dark{
 }
 html body .case-study.pj-branded main .section--project-close .pill--dark:hover{
   background:rgb(255 255 255 / .78);
-  box-shadow:inset 0 0 0 1.5px rgb(83 104 255 / .3),0 12px 30px rgb(52 78 140 / .08);
+  box-shadow:inset 0 0 0 1.5px rgb(var(--brand-blue-rgb) / .3),0 12px 30px rgb(52 78 140 / .08);
 }
 html[data-theme="dark"] body .case-study.pj-branded main .section--project-close .pill--dark{background:rgb(255 255 255 / .07);color:#edf2fa;box-shadow:inset 0 0 0 1.5px rgb(174 191 255 / .2)}
 html[data-theme="dark"] body .case-study.pj-branded main .section--project-close .pill--dark:hover{background:rgb(255 255 255 / .11);box-shadow:inset 0 0 0 1.5px rgb(142 160 255 / .45)}

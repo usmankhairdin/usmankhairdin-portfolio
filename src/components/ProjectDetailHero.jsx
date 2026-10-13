@@ -52,6 +52,7 @@ export default function ProjectDetailHero({ project }) {
         </dl>
         <div className="pdh__actions">
           <ActionLink className="route-hero__cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Open public project <span aria-hidden="true">↗</span></ActionLink>
+          {project.appUrl && <TextCTA href={project.appUrl} target="_blank" rel="noopener noreferrer">Explore application ↗</TextCTA>}
           <TextCTA to="/work/">← All selected work</TextCTA>
         </div>
       </div>

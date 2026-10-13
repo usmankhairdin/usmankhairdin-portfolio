@@ -3,7 +3,7 @@
   --about-ink: #0c1830;
   --about-muted: #4a5a76;
   --about-surface: #f5f9ff;
-  --about-accent: #3157ff;
+  --about-accent: var(--brand-blue-text);
   --about-rule: rgb(52 78 140 / .19);
   padding-top: 0;
   color: var(--about-ink);
@@ -64,7 +64,7 @@ html[data-theme="dark"] .about-editorial__sculpture { filter: url(#about-sculptu
 .about-editorial__career h3 { font-size: 18px; font-weight: 600; letter-spacing: -.035em; line-height: 1.4; margin: 0 0 6px; }
 .about-editorial__career p { font-size: 14px; line-height: 1.6; margin: 0; color: var(--about-muted); }
 .about-editorial__career p span { display: block; }
-.about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(48 122 255 / .8), transparent 75%), #1954df; color: #fff; padding: 72px 0; overflow: clip; }
+.about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(48 122 255 / .8), transparent 75%), var(--brand-blue); color: #fff; padding: 72px 0; overflow: clip; }
 .about-editorial__work-layout { display: grid; grid-template-columns: .69fr 1.31fr; gap: 44px; align-items: center; }
 .about-editorial__work-copy { min-width: 0; position: relative; z-index: 1; }
 .about-editorial__work h2 { margin: 0 0 24px; font-size: clamp(40px, 4.6vw, 66px); font-weight: 600; line-height: .99; letter-spacing: -.055em; }
@@ -90,9 +90,9 @@ html[data-theme="dark"] .about-editorial__sculpture { filter: url(#about-sculptu
 }
 .about-editorial[data-page-visible="false"] .about-editorial__work-preview { animation-play-state: paused; }
 .about-editorial [data-editorial-waiting] { opacity: 0; }
-html[data-theme="dark"] .route-page.about-editorial { --about-ink: #eceff5; --about-muted: #b0bcd0; --about-surface: #0e1625; --about-accent: #94a7ff; --about-rule: rgb(188 204 242 / .2); }
-html[data-theme="dark"] .about-editorial__hero-actions .pill { color: #fff; background: #455dff; }
-html[data-theme="dark"] .about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(42 102 232 / .7), transparent 75%), #184bc5; }
+html[data-theme="dark"] .route-page.about-editorial { --about-ink: #eceff5; --about-muted: #b0bcd0; --about-surface: #0e1625; --about-accent: var(--brand-blue-text); --about-rule: rgb(188 204 242 / .2); }
+html[data-theme="dark"] .about-editorial__hero-actions .pill { color: #fff; background: var(--brand-blue); }
+html[data-theme="dark"] .about-editorial__work { background: radial-gradient(ellipse at 72% 10%, rgb(42 102 232 / .7), transparent 75%), var(--brand-blue); }
 @media (min-width: 1600px) { .about-editorial__hero { padding-top: 156px; padding-bottom: 76px; } }
 @media (max-width: 1100px) {
   .about-editorial__wrap { width: calc(100% - 64px); }

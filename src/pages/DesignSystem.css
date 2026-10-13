@@ -128,9 +128,9 @@
 .ds-theme-sample{position:relative;overflow:hidden;border:1px solid transparent}
 .ds-theme-sample>i{position:absolute;right:-28px;bottom:-40px;width:150px;height:150px;border-radius:50%;box-shadow:inset 0 0 0 1px currentColor;opacity:.1}
 .ds-theme-sample--light{background:#f0f5fc;color:#0c1830;border-color:rgb(52 78 140 / .13)}
-.ds-theme-sample--light p{color:#4a5a76}.ds-theme-sample--light span{color:#3549b8}
+.ds-theme-sample--light p{color:#4a5a76}.ds-theme-sample--light span{color:var(--brand-blue-text)}
 .ds-theme-sample--dark{background:#0e1624;color:#edf2fa;border-color:rgb(183 199 255 / .14)}
-.ds-theme-sample--dark p{color:#a8b5ca}.ds-theme-sample--dark span{color:#8ea0ff}
+.ds-theme-sample--dark p{color:#a8b5ca}.ds-theme-sample--dark span{color:var(--brand-blue-text)}
 .ds-motion-sample{border:1px solid var(--ds-line);background:var(--ds-panel)}
 .ds-motion-sample>span{color:var(--color-accent-text)}
 .ds-motion-sample>div{position:relative;height:56px;margin:var(--space-4) 0;border-top:1px solid var(--ds-line);border-bottom:1px solid var(--ds-line)}

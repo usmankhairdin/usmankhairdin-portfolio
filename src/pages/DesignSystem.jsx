@@ -329,9 +329,9 @@ export default function DesignSystem() {
         intro="The core system stays consistent while Home, Work and Corridor retain the specialized behavior their experiences require."
       >
         <div className="ds-system-cards">
-          <article><span>HOME</span><strong>Portrait composition + bespoke physics</strong><p>A tailored opening experience built on the shared Web foundation.</p></article>
+          <article><span>HOME</span><strong>Real project evidence + drifting tool tags</strong><p>A tailored opening experience built on the shared Web foundation.</p></article>
           <article><span>WORK</span><strong>PRIMA-derived project geometry</strong><p>Consistent panels with real screenshots and controlled choreography.</p></article>
-          <article><span>CORRIDOR</span><strong>Spatial interface + native pointer</strong><p>React Three Fiber, camera, materials and lighting remain a distinct system.</p></article>
+          <article><span>CORRIDOR</span><strong>Spatial interface + game-style look</strong><p>React Three Fiber, camera, materials and lighting remain a distinct system.</p></article>
         </div>
         <div className="ds-stack" aria-label="Production technology stack">
           <span className="kicker">ACTUAL PRODUCTION STACK</span>

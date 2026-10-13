@@ -12,9 +12,10 @@ import { surfacesFor, toneFor, disciplineFor, hostLabel, projectAsset } from '..
 // Fresh captures of the SAME live URLs: 1440x900 viewport, 1x and 2x, one capture system for the whole set.
 export const showcaseImage = (project) => {
   const asset = (file) => projectAsset(project.slug, file)
+  const [small, large] = project.media?.showcaseWidths || [1440, 2880]
   return {
     src: asset('showcase-1x.webp'),
-    srcSet: `${asset('showcase-1x.webp')} 1440w, ${asset('showcase.webp')} 2880w`,
+    srcSet: small === large ? `${asset('showcase.webp')} ${large}w` : `${asset('showcase-1x.webp')} ${small}w, ${asset('showcase.webp')} ${large}w`,
     fallback: project.media?.preview?.[0] || project.poster,
   }
 }

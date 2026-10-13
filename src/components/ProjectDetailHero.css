@@ -31,12 +31,12 @@
   inset:0;
   z-index:-1;
   background:
-    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--accent,#455dff) 20%,transparent),transparent 72%),
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--accent,var(--brand-blue)) 20%,transparent),transparent 72%),
     radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
 }
 html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
   background:
-    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--accent,#455dff) 24%,transparent),transparent 72%),
+    radial-gradient(54% 64% at 74% 46%,color-mix(in srgb,var(--accent,var(--brand-blue)) 24%,transparent),transparent 72%),
     radial-gradient(38% 48% at 6% 96%,rgb(var(--fg-rgb) / .05),transparent 70%);
 }
 .pdh[data-tone="dark"] .pdh__atmosphere{
@@ -71,7 +71,7 @@ html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
   color:var(--fg-2);
 }
 .pdh__meta em{display:flex;align-items:center;gap:9px;font-style:normal;color:var(--fg-3)}
-.pdh__meta em:before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent,#455dff)}
+.pdh__meta em:before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent,var(--brand-blue))}
 .pdh__title{
   margin:clamp(10px,1.4vw,20px) 0 0;
   font:800 clamp(2.4rem,min(7.3vw,calc(100cqw / (var(--wk-chars,6) * .6)),13vh),8.2rem)/.9 var(--sans);
@@ -96,8 +96,8 @@ html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
 /* The site's own controls, untouched: the cobalt .pill--primary and the blue .text-cta. Only their row is set here. */
 .pdh__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
 .pdh__actions .text-cta{margin-top:0}
-.pdh[data-tone="dark"] .text-cta{color:#8ea0ff}
-.pdh__actions a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,#455dff);outline-offset:5px;border-radius:var(--radius-xs)}
+.pdh[data-tone="dark"] .text-cta{color:var(--brand-blue-text)}
+.pdh__actions a:focus-visible{outline:var(--focus-ring-width) solid var(--accent-text,var(--brand-blue));outline-offset:5px;border-radius:var(--radius-xs)}
 .pdh__actions .pill:focus-visible{border-radius:var(--radius-pill)}
 
 /* Shorter desktop screens: the same composition, a little tighter (as on the Work panel). */
@@ -125,7 +125,7 @@ html[data-theme="dark"] .pdh:not([data-tone="dark"]) .pdh__atmosphere{
 }
 
 /* A dark project surface behind the header in the LIGHT theme: use the header's existing light-logo treatment (set only while it is behind it). */
-html[data-theme="light"][data-header-tone="dark"] .site-header-root[data-mode="web"] .site-logo img{
+html[data-theme="light"][data-header-tone="dark"] .site-header-root[data-mode="web"] .site-header:not([data-scrolled="true"]) .site-logo img{
   filter:invert(1) hue-rotate(180deg) brightness(1.06) saturate(1.15);
 }
 
@@ -147,9 +147,9 @@ html[data-theme="light"][data-header-tone="dark"] .site-header-root[data-mode="w
   bottom:10%;
   width:clamp(150px,16vw,250px);
   height:clamp(105px,11vw,170px);
-  border:1px solid color-mix(in srgb,var(--accent,#5368ff) 16%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent,var(--brand-blue)) 16%,transparent);
   border-radius:30px;
-  box-shadow:inset 0 0 0 28px color-mix(in srgb,var(--accent,#5368ff) 3.2%,transparent);
+  box-shadow:inset 0 0 0 28px color-mix(in srgb,var(--accent,var(--brand-blue)) 3.2%,transparent);
   transform:rotate(-8deg);
   animation:pdhAmbientA 10.8s ease-in-out -4s infinite alternate;
 }
@@ -158,7 +158,7 @@ html[data-theme="light"][data-header-tone="dark"] .site-header-root[data-mode="w
   top:18%;
   width:clamp(110px,10vw,165px);
   height:clamp(80px,7.5vw,120px);
-  background:radial-gradient(circle,color-mix(in srgb,var(--accent,#5368ff) 25%,transparent) 1.15px,transparent 1.4px);
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent,var(--brand-blue)) 25%,transparent) 1.15px,transparent 1.4px);
   background-size:18px 18px;
   -webkit-mask-image:linear-gradient(135deg,#000,transparent 88%);
   mask-image:linear-gradient(135deg,#000,transparent 88%);

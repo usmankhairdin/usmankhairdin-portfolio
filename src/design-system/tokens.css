@@ -1,5 +1,13 @@
 /* Foundation aliases: current production values, organized without visual changes. */
 :root{
+  /* Sampled from the blue ribbon in ukd-logo.svg (g1 at 75.081610%). */
+  --brand-blue:#0161fc;
+  --brand-blue-rgb:1 97 252;
+  --brand-blue-text:var(--brand-blue);
+  --brand-blue-text-rgb:var(--brand-blue-rgb);
+  /* The logo's brighter outer ribbon keeps small blue text readable on dark surfaces. */
+  --brand-blue-on-dark:#017ffc;
+  --brand-blue-on-dark-rgb:1 127 252;
   /* Color */
   --color-canvas:var(--bg);
   --color-panel:var(--panel-solid);
@@ -12,9 +20,9 @@
   --color-border-strong:var(--line-strong);
   --color-accent:var(--accent-strong);
   --color-accent-text:var(--accent-text);
-  --color-visual-blue:#5368ff;
-  --color-focus:#455dff;
-  --color-focus-halo:rgba(69,93,255,.09);
+  --color-visual-blue:var(--brand-blue-text);
+  --color-focus:var(--brand-blue-text);
+  --color-focus-halo:rgb(var(--brand-blue-rgb) / .09);
   --color-status-success:#3549b8;
   --color-status-error:#8b302a;
 
@@ -102,6 +110,11 @@
   --focus-ring-offset:4px;
   --focus-ring:var(--focus-ring-width) solid var(--color-focus);
   --focus-field-halo:0 0 0 4px var(--color-focus-halo);
+}
+
+html[data-theme="dark"]{
+  --brand-blue-text:var(--brand-blue-on-dark);
+  --brand-blue-text-rgb:var(--brand-blue-on-dark-rgb);
 }
 
 html[data-theme="dark"] :is(.route-page,.entry-gate--intro){

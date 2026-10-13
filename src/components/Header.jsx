@@ -3,18 +3,18 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useJourney } from '../experience/JourneyContext.jsx'
 import { useWebScroll } from '../scroll/WebScrollProvider.jsx'
 import { preloadRoute, WEB_HOME } from '../routeLoaders.js'
-import useHeaderAutoHide from '../hooks/useHeaderAutoHide.js'
+import useHeaderScrollSurface from '../hooks/useHeaderScrollSurface.js'
 import MenuDrawer from './MenuDrawer.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
 
 /*
- * The ONE shared, frameless navigation system.
+ * The ONE shared navigation system.
  *
- *   web        logo left · Theme + Menu right · auto-hides on scroll · drawer follows the selected theme
+ *   web        logo left · Theme + Menu right · fixed above the page · soft surface after scrolling
  *   immersive  Menu right only (no logo)     · fixed HUD (no auto-hide) · drawer is a fixed neutral presentation
  *
  * Same logo, same Menu control, same drawer, same motion language in both. Immersive mode never mounts the Theme control.
- * The header has no background of its own: only the two circular controls carry a surface.
+ * Web heroes begin behind the transparent header; scrolling adds a soft theme-aware surface without moving the page.
  *
  * In the corridor this component only (a) renders the HUD and (b) reports "menu open" through the existing
  * journey `navigationOpen` flag, which the corridor camera already honours to pause its input. Closing the drawer
@@ -79,7 +79,7 @@ export default function Header({ immersive = false }) {
   const triggerRef = useRef(null)
   const navTimer = useRef(0)
 
-  useHeaderAutoHide(headerRef, { enabled: mode === 'web', paused: open })
+  useHeaderScrollSurface(headerRef, mode === 'web')
 
   const close = useCallback((restoreFocus = false) => {
     setOpen(false)
@@ -167,7 +167,7 @@ export default function Header({ immersive = false }) {
   return <div className="site-header-root" data-mode={mode} data-menu-open={open ? 'true' : 'false'} ref={rootRef}>
     {mode === 'web' && <a className="skip-link" href="#main-content" data-trap-skip>Skip to content</a>}
     {/* `topbar` is kept as a class because the Work page measures it to place its sticky stack. The band itself never moves. */}
-    <header ref={headerRef} className="topbar site-header" data-hidden="false">
+    <header ref={headerRef} className="topbar site-header" data-hidden="false" data-scrolled="false">
       <div className="site-header__inner">
         {logo}
         <div className="site-header__controls">

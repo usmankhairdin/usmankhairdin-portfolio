@@ -93,9 +93,14 @@ const pages = [
 ]
 
 const projectSeo = {
+  sanaira: {
+    title: 'Sanaira Health Case Study | Healthcare Website + SaaS UI',
+    description: 'Explore Sanaira Health: a cinematic healthcare website and companion broker, member and employer application, with coverage discovery and interactive demo workflows.',
+    intent: 'Healthcare website and SaaS application product design case study',
+  },
   prima: {
     title: 'PRIMA Case Study | Hospitality Product UI & Frontend',
-    description: 'Explore PRIMA’s hospitality network interface, bringing restaurant bookings, recommendations, attribution and settlement into one public product story.',
+    description: 'Explore PRIMA’s hospitality network interface, bringing live restaurant booking, rewarded recommendations and partner earnings into one public product story.',
     intent: 'Hospitality product UI and frontend case study',
   },
   bizcare: {
