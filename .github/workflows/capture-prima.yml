@@ -12,7 +12,7 @@ jobs:
   capture:
     if: "!startsWith(github.event.head_commit.message, 'Captured')"
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -33,5 +33,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
           git add review
-          git commit -m "Captured PRIMA screenshots v4 ($GITHUB_RUN_ID)"
+          git commit -m "Captured PRIMA screenshots v5 ($GITHUB_RUN_ID)"
           git push
