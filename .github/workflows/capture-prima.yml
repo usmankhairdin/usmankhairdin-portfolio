@@ -1,0 +1,55 @@
+name: Capture PRIMA screenshots (temporary)
+
+on:
+  push:
+    branches:
+      - capture/prima-screens
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Playwright and sharp (runner only, nothing committed)
+        run: |
+          npm install --no-save --no-audit --no-fund playwright sharp
+          npx playwright install --with-deps chromium
+
+      - name: Point the repo's Windows-only capture scripts at the runner's packages
+        run: |
+          for f in scripts/capture-portfolio-media.mjs scripts/capture-case-study-evidence.mjs scripts/capture-prima-fullpage.mjs; do
+            sed -i "s#require('C:/Users/Usman/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/\(playwright\|sharp\)')#require('\1')#" "$f"
+            sed -i "s#executablePath: chrome, ##; /executablePath: 'C:/d" "$f"
+            grep -n "require('\|launch(" "$f"
+          done
+
+      - name: hero, detail, mobile (capture-portfolio-media.mjs)
+        run: node scripts/capture-portfolio-media.mjs prima
+
+      - name: case-study evidence ev-* (capture-case-study-evidence.mjs)
+        run: node scripts/capture-case-study-evidence.mjs prima
+
+      - name: fullpage (capture-prima-fullpage.mjs)
+        run: node scripts/capture-prima-fullpage.mjs
+
+      - name: showcase (homepage top, 1440x900 at 2x)
+        run: node .github/capture/showcase.mjs
+
+      - name: Current portfolio pages, for reviewing where PRIMA appears
+        run: node .github/capture/review.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prima-assets
+          path: public/assets/projects/prima/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review
+          path: review/
