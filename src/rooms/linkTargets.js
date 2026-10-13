@@ -16,6 +16,7 @@ const PAGES = {
   '/for-agencies/': 'the For Agencies page',
   '/contact/': 'the Contact page',
   '/work/': 'the Work gallery',
+  '/web/': 'the Web Experience',
 }
 
 export function describeLink(route) {

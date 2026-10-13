@@ -37,8 +37,14 @@ const CTA = { label: 'Send a brief', to: '/contact/' }
 // On the Web, Contact is reached through the CTA in the drawer footer, so it is not repeated in the list. It stays in ITEMS for routing and the current-page state.
 // The corridor has no form of its own, so there the CTA leads to the Contact page (Back returns to the same spot), and the
 // list keeps Contact: it walks to the Contact hall.
-// On the Web, Home is the Web Experience's own homepage; in the corridor it leads back out to the entrance at '/'.
-const MENU_ITEMS = ITEMS.filter((item) => item.key !== 'contact').map((item) => (item.key === 'home' ? { ...item, to: WEB_HOME } : item))
+// On the Web, Home is the Web Experience's own homepage, and the last item leads into the Corridor at '/'.
+const MENU_ITEMS = [
+  ...ITEMS.filter((item) => item.key !== 'contact').map((item) => (item.key === 'home' ? { ...item, to: WEB_HOME } : item)),
+  { key: 'corridor', label: '3D Corridor', to: '/' },
+]
+// In the Corridor, a Home item would only reload the page back out at the entrance, so its place goes to the Web
+// Experience. It leaves the way the room links do: the walker's spot is kept, and Back returns them to it.
+const CORRIDOR_ITEMS = ITEMS.map((item) => (item.key === 'home' ? { key: 'web', label: 'Web Experience', to: WEB_HOME } : item))
 
 const routeForPath = {
   '/': 'home',
@@ -104,7 +110,7 @@ export default function Header({ immersive = false }) {
   useEffect(() => () => window.clearTimeout(navTimer.current), [])
 
   const items = useMemo(() => (
-    mode === 'web' ? MENU_ITEMS.map((item) => ({ ...item, warm: () => preloadRoute(routeForPath[item.to]) })) : ITEMS
+    mode === 'web' ? MENU_ITEMS.map((item) => ({ ...item, warm: () => preloadRoute(routeForPath[item.to]) })) : CORRIDOR_ITEMS
   ), [mode])
   const cta = useMemo(() => ({ ...CTA, warm: () => preloadRoute('contact') }), [])
 
@@ -122,9 +128,16 @@ export default function Header({ immersive = false }) {
     window.clearTimeout(navTimer.current)
     navTimer.current = window.setTimeout(() => navigate(to), NAV_DELAY)
   }
+  // the corridor's own link module (already loaded there; kept out of the Web pages' bundle)
+  const leaveCorridor = (to, event) => {
+    if (!plainClick(event)) return
+    event.preventDefault()
+    close()
+    import('../rooms/linkTargets.js').then(({ followLink }) => followLink(to, navigate))
+  }
   const goImmersive = (door, event) => {
     if (!plainClick(event)) return
-    if (!door) { skipBootOnce(); return }   // Home: a normal document load back to the entrance, exactly as before
+    if (!door) { skipBootOnce(); return }   // an item with no room: a normal document load back to the entrance
     // Compact/coarse Corridor presentations intentionally use the static pages;
     // the 3D room HTML is hidden there, so let the link perform its normal load.
     if (window.matchMedia('(max-width: 650px), (pointer: coarse)').matches) return
@@ -132,14 +145,14 @@ export default function Header({ immersive = false }) {
     close()
     journey?.requestDoor(door)
   }
-  const onSelect = (item, event) => (mode === 'web' ? goWeb(item.to, event) : goImmersive(item.door, event))
+  const onSelect = (item, event) => {
+    if (mode === 'web') goWeb(item.to, event)
+    else if (item.key === 'web') leaveCorridor(item.to, event)
+    else goImmersive(item.door, event)
+  }
   const onCta = (event) => {
     if (mode === 'web') { goWeb(CTA.to, event); return }
-    if (!plainClick(event)) return
-    event.preventDefault()
-    close()
-    // the corridor's own link module (already loaded there; kept out of the Web pages' bundle)
-    import('../rooms/linkTargets.js').then(({ followLink }) => followLink(CTA.to, navigate))
+    leaveCorridor(CTA.to, event)
   }
 
   // Web: on the homepage the logo is only a mark (you are already home); everywhere else it leads home.
