@@ -1,59 +1,59 @@
-// PRIMA's redesigned pages scroll inside their own container, so the window is one screen tall.
-// Find each page's scroller, report it, then unroll it and take the whole page 1440 wide.
+// PRIMA's redesigned pages scroll inside #door (a fixed, viewport-tall container). Scroll it a screen at a time and
+// join the screens into one 1440-wide full page. Every pixel is a plain render of the live page.
 import { chromium } from 'playwright'
 import sharp from 'sharp'
 import { mkdir, writeFile } from 'node:fs/promises'
 
 const SITE = 'https://primaapp.com'
-const OUT = 'review/v6'
+const OUT = 'review/v7'
+const W = 1440, H = 900
 await mkdir(OUT, { recursive: true })
 const lines = []
 const log = (s) => { lines.push(s); console.log(s) }
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
 const browser = await chromium.launch()
 
-const findScrollers = (page) => page.evaluate(() => [...document.querySelectorAll('*')]
-  .filter((el) => { const cs = getComputedStyle(el); return /(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 50 })
-  .map((el) => ({ tag: el.tagName, id: el.id, cls: String(el.className).slice(0, 80), sh: el.scrollHeight, ch: el.clientHeight })))
-
-for (const path of ['/', '/restaurants', '/hotels', '/curators', '/companies', '/about']) {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, userAgent: UA })
+for (const path of ['/restaurants', '/hotels', '/curators', '/companies']) {
+  const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, userAgent: UA })
   const page = await ctx.newPage()
-  const name = path === '/' ? 'home' : path.slice(1)
+  const name = path.slice(1)
   try {
     await page.goto(SITE + path, { waitUntil: 'networkidle', timeout: 60000 })
     await page.waitForTimeout(4000)
-    const sc = await findScrollers(page)
-    log(`${path}: window ${await page.evaluate(() => document.documentElement.scrollHeight)}, scrollers ${JSON.stringify(sc)}`)
-    if (path === '/') {
-      // does the wheel lead anywhere on the homepage?
-      await page.mouse.move(720, 450)
-      for (let i = 1; i <= 3; i++) { await page.mouse.wheel(0, 900); await page.waitForTimeout(2000); log(`/ after wheel ${i}: url ${page.url()}`); await sharp(await page.screenshot()).webp({ quality: 80 }).toFile(`${OUT}/home-wheel-${i}.webp`) }
-      await ctx.close(); continue
-    }
-    const target = sc.sort((a, b) => b.sh - a.sh)[0]
-    if (!target) { log(`${path}: no inner scroller`); await ctx.close(); continue }
-    // walk the scroller once so lazy images and reveal animations settle
-    await page.evaluate(async (t) => {
-      const el = [...document.querySelectorAll('*')].find((e) => e.scrollHeight === t.sh && e.clientHeight === t.ch)
-      for (let y = 0; y < el.scrollHeight; y += 500) { el.scrollTop = y; await new Promise((r) => setTimeout(r, 250)) }
+    const total = await page.evaluate(async () => {
+      const el = document.getElementById('door')
+      for (let y = 0; y < el.scrollHeight; y += 450) { el.scrollTop = y; await new Promise((r) => setTimeout(r, 300)) }
       el.scrollTop = 0
-    }, target)
+      return el.scrollHeight
+    })
     await page.waitForTimeout(2500)
-    // unroll: the scroller and its ancestors take their full height, so the window scrolls the whole page
-    const total = await page.evaluate((t) => {
-      const el = [...document.querySelectorAll('*')].find((e) => e.scrollHeight === t.sh && e.clientHeight === t.ch)
-      const h = el.scrollHeight
-      for (let n = el; n && n !== document.documentElement; n = n.parentElement) { n.style.height = 'auto'; n.style.maxHeight = 'none'; n.style.overflow = 'visible' }
-      el.style.height = h + 'px'
-      document.documentElement.style.height = 'auto'; document.documentElement.style.overflow = 'visible'
-      return document.documentElement.scrollHeight
-    }, target)
-    await page.waitForTimeout(2000)
-    const buf = await page.screenshot({ fullPage: true, animations: 'disabled', timeout: 120000 })
-    const meta = await sharp(buf).metadata()
-    await sharp(buf).webp({ quality: 85, effort: 4 }).toFile(`${OUT}/full-${name}.webp`)
-    log(`${path}: unrolled ${total}, saved ${meta.width}x${meta.height}`)
+    const parts = []
+    for (let top = 0; ; top += H) {
+      const y = Math.min(top, total - H)
+      await page.evaluate(({ y, first }) => {
+        const el = document.getElementById('door')
+        el.scrollTop = y
+        // fixed chrome appears once: bottom-anchored pills never, top bars only on the first screen
+        for (const n of document.querySelectorAll('body *')) {
+          const cs = getComputedStyle(n)
+          if (cs.position !== 'fixed' && cs.position !== 'sticky') continue
+          if (n === el || n.contains(el)) continue
+          const r = n.getBoundingClientRect()
+          if (r.width < 40 || r.height < 12) continue
+          const bottom = r.top > innerHeight * 0.5
+          n.style.visibility = bottom || !first ? 'hidden' : ''
+        }
+      }, { y, first: top === 0 })
+      await page.waitForTimeout(900)
+      const shot = await page.screenshot({ animations: 'disabled' })
+      const keep = top === 0 ? H : (y === top ? H : top + H - (total - H) - 0) // rows of this screen not yet covered
+      const from = H - Math.min(H, (y + H) - top)
+      parts.push({ input: await sharp(shot).extract({ left: 0, top: from, width: W, height: H - from }).toBuffer(), top })
+      if (y + H >= total) break
+    }
+    const img = sharp({ create: { width: W, height: total, channels: 3, background: '#000' } }).composite(parts.map((p) => ({ input: p.input, top: p.top, left: 0 })))
+    await img.webp({ quality: 85, effort: 4 }).toFile(`${OUT}/full-${name}.webp`)
+    log(`${path}: ${parts.length} screens, ${W}x${total}`)
   } catch (e) { log(`! ${path} ${e.message.split('\n')[0]}`) }
   await ctx.close()
 }
