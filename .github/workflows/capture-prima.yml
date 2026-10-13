@@ -25,13 +25,13 @@ jobs:
           npm install --no-save --no-audit --no-fund playwright sharp
           npx playwright install --with-deps chromium
 
-      - name: Second pass for the redesigned site
-        run: mkdir -p review && node .github/capture/prima-v2.mjs
+      - name: Live portfolio captures
+        run: mkdir -p review && node .github/capture/portfolio.mjs
 
       - name: Commit the captures back to this branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
           git add review
-          git commit -m "Captured PRIMA screenshots v2 ($GITHUB_RUN_ID)"
+          git commit -m "Captured PRIMA screenshots v3 ($GITHUB_RUN_ID)"
           git push
