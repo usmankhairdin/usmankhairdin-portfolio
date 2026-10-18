@@ -1,8 +1,9 @@
 import * as THREE from 'three'
+import {WALKER_RADIUS} from '../experience/corridorLayout.js'
 
 export function canFocusWebsite(mesh,width,camera){
   const local=mesh.worldToLocal(new THREE.Vector3().setFromMatrixPosition(camera.matrixWorld))
-  return Math.abs(local.x)<=width*.6&&local.z>=1.1&&local.z<=5.8
+  return Math.abs(local.x)<=width/2-WALKER_RADIUS&&local.z>=1.1&&local.z<=5.8
 }
 
 export function websiteReviewPose(mesh,width,height,camera){

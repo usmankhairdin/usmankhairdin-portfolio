@@ -9,7 +9,7 @@ import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, stepTerraceDoor } fr
  * threshold, and slides shut a moment after they are clear of it - in either direction. The
  * entrance keeps its shared value in entranceDoor.js, so the Home page shows the same door.
  */
-const SENSE = 3.4        // metres from the door's centre at which it opens
+const SENSE = 1.25       // close approach to the actual threshold
 const HOLD = 0.9         // seconds it waits after the visitor is clear before closing
 const OPEN_RATE = 5.2    // damping toward open (fast, like a real sliding operator)
 const CLOSE_RATE = 2.6   // and toward shut (slower, a soft landing)

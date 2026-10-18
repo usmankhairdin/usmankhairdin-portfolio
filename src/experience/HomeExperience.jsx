@@ -6,8 +6,7 @@ import Header from '../components/Header.jsx'
 import HomeScene from './HomeScene.jsx'
 import SceneAssetGate from './SceneAssetGate.jsx'
 import { JourneyProvider, useJourney } from './JourneyContext.jsx'
-import useReducedMotion from './useReducedMotion.js'
-import { hintEntrance, setEntranceOpen } from './entranceDoor.js'
+import { setEntranceOpen } from './entranceDoor.js'
 import { claimBootLoader, releaseBootLoader } from '../loader/bootLoader.js'
 import { useWebScrollSuspension } from '../scroll/WebScrollProvider.jsx'
 import { Link, useNavigationType } from 'react-router-dom'
@@ -17,7 +16,7 @@ import { floorReflection } from './floorReflection.js'
 import { markSceneCompiled } from './probeEnv.js'
 import { exteriorSign } from './CorridorExterior.jsx'
 import { compileScenePrograms, deferSceneWarmup } from './sceneWarmup.js'
-import { LiveScreensProvider, useLiveScreens } from '../rooms/LiveProjectScreens.jsx'
+import { LiveScreensProvider } from '../rooms/LiveProjectScreens.jsx'
 import { getLookMode, look, lookCapture, setCursorFree, subscribeCursorMode } from './freeLook.js'
 
 function LookModeControl() {
@@ -32,7 +31,7 @@ function LookModeControl() {
 function corridorEvents(store) {
   const manager = pointerEvents(store)
   return { ...manager, compute(event, state, previous) {
-    if (!look.cursorFree && event.pointerType !== 'touch' && event.pointerType !== 'pen' && !window.matchMedia?.('(pointer: coarse)').matches) {
+    if (look.locked && !look.cursorFree && event.pointerType !== 'touch' && event.pointerType !== 'pen' && !window.matchMedia?.('(pointer: coarse)').matches) {
       state.pointer.set(0, 0)
       state.raycaster.setFromCamera(state.pointer, state.camera)
     } else manager.compute(event, state, previous)
@@ -75,10 +74,9 @@ function SceneCompile({ onCompiled }) {
 /* Then the probes capture and the first frames draw; the scene is ready once they have. */
 function SceneReadySignal({ onReady }) {
   const frames = useRef(0)
-  const {readiness}=useLiveScreens()
   const signaled=useRef(false)
   useFrame(() => {
-    if (++frames.current >= 8 && readiness.complete && !signaled.current) {
+    if (++frames.current >= 8 && !signaled.current) {
       signaled.current=true;performance.mark('corridor:ready');onReady?.()
     }
   })
@@ -106,7 +104,6 @@ function ExperienceHud() {
  * The visitor crosses the doorway using the wheel, with no scripted entrance walk.
  */
 function ExteriorGate() {
-  const reducedMotion = useReducedMotion()
   const [doorHover, setDoorHover] = useState(false)
 
   const enableLook = useCallback(() => {
@@ -114,11 +111,6 @@ function ExteriorGate() {
     setCursorFree(false)
     lookCapture.request?.()
   }, [])
-
-  // Hovering the door parts its glass a hand's width, as an automatic door does.
-  useEffect(() => {
-    hintEntrance(doorHover ? 0.08 : 0, { reducedMotion })
-  }, [doorHover, reducedMotion])
 
   // the sign on the plaza brightens while it is pointed at
   const signHover = (on) => { exteriorSign.hover = on ? 1 : 0 }
@@ -172,12 +164,12 @@ function ExperienceShell() {
   // A fresh arrival meets a closed door.
   useEffect(() => { if (experiencePhase === 'gated') setEntranceOpen(0) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Keep boot visible through scene compilation and every live website load.
+  // Keep boot through real scene readiness; unrelated websites load afterward.
   useEffect(claimBootLoader, [])
   useEffect(() => { if (sceneReady) releaseBootLoader() }, [sceneReady])
 
   return <div className={`experience-root experience-root--${experiencePhase}`}>
-    <LiveScreensProvider><Canvas
+    <LiveScreensProvider preloadReady={sceneReady}><Canvas
       events={corridorEvents}
       className="experience-canvas"
       style={{zIndex:1}}

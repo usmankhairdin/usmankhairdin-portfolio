@@ -724,7 +724,7 @@ export default function CityView() {
   return <group ref={group} position={EXTERIOR_OFFSET}>
     <RealCityBuildings layout={city.architectureLayout} nearDistance={180} />
     <InhabitedSettlement sites={city.layout.settlements} />
-    <IslandTrees layout={city.layout} groundY={CITY_Y} />
+    <Suspense fallback={null}><IslandTrees layout={city.layout} groundY={CITY_Y} /></Suspense>
     <Suspense fallback={null}><IslandAirport /></Suspense>
     <CoastalOcean />
     <TrafficSignals traffic={flow.traffic} signals={signals} ground={CITY_Y} stateAt={settlementSignalState} />

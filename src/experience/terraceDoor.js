@@ -29,11 +29,25 @@ export function terraceLeafBlocks(x, z, open, radius = WALKER_RADIUS) {
   return Math.hypot(x-hx-t*dx,z-hz-t*dz) < radius+.023
 }
 
+// A close visitor waits outside the leaf's sweep while the handle turns.
+// Without this clearance, walking into a partly opening outward door pins
+// the leaf against the visitor and neither can finish passing the threshold.
+export function terraceApproachBlocks(x,z,open,radius=WALKER_RADIUS){
+  const d=MASTER_TERRACE_DOOR
+  if(open>=1 || z>=d.z)return false
+  const hx=d.x-d.width/2+.04,hz=d.z+.008,width=d.width-.08
+  const dx=x-hx,dz=hz-z,angle=Math.atan2(dz,dx)
+  return (angle>=0 && angle<=d.maxAngle && Math.hypot(dx,dz)<width+radius+.023) ||
+    terraceLeafBlocks(x,z,0,radius) || terraceLeafBlocks(x,z,1,radius)
+}
+
 export function stepTerraceDoor(state, x, z, elapsed) {
   const dt = Math.max(0, Math.min(.1, elapsed))
-  // Detect the approach early enough for the handle/leaf sequence to complete
-  // before a brisk walker reaches the outward sweep; keep lateral reach local.
-  const near = Math.hypot((x - MASTER_TERRACE_DOOR.x) * 2.4, z - MASTER_TERRACE_DOOR.z) < 6.6
+  // The outside approach includes the leaf's physical outward sweep. Neither
+  // side activates from across the room or the helipad.
+  const depth = z - MASTER_TERRACE_DOOR.z
+  const reach = depth < 0 ? 2.1 : 1.25
+  const near = Math.hypot(x - MASTER_TERRACE_DOOR.x, depth) < reach
   state.clearFor = near ? 0 : state.clearFor + dt
   const target = state.clearFor < 1.2
   const next = target ? Math.min(1, state.progress + dt / 1.25) : Math.max(0, state.progress - dt / 1.9)

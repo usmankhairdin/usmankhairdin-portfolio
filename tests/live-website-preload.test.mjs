@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
+import {readFileSync} from 'node:fs'
 import {createWebsiteReadiness} from '../src/rooms/liveScreenReadiness.js'
 const preload=await import('../src/rooms/liveWebsitePreload.js').catch(()=>({}))
 
@@ -15,7 +16,7 @@ function fixture(){
  const projects=[{slug:'a',title:'First',embedUrl:'https://a.example/'},{slug:'b',title:'Second',embedUrl:'https://b.example/'}]
  return {root,document,platform,projects,requests,pending,timers}
 }
-test('all live websites begin loading before any scene mesh or shader is ready',async()=>{
+test('all live websites begin automatically when background preloading starts',async()=>{
  assert.equal(typeof preload.prepareLiveWebsites,'function')
  const f=fixture(),ready=createWebsiteReadiness(['a','b'])
  const prepared=preload.prepareLiveWebsites(f.projects,f.root,ready,{document:f.document,platform:f.platform})
@@ -24,6 +25,21 @@ test('all live websites begin loading before any scene mesh or shader is ready',
  f.pending.forEach(resolve=>resolve({type:'opaque'}));await Promise.resolve();await Promise.resolve()
  assert.equal(ready.complete,true);assert.ok([...prepared.entries.values()].every(e=>e.loaded&&e.frame.srcWrites===1))
  prepared.dispose()
+})
+
+test('scene readiness releases background websites without making them block first paint',()=>{
+ const source=readFileSync(new URL('../src/rooms/LiveProjectScreens.jsx',import.meta.url),'utf8')
+ const start=source.indexOf('  useEffect(()=>{'),end=source.indexOf('  },[readiness,preloadReady])',start)
+ assert.ok(start>=0&&end>start)
+ const run=new Function('preloadReady','prepareLiveWebsites','workRoomProjects','preloadLayer','readiness','prepared',source.slice(start+'  useEffect(()=>{'.length,end))
+ const f=fixture(),readiness=createWebsiteReadiness(['a','b']),prepared={current:new Map()},layer={current:f.root}
+ const prepare=(...args)=>preload.prepareLiveWebsites(...args,{document:f.document,platform:f.platform})
+ assert.equal(run(false,prepare,f.projects,layer,readiness,prepared),undefined)
+ assert.equal(f.requests.length,0,'heavy external pages cannot compete with corridor construction')
+ const cleanup=run(true,prepare,f.projects,layer,readiness,prepared)
+ assert.equal(f.requests.length,2,'every website starts automatically after the scene becomes usable')
+ assert.equal(prepared.current.size,2)
+ cleanup();assert.equal(f.root.children.length,0)
 })
 test('preloaded iframe identity and document survive scene attachment and remount',()=>{
  assert.equal(typeof preload.attachPreparedWebsite,'function')

@@ -14,7 +14,7 @@ import {prepareLiveWebsites,attachPreparedWebsite} from './liveWebsitePreload.js
 const Context=createContext(null)
 export const useLiveScreens=()=>useContext(Context)
 
-export function LiveScreensProvider({children}){
+export function LiveScreensProvider({children,preloadReady=true}){
   const entries=useRef(new Map()),controls=useRef(()=>{}),suppressClick=useRef(false)
   const align=useRef(()=>{}),focus=useMemo(createScreenFocus,[])
   const session=useMemo(createScreenSession,[]),[active,setActive]=useState(null)
@@ -22,10 +22,11 @@ export function LiveScreensProvider({children}){
   const readiness=useMemo(()=>createWebsiteReadiness(workRoomProjects.filter(p=>p.embedUrl).map(p=>p.slug)),[])
   const preloadLayer=useRef(null),prepared=useRef(new Map())
   useEffect(()=>{
+    if(!preloadReady)return
     const websites=prepareLiveWebsites(workRoomProjects,preloadLayer.current,readiness)
     prepared.current=websites.entries
     return()=>{websites.dispose();prepared.current=new Map()}
-  },[readiness])
+  },[readiness,preloadReady])
   const {activeDoor,phase,navigationOpen}=useJourney()
   const close=useCallback(({gesture=false}={})=>{
     const previous=session.exit()
@@ -34,6 +35,7 @@ export function LiveScreensProvider({children}){
     // the depth-tested canvas, without raising another wall's iframe.
     controls.current(false);setActive(null)
     focus.exit()
+    entries.current.get(previous)?.frame?.blur()
     // Request within the outside click's activation, while the camera returns.
     // Input remains held until that animation completes.
     if(gesture&&resumeCaptured.current&&!look.cursorFree)lookCapture.request?.()
@@ -149,7 +151,7 @@ export function LiveScreenLayer(){
       focus.enter(camera,websiteReviewPose(entry.mesh,entry.width,entry.height,camera))
     }
     const inRoom=activeDoor==='work'&&phase==='room'
-    // All websites start during boot and remain mounted for the entire visit.
+    // Websites start after scene readiness and remain mounted for the visit.
     // Turning around or leaving the room must never reload the opposite wall.
     for(const entry of entries.current.values()){
       const mesh=entry.mesh

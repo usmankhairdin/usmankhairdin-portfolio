@@ -56,11 +56,11 @@ test('the handle depresses before the hinged leaf opens and the occupied thresho
   const m=await import('../src/experience/terraceDoor.js').catch(()=>({}))
   assert.equal(typeof m.createTerraceDoorState,'function','the door has a shared proximity-driven motion state')
   const s=m.createTerraceDoorState()
-  for(let i=0;i<10;i++)m.stepTerraceDoor(s,X,Z+2,.01)
+  for(let i=0;i<10;i++)m.stepTerraceDoor(s,X,Z+.9,.01)
   const first=m.terraceDoorPose(s.progress)
   assert.ok(first.handle<-.1)
   assert.equal(first.open,0,'handle moves before the door swings')
-  for(let i=0;i<300;i++)m.stepTerraceDoor(s,X,Z+2,.01)
+  for(let i=0;i<300;i++)m.stepTerraceDoor(s,X,Z+.9,.01)
   assert.ok(m.terraceDoorPose(s.progress).open>.99)
   for(let i=0;i<500;i++)m.stepTerraceDoor(s,X,Z-.4,.01)
   assert.ok(m.terraceDoorPose(s.progress).open>.99,'visitor in threshold cannot be trapped')
@@ -77,7 +77,7 @@ test('the swinging door pauses before its leaf would strike a nearby visitor',as
     assert.equal(m.terraceLeafBlocks(x,z,m.terraceDoorPose(state.progress).open),false)
   }
   assert.ok(state.progress<1,'door waits for clearance instead of sweeping through the visitor')
-  for(let i=0;i<300;i++)m.stepTerraceDoor(state,X,Z+2,.01)
+  for(let i=0;i<300;i++)m.stepTerraceDoor(state,X,Z+.9,.01)
   assert.ok(state.progress>.99)
 })
 
@@ -95,6 +95,29 @@ test('continuous walking reaches the room and terrace at touch speed without a s
     }
     assert.ok(Math.abs(z-target)<.05,`door approach deadlocked from direction ${direction} at ${z}`)
   }
+})
+
+test('diagonal approaches wait clear of the swing and pass the terrace door from either side',async()=>{
+  const {doorOpen,resetDoors,updateDoors}=await import('../src/experience/doorStates.js')
+  for(const offset of [-.8,-.5,.5,.8])for(const direction of [-1,1]){
+    resetDoors()
+    let x=X+offset,z=Z-direction*4
+    const targetZ=Z+direction*2,out=[],dt=1/120
+    for(let i=0;i<2400&&Math.hypot(X-x,targetZ-z)>.04;i++){
+      const distance=Math.hypot(X-x,targetZ-z),step=Math.min(distance,3.8*dt)
+      slide(x,z,(X-x)/distance*step,(targetZ-z)/distance*step,doorOpen,out)
+      ;[x,z]=out
+      updateDoors(x,z,dt)
+      assert.equal(isFree(x,z,doorOpen),true,'the moving leaf cannot occupy the visitor')
+    }
+    assert.ok(Math.hypot(X-x,targetZ-z)<.05,`diagonal ${offset},${direction} stalled at ${x},${z}`)
+  }
+})
+
+test('the last part of the outward swing remains clear until the leaf is fully open',async()=>{
+  const {terraceApproachBlocks}=await import('../src/experience/terraceDoor.js')
+  assert.equal(terraceApproachBlocks(6.4,-66.29,.93),true)
+  assert.equal(terraceApproachBlocks(6.4,-66.29,1),false)
 })
 
 test('fixed glazing leaves exactly the door opening, with an intact transom and neighboring panes',async()=>{

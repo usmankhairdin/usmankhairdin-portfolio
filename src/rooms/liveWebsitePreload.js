@@ -1,7 +1,7 @@
 import {watchWebsiteLoad} from './liveScreenReadiness.js'
 
-// The final iframe nodes start loading with the experience, before WebGL's
-// Suspense/compilation gate. They are never reparented when a screen appears.
+// Start each website once, in the background after the first scene is ready.
+// The final iframe nodes are never reparented when a screen appears.
 export function prepareLiveWebsites(projects,parent,readiness,{document=globalThis.document,platform=globalThis}={}){
   const entries=new Map()
   for(const project of projects.filter(p=>p.embedUrl)){

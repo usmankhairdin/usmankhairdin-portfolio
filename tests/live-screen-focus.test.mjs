@@ -44,7 +44,7 @@ test('hover focus only works in front of the selected LED, never from the doorwa
   assert.equal(typeof canFocusWebsite,'function')
   const mesh=new THREE.Mesh(new THREE.PlaneGeometry(3.4,2.125));mesh.position.y=1.85;mesh.updateMatrixWorld()
   const camera=new THREE.PerspectiveCamera()
-  for(const [x,z,want] of [[0,5,true],[1.5,4,true],[7.3,5,false],[4.8,5,false],[0,9,false],[0,-2,false]]){
+  for(const [x,z,want] of [[0,5,true],[-1.25,4,true],[1.25,4,true],[-1.5,4,false],[1.5,4,false],[7.3,5,false],[4.8,5,false],[0,9,false],[0,-2,false]]){
     camera.position.set(x,1.58,z);camera.updateMatrixWorld()
     assert.equal(canFocusWebsite(mesh,3.4,camera),want,`station ${x},${z}`)
   }

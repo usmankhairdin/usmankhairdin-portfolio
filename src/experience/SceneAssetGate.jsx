@@ -6,10 +6,13 @@ import {corridorTextureQuality} from './corridorMaterials.js'
 import {sceneAssetPlan} from './sceneAssetPlan.js'
 
 const assets=sceneAssetPlan(corridorTextureQuality())
-// Dispatch every group immediately. The gate below consumes these exact cache
-// entries before expensive procedural geometry/material construction can retry.
+// Download the forest immediately, but let its local Suspense boundary wait for
+// the large geometry. It must not hold the usable entrance behind the loader.
+useLoader.preload(GLTFLoader,assets.forest,configureForestLoader)
+// The gate consumes the building's exact cache entries before expensive
+// procedural geometry/material construction can retry.
 const requests=[
- ...['rooms','forest','city','helicopter','airport'].map(key=>({loader:GLTFLoader,input:assets[key],configure:key==='forest'?configureForestLoader:undefined})),
+ ...['rooms','city','helicopter','airport'].map(key=>({loader:GLTFLoader,input:assets[key]})),
  ...['corridor','roomMaps','sky','coast','beach','facade','portrait','laptop'].map(key=>({loader:THREE.TextureLoader,input:assets[key]})),
  ...[...assets.lightmaps,...assets.screens].map(input=>({loader:THREE.TextureLoader,input})),
  {loader:THREE.FileLoader,input:assets.logo},

@@ -1,7 +1,7 @@
 import { doors } from '../data/projects.js'
 import { ROOM_KIND } from '../rooms/referenceRooms.js'
 import { ART, BUILDING, END_Z, FACADE_Z, PLANTS, PLAZA_STAND_Z, SCULPTURES, SIGN, START_Z, TERRACE, TERRACE_LAMPS, TERRACE_WALK_BOUNDS, WALKER_RADIUS, toRoomLocal, toWorld } from './corridorLayout.js'
-import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, terraceLeafBlocks } from './terraceDoor.js'
+import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, terraceLeafBlocks, terraceApproachBlocks } from './terraceDoor.js'
 import { helicopterRouteCorners, isHelicopterBlocked } from '../rooms/helicopterPlacement.js'
 
 /*
@@ -110,6 +110,7 @@ function inRoom(door, x, z) {
 export function isFree(x, z, openOf) {
   const exit = MASTER_TERRACE_DOOR
   if (terraceLeafBlocks(x,z,openOf(exit.id),BODY)) return false
+  if (terraceApproachBlocks(x,z,openOf(exit.id),BODY)) return false
   if (openOf(exit.id) > .84 && Math.abs(x-exit.x) < exit.width/2-BODY-exit.frame && Math.abs(z-exit.z) < 1.1) return true
   if (inCorridor(x, z, openOf('entrance')) || inOutside(x, z)) return true
   for (const door of doors) {

@@ -62,7 +62,7 @@ export default function useCorridorCamera(enabled = true) {
   const liveScreens=useLiveScreens()
   const controlsEnabled = enabled && !navigationOpen && !liveScreens?.active
   const pointerPolicy = useRef(null)
-  pointerPolicy.current = { enabled, navigationOpen, session: liveScreens?.session }
+  pointerPolicy.current = { enabled, navigationOpen, session: liveScreens?.session, activeDoor, phase }
   useEffect(() => {
     const canvas = gl.domElement
     const control = createPointerLook(canvas, {
@@ -279,6 +279,9 @@ export default function useCorridorCamera(enabled = true) {
       // as well as the WebGL targets that have their own drag guards.
       if(look.dragging && sceneTarget(e)) { e.preventDefault(); e.stopImmediatePropagation(); return }
       if (!e.isTrusted || e.button !== 0 || !fine() || (e.pointerType && e.pointerType !== 'mouse') || paused() || look.dragging || !sceneTarget(e)) return
+      // In free-cursor Work review, let the real LED hit-test run first.
+      // A missed screen click resumes look in the bubble handler below.
+      if(look.cursorFree && pointerPolicy.current.activeDoor==='work' && pointerPolicy.current.phase==='room')return
       // The activation click belongs only to mouse look, never to a door,
       // sign or LED behind the pointer. Escape can be resumed the same way.
       if (look.cursorFree || (!look.locked && !look.captureUnavailable)) {
@@ -297,7 +300,12 @@ export default function useCorridorCamera(enabled = true) {
       if (target.matches('.entry-door-hotspot')) lookCapture.request?.()
     }
     const onSceneClickComplete = e => {
-      if (e.isTrusted && e.button === 0 && fine() && (!e.pointerType || e.pointerType === 'mouse') && !paused() && !look.cursorFree && !look.dragging && !look.captureUnavailable && sceneTarget(e)) lookCapture.request?.()
+      if (!e.isTrusted || e.button!==0 || !fine() || (e.pointerType && e.pointerType!=='mouse') || paused() || look.dragging || !sceneTarget(e))return
+      if(look.cursorFree){
+        if(pointerPolicy.current.activeDoor!=='work'||pointerPolicy.current.phase!=='room')return
+        setCursorFree(false)
+      }
+      if(!look.captureUnavailable)lookCapture.request?.()
     }
     if (navigationOpen || !enabled) lookCapture.release?.('menu')
     setRelativeLook(document.pointerLockElement === canvas && !paused())
