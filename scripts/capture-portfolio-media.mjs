@@ -11,10 +11,7 @@ const chrome = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
 
 const projects = [
   { slug: 'prima', url: 'https://primaapp.com/', landmark: 'One rail beneath' },
-  { slug: 'bizcare', url: 'https://www.usmankhairdin.com/portfolio/bizcare/', landmark: 'Benefits of BizCare' },
-  { slug: 'bansar', url: 'https://www.bansarchina.com/', landmark: 'Bansar Will Provide You Best Shipping Solution' },
   { slug: 'bum-life', url: 'https://www.usmankhairdin.com/portfolio/bum.life/', landmark: 'Meet our lovable gang' },
-  { slug: 'pnw-leads', url: 'https://www.usmankhairdin.com/portfolio/PNWLeads/', landmark: 'How We Generate Qualified Leads For You' },
 ]
 
 async function saveWebp(page, file, options = {}) {

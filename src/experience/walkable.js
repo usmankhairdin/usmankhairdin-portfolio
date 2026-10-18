@@ -1,6 +1,8 @@
 import { doors } from '../data/projects.js'
 import { ROOM_KIND } from '../rooms/referenceRooms.js'
-import { ART, END_Z, FACADE_Z, PLANTS, SCULPTURES, SIGN, START_Z, TERRACE, TERRACE_LAMPS, toRoomLocal, toWorld } from './corridorLayout.js'
+import { ART, BUILDING, END_Z, FACADE_Z, PLANTS, PLAZA_STAND_Z, SCULPTURES, SIGN, START_Z, TERRACE, TERRACE_LAMPS, TERRACE_WALK_BOUNDS, WALKER_RADIUS, toRoomLocal, toWorld } from './corridorLayout.js'
+import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, terraceLeafBlocks } from './terraceDoor.js'
+import { helicopterRouteCorners, isHelicopterBlocked } from '../rooms/helicopterPlacement.js'
 
 /*
  * Where a visitor can stand. The building is one continuous floor: the corridor, the doorways
@@ -11,7 +13,7 @@ import { ART, END_Z, FACADE_Z, PLANTS, SCULPTURES, SIGN, START_Z, TERRACE, TERRA
  * piece of furniture slides along it.
  */
 export { START_Z, END_Z, toRoomLocal, toWorld }
-export const BODY = 0.38
+export const BODY = WALKER_RADIUS
 const FACE_X = 3.41                 // the corridor walls' inner faces
 const DOOR_CLEAR = 0.86             // half the clear width of every doorway
 const ROOM_INSIDE = 3.61            // a room's door wall, room-local x
@@ -28,7 +30,7 @@ const ROOM_SIZE = {
   about: { depth: 18.61, half: 7.5 },
   services: { depth: 18.61, half: 7.5 },
   process: { depth: 27.61, half: 5 },
-  contact: { depth: 21.0, half: 12 },
+  contact: { depth: MASTER_TERRACE_DOOR.roomX, half: 12 },
 }
 
 // furniture and fittings in each room, room-local [x0, x1, z0, z1]
@@ -66,17 +68,29 @@ function inCorridor(x, z, entranceOpen) {
 }
 
 // Outside: the reveal before the door (the door itself is the corridor's way through) and the
-// terrace inside its glass railing, round the sign and the lamp posts.
+// terrace inside its solid parapet, round the sign and the lamp posts.
 const REVEAL_HALF = 1.67 - BODY
 const SIGN_BOX = [SIGN.x - 0.6, SIGN.x + 0.6, SIGN.z - 0.5, SIGN.z + 0.5]
 const LAMP_BOXES = TERRACE_LAMPS.map(([x, z]) => [x - 0.12, x + 0.12, FACADE_Z + z - 0.12, FACADE_Z + z + 0.12])
+const ROOF_OBSTACLES = [[-BUILDING.half, BUILDING.half, BUILDING.backZ, FACADE_Z], SIGN_BOX, ...LAMP_BOXES]
+// Routing reserves the whole outward swing, so a door opening after a route
+// was planned cannot catch a passer-by. Manual passage still uses the actual leaf.
+const exitHingeX=MASTER_TERRACE_DOOR.x-MASTER_TERRACE_DOOR.width/2+.04
+const exitLeafWidth=MASTER_TERRACE_DOOR.width-.08
+const EXIT_SWEEP=[exitHingeX+Math.cos(MASTER_TERRACE_DOOR.maxAngle)*exitLeafWidth-.05,
+  exitHingeX+exitLeafWidth+.05,MASTER_TERRACE_DOOR.z-exitLeafWidth-.05,MASTER_TERRACE_DOOR.z+.05]
 function inOutside(x, z) {
+  if (isHelicopterBlocked(x, z, BODY)) return false
   if (Math.abs(x) < REVEAL_HALF && z > START_Z + 0.22 + BODY && z <= FACADE_Z + BODY) return true
-  if (Math.abs(x) > TERRACE.half - 0.35 - BODY || z < FACADE_Z + BODY || z > TERRACE.edgeZ - 0.35 - BODY) return false
+  if (x < TERRACE_WALK_BOUNDS.minX || x > TERRACE_WALK_BOUNDS.maxX || z < TERRACE_WALK_BOUNDS.minZ || z > TERRACE_WALK_BOUNDS.maxZ) return false
+  if (Math.abs(x) < BUILDING.half + BODY && z > BUILDING.backZ - BODY && z < FACADE_Z + BODY) return false
   return !inBox(x, z, SIGN_BOX, BODY) && !LAMP_BOXES.some((box) => inBox(x, z, box, BODY))
 }
 /** Out on the terrace, or in the reveal before the door. */
-export const isOutside = (z) => z > START_Z + 0.3
+export const isOutside = (z, x = 0) => z > START_Z + 0.3 ||
+  (z >= TERRACE.backZ && z <= TERRACE.edgeZ && Math.abs(x) <= TERRACE.half &&
+    (Math.abs(x) >= BUILDING.half || z <= BUILDING.backZ ||
+      (Math.abs(x-MASTER_TERRACE_DOOR.x) < MASTER_TERRACE_DOOR.width/2 && z <= MASTER_TERRACE_DOOR.z)))
 
 function inDoorway(door, x, z, open) {
   if (open < 0.8) return false
@@ -94,6 +108,9 @@ function inRoom(door, x, z) {
 
 /** Can a walker stand at (x, z)? `openOf(id)` gives each door's open amount. */
 export function isFree(x, z, openOf) {
+  const exit = MASTER_TERRACE_DOOR
+  if (terraceLeafBlocks(x,z,openOf(exit.id),BODY)) return false
+  if (openOf(exit.id) > .84 && Math.abs(x-exit.x) < exit.width/2-BODY-exit.frame && Math.abs(z-exit.z) < 1.1) return true
   if (inCorridor(x, z, openOf('entrance')) || inOutside(x, z)) return true
   for (const door of doors) {
     if (inDoorway(door, x, z, openOf(door.id)) || inRoom(door, x, z)) return true
@@ -118,6 +135,13 @@ export function locate(x, z) {
  */
 export function slide(x, z, dx, dz, openOf, out) {
   const len = Math.hypot(dx, dz)
+  // Long frames and menu travel cannot tunnel across a wall into a valid room.
+  if (len > 0.18) {
+    const n = Math.ceil(len / 0.18)
+    const ox = x, oz = z
+    for (let i = 0; i < n; i++) { slide(x, z, dx / n, dz / n, openOf, out); [x, z] = out }
+    return Math.hypot(x - ox, z - oz) > 1e-8
+  }
   for (const door of doors) {
     if (openOf(door.id) < 0.3 || len < 1e-6) continue
     const [lx, lz] = toRoomLocal(door, x, z)
@@ -141,9 +165,74 @@ export function slide(x, z, dx, dz, openOf, out) {
   return false
 }
 
+/** Short visible legs round the shell and fixtures lead to the physical entrance. */
+export function roofRoute(x, z) {
+  const goal = [0, PLAZA_STAND_Z]
+  if(inBox(x,z,EXIT_SWEEP,BODY+.1)){
+    // Someone leaving the door may already stand in its reserved sweep.
+    // First step away through a currently clear leg, then plan round it.
+    const candidates=[[x,EXIT_SWEEP[2]-BODY-.25],[EXIT_SWEEP[0]-BODY-.25,z],[EXIT_SWEEP[1]+BODY+.25,z]]
+    for(const point of candidates){
+      const steps=Math.ceil(Math.hypot(point[0]-x,point[1]-z)/.05)
+      let clear=true
+      for(let i=0;i<=steps;i++){
+        const px=x+(point[0]-x)*i/steps,pz=z+(point[1]-z)*i/steps
+        const currentOpen=terraceDoorPose(terraceDoor.progress).open
+        if(!isFree(px,pz,id=>id===MASTER_TERRACE_DOOR.id?currentOpen:0)){clear=false;break}
+      }
+      if(clear){const rest=roofRoute(...point);if(rest.length)return[point,...rest]}
+    }
+    return[]
+  }
+  const clear = (a, b) => {
+    const steps = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / .1))
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps
+      const px = a[0] + (b[0] - a[0]) * t, pz = a[1] + (b[1] - a[1]) * t
+      const inThreshold = Math.abs(px) < DOOR_CLEAR - .3 && pz > START_Z && pz <= FACADE_Z + BODY
+      if ((!inOutside(px, pz) && !inThreshold) || inBox(px,pz,EXIT_SWEEP,BODY+.1)) return false
+    }
+    return true
+  }
+  if (clear([x, z], goal)) return [goal]
+  const corners = [...ROOF_OBSTACLES,EXIT_SWEEP].flatMap(([x0, x1, z0, z1], index) => {
+    // Leave room to round a corner while the visitor's head turns toward the
+    // next leg. A person does not aim at the collision boundary itself.
+    const pad = BODY + (index === 0 ? 1.2 : .5)
+    return [[x0-pad,z0-pad],[x0-pad,z1+pad],[x1+pad,z0-pad],[x1+pad,z1+pad]]
+  }).concat(helicopterRouteCorners(BODY), [[0,z],[x,goal[1]]])
+    .filter(([px,pz]) => inOutside(px,pz))
+  const nodes = [[x,z], goal, ...corners]
+  const distance = nodes.map(() => Infinity), previous = [], visited = new Set(), edges = new Map()
+  distance[0] = 0
+  for (let n = 0; n < nodes.length; n++) {
+    let next = -1
+    for (let i = 0; i < nodes.length; i++) if (!visited.has(i) && (next < 0 || distance[i] < distance[next])) next = i
+    if (next < 0 || !Number.isFinite(distance[next])) break
+    if (next === 1) {
+      const path = []
+      for (let i = 1; i !== 0; i = previous[i]) path.unshift(nodes[i])
+      return path
+    }
+    visited.add(next)
+    for (let i = 0; i < nodes.length; i++) {
+      if (visited.has(i)) continue
+      const key = [Math.min(i,next),Math.max(i,next)].join(',')
+      if (!edges.has(key)) edges.set(key, clear(nodes[next],nodes[i]))
+      if (!edges.get(key)) continue
+      const d = distance[next] + Math.hypot(nodes[i][0]-nodes[next][0],nodes[i][1]-nodes[next][1])
+      if (d < distance[i]) { distance[i] = d; previous[i] = next }
+    }
+  }
+  return []
+}
+
 /** The waypoints that walk a visitor from where they stand to a room's entry point. */
 export function routeTo(target, x, z) {
   const points = []
+  if (isOutside(z, x)) {
+    points.push(...roofRoute(x, z), [0, START_Z - 2])
+  }
   const here = locate(x, z)
   if (here && here.id === target.id) {
     points.push(toWorld(target, 7.02, 0))

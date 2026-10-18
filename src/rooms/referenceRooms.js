@@ -3,6 +3,7 @@ import { useLoader } from '@react-three/fiber'
 import * as THREE from 'three'
 import { corridorTextureQuality, patchFloorChevron, patchFloorPavers, patchFloorPlanks, patchFloorTerrazzo, useCorridorTextures } from '../experience/corridorMaterials.js'
 import { floorReflection } from '../experience/floorReflection.js'
+import { MASTER_TERRACE_DOOR as TERRACE_EXIT } from '../experience/terraceDoor.js'
 
 /*
  * The big rooms, lifted from the Shahz Connect world (used with the owner's permission) by
@@ -180,6 +181,9 @@ const WALL_WASH = /* glsl */ `
 
 function bake(material, kind) {
   const before = material.onBeforeCompile
+  // The glazed hall's source bake includes a sunlit window-grid projection.
+  // Its floor now receives only the room's even interior light.
+  const evenFloor = kind === 'contact' && material.userData.floor
   const box = ROOM_BOX[kind] || ROOM_BOX.about
   const light = ((WALL_LIGHT[kind] || 2.2) * Math.PI) / 3.0
   material.onBeforeCompile = (shader, renderer) => {
@@ -192,12 +196,18 @@ function bake(material, kind) {
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vRoomLocal;\nuniform vec4 uRoomBox;\nuniform vec3 uWallLight;')
       .replace('#include <clipping_planes_fragment>', `#include <clipping_planes_fragment>
-        if ( vRoomLocal.x < 3.7 && abs( vRoomLocal.z ) < 0.9 && vRoomLocal.y < 2.86 ) discard;`)
+        if ( vRoomLocal.x < 3.7 && abs( vRoomLocal.z ) < 0.9 && vRoomLocal.y < 2.86 ) discard;
+        ${kind==='contact'?`if(vRoomLocal.x>21.17 && abs(vRoomLocal.z-${TERRACE_EXIT.x.toFixed(3)})<${(TERRACE_EXIT.width/2).toFixed(3)} && vRoomLocal.y>${(TERRACE_EXIT.floor+.0001).toFixed(4)} && vRoomLocal.y<${(TERRACE_EXIT.floor+TERRACE_EXIT.height).toFixed(3)}) discard;`:''}`)
       .replace('#include <lights_fragment_begin>', BAKED_LIGHTS)
-      .replace('#include <lights_fragment_maps>', WALL_WASH)
+      .replace('#include <lights_fragment_maps>', evenFloor ? `
+        irradiance = uWallLight * .45;
+        // Uniform interior fill keeps polished stone and the brass inlay lit
+        // without sampling or projecting the outside window/sky image.
+        iblIrradiance = uWallLight * .15;
+        radiance = uWallLight * .025;` : WALL_WASH)
   }
   const key = material.customProgramCacheKey()
-  material.customProgramCacheKey = () => `room-baked|${key}`
+  material.customProgramCacheKey = () => `room-baked|${kind==='contact'?'terrace-exit':'standard'}|${key}`
   return material
 }
 
@@ -247,15 +257,17 @@ export function createRoomMaterials(tex, lightmap, kind) {
     if ((name === 'plaster_light' || name === 'plaster_dark') && CEILING[kind]) m.color.setRGB(...CEILING[kind], THREE.LinearSRGBColorSpace)
     m.normalScale.set(def.normalScale ?? 1, def.normalScale ?? 1)
     // metals have no diffuse response, so they take no lightmap
-    if (!def.metal) {
+    if (!def.metal && !(kind === 'contact' && def.floor)) {
       m.lightMap = lightmap.texture
       m.lightMapIntensity = lightmap.intensity
     }
     if (def.floor) {
       // the corridor's own floor, laid along the room's centre line and pointing into it
       m.color.setRGB(1, 1, 1)
-      m.envMapIntensity = 0.25
-      floorReflection.attach(m)
+      m.envMapIntensity = kind === 'contact' ? 0 : 0.25
+      // The master room keeps its stone finish without a window-shaped
+      // reflection/light projection laid across it.
+      if (kind !== 'contact') floorReflection.attach(m)
       // each room its own floor; the Contact hall keeps the corridor's chevron
       if (kind === 'services') patchFloorPavers(m)
       else if (kind === 'about') { m.map = tex.oak.map; patchFloorPlanks(m) }

@@ -39,7 +39,7 @@ export default function ProjectDetailHero({ project }) {
     }
   }, [tone])
 
-  return <section ref={heroRef} className="pdh" data-tone={tone} data-project={project.slug} style={{ '--wk-chars': project.title.length }}>
+  return <section ref={heroRef} className="pdh" data-tone={tone} data-project={project.slug} style={{ '--wk-chars': project.titleMeasure || project.title.length }}>
     <div className="pdh__atmosphere" aria-hidden="true" />
     <div className="pdh__inner">
       <div className="pdh__copy">

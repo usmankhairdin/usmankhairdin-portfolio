@@ -1,10 +1,11 @@
-import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useSyncExternalStore } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { routeLoaders, WEB_HOME } from './routeLoaders.js'
 import { WebScrollProvider, useWebScroll } from './scroll/WebScrollProvider.jsx'
 import { ThemeProvider } from './theme/ThemeProvider.jsx'
 import CursorLayer from './cursor/CursorLayer.jsx'
 import { applySeo } from './seo/applySeo.js'
+import { prefersWebExperience, subscribeEntryPreference } from './entryPreference.js'
 
 const HomeExperience = lazy(routeLoaders.home)
 const HomeWeb = lazy(routeLoaders.homeWeb)
@@ -15,8 +16,12 @@ const Services = lazy(routeLoaders.services)
 const Agencies = lazy(routeLoaders.agencies)
 const Contact = lazy(routeLoaders.contact)
 const DesignSystem = lazy(routeLoaders.designSystem)
-const PersonalPortfolioWeb = lazy(routeLoaders.personalPortfolioWeb)
 const PersonalPortfolio3D = lazy(routeLoaders.personalPortfolio3d)
+
+function EntryExperience() {
+  const webOnly = useSyncExternalStore(subscribeEntryPreference, prefersWebExperience, () => false)
+  return webOnly ? <HomeWeb/> : <HomeExperience/>
+}
 
 function HomeRouteFallback(){
   return <div className="home-route-fallback" aria-label="Loading interface gallery" aria-busy="true" />
@@ -55,13 +60,13 @@ export default function App(){
     <RouteEffects/>
     <CursorLayer/>
     <Routes>
-      <Route path="/" element={<Suspense fallback={<HomeRouteFallback/>}><HomeExperience/></Suspense>}/>
+      <Route path="/" element={<Suspense fallback={<HomeRouteFallback/>}><EntryExperience/></Suspense>}/>
       {/* the Web Experience's homepage, reached from the Corridor's terrace sign and the Web header; unlisted, not indexed */}
       <Route path={WEB_HOME} element={<Suspense fallback={<StandardRouteFallback/>}><HomeWeb/></Suspense>}/>
       {/* the page's former address, kept so old links still arrive */}
       <Route path="/home-classic/" element={<Navigate to={WEB_HOME} replace/>}/>
       <Route path="/work/" element={<Suspense fallback={<StandardRouteFallback/>}><Work/></Suspense>}/>
-      <Route path="/work/personal-portfolio-web/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolioWeb/></Suspense>}/>
+      <Route path="/work/personal-portfolio-web/" element={<Navigate to="/work/personal-portfolio-3d/" replace/>}/>
       <Route path="/work/personal-portfolio-3d/" element={<Suspense fallback={<StandardRouteFallback/>}><PersonalPortfolio3D/></Suspense>}/>
       <Route path="/work/:slug/" element={<Suspense fallback={<StandardRouteFallback/>}><Project/></Suspense>}/>
       <Route path="/about/" element={<Suspense fallback={<StandardRouteFallback/>}><About/></Suspense>}/>

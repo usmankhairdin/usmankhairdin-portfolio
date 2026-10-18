@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useJourney } from '../experience/JourneyContext.jsx'
 import { useWebScroll } from '../scroll/WebScrollProvider.jsx'
@@ -6,6 +6,7 @@ import { preloadRoute, WEB_HOME } from '../routeLoaders.js'
 import useHeaderScrollSurface from '../hooks/useHeaderScrollSurface.js'
 import MenuDrawer from './MenuDrawer.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
+import {prefersWebExperience,subscribeEntryPreference} from '../entryPreference.js'
 
 /*
  * The ONE shared navigation system.
@@ -66,6 +67,7 @@ const skipBootOnce = () => { try { window.sessionStorage.setItem('ukd-skip-boot'
 const plainClick = (event) => !(event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
 
 export default function Header({ immersive = false }) {
+  const webOnly=useSyncExternalStore(subscribeEntryPreference,prefersWebExperience,()=>false)
   const mode = immersive ? 'immersive' : 'web'
   const journey = useJourney()
   const setJourneyNavigationOpen = journey?.setNavigationOpen
@@ -158,7 +160,7 @@ export default function Header({ immersive = false }) {
   // The corridor shows no logo over the scene - only the Menu, whose Home item leads back out.
   const logoImg = <img src={LOGO_SRC} width="1362" height="564" alt="" decoding="async" draggable="false" />
   const logo = mode === 'web'
-    ? (pathname === WEB_HOME
+    ? (pathname === WEB_HOME || (pathname === '/' && webOnly)
       ? <span className="site-logo site-logo--current" role="img" aria-label="Usman Khair Din — you are on the home page" aria-current="page" data-trap-skip>{logoImg}</span>
       : <Link to={WEB_HOME} className="site-logo" aria-label="Usman Khair Din — home" data-trap-skip onPointerEnter={() => preloadRoute('homeWeb')} onFocus={() => preloadRoute('homeWeb')} onClick={() => close()}>{logoImg}</Link>)
     : null
@@ -177,7 +179,7 @@ export default function Header({ immersive = false }) {
             target="_blank"
             rel="noopener noreferrer"
           ><span>SaaS UI<span className="hdr-rescue__suffix"> Rescue</span></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>}
-          {mode === 'web' && <Link
+          {mode === 'web' && !webOnly && <Link
             className="hdr-corridor"
             to="/"
             aria-label="Enter the 3D Corridor"

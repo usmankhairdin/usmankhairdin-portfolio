@@ -6,7 +6,8 @@ export default defineConfig({
   // Keep dependency discovery scoped to the portfolio app. Archived static
   // captures under public/ ship as-is and are not application entry points.
   optimizeDeps: { entries: ['index.html'] },
-  server: { port: 3000 },
+  // A second preview must not silently fall through to another port.
+  server: { port: 3001, strictPort: true },
   build: {
     target: 'es2020',
     // The ink fallback covers the one home-only import; do not preload its 3D graph on standard routes.

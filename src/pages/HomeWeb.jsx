@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import EditorialPage from '../components/editorial/EditorialPage.jsx'
 import { EditorialLink } from '../components/editorial/EditorialEngagement.jsx'
 import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
 import { ActionLink } from '../components/ui/Action.jsx'
 import SplashBackdrop from '../components/SplashBackdrop.jsx'
-import { hostLabel, projectAsset, projects } from '../data/projects.js'
+import { projectAsset, projects } from '../data/projects.js'
+import { releaseBootLoader } from '../loader/bootLoader.js'
 import '../components/BrowserFrame.css'
 import './HomeWeb.css'
 
@@ -18,24 +19,20 @@ import './HomeWeb.css'
  */
 
 const bySlug = (slug) => projects.find((p) => p.slug === slug)
-const PRIMA = bySlug('prima')
+const FEATURED = bySlug('forma')
 
-// Three live public sites, each with the interface direction and the frontend in my hands. PRIMA's homepage is already the
-// hero, so here it shows its hotels page (a case-study capture).
+// Home has its own editorial priority; Work retains the physical room sequence.
 const showcase = (slug) => ({
   src: projectAsset(slug, 'showcase-1x.webp'),
-  srcSet: `${projectAsset(slug, 'showcase-1x.webp')} 1440w, ${projectAsset(slug, 'showcase.webp')} 2880w`,
+  srcSet: bySlug(slug).media.showcaseWidths?.[0] === bySlug(slug).media.showcaseWidths?.[1]
+    ? undefined : `${projectAsset(slug, 'showcase-1x.webp')} 1440w, ${projectAsset(slug, 'showcase.webp')} 2880w`,
   width: 1440,
   height: 900,
 })
 const SELECTED = [
-  { project: bySlug('bansar'), image: showcase('bansar') },
-  {
-    project: PRIMA,
-    url: 'primaapp.com/hotels',
-    image: { src: projectAsset('prima', 'ev-hotels-1x.webp'), srcSet: `${projectAsset('prima', 'ev-hotels-1x.webp')} 960w, ${projectAsset('prima', 'ev-hotels.webp')} 1920w`, width: 1920, height: 1200 },
-  },
-  { project: bySlug('rantle'), image: showcase('rantle') },
+  { project: FEATURED, image: showcase('forma') },
+  { project: bySlug('sanaira'), image: showcase('sanaira') },
+  { project: bySlug('prima'), image: showcase('prima') },
 ]
 
 // The services, in a line each; the whole of them is on Services.
@@ -61,11 +58,10 @@ const HERO_TAGS = {
 }
 const HERO_TEXT = ['.home-hero__eyebrow', '.home-hero__title', '.home-hero__lede']
 
-function Browser({ project, image, url, alt, sizes, eager = false, className = '' }) {
+function Browser({ project, image, alt, sizes, eager = false, className = '', onReady }) {
   return <span className={`ui-frame home-browser ${className}`} style={{ '--uf-accent': project.accent }}>
-    <span className="ui-frame__bar" aria-hidden="true"><i /><i /><i /><span className="ui-frame__url">{url || hostLabel(project.liveUrl)}</span></span>
     <span className="ui-frame__screen">
-      <img {...image} sizes={sizes} alt={alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} decoding="async" />
+      <img {...image} sizes={sizes} alt={alt} onLoad={onReady} onError={onReady} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} decoding="async" />
     </span>
   </span>
 }
@@ -80,6 +76,13 @@ const SCULPTURE = {
 export default function HomeWeb() {
   // the Services sculpture's floor shadow is its own layer: shown once the artwork has loaded, as on Services
   const [servicesArtwork, setServicesArtwork] = useState(false)
+  const [heroReady, setHeroReady] = useState(false)
+  useEffect(() => {
+    if (!heroReady) return undefined
+    let active = true
+    Promise.resolve(document.fonts?.ready).then(() => { if (active) releaseBootLoader() })
+    return () => { active = false }
+  }, [heroReady])
   return <EditorialPage className="home-web">
     <section className="home-hero" aria-labelledby="home-title">
       <SplashBackdrop scope=".home-hero" anchor=".home-hero__visual" artZones="box" copyZones={HERO_TEXT} cta=".home-hero__actions" copy=".home-hero__copy" scroller={null} homes={HERO_TAGS} />
@@ -94,13 +97,13 @@ export default function HomeWeb() {
           </div>
         </div>
         <figure className="home-hero__visual">
-          <Link to={`/work/${PRIMA.slug}/`} className="home-hero__screens" aria-label={`${PRIMA.title} case study: ${PRIMA.category}, ${PRIMA.role}`}>
-            <Browser project={PRIMA} image={showcase(PRIMA.slug)} alt={PRIMA.mediaAlt.hero} sizes="(max-width: 1024px) 92vw, 52vw" eager className="home-hero__desktop" />
+          <Link to={`/work/${FEATURED.slug}/`} className="home-hero__screens" aria-label={`${FEATURED.title} case study: ${FEATURED.category}, ${FEATURED.role}`}>
+            <Browser project={FEATURED} image={showcase(FEATURED.slug)} alt={FEATURED.mediaAlt.hero} sizes="(max-width: 1024px) 92vw, 52vw" eager className="home-hero__desktop" onReady={() => setHeroReady(true)} />
             <span className="home-hero__phone">
-              <img src={projectAsset(PRIMA.slug, 'mobile.webp')} width="390" height="844" alt={PRIMA.mediaAlt.mobile} decoding="async" />
+              <img src={projectAsset(FEATURED.slug, 'mobile.webp')} width="390" height="844" alt={FEATURED.mediaAlt.mobile} decoding="async" />
             </span>
           </Link>
-          <figcaption className="home-hero__caption"><b>{PRIMA.title}</b> {PRIMA.category} · {PRIMA.role}</figcaption>
+          <figcaption className="home-hero__caption"><b>{FEATURED.title}</b> {FEATURED.category} · {FEATURED.role}</figcaption>
         </figure>
       </div>
     </section>
@@ -110,7 +113,7 @@ export default function HomeWeb() {
         <header className="home-section__head" data-editorial-reveal>
           <div className="home-work__intro">
             <h2 id="home-work-title">Selected <em>work.</em></h2>
-            <p>Three live public sites where I set the interface direction and built the frontend.</p>
+            <p>Three selected projects, from product direction to responsive frontend.</p>
           </div>
           <ActionLink to="/work/">See all work <span aria-hidden="true">↗</span></ActionLink>
         </header>

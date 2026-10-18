@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { entrance, onEntranceChange, setEntranceOpen } from './entranceDoor.js'
 import { DOOR_CENTRES } from './walkable.js'
+import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, stepTerraceDoor } from './terraceDoor.js'
 
 /*
  * Automatic doors. Every glass door has one open amount (0 shut, 1 fully parted) and a
@@ -17,13 +18,14 @@ const state = Object.fromEntries(DOOR_CENTRES.map((d) => [d.id, { open: 0, clear
 state.entrance.open = entrance.open
 onEntranceChange((v) => { state.entrance.open = v })
 
-export const doorOpen = (id) => (id === 'entrance' ? entrance.open : state[id]?.open ?? 0)
+export const doorOpen = (id) => id === MASTER_TERRACE_DOOR.id ? terraceDoorPose(terraceDoor.progress).open : (id === 'entrance' ? entrance.open : state[id]?.open ?? 0)
 
 /**
  * One frame of every door's sensor. `x, z` is the visitor. `entranceAuto` is false while a
  * scripted move owns the entrance (walking in from the Home page, or back out to it).
  */
 export function updateDoors(x, z, dt, { entranceAuto = true } = {}) {
+  stepTerraceDoor(terraceDoor, x, z, dt)
   for (const door of DOOR_CENTRES) {
     const s = state[door.id]
     const near = Math.hypot(x - door.x, z - door.z) < SENSE
@@ -42,6 +44,8 @@ export function updateDoors(x, z, dt, { entranceAuto = true } = {}) {
 
 /** Starts every room door shut (a fresh visit). */
 export function resetDoors() {
+  terraceDoor.progress = 0
+  terraceDoor.clearFor = Infinity
   for (const door of DOOR_CENTRES) {
     if (door.id === 'entrance') continue
     state[door.id].open = 0

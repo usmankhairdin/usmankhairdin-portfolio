@@ -1,24 +1,12 @@
 import { useLayoutEffect, useRef } from 'react'
 import './HeroSignalBackground.css'
+import {TRACES,TRACE_DUTY} from './heroSignalTraces.js'
 
 // Signal traces: [column, trail length px, travel seconds, delay seconds, flags]. A trace descends the viewport in `travel` seconds (4.6–7.5s) during
 // the first 60% of its cycle and rests off screen for the rest. Columns sit on the 72px lines with irregular gaps (2, 1, 2, 2, 1, 2, 1 lines skipped);
 // most columns carry two traces on different cycles, so they never fall into step. The delays were searched so that ~9–10 traces are on screen at
 // any moment in a 1440px window, spread over the full height (some entering, some mid-way, some leaving), and two traces on one line never overlap.
 // flags: m = kept on a phone, w = only on wide screens (beyond the 1440px design width).
-const TRACES = [
-  [1, 110, 4.8, -6.8, 'm'], [1, 130, 6.6, -1.6, 'm'],
-  [4, 140, 5.7, -5.9, 'm'], [4, 90, 7.2, -7.3, ''],
-  [6, 90, 6.4, -8.7, ''], [6, 120, 4.6, -0.4, ''],
-  [9, 130, 5.1, -3.4, ''], [9, 100, 7.0, -4.0, ''],
-  [12, 150, 7.4, -3.2, ''], [12, 80, 5.3, -0.3, ''],
-  [14, 100, 5.4, -8.0, ''], [14, 140, 6.8, -8.2, ''],
-  [17, 120, 6.8, -5.6, ''], [17, 100, 4.9, -5.2, ''],
-  [19, 80, 4.6, -4.7, ''], [19, 130, 6.2, -5.0, ''],
-  [22, 110, 5.9, -5.4, 'w'], [22, 90, 7.5, -2.8, 'w'],
-  [24, 130, 5.0, -2.4, 'w'], [24, 100, 6.5, -8.7, 'w'],
-]
-const TRACE_DUTY = 0.6
 
 /** The original Home atmosphere, shared without copying the Home's tag physics.
  * Home supplies its existing measured copy-mask variables on .splash-bg. Other

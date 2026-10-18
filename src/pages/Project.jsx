@@ -31,8 +31,7 @@ function Figure({ image, caption, frame = 'browser', sizes }) {
   return <figure className="cs-figure">
     {frame === 'browser'
       ? <div className="cs-frame ui-frame">
-          <div className="ui-frame__bar" aria-hidden="true"><i /><i /><i /><span className="ui-frame__url">{hostLabel(image.page)}</span></div>
-          <div className="ui-frame__screen"><Picture image={image} sizes={sizes} /></div>
+          <div className="ui-frame__screen" style={{aspectRatio:`${image.width}/${image.height}`}}><Picture image={image} sizes={sizes} /></div>
         </div>
       : <div className="cs-bare"><Picture image={image} sizes={sizes} /></div>}
     {caption && <figcaption><span>{caption}</span></figcaption>}

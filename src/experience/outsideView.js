@@ -14,7 +14,7 @@ const viewProjection = new THREE.Matrix4()
 
 export function outsideSeen(camera) {
   const { x, z } = camera.position
-  if (isOutside(z)) return true
+  if (isOutside(z, x)) return true
   const room = locate(x, z)
   if (room) return room.id === 'contact'
   camera.updateMatrixWorld()

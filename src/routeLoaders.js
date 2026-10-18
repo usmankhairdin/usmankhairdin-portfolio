@@ -1,3 +1,5 @@
+import { entryPreloadKey, prefersWebExperience } from './entryPreference.js'
+
 export const routeLoaders = {
   home: () => import('./experience/HomeExperience.jsx'),
   homeWeb: () => import('./pages/HomeWeb.jsx'),
@@ -8,14 +10,13 @@ export const routeLoaders = {
   agencies: () => import('./pages/Agencies.jsx'),
   contact: () => import('./pages/Contact.jsx'),
   designSystem: () => import('./pages/DesignSystem.jsx'),
-  personalPortfolioWeb: () => import('./pages/PersonalPortfolioWeb.jsx'),
   personalPortfolio3d: () => import('./pages/PersonalPortfolio3D.jsx'),
 }
 
 // Browser module caching makes repeat calls free; hover/focus turns navigation
 // into an early, non-blocking fetch without changing route behavior.
 export function preloadRoute(route) {
-  const load = routeLoaders[route]
+  const load = routeLoaders[entryPreloadKey(route, prefersWebExperience())]
   // Preloading is best-effort. Navigation owns the visible retry/error path,
   // so a transient speculative fetch must not become an unhandled rejection.
   if (load) void load().catch(() => {})

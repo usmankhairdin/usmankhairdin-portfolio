@@ -59,7 +59,7 @@ for (const path of seoPaths) {
 
 // Unlisted routes still need a real file to load directly (the host answers unknown URLs with a 404),
 // but they stay out of search: the plain app shell, marked noindex.
-const UNLISTED = ['/web/']
+const UNLISTED = ['/web/', '/work/personal-portfolio-web/']
 for (const path of UNLISTED) {
   const directory = join(dist, path.slice(1))
   await mkdir(directory, { recursive: true })

@@ -1,18 +1,23 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { useFrame, useLoader } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { paintGraphic, useFontsReady } from '../rooms/roomGraphics.js'
-import { FACADE_Z, SIGN, START_Z, TERRACE, TERRACE_LAMPS } from './corridorLayout.js'
+import { BUILDING, FACADE_Z, HELIPAD, SIGN, START_Z, TERRACE, TERRACE_LAMPS } from './corridorLayout.js'
 import { ENTRANCE_OPENING } from './EntranceDoor.jsx'
 import { floorReflection } from './floorReflection.js'
 import { metricBox, metricPlane } from './corridorMaterials.js'
+import { MASTER_TERRACE_DOOR } from './terraceDoor.js'
+import { createTerraceParapetGeometry } from './terraceParapet.js'
+import { outsideSeen } from './outsideView.js'
+import HelipadHelicopter from '../rooms/HelipadHelicopter.jsx'
+import { HELIPAD_FLOODS } from '../rooms/helicopterPlacement.js'
 
 /*
  * Outside the building, at night: the first thing a visitor sees, and where they come back to.
  * The building stands on top of a tower; this is the tower's roof terrace, before the building's
- * front, with a glass railing round it and the city all round and far below (CityView).
+ * front, with a solid stone parapet round it and the city all round and far below (CityView).
  *
  * The front is one dark stone wall, cut in large honed panels and ruled by slim bronze fins.
  * The entrance door stands at its centre, set back in a deep bronze-lined reveal. The plaza
@@ -34,13 +39,13 @@ const FLOOR_Y = -0.075
 const WALL_BACK = START_Z + 0.1                    // the entrance wall's outer face, where the door stands
 const DEPTH = FACADE_Z - WALL_BACK                 // depth of the reveal
 const REVEAL = { w: ENTRANCE_OPENING.width + 1.2, h: ENTRANCE_OPENING.height + 0.55 }
-const FRONT = { half: 26, top: 14 }
-const BACK_Z = -72                                 // the building's sides run back to here
+const FRONT = BUILDING
+const BACK_Z = BUILDING.backZ
+const CONTACT_GLASS = { half: 12, bottom: 0.03, top: 5.73 }
 const BAY = 2.4
 const FIRST_FIN = REVEAL.w / 2 + 1.0
 const FIN = { w: 0.07, d: 0.26 }
 const LAMPS = TERRACE_LAMPS
-const RAIL = { inset: 0.3, h: 1.1 }
 
 /* ------------------------------------------------------------------ the fixtures */
 const WARM = [1, 0.72, 0.46]
@@ -74,6 +79,7 @@ function fixtures() {
   for (const x of WASHERS) add([x, FLOOR_Y + WASHER.h + 0.01, WASHER.z + 0.02], [0, 1, -0.1], WARM, 24, 23, 5, 18)
   // lamps round the plaza
   for (const [x, z] of LAMPS) add([x, 4.45, FACADE_Z + z], [0, -1, 0], LAMP, 34, 74, 26, 22)
+  for (const f of HELIPAD_FLOODS) add(f.position, f.direction, f.color, f.intensity, f.outer, f.inner, f.range)
   // the sign's lit panel throws a little light on the paving at its foot
   add([SIGN.x + Math.sin(SIGN.rotY) * 0.3, SIGN.panel.y, SIGN.z + Math.cos(SIGN.rotY) * 0.3], [Math.sin(SIGN.rotY), -0.6, Math.cos(SIGN.rotY)], [0.9, 0.85, 0.75], 1.6, 80, 30, 5)
   return list
@@ -213,7 +219,15 @@ function exteriorMaterials(tex) {
   })
   pavers.normalScale.set(0.35, 0.35)
   nightLit(pavers, 'pavers', paving)
-  const glass = new THREE.MeshBasicMaterial({ color: '#7f97ab', transparent: true, opacity: 0.035, depthWrite: false, side: THREE.DoubleSide })
+  const roofPaint = nightLit(new THREE.MeshStandardMaterial({ color: '#d8d2bd', roughness: 0.9, envMapIntensity: 0 }), 'roof-paint')
+  const parapetStone = nightLit(new THREE.MeshStandardMaterial({
+    map: stoneTex.map, roughnessMap: stoneTex.orm, normalMap: stoneTex.normal,
+    color: linear(.34, .36, .38), roughness: .92, envMapIntensity: 0,
+  }), 'parapet-stone', stonePanels)
+  parapetStone.normalScale.set(.4, .4)
+  const parapetMetal = nightLit(new THREE.MeshStandardMaterial({
+    color: linear(.32, .245, .16), metalness: .45, roughness: .55, envMapIntensity: 0,
+  }), 'parapet-bronze')
   const lens = new THREE.MeshBasicMaterial({ color: linear(9, 6.6, 4.4) })
   const slot = new THREE.MeshBasicMaterial({ color: linear(5, 3.4, 2.1) })
   // opal glass, brightest where the lamp inside is nearest the surface
@@ -232,7 +246,7 @@ function exteriorMaterials(tex) {
     toneMapped: true,
   })
   const glow = new THREE.SpriteMaterial({ map: glowTexture(), color: linear(1, 0.74, 0.5), transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending, fog: false })
-  return { stone, bronze, pole, pavers, glass, lens, slot, opal, glow, textures: [...Object.values(stoneTex), ...Object.values(pavingTex)] }
+  return { stone, bronze, pole, pavers, roofPaint, parapetStone, parapetMetal, lens, slot, opal, glow, textures: [...Object.values(stoneTex), ...Object.values(pavingTex)] }
 }
 
 function glowTexture() {
@@ -259,6 +273,9 @@ function buildGeometry() {
   const sideW = FRONT.half - REVEAL.w / 2
   const headH = FRONT.top - (FLOOR_Y + REVEAL.h)
   const midZ = WALL_BACK + DEPTH / 2
+  const rearSideW = FRONT.half - CONTACT_GLASS.half
+  const rearHeadH = FRONT.top - CONTACT_GLASS.top
+  const sillH = CONTACT_GLASS.bottom - FLOOR_Y
   // the stone: either side of the reveal, over it, and the building's flanks
   const stone = mergeGeometries([
     at(metricBox(sideW, H, DEPTH), -(REVEAL.w / 2 + sideW / 2), FLOOR_Y + H / 2, midZ),
@@ -266,6 +283,13 @@ function buildGeometry() {
     at(metricBox(REVEAL.w + 0.02, headH, DEPTH), 0, FLOOR_Y + REVEAL.h + headH / 2, midZ),
     at(metricPlane(FACADE_Z - BACK_Z, H).rotateY(-Math.PI / 2), -FRONT.half, FLOOR_Y + H / 2, (FACADE_Z + BACK_Z) / 2),
     at(metricPlane(FACADE_Z - BACK_Z, H).rotateY(Math.PI / 2), FRONT.half, FLOOR_Y + H / 2, (FACADE_Z + BACK_Z) / 2),
+    // The Contact room's original glass fills this opening; no second pane or wall covers it.
+    ...[-1, 1].map(side => at(metricPlane(rearSideW, H).rotateY(Math.PI), side * (CONTACT_GLASS.half + rearSideW / 2), FLOOR_Y + H / 2, BACK_Z)),
+    at(metricPlane(CONTACT_GLASS.half * 2, rearHeadH).rotateY(Math.PI), 0, CONTACT_GLASS.top + rearHeadH / 2, BACK_Z),
+    ...[[-CONTACT_GLASS.half,MASTER_TERRACE_DOOR.x-MASTER_TERRACE_DOOR.width/2],
+      [MASTER_TERRACE_DOOR.x+MASTER_TERRACE_DOOR.width/2,CONTACT_GLASS.half]]
+      .map(([x0,x1])=>at(metricPlane(x1-x0,sillH).rotateY(Math.PI),(x0+x1)/2,FLOOR_Y+sillH/2,BACK_Z)),
+    at(metricPlane(FRONT.half * 2, FACADE_Z - BACK_Z).rotateX(-Math.PI / 2), 0, FRONT.top - 0.012, (FACADE_Z + BACK_Z) / 2),
   ])
   // bronze: the reveal's lining and its back round the door, the fins, the coping
   const lining = 0.03
@@ -282,28 +306,32 @@ function buildGeometry() {
     at(new THREE.BoxGeometry(0.06, REVEAL.h + 0.06, 0.03), REVEAL.w / 2 + 0.03, FLOOR_Y + (REVEAL.h + 0.06) / 2, FACADE_Z + 0.015),
     at(new THREE.BoxGeometry(REVEAL.w + 0.12, 0.06, 0.03), 0, FLOOR_Y + REVEAL.h + 0.03, FACADE_Z + 0.015),
     at(new THREE.BoxGeometry(FRONT.half * 2 + 0.2, 0.42, DEPTH + 0.4), 0, FRONT.top - 0.21 + 0.001, midZ + 0.2),
+    ...[-1, 1].map(side => at(new THREE.BoxGeometry(0.2, 0.42, FACADE_Z - BACK_Z), side * FRONT.half, FRONT.top - 0.21, (FACADE_Z + BACK_Z) / 2)),
+    at(new THREE.BoxGeometry(FRONT.half * 2 + 0.2, 0.42, 0.2), 0, FRONT.top - 0.21, BACK_Z),
   ]
   for (let x = FIRST_FIN; x < FRONT.half - 0.4; x += BAY) {
     for (const s of [-1, 1]) bronzeParts.push(at(new THREE.BoxGeometry(FIN.w, H - 0.42, FIN.d), s * x, FLOOR_Y + (H - 0.42) / 2, FACADE_Z + FIN.d / 2))
   }
   const bronze = mergeGeometries(bronzeParts)
-  // the terrace, from the door out to its railing (never under the corridor)
-  const plaza = at(metricPlane(TERRACE.half * 2, TERRACE.edgeZ - (START_Z + 0.3)).rotateX(-Math.PI / 2), 0, FLOOR_Y, (TERRACE.edgeZ + START_Z + 0.3) / 2)
-  // the railing: frameless glass in a bronze shoe, a bronze handrail with a line of light under it
-  const rx = TERRACE.half - RAIL.inset
-  const rz = TERRACE.edgeZ - RAIL.inset
-  const runs = [
-    [0, rz, rx * 2, 0],
-    [-rx, (FACADE_Z + rz) / 2, rz - FACADE_Z, Math.PI / 2],
-    [rx, (FACADE_Z + rz) / 2, rz - FACADE_Z, Math.PI / 2],
-  ]
-  const along = (len, w, h, y, rot, x, z) => at(new THREE.BoxGeometry(len, h, w).rotateY(rot), x, y, z)
-  const railGlass = mergeGeometries(runs.map(([x, z, len, rot]) => at(new THREE.PlaneGeometry(len, RAIL.h - 0.14).rotateY(rot), x, FLOOR_Y + 0.12 + (RAIL.h - 0.14) / 2, z)))
-  const railMetal = mergeGeometries(runs.flatMap(([x, z, len, rot]) => [
-    along(len + 0.06, 0.07, 0.05, FLOOR_Y + RAIL.h, rot, x, z),
-    along(len + 0.04, 0.09, 0.12, FLOOR_Y + 0.06, rot, x, z),
-  ]))
-  const railLight = mergeGeometries(runs.map(([x, z, len, rot]) => along(len, 0.02, 0.008, FLOOR_Y + RAIL.h - 0.03, rot, x, z)))
+  // Four paving strips surround the building without adding a floor beneath any room.
+  const floor = (w, d, x, z) => at(metricPlane(w, d).rotateX(-Math.PI / 2), x, FLOOR_Y, z)
+  const sideDepth = FACADE_Z - BACK_Z
+  const sideWidth = TERRACE.half - FRONT.half
+  const plaza = mergeGeometries([
+    floor(TERRACE.half * 2, TERRACE.edgeZ - FACADE_Z, 0, (TERRACE.edgeZ + FACADE_Z) / 2),
+    floor(TERRACE.half * 2, BACK_Z - TERRACE.backZ, 0, (BACK_Z + TERRACE.backZ) / 2),
+    ...[-1, 1].map(side => floor(sideWidth, sideDepth, side * (FRONT.half + sideWidth / 2), (FACADE_Z + BACK_Z) / 2)),
+    floor(REVEAL.w, FACADE_Z - (START_Z + 0.3), 0, (FACADE_Z + START_Z + 0.3) / 2),
+  ])
+  // Painted roof markings only: they share the paving plane and have no interaction.
+  const paintY = FLOOR_Y + 0.006
+  const paint = (w, d, x, z) => at(new THREE.PlaneGeometry(w, d).rotateX(-Math.PI / 2), x, paintY, z)
+  const helipad = mergeGeometries([
+    at(new THREE.RingGeometry(HELIPAD.radius - 0.18, HELIPAD.radius, 96).rotateX(-Math.PI / 2), HELIPAD.x, paintY, HELIPAD.z),
+    ...[-1, 1].map(side => paint(0.42, 5, HELIPAD.x + side * 1.4, HELIPAD.z)),
+    paint(2.8, 0.42, HELIPAD.x, HELIPAD.z),
+  ])
+  const parapet = createTerraceParapetGeometry(FLOOR_Y, metricBox)
   // lamp posts: a slim pole with a flat head; the lens faces down
   const poles = []
   const lenses = []
@@ -324,7 +352,8 @@ function buildGeometry() {
   ])
   const downlightLenses = mergeGeometries(DOWNLIGHTS.map((x) => at(new THREE.CircleGeometry(0.055, 32).rotateX(Math.PI / 2), x, SOFFIT_Y - 0.0125, GLOBE.z)))
   return {
-    stone, bronze, plaza, railGlass, railMetal, railLight,
+    stone, bronze, plaza, helipad,
+    parapetWall: parapet.wall, parapetCoping: parapet.coping, parapetMetal: parapet.metal,
     poles: mergeGeometries(poles), lenses: mergeGeometries(lenses),
     washers, slots, pendant, downlightLenses,
   }
@@ -425,7 +454,7 @@ export default function CorridorExterior({ textures }) {
   const geo = useMemo(buildGeometry, [])
   useEffect(() => () => {
     Object.values(geo).forEach((g) => g.dispose())
-    ;[mats.stone, mats.bronze, mats.pole, mats.pavers, mats.glass, mats.lens, mats.slot, mats.opal, mats.glow].forEach((m) => m.dispose())
+    ;[mats.stone, mats.bronze, mats.pole, mats.pavers, mats.roofPaint, mats.parapetStone, mats.parapetMetal, mats.lens, mats.slot, mats.opal, mats.glow].forEach((m) => m.dispose())
     mats.glow.map.dispose()
     mats.textures.forEach((t) => t.dispose())
   }, [geo, mats])
@@ -435,17 +464,21 @@ export default function CorridorExterior({ textures }) {
     floorReflection.hidden.add(mesh)
     return () => floorReflection.hidden.delete(mesh)
   }, [])
-  // Nothing outside can be seen from deep inside the corridor or the rooms.
+  // The same exterior wraps the roof and remains visible through the Contact glass.
   useFrame(({ camera }) => {
-    if (group.current) group.current.visible = camera.position.z > START_Z - 16
+    if (group.current) group.current.visible = outsideSeen(camera)
   })
   return <group ref={group}>
+    <Suspense fallback={null}><HelipadHelicopter /></Suspense>
     <mesh geometry={geo.stone} material={mats.stone} raycast={none} />
     <mesh geometry={geo.bronze} material={mats.bronze} raycast={none} />
-    <mesh ref={plaza} geometry={geo.plaza} material={mats.pavers} raycast={none} />
-    <mesh geometry={geo.railMetal} material={mats.bronze} raycast={none} />
-    <mesh geometry={geo.railLight} material={mats.slot} raycast={none} />
-    <mesh geometry={geo.railGlass} material={mats.glass} raycast={none} renderOrder={2} />
+    <group ref={plaza}>
+      <mesh geometry={geo.plaza} material={mats.pavers} raycast={none} />
+      <mesh geometry={geo.helipad} material={mats.roofPaint} raycast={none} />
+    </group>
+    <mesh geometry={geo.parapetWall} material={mats.parapetStone} raycast={none} />
+    <mesh geometry={geo.parapetCoping} material={mats.parapetStone} raycast={none} />
+    <mesh geometry={geo.parapetMetal} material={mats.parapetMetal} raycast={none} />
     <mesh geometry={geo.poles} material={mats.pole} raycast={none} />
     <mesh geometry={geo.lenses} material={mats.lens} raycast={none} />
     {LAMPS.map(([x, z]) => <sprite key={`${x}:${z}`} material={mats.glow} position={[x, FLOOR_Y + 4.42, FACADE_Z + z]} scale={[1.6, 1.6, 1]} raycast={none} />)}

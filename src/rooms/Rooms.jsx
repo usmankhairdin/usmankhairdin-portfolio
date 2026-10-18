@@ -2,6 +2,8 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { doors } from '../data/projects.js'
 import RoomShell from './RoomShell.jsx'
+import { BUILDING } from '../experience/corridorLayout.js'
+import { isOutside } from '../experience/walkable.js'
 
 // Every room stands behind its own door, all the time - one building, walked into through
 // glass. A room is only drawn while the visitor is inside it or near enough to its door to
@@ -12,7 +14,9 @@ function PlacedRoom({ spec }) {
   const group = useRef()
   // the widest room reaches 12 m either side of its door, so this also covers being inside
   useFrame(({ camera }) => {
-    if (group.current) group.current.visible = Math.abs(camera.position.z - spec.z) < SEE_IN
+    const { x, z } = camera.position
+    const fromRearRoof = spec.id === 'contact' && z <= BUILDING.backZ && isOutside(z, x)
+    if (group.current) group.current.visible = fromRearRoof || Math.abs(z - spec.z) < SEE_IN
   })
   return <group ref={group}>
     <RoomShell spec={spec} />

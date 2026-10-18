@@ -177,7 +177,7 @@ function setupLightbox() {
 // Scroll Animations
 function setupAnimations() {
     const animatedElements = document.querySelectorAll('.fade-in');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {

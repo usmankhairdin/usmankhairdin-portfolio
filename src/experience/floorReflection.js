@@ -122,6 +122,7 @@ class FloorReflection {
     vc.updateMatrixWorld()
     vc.projectionMatrix.copy(camera.projectionMatrix)
     vc.layers.mask = camera.layers.mask
+    vc.layers.enable(1) // LED captures exist only in the floor reflection, never in the main view.
 
     this.textureMatrix.set(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1)
     this.textureMatrix.multiply(vc.projectionMatrix).multiply(vc.matrixWorldInverse)
@@ -159,3 +160,9 @@ class FloorReflection {
 }
 
 export const floorReflection = new FloorReflection(-0.075)
+
+// Keep exterior lamp sprites and beams out of the interior's polished floor pass.
+export function excludeExteriorFromFloorReflection(group) {
+  floorReflection.hidden.add(group)
+  return () => floorReflection.hidden.delete(group)
+}

@@ -1,4 +1,6 @@
+import {useSyncExternalStore} from 'react'
 import Header from '../components/Header.jsx'
+import {prefersWebExperience,subscribeEntryPreference} from '../entryPreference.js'
 import Footer from '../components/Footer.jsx'
 import CaseStudyNav from '../components/CaseStudyNav.jsx'
 import HeroSignalBackground from '../components/HeroSignalBackground.jsx'
@@ -16,9 +18,9 @@ const images = {
   navigation: { src: `${assetRoot}/corridor-menu.webp`, width: 1440, height: 900, alt: 'The Corridor menu open over the corridor: Web Experience, About, Work, Services, For Agencies and Contact' },
   about: { src: `${assetRoot}/room-about.webp?v=20261013-portrait`, width: 1440, height: 900, alt: 'About room: a walnut wall of framed niches with experience, the original Usman portrait and a short bio, above a long table' },
   services: { src: `${assetRoot}/room-services.webp`, width: 1440, height: 900, alt: 'Services room: six lit monoliths in an arc, one for each line of work, under brass lettering' },
-  work: { src: `${assetRoot}/room-work.webp`, width: 1440, height: 900, alt: 'Work room: project screens along a travertine gallery, framed by lit gates' },
+  work: { src: `${assetRoot}/room-work-current.webp`, width: 1440, height: 900, alt: 'Current Work Room with live project websites framed into its travertine walls' },
   contact: { src: `${assetRoot}/room-contact.webp`, width: 1440, height: 900, alt: 'Contact hall: a glass wall over the night city, a lounge and a desk' },
-  link: { src: `${assetRoot}/link-interaction.webp`, width: 1440, height: 900, alt: 'The centre dot turned into a hand over the laptop in the Contact hall, with a note naming the page the link opens' },
+  link: { src: `${assetRoot}/live-forma-current.webp`, width: 1440, height: 845, alt: 'Forma running inside a Work Room screen, with the website scrolled to its workspace preview' },
   city: { src: `${assetRoot}/city.webp`, width: 1440, height: 900, alt: 'The night city below the tower, seen over the terrace railing, with traffic on the avenues' },
   detail: { src: `${assetRoot}/detail-monolith.webp`, width: 520, height: 590, alt: 'Detail of a Services monolith: printed type, a brass edge light and walnut slats behind' },
 }
@@ -71,6 +73,8 @@ function TechTag({ id, children }) {
 }
 
 export default function PersonalPortfolio3D() {
+  const webOnly=useSyncExternalStore(subscribeEntryPreference,prefersWebExperience,()=>false)
+  const entryLabel=webOnly?'Explore the Web Experience':'Enter 3D Experience'
 
   return <div className="route-page p3d-page">
     <Header />
@@ -80,10 +84,10 @@ export default function PersonalPortfolio3D() {
         <div className="route-wrap p3d-hero__content">
           <div className="p3d-hero__heading route-heading-copy">
             <span className="kicker">SELF-INITIATED / SPATIAL EXPERIENCE</span>
-            <h1 id="p3d-title">Personal Portfolio <em>— 3D</em></h1>
-            <p>An immersive counterpart to the Web portfolio: a building on a tower above a night city, entered from its roof terrace, with a walkable corridor and four rooms that hold the same professional story.</p>
+            <h1 id="p3d-title">The Corridor <em>— 3D Portfolio</em></h1>
+            <p>A coastal island setting, a walkable corridor and four rooms that hold the same professional story. Live websites inside the Work Room turn a project gallery into something visitors can explore.</p>
             <div className="p3d-hero__actions">
-              <ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink>
+              <ActionLink to={webOnly?'/web/':'/'}>{entryLabel} <span aria-hidden="true">↗</span></ActionLink>
               <TextCTA href="#concept">Read the case study ↓</TextCTA>
             </div>
           </div>
@@ -91,7 +95,7 @@ export default function PersonalPortfolio3D() {
             <Capture image={images.navigation} eager className="p3d-hero__preview" label="MENU / A DIRECT ROUTE TO EVERY ROOM" />
           </div>
           <div className="p3d-hero__media">
-            <Capture image={images.corridor} eager />
+            <Capture image={images.work} eager />
             <div className="p3d-hero__index" aria-hidden="true"><span>CORRIDOR</span><i /><span>DOOR</span><i /><span>ROOM</span></div>
           </div>
         </div>
@@ -104,14 +108,14 @@ export default function PersonalPortfolio3D() {
         intro="The Web Experience supports direct scanning and project access. Its companion turns the same professional story into a place to walk through, without replacing the conventional route."
       >
         <div className="p3d-concept">
-          <Capture image={images.terrace} label="ARRIVAL / THE ROOF TERRACE" />
+          <Capture image={images.corridor} label="THE CORRIDOR / ROOMS AS DESTINATIONS" />
           <div className="p3d-concept__copy">
             <p>The visitor arrives on a roof terrace, facing the door, with the city below. Inside, the corridor is the navigation: glass doors are the destinations, rooms hold the content, and every room links to its page on the Web.</p>
             <dl>
               <div><dt>WEB</dt><dd>Fast scanning, direct routes and detailed project access.</dd></div>
               <div><dt>3D</dt><dd>Atmosphere, room-based storytelling and experiential discovery.</dd></div>
             </dl>
-            <TextCTA to="/work/personal-portfolio-web/">View the Web case study →</TextCTA>
+            <TextCTA to="/work/">Explore the selected work →</TextCTA>
           </div>
         </div>
       </CaseSection>
@@ -126,7 +130,7 @@ export default function PersonalPortfolio3D() {
         <Capture image={images.navigation} className="p3d-navigation" label="MENU + DIRECT ROOM ROUTES" />
         <ol className="p3d-flow" aria-label="Corridor interaction flow">
           <li><span>01</span><strong>Enter</strong><p>Click the door on the terrace.</p></li>
-          <li><span>02</span><strong>Look</strong><p>The mouse turns the view; Esc gives the cursor back.</p></li>
+          <li><span>02</span><strong>Look</strong><p>The view follows the mouse automatically; the cursor stays available.</p></li>
           <li><span>03</span><strong>Walk</strong><p>Scroll to walk where you look; doors open as you arrive.</p></li>
           <li><span>04</span><strong>Return</strong><p>Links open the Web pages; Back returns to the same spot.</p></li>
         </ol>
@@ -151,13 +155,13 @@ export default function PersonalPortfolio3D() {
         id="interaction"
         eyebrow="CAMERA + INTERACTION"
         title="Movement is part of the information architecture."
-        intro="Game-style looking, a walk that follows the view and automatic doors join the terrace, the corridor and the rooms without a cut."
+        intro="Automatic mouse look, a walk that follows the view and proximity doors connect the space. Project screens switch smoothly into a front-facing website review."
       >
         <div className="p3d-interaction">
-          <Capture image={images.link} label="CENTRE DOT + LINK NOTE" />
+          <Capture image={images.link} label="LIVE WEBSITE / FORMA IN THE WORK ROOM" />
           <div className="p3d-interaction__notes">
-            <article><span>01 / ORIENTATION</span><h3>The view follows the hand.</h3><p>With the mouse captured, the view turns exactly as far as the mouse moves, and a centre dot marks where you look.</p></article>
-            <article><span>02 / LINKS</span><h3>Every room leads to its page.</h3><p>Resting the dot on a link turns it into a hand and names the page; a click opens it, and Back returns to the same spot.</p></article>
+            <article><span>01 / ORIENTATION</span><h3>One continuous movement mode.</h3><p>Mouse look and wheel walking work together without a click-to-look toggle. Approaching a project screen eases the view into alignment.</p></article>
+            <article><span>02 / PROJECT SCREENS</span><h3>The website is already running.</h3><p>Live pages load as the Work Room approaches. Scrolling inside a screen holds the room still; one outside click restores walking and the previous viewpoint. A site that blocks embedding keeps its real capture and public link.</p></article>
             <article><span>03 / TRANSITION</span><h3>Doors open as you arrive.</h3><p>Each glass door senses the visitor and slides open, so walking into a room is one continuous move.</p></article>
           </div>
         </div>
@@ -181,15 +185,15 @@ export default function PersonalPortfolio3D() {
         id="usability"
         eyebrow="RESPONSIVE + USABILITY"
         title="Immersion still needs rules."
-        intro="The cursor is never trapped, walls and furniture keep the walk on the floor, and the city and sky are drawn only where they can be seen, so the frame stays light. Reduced-motion preferences remove the walking sway."
+        intro="The cursor stays available, walls and furniture bound the walk, and screen review isolates input. Phones and touch tablets enter the lighter Web Experience directly."
         className="p3d-section--usability"
       >
         <div className="p3d-usability">
-          <Capture image={images.city} label="THE CITY BELOW THE TERRACE" />
+          <Capture image={images.contact} label="CONTACT / A ROOM WITH A PURPOSE" />
           <div className="p3d-usability__rules">
-            <article><b>01</b><h3>Always a way out</h3><p>Esc or a click gives the cursor back, and a label always says how.</p></article>
+            <article><b>01</b><h3>A single exit action</h3><p>Click outside a project screen once to leave website review and resume movement.</p></article>
             <article><b>02</b><h3>Bounded movement</h3><p>Walls, furniture and closed doors stop the walk; it slides along them instead of sticking.</p></article>
-            <article><b>03</b><h3>Input for every device</h3><p>Touch drags the view and swipes to walk; the menu routes to every room.</p></article>
+            <article><b>03</b><h3>The right entry for the device</h3><p>Mobile opens the responsive Web Experience without loading the immersive scene.</p></article>
             <article><b>04</b><h3>Motion preference</h3><p>Reduced-motion mode removes the walking sway and resolves transitions at once.</p></article>
           </div>
         </div>
@@ -204,8 +208,8 @@ export default function PersonalPortfolio3D() {
       >
         <div className="p3d-build">
           <article><span>SPATIAL</span><h3>Architecture and scene direction</h3><ul><li>Terrace, corridor and four rooms</li><li>Baked room lighting</li><li>Night sky and city</li><li>Brass lettering and printed boards</li></ul></article>
-          <article><span>INTERACTION</span><h3>Journey and navigation states</h3><ul><li>Game-style mouse look</li><li>Walking where you look</li><li>Automatic glass doors</li><li>Menu walks and Back to the spot</li></ul></article>
-          <article><span>FRONTEND</span><h3>Reusable production structure</h3><ul><li>React scene composition</li><li>React Three Fiber + Three.js</li><li>Custom shaders for city, sky and rooms</li><li>Responsive HUD and touch input</li></ul></article>
+          <article><span>INTERACTION</span><h3>Journey and navigation states</h3><ul><li>Automatic mouse look and walking</li><li>Live websites in project screens</li><li>Automatic glass doors</li><li>One-click screen exit and viewpoint restoration</li></ul></article>
+          <article><span>FRONTEND</span><h3>Reusable production structure</h3><ul><li>React scene composition</li><li>React Three Fiber + Three.js</li><li>Projected website surfaces with occlusion</li><li>Separate mobile Web entry</li></ul></article>
         </div>
         <div className="p3d-stack">
           <span className="kicker">VERIFIED 3D STACK</span>
@@ -232,7 +236,7 @@ export default function PersonalPortfolio3D() {
         <HeroSignalBackground />
         <div className="route-wrap p3d-close__grid">
           <div className="route-heading-copy"><span className="kicker">ENTER THE LIVE SPACE</span><h2 id="p3d-close-title">The journey is the final artifact.</h2><p>Move through the current production Corridor, choose a room and experience the spatial navigation directly.</p></div>
-          <div><div><ActionLink to="/">Enter 3D Experience <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-3d/" /></div>
+          <div><div><ActionLink to={webOnly?'/web/':'/'}>{entryLabel} <span aria-hidden="true">↗</span></ActionLink><TextCTA to="/contact/">Send a brief →</TextCTA></div><CaseStudyNav current="/work/personal-portfolio-3d/" /></div>
         </div>
       </section>
     </main>

@@ -25,11 +25,11 @@ const DESKTOP_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 const MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1'
 
 const PRIMA = 'https://primaapp.com'
-const BIZ = 'https://www.usmankhairdin.com/portfolio/bizcare/'
-const BANSAR = 'https://www.bansarchina.com'
+
+
 const RANTLE = 'https://www.rantle.com'
 const BUM = 'https://www.usmankhairdin.com/portfolio/bum.life'
-const PNW = 'https://www.usmankhairdin.com/portfolio/PNWLeads/'
+
 
 // { name, url, at: { text | y }, top: px above the landmark, mobile?: true, wait?: extra ms before the shot, prep?: async (page) => void }
 const SHOTS = {
@@ -50,35 +50,8 @@ const SHOTS = {
     { name: 'm-restaurant', url: `${PRIMA}/restaurant/miami-zuma`, at: { y: 0 }, mobile: true },
     { name: 'm-city', url: `${PRIMA}/city/miami`, at: { y: 0 }, mobile: true },
   ],
-  bizcare: [
-    { name: 'platform', url: BIZ, at: { text: 'A Single Platform' }, top: 60 },
-    { name: 'work-with', url: BIZ, at: { text: 'We work with' }, top: 90 },
-    { name: 'benefits', url: BIZ, at: { text: 'Benefits of BizCare' }, top: 90 },
-    { name: 'how-it-works', url: BIZ, at: { text: 'How It Works' }, top: 90 },
-    { name: 'about', url: BIZ, at: { text: 'About Us' }, top: 120 },
-    { name: 'closing', url: BIZ, at: { text: 'A Smarter Way to Offer Benefits' }, top: 220 },
-    { name: 'm-home', url: BIZ, at: { y: 0 }, mobile: true },
-    { name: 'm-platform', url: BIZ, at: { text: 'A Single Platform' }, top: 40, mobile: true },
-    { name: 'm-how', url: BIZ, at: { text: 'How It Works' }, top: 40, mobile: true },
-  ],
-  bansar: [
-    { name: 'who', url: `${BANSAR}/`, at: { text: 'Who Ships with us' }, top: 80 },
-    { name: 'solutions', url: `${BANSAR}/`, at: { text: 'Bansar Will Provide You Best Shipping Solution' }, top: 80 },
-    { name: 'regions', url: `${BANSAR}/`, at: { text: 'Ship from China to Any Place You Want' }, top: 80 },
-    { name: 'special', url: `${BANSAR}/`, at: { text: 'Besides Normal Container Services' }, top: 80 },
-    { name: 'stories', url: `${BANSAR}/`, at: { text: 'Listen to What Our Clients Say' }, top: 80 },
-    { name: 'resources', url: `${BANSAR}/`, at: { text: 'Become an Expert When Shipping from China' }, top: 80 },
-    { name: 'sea', url: `${BANSAR}/sea-freight/`, at: { y: 0 } },
-    { name: 'air', url: `${BANSAR}/air-freight/`, at: { y: 0 } },
-    { name: 'rail', url: `${BANSAR}/rail-freight/`, at: { y: 0 } },
-    { name: 'customs', url: `${BANSAR}/customs-clearance/`, at: { y: 0 } },
-    { name: 'region', url: `${BANSAR}/shipping-from-china/`, at: { y: 0 } },
-    { name: 'quote', url: `${BANSAR}/get-a-quick-quote/`, at: { y: 0 } },
-    { name: 'chinese', url: `${BANSAR}/zh/`, at: { y: 0 } },
-    { name: 'm-home', url: `${BANSAR}/`, at: { y: 0 }, mobile: true },
-    { name: 'm-sea', url: `${BANSAR}/sea-freight/`, at: { y: 0 }, mobile: true },
-    { name: 'm-solutions', url: `${BANSAR}/`, at: { text: 'Bansar Will Provide You Best Shipping Solution' }, top: 30, mobile: true },
-  ],
+
+
   rantle: [
     { name: 'why', url: `${RANTLE}/`, at: { text: 'Why RANTLE Can be Your Trusted' }, top: 80 },
     { name: 'products', url: `${RANTLE}/`, at: { y: 1780 } },
@@ -108,16 +81,7 @@ const SHOTS = {
     { name: 'm-cast', url: `${BUM}/`, at: { text: 'Meet the Cast' }, top: 40, mobile: true },
     { name: 'm-character', url: `${BUM}/phil.html`, at: { y: 0 }, mobile: true },
   ],
-  'pnw-leads': [
-    { name: 'hero', url: PNW, at: { y: 0 } },
-    { name: 'proof', url: PNW, at: { text: 'Why Service Businesses Trust PNWLeads' }, top: 90 },
-    { name: 'process', url: PNW, at: { text: 'How We Generate Qualified Leads For You' }, top: 90 },
-    { name: 'testimonials', url: PNW, at: { text: 'What Our Clients Say' }, top: 90 },
-    { name: 'cta', url: PNW, at: { text: 'Ready to Scale Your Service Business' }, top: 200 },
-    { name: 'm-home', url: PNW, at: { y: 0 }, mobile: true },
-    { name: 'm-process', url: PNW, at: { text: 'How We Generate Qualified Leads For You' }, top: 30, mobile: true },
-    { name: 'm-cta', url: PNW, at: { text: 'Ready to Scale Your Service Business' }, top: 120, mobile: true },
-  ],
+
 }
 
 async function decline(page) {

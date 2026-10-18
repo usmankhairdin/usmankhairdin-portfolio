@@ -7,7 +7,7 @@ import ProjectMetaRail from '../components/ProjectMetaRail.jsx'
 import { ProjectCapture } from '../components/ProjectBrowserPreview.jsx'
 import { ActionLink, TextCTA } from '../components/ui/Action.jsx'
 import SectionIntro from '../components/ui/SectionIntro.jsx'
-import { disciplineFor, hostLabel, showcaseImage, surfacesFor, toneFor, useShowcaseMotion } from './workShowcase.js'
+import { disciplineFor, showcaseImage, surfacesFor, toneFor, useShowcaseMotion } from './workShowcase.js'
 import '../components/BrowserFrame.css'
 import './Work.css'
 import './WorkEditorial.css'
@@ -33,8 +33,8 @@ export default function Work(){
       <div className="route-wrap">
         <SectionIntro
           className="wk-featured__intro"
-          title={<span id="wk-featured-title">One practice.<br /><em>Two experiences.</em></span>}
-          intro="Two connected expressions of the same design and frontend practice, created as independent portfolio projects."
+          title={<span id="wk-featured-title">The portfolio,<br /><em>as a place.</em></span>}
+          intro="A self-initiated spatial experience that turns project discovery into a walk through a building."
         />
         <div className="wk-featured__list">
           {featuredProjects.map((project) => <article className="wk-featured__item" key={project.href}>
@@ -75,7 +75,7 @@ export default function Work(){
           className="wk-project"
           key={project.slug}
           data-tone={toneFor(project)}
-          style={{'--wk-accent':project.accent,'--wk-bg-l':surfaces.light,'--wk-bg-d':surfaces.dark,'--wk-chars':project.title.length,'--wk-i':index}}
+          style={{'--wk-accent':project.accent,'--wk-bg-l':surfaces.light,'--wk-bg-d':surfaces.dark,'--wk-chars':project.titleMeasure||project.title.length,'--wk-i':index}}
         >
           <div className="wk-project__atmosphere" aria-hidden="true"/>
           <span className="wk-project__ghost" aria-hidden="true">{number}</span>
@@ -89,7 +89,6 @@ export default function Work(){
 
             <div className="wk-project__stage">
               <Link to={href} className="wk-frame ui-frame" data-cursor="view" aria-label={`View ${project.title} case study`}>
-                <span className="ui-frame__bar" aria-hidden="true"><i/><i/><i/><span className="ui-frame__url">{hostLabel(project.liveUrl)}</span></span>
                 <ProjectCapture
                   key={project.slug}
                   project={project}

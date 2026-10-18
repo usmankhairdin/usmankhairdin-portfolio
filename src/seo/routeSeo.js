@@ -74,15 +74,6 @@ const pages = [
     pageType: 'WebPage',
   },
   {
-    path: '/work/personal-portfolio-web/',
-    title: 'Personal Portfolio Web Case Study | Design + Frontend',
-    description: 'How Usman designed and built a responsive Web Experience, from product positioning and design system to frontend interaction and implementation.',
-    intent: 'Personal portfolio web design and frontend case study',
-    ...social('personal-portfolio-web', 'Personal Portfolio Web Experience on desktop'),
-    pageType: 'WebPage',
-    caseStudy: true,
-  },
-  {
     path: '/work/personal-portfolio-3d/',
     title: 'Personal Portfolio 3D Case Study | Spatial Web Design',
     description: 'Explore a self-initiated 3D portfolio with navigable rooms, controlled camera movement, responsive overlays and production WebGL implementation.',
@@ -94,6 +85,16 @@ const pages = [
 ]
 
 const projectSeo = {
+  forma: {
+    title: 'Forma Case Study | SaaS Website, UI/UX & Frontend',
+    description: 'Explore Forma, a complete AI-workspace marketing frontend with expressive product illustrations, reversible motion, platform pages and responsive light and dark themes.',
+    intent: 'SaaS website product design and responsive frontend case study',
+  },
+  veyravael: {
+    title: 'Veyravael Estates Case Study | Real-Estate Website Design',
+    description: 'Explore an editorial real-estate frontend template with landscape-led photography, a curated property collection and a responsive enquiry presentation.',
+    intent: 'Luxury real-estate website design and frontend case study',
+  },
   sanaira: {
     title: 'Sanaira Health Case Study | Healthcare Website + SaaS UI',
     description: 'Explore Sanaira Health: a cinematic healthcare website and companion broker, member and employer application, with coverage discovery and interactive demo workflows.',
@@ -104,16 +105,8 @@ const projectSeo = {
     description: 'Explore PRIMA’s hospitality network interface, bringing live restaurant booking, rewarded recommendations and partner earnings into one public product story.',
     intent: 'Hospitality product UI and frontend case study',
   },
-  bizcare: {
-    title: 'BizCare Case Study | ICHRA Website UI',
-    description: 'See a responsive public portfolio presentation of BizCare’s ICHRA administration and enrollment platform for brokers, PEOs and employers.',
-    intent: 'ICHRA benefits platform website UI case study',
-  },
-  bansar: {
-    title: 'Bansar China Case Study | Logistics Website Design',
-    description: 'Explore Bansar China’s freight-forwarding website design and responsive frontend across shipping modes, regional guides and quote paths.',
-    intent: 'Freight-forwarding website design and frontend case study',
-  },
+
+
   rantle: {
     title: 'Rantle Case Study | Electronics Website Design',
     description: 'See a responsive sourcing website for electronic components, organized around product families, part-number quotes and technical content.',
@@ -124,11 +117,7 @@ const projectSeo = {
     description: 'Explore a responsive animated-series website portfolio build with cast profiles, clips, a gallery and a producer-facing pitch page.',
     intent: 'Animated series website design case study',
   },
-  'pnw-leads': {
-    title: 'PNWLeads Case Study | Lead-Generation Website Concept',
-    description: 'A responsive one-page concept presenting a Pacific Northwest lead-generation offer through local SEO, paid ads, canvassing and a contact path.',
-    intent: 'Lead-generation landing page design concept case study',
-  },
+
 }
 
 for (const project of projects) {
@@ -252,9 +241,7 @@ export function structuredDataFor(page) {
   if (page.caseStudy) {
     graph[0].mainEntity = ref(`${page.canonical}#case-study`)
     graph[0].breadcrumb = ref(`${page.canonical}#breadcrumb`)
-    const projectName = page.path.includes('personal-portfolio-web')
-      ? 'Personal Portfolio — Web'
-      : page.path.includes('personal-portfolio-3d')
+    const projectName = page.path.includes('personal-portfolio-3d')
         ? 'Personal Portfolio — 3D'
         : projects.find((project) => page.path === `/work/${project.slug}/`)?.title
     graph.push(

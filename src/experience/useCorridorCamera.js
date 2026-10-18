@@ -1,21 +1,21 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useNavigate } from 'react-router-dom'
+import { useLiveScreens } from '../rooms/LiveProjectScreens.jsx'
 import * as THREE from 'three'
-import gsap from 'gsap'
 import { doors } from '../data/projects.js'
 import { useJourney } from './JourneyContext.jsx'
 import useReducedMotion from './useReducedMotion.js'
-import { motionEase } from './doorSystem.js'
 import { LEAD_M, LEAD_TOUCH_M, METERS_PER_PX, WALK, WALK_TOUCH, createMomentumFilter, stepMotion, walkToward } from './walkMotion.js'
-import { headQuaternion, heading, look, lookDragEnd, lookDragStart, lookMove, setLook, steerLook, stepLook } from './freeLook.js'
-import { START_Z, isOutside, locate, routeTo, slide } from './walkable.js'
+import { headQuaternion, heading, look, lookCapture, lookDragEnd, lookDragStart, lookMove, pauseAutomaticLook, setCaptureUnavailable, setCursorFree, setRelativeLook, setLook, stopFallbackLook, steerLook, stepLook } from './freeLook.js'
+import { createPointerLook } from './pointerLook.js'
+import { START_Z, isOutside, locate, roofRoute, routeTo, slide } from './walkable.js'
 import { PLAZA_STAND_Z } from './corridorLayout.js'
 import { SIGN } from './CorridorExterior.jsx'
 import { doorOpen, resetDoors, updateDoors } from './doorStates.js'
 import { ENTRANCE_OPENING } from './EntranceDoor.jsx'
-import { followLink, linkState, linkTargets, pointLink } from '../rooms/linkTargets.js'
+import { linkState, pointLink } from '../rooms/linkTargets.js'
 import { consumeReturn, saveReturn } from './corridorReturn.js'
+import { centerHotspot } from './centerHotspot.js'
 
 /*
  * The visitor's body and eyes.
@@ -26,11 +26,9 @@ import { consumeReturn, saveReturn } from './corridorReturn.js'
  * down the corridor, through a room's door, round a room, and back out again - and they stop
  * the moment the wheel stops, wherever that is. Scrolling back steps back.
  *
- * Looking, game style: the click on the door (or any click on the scene) captures the mouse.
- * The cursor hides, a small dot marks the middle, and the view turns exactly as far as the
- * mouse moves, all the way round; the walk goes where the dot is. A click that is not on a
- * link, or Esc, gives the cursor back; a click on the scene takes it again. Out on the terrace,
- * before any click, the view only leans a little toward the cursor. A touch screen drags.
+ * Captured relative mouse movement looks around and the wheel walks along that heading.
+ * Escape frees the cursor for page controls. Website review pauses
+ * both controls until its outside click has returned the original camera pose.
  */
 const EYE = 1.58
 const INSIDE_START_Z = 10.1
@@ -54,8 +52,7 @@ const followYaw = (x) => -LEAN * Math.atan(x * TAN_H * (window.innerWidth / Math
 const followPitch = (y) => -LEAN * Math.atan(y * TAN_H)
 
 export default function useCorridorCamera(enabled = true) {
-  const { camera, gl, scene, size, invalidate } = useThree()
-  const navigate = useNavigate()
+  const { camera, gl, size, invalidate } = useThree()
   const {
     activeDoor, phase, setPhase, setActiveDoor,
     navigationTarget, setNavigationTarget,
@@ -63,7 +60,29 @@ export default function useCorridorCamera(enabled = true) {
     experiencePhase, setExperiencePhase, navigationOpen,
   } = useJourney()
   const reducedMotion = useReducedMotion()
-  const controlsEnabled = enabled && !navigationOpen
+  const liveScreens=useLiveScreens()
+  const controlsEnabled = enabled && !navigationOpen && !liveScreens?.active
+  const pointerPolicy = useRef(null)
+  pointerPolicy.current = { enabled, navigationOpen, session: liveScreens?.session }
+  useEffect(() => {
+    const canvas = gl.domElement
+    const control = createPointerLook(canvas, {
+      document,
+      isAllowed: () => pointerPolicy.current.enabled && !pointerPolicy.current.navigationOpen && !pointerPolicy.current.session?.active && !look.cursorFree,
+      onChange: (active, reason) => {
+        setRelativeLook(active)
+        if (active) setCaptureUnavailable(false)
+        if (!active && reason === 'escape') setCursorFree(true)
+      },
+      onUnavailable: error => {
+        setRelativeLook(false); setCaptureUnavailable(true)
+        if (import.meta.env.DEV) console.warn('Mouse capture unavailable:', error?.message || error?.type || 'browser restriction')
+      },
+    })
+    lookCapture.request = () => control.request()
+    lookCapture.release = reason => control.release(reason)
+    return () => { control.dispose(); lookCapture.request = lookCapture.release = null }
+  }, [gl])
 
   const pos = useRef({ x: 0, z: PLAZA_STAND_Z })        // arriving on the terrace, facing the door
   const track = useRef({ value: 0, target: 0, vel: 0 })     // metres walked (an odometer)
@@ -73,23 +92,18 @@ export default function useCorridorCamera(enabled = true) {
   const stepClock = useRef(0)
   const route = useRef(null)
   const touchY = useRef(null)
-  const tween = useRef(null)
-  const scripted = useRef(null)                               // the walk in or out, driven by a tween
   const where = useRef({ door: null, facing: null })
   const out = useRef([0, 0])
   const corner = useRef(new THREE.Vector3())
   const pointer = useRef({ x: 0, y: 0, sx: 0, sy: 0 })
-  const ray = useRef(new THREE.Vector3())
   // leaning toward the cursor on the terrace: on or off, and the head's direction when it began
   const follow = useRef({ on: true, active: false, baseYaw: 0, basePitch: 0 })
-  const freedAt = useRef(0)
-  const raycaster = useRef(new THREE.Raycaster())
-  const frameCount = useRef(0)
   const arrived = useRef(false)
   const hotspot = useRef({ el: null, box: '' })
   const signSpot = useRef({ el: null, box: '' })
 
   const outside = experiencePhase === 'gated'           // on the terrace
+  const entering = experiencePhase === 'entering'
   const walking = outside || experiencePhase === 'inside'
 
   /* ---------------------------------------------------------------- the cursor */
@@ -133,7 +147,8 @@ export default function useCorridorCamera(enabled = true) {
         const sy = (-corner.current.y * 0.5 + 0.5) * H
         x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy)
       }
-      if (behind) { x0 = x1 = y0 = y1 = -10 }
+      // The facade hides these front-facing controls from the side and rear roof.
+      if (behind || pos.current.z < DOOR_FACE_Z) { x0 = x1 = y0 = y1 = -10 }
       const box = `${x0.toFixed(0)},${y0.toFixed(0)},${(x1 - x0).toFixed(0)},${(y1 - y0).toFixed(0)}`
       if (box === h.box) return
       h.box = box
@@ -148,58 +163,26 @@ export default function useCorridorCamera(enabled = true) {
   /* ---------------------------------------------------------------- walking in */
   useLayoutEffect(() => {
     if (experiencePhase !== 'entering') return undefined
-    tween.current?.kill()
-    route.current = null
+    const approach = roofRoute(pos.current.x, pos.current.z)
+    if (!approach.length) {
+      setExperiencePhase('gated')
+      setAutoMoving(false)
+      return undefined
+    }
+    route.current = [...approach, [0, INSIDE_START_Z]]
     setNavigationTarget(null)
     setActiveDoor(null)
     setPhase('corridor')
     setAutoMoving(true)
     setCorridorFacing('forward')
     resetDoors()
-    // turn the short way round to face down the corridor; the captured mouse takes over inside
-    const walk = { p: 0, from: { x: pos.current.x, z: pos.current.z, yaw: Math.atan2(Math.sin(look.yaw), Math.cos(look.yaw)), pitch: look.pitch } }
-    scripted.current = walk
-    const tw = gsap.to(walk, {
-      p: 1, delay: reducedMotion ? 0 : 0.12, duration: reducedMotion ? 0.01 : 3.4, ease: 'sine.inOut',
-      onComplete: () => {
-        scripted.current = null
-        pos.current = { x: 0, z: INSIDE_START_Z }
-        track.current = { value: 0, target: 0, vel: 0 }
-        setLook(0, 0)
-        setAutoMoving(false)
-        setExperiencePhase('inside')
-      },
-    })
-    tween.current = tw
-    return () => tw.kill()
-  }, [experiencePhase, camera, reducedMotion, setActiveDoor, setAutoMoving, setCorridorFacing, setExperiencePhase, setNavigationTarget, setPhase])
-
-  /* One frame of the walk in from a click on the door: where the body is, where the head looks, the step. */
-  const walkScripted = useCallback((dt) => {
-    const w = scripted.current
-    if (!w) return
-    const p = w.p
-    const f = w.from
-    const settle = motionEase(clamp(p * 2.2, 0, 1))
-    const x = THREE.MathUtils.lerp(f.x, 0, settle)
-    const z = THREE.MathUtils.lerp(f.z, INSIDE_START_Z, p)
-    const yaw = f.yaw * (1 - settle)
-    const pitch = f.pitch * (1 - settle)
-    const moved = Math.hypot(x - pos.current.x, z - pos.current.z)
-    pos.current = { x, z }
-    setLook(yaw, pitch)
-    // the entrance's own sensor: it opens as they come up to it and shuts once they are clear
-    updateDoors(x, z, dt)
-    stepClock.current += dt
-    const s = stepMotion(stepState.current, moved, dt, stepClock.current, reducedMotion)
-    const [hx, hz] = heading()
-    camera.position.set(x - hz * s.sway, EYE + s.bobY + s.breath, z + hx * s.sway)
-    headQuaternion(camera.quaternion, s.roll, s.nod)
-  }, [camera, reducedMotion])
+    follow.current.on = false
+    track.current.target = track.current.value
+  }, [experiencePhase, setActiveDoor, setAutoMoving, setCorridorFacing, setExperiencePhase, setNavigationTarget, setPhase])
 
   /* ---------------------------------------------------------------- input */
   const applyTravelDelta = useCallback((rawDelta, source = 'wheel') => {
-    if (!walking || !controlsEnabled) return false
+    if (!walking || !controlsEnabled || liveScreens?.session.active || liveScreens?.focus.holding) return false
     const delta = clamp(rawDelta, -240, 240)
     const t = track.current
     walkInput.current = source
@@ -213,7 +196,7 @@ export default function useCorridorCamera(enabled = true) {
     const next = t.target + delta * METERS_PER_PX * (delta < 0 ? 0.6 : 1)
     t.target = clamp(next, t.value - lead * 0.6, t.value + lead)
     return true
-  }, [walking, controlsEnabled, setNavigationTarget, setAutoMoving])
+  }, [walking, controlsEnabled, liveScreens?.session, setNavigationTarget, setAutoMoving])
 
   useEffect(() => {
     const onWheel = (e) => {
@@ -247,63 +230,104 @@ export default function useCorridorCamera(enabled = true) {
     }
   }, [applyTravelDelta, walking])
 
-  // Looking. A click on the scene captures the mouse (the door's click does too). While captured,
-  // a click on a link follows it and any other click frees the mouse, as does Esc. With the mouse
-  // free, a plain click on the scene captures it again - never in the same breath as freeing it.
-  // A touch, or a pen, drags the view round.
+  // Desktop uses relative mouse-look and wheel-walk. A review's outside click
+  // recaptures within that gesture, then input waits for the return animation.
   useEffect(() => {
     const canvas = gl.domElement
-    const show = () => document.body.classList.toggle('looking', look.locked)
-    const onLockChange = () => {
-      const was = look.locked
-      look.locked = document.pointerLockElement === canvas
-      document.body.classList.toggle('look-locked', look.locked)
-      if (was && !look.locked) {
-        freedAt.current = performance.now()
-        follow.current.on = false            // the cursor is the visitor's own again
+    const paused = () => !walking || !controlsEnabled || liveScreens?.session.active || liveScreens?.focus.holding
+    const sceneTarget = e => e.target === canvas || e.target.closest?.('.entry-door-hotspot, .exterior-sign-hotspot')
+    const onMove = e => {
+      if (paused() || look.cursorFree) return
+      if (e.pointerType === 'mouse') {
+        if (!fine()) return
+        if (document.pointerLockElement === canvas) return
+        if (!sceneTarget(e)) {
+          lookDragEnd()
+          return
+        }
       }
-      if (!look.locked) pointLink('aimed', null)
-      show()
-    }
-    const onDown = (e) => {
-      if (!walking || !controlsEnabled || e.button !== 0) return
-      if (look.locked) {
-        e.preventDefault()
-        const aimed = linkState.aimed
-        if (aimed && linkTargets.has(aimed)) followLink(linkTargets.get(aimed), navigate)
-        else document.exitPointerLock?.()
-        return
-      }
-      if (e.target === canvas && !linkState.hovered && e.pointerType !== 'mouse') lookDragStart(e)
-    }
-    const onClick = (e) => {
-      if (!walking || !controlsEnabled || look.locked || look.dragging || e.button !== 0) return
-      if (e.target !== canvas || linkState.hovered || e.pointerType === 'touch') return
-      if (performance.now() - freedAt.current < 900) return
-      const ask = canvas.requestPointerLock?.()
-      if (ask?.catch) ask.catch(() => {})
-    }
-    const onMove = (e) => {
-      if (!walking || !controlsEnabled) return
       lookMove(e)
     }
-    onLockChange()
-    document.addEventListener('pointerlockchange', onLockChange)
+    const onRelativeMove = e => {
+      if (document.pointerLockElement !== canvas || paused() || look.cursorFree) return
+      lookMove(e)
+    }
+    const onDown = e => {
+      look.dragging=false
+      if (paused() || look.cursorFree || e.button !== 0 || !sceneTarget(e) || document.pointerLockElement === canvas) return
+      // Keep a fallback drag on the same surface when it crosses a DOM door
+      // hotspot. Otherwise canvas pointerleave cancels the middle of the turn.
+      // A native touch/pen button keeps its own tap target. Mouse look can
+      // cross that overlay; native capture mode is handled separately above.
+      if(e.target===canvas || e.pointerType==='mouse'){
+        try { canvas.setPointerCapture(e.pointerId) } catch { /* cancelled pointer */ }
+      }
+      lookDragStart(e)
+    }
+    const onLeave = () => { if (document.pointerLockElement !== canvas) lookDragEnd() }
+    const onBlur = () => {
+      // Focusing an embedded website also blurs the parent window. This is a
+      // review transition, not an instruction to change the visitor's mode.
+      if (liveScreens?.session.active || liveScreens?.focus.holding) return
+      const captured=document.pointerLockElement===canvas || look.locked
+      lookCapture.release?.('blur')
+      // An uncaptured browser already has a free OS cursor. A focus change
+      // (including a passive iframe's autofocus) must not disable its drag mode.
+      if(captured)setCursorFree(true)
+      pauseAutomaticLook(); onLeave()
+    }
+    const onKey = e => {
+      if (e.key !== 'Escape' || e.defaultPrevented || paused()) return
+      setCursorFree(true)
+      e.preventDefault()
+    }
+    const onSceneClick = e => {
+      // Consume the drag's click before it reaches a native door/sign button,
+      // as well as the WebGL targets that have their own drag guards.
+      if(look.dragging && sceneTarget(e)) { e.preventDefault(); e.stopImmediatePropagation(); return }
+      if (!e.isTrusted || e.button !== 0 || !fine() || (e.pointerType && e.pointerType !== 'mouse') || paused() || look.cursorFree || look.dragging || !sceneTarget(e)) return
+      const hotspots = [...document.querySelectorAll('.entry-door-hotspot,.exterior-sign-hotspot')]
+        .map(element => ({ element, rect: element.getBoundingClientRect() }))
+      const target = centerHotspot(hotspots, window.innerWidth, window.innerHeight)
+      if (!target) return
+      e.preventDefault(); e.stopImmediatePropagation()
+      target.click()
+      if (target.matches('.entry-door-hotspot')) lookCapture.request?.()
+    }
+    const onSceneClickComplete = e => {
+      if (e.isTrusted && e.button === 0 && fine() && (!e.pointerType || e.pointerType === 'mouse') && !paused() && !look.cursorFree && !look.dragging && !look.captureUnavailable && sceneTarget(e)) lookCapture.request?.()
+    }
+    if (navigationOpen || !enabled) lookCapture.release?.('menu')
+    setRelativeLook(document.pointerLockElement === canvas && !paused())
+    document.body.classList.toggle('looking', look.locked)
+    document.body.classList.remove('look-locked')
+    pointLink('aimed', null)
+    follow.current.on = false
     window.addEventListener('pointerdown', onDown)
-    window.addEventListener('click', onClick)
+    window.addEventListener('click', onSceneClick, true)
+    window.addEventListener('click', onSceneClickComplete)
+    window.addEventListener('keydown', onKey)
     window.addEventListener('pointermove', onMove, { passive: true })
+    canvas.addEventListener('mousemove', onRelativeMove, { passive: true })
     window.addEventListener('pointerup', lookDragEnd, { passive: true })
     window.addEventListener('pointercancel', lookDragEnd, { passive: true })
+    canvas.addEventListener('pointerleave', onLeave)
+    window.addEventListener('blur', onBlur)
     return () => {
-      document.removeEventListener('pointerlockchange', onLockChange)
+      pauseAutomaticLook(); setRelativeLook(false); lookDragEnd()
+      document.body.classList.remove('looking', 'look-ready', 'look-locked')
       window.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('click', onClick)
+      window.removeEventListener('click', onSceneClick, true)
+      window.removeEventListener('click', onSceneClickComplete)
+      window.removeEventListener('keydown', onKey)
       window.removeEventListener('pointermove', onMove)
+      canvas.removeEventListener('mousemove', onRelativeMove)
       window.removeEventListener('pointerup', lookDragEnd)
       window.removeEventListener('pointercancel', lookDragEnd)
+      canvas.removeEventListener('pointerleave', onLeave)
+      window.removeEventListener('blur', onBlur)
     }
-  }, [gl, navigate, walking, controlsEnabled])
-
+  }, [gl, walking, controlsEnabled, liveScreens?.session, liveScreens?.focus])
   // Before following a link to a page, note where the visitor stands, for Back to return to.
   useEffect(() => {
     linkState.save = () => saveReturn({ x: pos.current.x, z: pos.current.z, yaw: look.yaw, pitch: look.pitch })
@@ -323,25 +347,32 @@ export default function useCorridorCamera(enabled = true) {
   }, [experiencePhase, camera])
 
   useEffect(() => () => {
+    setCursorFree(false)
+    stopFallbackLook()
     if (document.pointerLockElement) document.exitPointerLock?.()
-    document.body.classList.remove('look-locked', 'looking', 'look-aim', 'link-hover')
+    document.body.classList.remove('look-locked', 'looking', 'look-ready', 'look-aim', 'link-hover')
   }, [])
-  useEffect(() => { if (navigationOpen && document.pointerLockElement) document.exitPointerLock?.() }, [navigationOpen])
 
   // A room chosen from the menu: walk there along the corridor, through its door.
   useEffect(() => {
-    if (!navigationTarget || experiencePhase !== 'inside') return
+    if (!navigationTarget || !walking) return
     const target = doors.find((d) => d.id === navigationTarget)
     if (!target) { setNavigationTarget(null); return }
     route.current = routeTo(target, pos.current.x, pos.current.z)
     setAutoMoving(true)
-  }, [navigationTarget, experiencePhase, setNavigationTarget, setAutoMoving])
+  }, [navigationTarget, walking, setNavigationTarget, setAutoMoving])
 
   /* ---------------------------------------------------------------- every frame */
   useFrame((_, dt) => {
     const frameDt = Math.min(dt, 0.05)
-    if (experiencePhase === 'entering') { walkScripted(frameDt); return }
-    if (!walking) return
+    if (!walking && !entering) return
+    if(liveScreens?.session.active||liveScreens?.focus.holding){
+      track.current.target=track.current.value;track.current.vel=0
+      return // Hold the exact camera pose, including idle breathing, during website review.
+    }
+    if (controlsEnabled && fine() && document.pointerLockElement === gl.domElement && !look.locked) setRelativeLook(true)
+    document.body.classList.toggle('looking', controlsEnabled && fine() && !look.cursorFree && look.locked)
+    document.body.classList.toggle('look-ready', controlsEnabled && fine() && !look.cursorFree && !look.locked)
     // on the terrace, before the mouse is captured, the head leans toward the cursor, starting from where it already looks
     const f = follow.current
     const following = outside && f.on && !look.locked && fine() && controlsEnabled && !route.current
@@ -356,20 +387,25 @@ export default function useCorridorCamera(enabled = true) {
     f.active = following
     const t = track.current
     const p = pos.current
+    if (!controlsEnabled) t.target = t.value
 
     // A menu walk heads for its next waypoint; the head turns toward it as a person's would.
-    if (route.current) {
+    if (route.current && controlsEnabled) {
       const [wx, wz] = route.current[0]
       const dx = wx - p.x
       const dz = wz - p.z
       const dist = Math.hypot(dx, dz)
-      if (dist < 0.3) {
+      const finalPoint = route.current.length === 1
+      const stopAtPoint = entering || finalPoint
+      if (dist < (finalPoint ? 0.06 : entering ? 0.025 : 0.25) && (!stopAtPoint || Math.abs(t.vel) < 0.12)) {
         route.current.shift()
         if (!route.current.length) {
           route.current = null
           t.target = t.value
+          t.vel = 0
           setNavigationTarget(null)
           setAutoMoving(false)
+          if (entering) setExperiencePhase('inside')
         }
       } else {
         const want = Math.atan2(-dx, -dz)
@@ -383,25 +419,28 @@ export default function useCorridorCamera(enabled = true) {
     }
 
     stepLook(frameDt)
+    headQuaternion(camera.quaternion)
+    camera.updateMatrixWorld()
 
-    // Walk exactly where the cursor points: along the horizontal part of the ray from the eye
-    // through the cursor, so whatever is under the cursor stays under it, coming closer. On a
-    // touch screen, in a menu walk, or pointing nearly straight up or down, the view's own heading.
+    // The fixed centre dot is the visitor's forward direction in every input
+    // mode; an off-centre hidden mouse must never steer walking sideways.
     const walkDir = () => {
-      if (look.locked || route.current || !fine() || walkInput.current === 'touch') return heading()
-      const v = ray.current.set(pointer.current.x, -pointer.current.y, 0.5).unproject(camera).sub(camera.position)
-      const flat = Math.hypot(v.x, v.z)
-      const [hx, hz] = heading()
-      const w = THREE.MathUtils.clamp(flat / v.length() / 0.35, 0, 1)
-      const dx = (v.x / Math.max(flat, 1e-6)) * w + hx * (1 - w)
-      const dz = (v.z / Math.max(flat, 1e-6)) * w + hz * (1 - w)
-      const n = Math.hypot(dx, dz) || 1
-      return [dx / n, dz / n]
+      // Entry follows each physically clear roof segment, even while the head turns.
+      if (entering && route.current) {
+        const [x, z] = route.current[0]
+        const distance = Math.hypot(x - p.x, z - p.z) || 1
+        return [(x - p.x) / distance, (z - p.z) / distance]
+      }
+      return heading()
     }
     // Walk - or step back.
     const before = t.value
-    if (reducedMotion) { t.value = t.target; t.vel = 0 } else walkToward(t, walkInput.current === 'touch' ? WALK_TOUCH : WALK, frameDt)
-    const step = t.value - before
+    walkToward(t, walkInput.current === 'touch' ? WALK_TOUCH : WALK, frameDt)
+    let step = t.value - before
+    if (entering && route.current) {
+      const [x, z] = route.current[0]
+      step = Math.sign(step) * Math.min(Math.abs(step), Math.hypot(x - p.x, z - p.z))
+    }
     let moved = 0
     if (step !== 0) {
       const [hx, hz] = walkDir()
@@ -409,17 +448,18 @@ export default function useCorridorCamera(enabled = true) {
       moved = Math.hypot(out.current[0] - p.x, out.current[1] - p.z)
       p.x = out.current[0]
       p.z = out.current[1]
-      if (!free || moved < Math.abs(step) * 0.15) { t.target = t.value; t.vel = Math.sign(t.vel) * Math.min(Math.abs(t.vel), 0.4) }
+      if (!free || moved < Math.abs(step) * 0.15) { t.target = t.value; t.vel = 0 }
     }
 
     updateDoors(p.x, p.z, frameDt)
 
     // Through the entrance, either way: out onto the terrace, or in from it.
-    if (!outside && p.z > START_Z + 0.6) { setExperiencePhase('gated'); return }
-    if (outside && !isOutside(p.z)) { setExperiencePhase('inside'); return }
+    const onRoof = isOutside(p.z, p.x)
+    if (!entering && !outside && onRoof) setExperiencePhase('gated')
+    if (outside && !onRoof) setExperiencePhase('inside')
 
     // Which room the visitor is standing in (for the menu and the hints).
-    const door = locate(p.x, p.z)
+    const door = onRoof ? null : locate(p.x, p.z)
     if ((door?.id ?? null) !== where.current.door) {
       where.current.door = door?.id ?? null
       setActiveDoor(door?.id ?? null)
@@ -428,7 +468,7 @@ export default function useCorridorCamera(enabled = true) {
     const facing = Math.cos(look.yaw) >= 0 ? 'forward' : 'return'
     if (facing !== where.current.facing) { where.current.facing = facing; setCorridorFacing(facing) }
 
-    // The human step: bob, weight shift, a hint of roll and nod, and breathing when still.
+    // Grounded body motion leaves the visitor's viewing angle steady.
     stepClock.current += frameDt
     const s = stepMotion(stepState.current, moved, frameDt, stepClock.current, reducedMotion)
     const [hx, hz] = heading()
@@ -436,15 +476,6 @@ export default function useCorridorCamera(enabled = true) {
     headQuaternion(camera.quaternion, s.roll, s.nod)
     if (outside) placeHotspot()
 
-    // With the mouse captured, the centre dot finds what it rests on (every few frames).
-    if (look.locked && (frameCount.current++ & 3) === 0) {
-      raycaster.current.setFromCamera({ x: 0, y: 0 }, camera)
-      raycaster.current.far = 22
-      const shown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true }
-      const hit = raycaster.current.intersectObjects(scene.children, true).find((h) => shown(h.object))
-      const aimed = hit && linkTargets.has(hit.object) ? hit.object : null
-      if (aimed !== linkState.aimed) pointLink('aimed', aimed)
-    }
   }, -2) // before the floor reflection pass, so the mirror always uses this frame's camera
 
   // Keep the menu's notion of "here" honest when the visitor leaves the experience.

@@ -1,12 +1,14 @@
 ﻿import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { events as pointerEvents } from '@react-three/fiber'
 import * as THREE from 'three'
 import Header from '../components/Header.jsx'
 import HomeScene from './HomeScene.jsx'
+import SceneAssetGate from './SceneAssetGate.jsx'
 import { JourneyProvider, useJourney } from './JourneyContext.jsx'
 import useReducedMotion from './useReducedMotion.js'
 import { hintEntrance, setEntranceOpen } from './entranceDoor.js'
-import { releaseBootLoader } from '../loader/bootLoader.js'
+import { claimBootLoader, releaseBootLoader } from '../loader/bootLoader.js'
 import { useWebScrollSuspension } from '../scroll/WebScrollProvider.jsx'
 import { Link, useNavigationType } from 'react-router-dom'
 import { WEB_HOME } from '../routeLoaders.js'
@@ -14,6 +16,28 @@ import { takeReturn } from './corridorReturn.js'
 import { floorReflection } from './floorReflection.js'
 import { markSceneCompiled } from './probeEnv.js'
 import { exteriorSign } from './CorridorExterior.jsx'
+import { compileScenePrograms, deferSceneWarmup } from './sceneWarmup.js'
+import { LiveScreensProvider, useLiveScreens } from '../rooms/LiveProjectScreens.jsx'
+import { getLookMode, look, lookCapture, setCursorFree, subscribeCursorMode } from './freeLook.js'
+
+function LookModeControl() {
+  const mode = useSyncExternalStore(subscribeCursorMode, getLookMode, getLookMode)
+  const { navigationOpen } = useJourney()
+  if (navigationOpen) return null
+  return <button className="look-mode-switch" onClick={() => { if (mode === 'look') setCursorFree(true); else { setCursorFree(false); lookCapture.request?.() } }} aria-label={mode === 'look' ? 'Free the cursor' : 'Start mouse look'}>
+    <kbd>{mode === 'look' ? 'Esc' : mode === 'drag' ? 'Drag' : 'Click'}</kbd> {mode === 'look' ? 'Free cursor' : mode === 'free' ? 'Resume look' : 'Look around'}
+  </button>
+}
+
+function corridorEvents(store) {
+  const manager = pointerEvents(store)
+  return { ...manager, compute(event, state, previous) {
+    if (!look.cursorFree && event.pointerType !== 'touch' && event.pointerType !== 'pen' && !window.matchMedia?.('(pointer: coarse)').matches) {
+      state.pointer.set(0, 0)
+      state.raycaster.setFromCamera(state.pointer, state.camera)
+    } else manager.compute(event, state, previous)
+  } }
+}
 
 /*
  * Before the first frame, every shader the building will need is compiled: in view or not
@@ -24,24 +48,26 @@ function SceneCompile({ onCompiled }) {
   const { gl, scene, camera } = useThree()
   useEffect(() => {
     let cancelled = false
-    const shown = []
-    scene.traverse((o) => { if (!o.visible) { shown.push(o); o.visible = true } })
-    const previous = gl.getRenderTarget()
     const jobs = []
-    try {
-      gl.setRenderTarget(floorReflection.rt)
-      jobs.push(gl.compileAsync(scene, camera))
-      gl.setRenderTarget(null)
-      jobs.push(gl.compileAsync(scene, camera))
-    } finally {
-      gl.setRenderTarget(previous)
-      shown.forEach((o) => { o.visible = false })
-    }
-    Promise.all(jobs).catch(() => {}).then(() => {
-      markSceneCompiled(gl)
-      if (!cancelled) onCompiled?.()
+    const cancelWarmup = deferSceneWarmup(() => {
+      performance.mark('corridor:compile-start')
+      const shown = []
+      scene.traverse((o) => { if (!o.visible) { shown.push(o); o.visible = true } })
+      const previous = gl.getRenderTarget()
+      try {
+        gl.setRenderTarget(floorReflection.rt)
+        jobs.push(compileScenePrograms(gl, scene, camera))
+        gl.setRenderTarget(null)
+        jobs.push(compileScenePrograms(gl, scene, camera))
+      } finally {
+        gl.setRenderTarget(previous)
+        shown.forEach((o) => { o.visible = false })
+      }
+      Promise.all(jobs.map(job => job.ready)).then(() => {
+        if (!cancelled) { performance.mark('corridor:compiled'); markSceneCompiled(gl); onCompiled?.() }
+      })
     })
-    return () => { cancelled = true }
+    return () => { cancelled = true; cancelWarmup(); jobs.forEach(job => job.cancel()) }
   }, [gl, scene, camera, onCompiled])
   return null
 }
@@ -49,47 +75,24 @@ function SceneCompile({ onCompiled }) {
 /* Then the probes capture and the first frames draw; the scene is ready once they have. */
 function SceneReadySignal({ onReady }) {
   const frames = useRef(0)
-  useFrame(() => { if (++frames.current === 8) onReady?.() })
+  const {readiness}=useLiveScreens()
+  const signaled=useRef(false)
+  useFrame(() => {
+    if (++frames.current >= 8 && readiness.complete && !signaled.current) {
+      signaled.current=true;performance.mark('corridor:ready');onReady?.()
+    }
+  })
   return null
 }
 
-/*
- * What the mouse is doing, and how to change it, in the same words outside and in: by default
- * the mouse looks around; a click gives the cursor back (to leave the site, use the browser),
- * and a click on the scene takes it up again. `body.looking` says which.
- */
-function LookModeLabel({ outside = false }) {
-  return <div className={`look-mode${outside ? ' look-mode--outside' : ''}`} aria-live="polite">
-    <span className="look-mode__on"><b>Looking around</b> · click or press Esc to get your cursor back</span>
-    <span className="look-mode__off">{outside ? <><b>Click the scene to look around</b> · click the door to go in · scroll to walk</> : <><b>Cursor free</b> · click the scene to look around again</>}</span>
-    {outside && <span className="look-mode__touch"><b>Drag to look around</b> · swipe to walk · tap the door to go in</span>}
-  </div>
-}
-
 function ExperienceHud() {
-  const { phase, autoMoving, navigationTarget } = useJourney()
-  const room = phase === 'room'
+  const { autoMoving, navigationTarget } = useJourney()
 
   return <>
     <Header immersive />
-    <div className="experience-intro">
-      <span>THE INTERFACE GALLERY</span>
-      <b>Move the mouse to look · scroll to walk</b>
-      <small>{
-        room
-          ? 'Scroll back to step back. Point at a link and click to open it.'
-          : 'Doors open as you reach them. Scroll back to step back.'
-      }</small>
-    </div>
-
     <div className="experience-mark"><span>BRIEF</span><i></i><span>SYSTEM</span><i></i><span>SURFACE</span></div>
 
     {autoMoving && navigationTarget && <div className="room-status">WALKING TO {navigationTarget.toUpperCase()}</div>}
-    <div className="scroll-hint">SCROLL TO WALK <i></i></div>
-    {/* which mode the mouse is in, and how to change it - always on screen */}
-    <LookModeLabel />
-    {/* the centre dot (a hand over a link) while the mouse is captured for looking */}
-    <div className="look-reticle" aria-hidden="true" />
     <div className="link-note" aria-live="polite" />
   </>
 }
@@ -113,11 +116,6 @@ function ExteriorGate({ departing = false, onEnter }) {
     if (enteringRef.current || departing) return
     enteringRef.current = true
     setDoorHover(false)
-    // this click is the gesture that lets the corridor take the mouse for looking
-    if (e?.pointerType !== 'touch' && e?.detail !== 0 && !window.matchMedia?.('(pointer: coarse)').matches) {
-      const ask = document.querySelector('.experience-root canvas')?.requestPointerLock?.()
-      if (ask?.catch) ask.catch(() => {})
-    }
     onEnter?.()
   }, [departing, onEnter])
 
@@ -157,8 +155,11 @@ function ExteriorGate({ departing = false, onEnter }) {
       />
       {/* on a narrow screen the sign stands outside the view, so it is named here as well */}
       <Link to={WEB_HOME} className="exterior-web-link">Web Experience <span aria-hidden="true">↗</span></Link>
-      <div className="look-reticle" aria-hidden="true" />
-      <LookModeLabel outside />
+      <div className="exterior-sky-credit">
+        <a href="https://www.pexels.com/photo/36833549/" target="_blank" rel="noreferrer">Sky: Thilina Alagiyawanna / Pexels</a>
+        {' · '}<a href="https://sketchfab.com/3d-models/bell-206-jetranger-d2f7ba1d671549d4b26aaf834139a1dd" target="_blank" rel="noreferrer" title="Bell 206 JetRanger by terran4627; geometry prepared and materials adapted for this scene">Helicopter: terran4627</a>
+        {' · '}<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
+      </div>
     </main>
   </div>
 }
@@ -176,23 +177,25 @@ function ExperienceShell() {
   // A fresh arrival meets a closed door.
   useEffect(() => { if (experiencePhase === 'gated') setEntranceOpen(0) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // First visit: the branded boot loader (index.html) is released as soon as the scene has its assets, never later than the cap.
+  // Keep boot visible through scene compilation and every live website load.
+  useEffect(claimBootLoader, [])
   useEffect(() => { if (sceneReady) releaseBootLoader() }, [sceneReady])
-  useEffect(() => {
-    const cap = window.setTimeout(releaseBootLoader, 12000)
-    return () => window.clearTimeout(cap)
-  }, [])
 
   return <div className={`experience-root experience-root--${experiencePhase}`}>
-    <Canvas
+    <LiveScreensProvider><Canvas
+      events={corridorEvents}
+      className="experience-canvas"
+      style={{zIndex:1}}
       frameloop={sceneCompiled ? 'always' : 'never'}
       dpr={[1, 1.5]}
       camera={{ position: [0, 1.58, 16.6], fov: 62, near: .05, far: 2400 }}
-      gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.04 }}
+      gl={{ alpha:true, antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.04 }}
     >
-      <Suspense fallback={null}><HomeScene /><SceneCompile onCompiled={onSceneCompiled} /><SceneReadySignal onReady={markSceneReady} /></Suspense>
-    </Canvas>
+      <Suspense fallback={null}><SceneAssetGate><HomeScene /><SceneCompile onCompiled={onSceneCompiled} /><SceneReadySignal onReady={markSceneReady} /></SceneAssetGate></Suspense>
+    </Canvas></LiveScreensProvider>
 
+    <div className="look-reticle" aria-hidden="true" />
+    <LookModeControl />
     {experiencePhase === 'inside' && <ExperienceHud />}
 
     {gateVisible && <ExteriorGate

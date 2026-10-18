@@ -1,0 +1,12 @@
+{
+  "canopyClusters": 45,
+  "sourceLeafComponents": 30250,
+  "sourceLeafTriangles": 1939380,
+  "bakedTriangles": 270,
+  "atlas": [
+    1536,
+    1536
+  ],
+  "coveredPixels": 383086,
+  "coverage": 0.1731978804976852
+}

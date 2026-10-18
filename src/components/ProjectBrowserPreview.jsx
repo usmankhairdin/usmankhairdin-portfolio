@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
-import { hostLabel } from '../data/projects.js'
 import './BrowserFrame.css'
 import './ProjectBrowserPreview.css'
 
@@ -166,7 +165,6 @@ export default function ProjectBrowserPreview({ project, eager = false }) {
 
   return <figure className="pbp">
     <div className="pbp__frame ui-frame">
-      <div className="ui-frame__bar" aria-hidden="true"><i /><i /><i /><span className="ui-frame__url">{hostLabel(project.liveUrl)}</span></div>
       <ProjectCapture
         key={project.slug}
         project={project}

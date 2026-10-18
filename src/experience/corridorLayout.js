@@ -8,17 +8,46 @@
  */
 export const START_Z = 14.2           // the entrance wall
 export const END_Z = -48              // the end wall, with the Contact door in it
+export const WALKER_RADIUS = .38
 
 // Outside: the whole building stands on top of a tower, high over the city (the Contact hall
 // looks down on its streets). The building's front stands proud of the entrance wall, so the
-// door sits in a deep reveal, and before it the tower's roof is a terrace to its glass railing.
+// door sits in a deep reveal, and the tower's roof is a terrace inside a solid parapet.
 // The visitor arrives standing on the terrace, facing the door, and can walk all over it.
 export const FACADE_Z = START_Z + 0.9         // the front's outer face
 export const PLAZA_STAND_Z = START_Z + 6.4    // where the visitor arrives
-export const TERRACE = { half: 34, edgeZ: FACADE_Z + 18 }
+// One envelope for the visible shell, guarded roof and collision footprint.
+export const BUILDING = Object.freeze({ half: 30, top: 14, frontZ: FACADE_Z, backZ: END_Z - 17.9 })
+// Keep the side walks close to the gallery envelope. The former deep front
+// forecourt and rear apron made each side feel like a second, longer street.
+export const TERRACE = Object.freeze({ half: 42, edgeZ: FACADE_Z + 8.4, backZ: END_Z - 38 })
+// One supported perimeter for the visible wall, its coping, and the walker's clearance.
+// Inset measures from the deck edge to the wall centre; the coping is its widest part.
+export const TERRACE_PARAPET = Object.freeze({
+  inset: .26, thickness: .36, wallHeight: .78, copingWidth: .44, copingHeight: .1,
+  height: 1.16, railDepth: .09, railHeight: .08, postWidth: .07, postSpacing: 2.4,
+})
+const parapetClearance = TERRACE_PARAPET.inset + TERRACE_PARAPET.copingWidth / 2 + WALKER_RADIUS
+export const TERRACE_WALK_BOUNDS = Object.freeze({
+  minX: -TERRACE.half + parapetClearance, maxX: TERRACE.half - parapetClearance,
+  minZ: TERRACE.backZ + parapetClearance, maxZ: TERRACE.edgeZ - parapetClearance,
+})
+/** Four butt-joined runs: front/rear include the corners, side runs meet their inner faces. */
+export function terraceParapetRuns(width) {
+  const x = TERRACE.half - TERRACE_PARAPET.inset
+  const front = TERRACE.edgeZ - TERRACE_PARAPET.inset
+  const back = TERRACE.backZ + TERRACE_PARAPET.inset
+  return [
+    { x: 0, z: front, length: x * 2 + width, rotation: 0 },
+    { x: 0, z: back, length: x * 2 + width, rotation: 0 },
+    { x: -x, z: (front + back) / 2, length: front - back - width, rotation: Math.PI / 2 },
+    { x, z: (front + back) / 2, length: front - back - width, rotation: Math.PI / 2 },
+  ]
+}
+export const HELIPAD = Object.freeze({ x: 0, z: END_Z - 28, radius: 7.3 })
 // on the terrace: the Web Experience sign, and the lamps along the railing
 export const SIGN = { x: 2.85, z: FACADE_Z + 1.35, rotY: -0.55, w: 0.82, h: 2.05, d: 0.16, panel: { w: 0.66, h: 0.9, y: 1.42 } }
-export const TERRACE_LAMPS = [[-9, 14.5], [9, 14.5], [-23, 14.5], [23, 14.5]]
+export const TERRACE_LAMPS = [[-9, 6.0], [9, 6.0], [-23, 6.0], [23, 6.0]]
 
 // Wall installations: [side, z, kind]
 export const ART = [

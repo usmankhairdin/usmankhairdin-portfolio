@@ -16,6 +16,11 @@ const HERO_GO_MS = 140       // the homepage reveal resumes this long after the 
 
 let requested = false
 
+export function claimBootLoader() {
+  window.__ukdBootManaged = true
+  return () => { window.__ukdBootManaged = false }
+}
+
 export function releaseBootLoader() {
   const root = document.documentElement
   if (requested || root.getAttribute('data-boot') !== 'on') return

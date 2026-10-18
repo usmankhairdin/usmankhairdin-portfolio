@@ -1,5 +1,6 @@
 import { projectAsset } from './projects.js'
 import { sanairaCaseStudy } from './sanairaCaseStudy.js'
+import { formaCaseStudy, veyravaelCaseStudy } from './featuredTemplateCaseStudies.js'
 /*
  * Case-study content for the BODY of each project's detail page (everything below the hero), keyed by the project's slug.
  *
@@ -47,14 +48,16 @@ const captures = (slug, origin) => {
 }
 
 const prima = captures('prima', 'https://primaapp.com')
-const bizcare = captures('bizcare', 'https://www.usmankhairdin.com/portfolio/bizcare/')
-const bansar = captures('bansar', 'https://www.bansarchina.com')
+
+
 const rantle = captures('rantle', 'https://www.rantle.com')
 const bumLife = captures('bum-life', 'https://www.usmankhairdin.com/portfolio/bum.life')
-const pnw = captures('pnw-leads', 'https://www.usmankhairdin.com/portfolio/PNWLeads/')
+
 
 export const CASE_STUDIES = {
   sanaira: sanairaCaseStudy,
+  forma: formaCaseStudy,
+  veyravael: veyravaelCaseStudy,
   prima: {
     overview: {
       title: 'Bookings, recommendations and payouts on one network.',
@@ -183,248 +186,9 @@ export const CASE_STUDIES = {
     ],
   },
 
-  bizcare: {
-    overview: {
-      title: 'ICHRA administration and enrollment on a single platform.',
-      lead: 'BizCare Benefits sells an ICHRA platform to brokers, PEOs and employers, and the public site explains how the offer works in a single long page.',
-      paragraphs: [
-        'ICHRA is a way for employers to give employees a monthly tax-free allowance toward the individual health plan they choose. The page has to explain that model, its partnership options and its enrollment flow to several audiences at once.',
-        'It does this with one scrolling page: an offer hero, a rotating platform panel, partner paths, a four-step process, and an about and closing section.',
-      ],
-      facts: [
-        ['AUDIENCE', 'Brokers, PEOs, platform partners and employers'],
-        ['STRUCTURE', 'One long page with a quote and contact call to action throughout'],
-        ['OFFER', 'ICHRA administration with full marketplace enrollment'],
-      ],
-    },
-    chapters: [
-      {
-        id: 'offer',
-        layout: 'aside',
-        kicker: 'THE OFFER',
-        title: 'The platform, one benefit at a time.',
-        intro: 'The hero names the category and its audience, and the first section pairs a product dashboard with a rotating panel so each benefit lands on its own.',
-        points: [
-          ['Enrollment', 'Full-service direct enrollment for on- and off-exchange plans, including Medicare eligibility'],
-          ['No prefunding', 'Employers pay only for the policies their employees enroll in'],
-          ['Integrations', 'Works with PEO, HRO, CDH and HCM platforms to reduce admin'],
-          ['Quote tool', 'A free, no-commitment estimate tool to simplify the sales conversation'],
-        ],
-        slots: [
-          { type: 'media', image: bizcare.at('platform', 'BizCare section titled A Single Platform, with a laptop showing a benefits dashboard beside a panel about enrollment flexibility'), caption: 'SECTION / A SINGLE PLATFORM' },
-        ],
-      },
-      {
-        id: 'process',
-        layout: 'top',
-        kicker: 'HOW IT WORKS',
-        title: 'Four steps from budget to enrollment.',
-        intro: 'The clearest explanation on the page is a short, illustrated four-step process. Each step names who acts and what happens next.',
-        slots: [
-          { type: 'media', image: bizcare.at('how-it-works', 'BizCare How It Works section with four illustrated steps: employer sets a budget, employees choose a plan, employer pays the invoice, enrollments are submitted'), caption: 'SECTION / HOW IT WORKS' },
-          {
-            type: 'cards',
-            numbered: true,
-            items: [
-              { title: 'Employer sets a budget', text: 'The employer decides how much tax-free money to contribute each month instead of offering a traditional group plan.' },
-              { title: 'Employees choose a plan', text: 'Employees shop for individual health insurance, on or off the exchange, that fits their family.' },
-              { title: 'Employer pays the invoice', text: 'BizCare generates one exact invoice and the employer pays it.' },
-              { title: 'Enrollments are submitted', text: 'Enrollments go to the carriers ahead of the group effective date.' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'partners',
-        layout: 'aside',
-        aside: 4,
-        kicker: 'PARTNERSHIP PATHS',
-        title: 'A path for each kind of partner.',
-        intro: 'BizCare sells through brokers, PEOs and platform partners as well as to employers, so a rotating picker lists each partner type and changes its message to match.',
-        points: [
-          ['Brokers', 'A non-exclusive, free RFP option with training and sales material for their groups'],
-          ['PEOs', 'The platform’s first partnerships, and possibly already integrated with their software'],
-          ['Platforms', 'An embedded estimate, administration and enrollment tool inside their own product'],
-        ],
-        slots: [
-          { type: 'media', image: bizcare.at('work-with', 'BizCare section titled We work with, with a vertical list of partner types beside a call to action card'), caption: 'SECTION / WE WORK WITH' },
-        ],
-      },
-      {
-        id: 'support',
-        layout: 'top',
-        kicker: 'BENEFITS AND SUPPORT',
-        title: 'Support is presented as part of the product.',
-        intro: 'After the process, the page turns from mechanics to relationship: what the service promises, and who is behind it.',
-        slots: [
-          {
-            type: 'media',
-            image: bizcare.at('benefits', 'BizCare Benefits of BizCare section with three cards: full-service partner, support that never stops, technology that works for you'),
-            caption: 'SECTION / BENEFITS OF BIZCARE',
-            support: [
-              { image: bizcare.at('about', 'BizCare About Us section with a group portrait and notes to current and potential partners'), caption: 'ABOUT US' },
-              { image: bizcare.at('closing', 'BizCare closing section headed A Smarter Way to Offer Benefits with a call to action'), caption: 'CLOSING' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'responsive',
-        layout: 'aside',
-        kicker: 'RESPONSIVE PRESENTATION',
-        title: 'The long page, reflowed for a phone.',
-        intro: 'Illustrated steps, dashboards and partner cards stack into a single readable column. The offer hero, the platform panel and the four-step process keep their order and their call to action.',
-        slots: [
-          {
-            type: 'phones',
-            items: [
-              { image: bizcare.phone('m-home', 'BizCare homepage on a phone with the ICHRA hero and call to action'), caption: 'HERO' },
-              { image: bizcare.phone('m-platform', 'BizCare platform section on a phone with the laptop dashboard and benefit card'), caption: 'PLATFORM' },
-              { image: bizcare.phone('m-how', 'BizCare How It Works on a phone with the first illustrated steps'), caption: 'PROCESS' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
 
-  bansar: {
-    overview: {
-      title: 'Every route out of China, organised for depth.',
-      lead: 'Bansar is a freight forwarder and customs broker in China. Its website lays out sea, air and rail freight, customs and regional shipping guides, each with a way to ask for a quote.',
-      paragraphs: [
-        'The site states more than ten years in logistics and speaks to importers, exporters and other freight forwarders shipping worldwide from any port or city in China.',
-        'The result is a very large, content-heavy website: the homepage routes visitors to service pages that run to full guide length, and every page leads back to a quote request.',
-      ],
-      facts: [
-        ['AUDIENCE', 'Importers, exporters and other freight forwarders'],
-        ['LANGUAGES', 'English, Spanish, Portuguese and Chinese'],
-        ['PAGE TYPES', 'Home, service guides, regional guides, quote, contact'],
-      ],
-    },
-    chapters: [
-      {
-        id: 'services',
-        layout: 'top',
-        kicker: 'SERVICE ARCHITECTURE',
-        title: 'Six services, each with a page of its own.',
-        intro: 'The homepage sets the range out as a grid of service tiles, after first saying who the service is for. Each tile leads to a dedicated page for that mode or step of the journey.',
-        slots: [
-          {
-            type: 'media',
-            image: bansar.at('solutions', 'Bansar homepage grid of six service tiles: sea freight, air freight, railway freight, customs clearance, pickup and delivery, and shipping to Amazon FBA', '/'),
-            caption: 'HOME / SHIPPING SOLUTIONS',
-            support: [
-              { image: bansar.at('who', 'Bansar homepage section titled Who ships with us, with importers and exporters and global freight forwarders', '/'), caption: 'HOME / WHO SHIPS WITH US' },
-              { note: { label: 'TWO AUDIENCES, TWO ACTIONS', text: 'Before showing any service, the page splits its audience in two. Importers and exporters get a quote button; freight forwarders get a link to talk to the founder.' } },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'guides',
-        layout: 'aside',
-        kicker: 'SERVICE PAGES',
-        title: 'Every mode is a guide with a quote form beside it.',
-        intro: 'Sea, air, rail and customs share one template: a short benefits list and a request form above the fold, then a long educational guide beneath.',
-        points: [
-          ['Sea', 'Ports, incoterms, container types, rates and transit times'],
-          ['Air', 'The forwarding process step by step, plus IATA rules and cost factors'],
-          ['Rail', 'Route options to Europe, Russia and Central Asia, and a long Q&A'],
-          ['Customs', 'Classification, the role of a broker and how to speed up clearance'],
-        ],
-        slots: [
-          {
-            type: 'media',
-            image: bansar.at('sea', 'Bansar sea freight page with a benefits list and a request form above the fold', '/sea-freight/'),
-            caption: 'SEA FREIGHT',
-            support: [
-              { image: bansar.at('air', 'Bansar air freight page with a benefits list and a request form above the fold', '/air-freight/'), caption: 'AIR' },
-              { image: bansar.at('rail', 'Bansar rail freight page with a benefits list and a request form above the fold', '/rail-freight/'), caption: 'RAIL' },
-              { image: bansar.at('customs', 'Bansar customs clearance page with a benefits list and a request form above the fold', '/customs-clearance/'), caption: 'CUSTOMS' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'regions',
-        layout: 'top',
-        kicker: 'REGIONS AND LANGUAGES',
-        title: 'Organised by where the cargo goes.',
-        intro: 'The homepage shows routes fanning out from China on a world map, and the Ship by Region menu lists destinations such as the United States, Mexico, the Philippines and Singapore. The whole site is published in four languages.',
-        slots: [
-          {
-            type: 'media',
-            image: bansar.at('regions', 'Bansar homepage section headed Ship from China to any place you want, with a world map of shipping routes', '/'),
-            caption: 'HOME / SHIP BY REGION',
-            support: [
-              { image: bansar.at('region', 'Bansar Shipping From China hub page with a guide to shipping to different regions', '/shipping-from-china/'), caption: 'SHIP BY REGION / HUB' },
-              { image: bansar.at('chinese', 'Bansar homepage in Chinese with the same hero and service highlights', '/zh/'), caption: 'CHINESE EDITION' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'proof',
-        layout: 'aside',
-        kicker: 'PROOF AND SPECIAL CARGO',
-        title: 'Client stories and unusual cargo, shown in context.',
-        intro: 'Below the service grid, the homepage turns to the harder jobs and to what customers say about them.',
-        points: [
-          ['Special shipping', 'Dry cargo, a bus and railway freight shown as worked examples'],
-          ['Client stories', 'A carousel of customer accounts of shipping from China'],
-          ['Resources', 'A row of shipping guides under the heading Become an expert'],
-        ],
-        slots: [
-          {
-            type: 'media',
-            image: bansar.at('special', 'Bansar homepage section on special shipping with dry cargo, bus and railway examples', '/'),
-            caption: 'HOME / SPECIAL SHIPPING',
-            support: [
-              { image: bansar.at('stories', 'Bansar homepage carousel of client stories about shipping from China', '/'), caption: 'CLIENT STORIES' },
-              { image: bansar.at('resources', 'Bansar homepage section of shipping guides under the heading Become an expert when shipping from China', '/'), caption: 'RESOURCES' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'quote',
-        layout: 'top',
-        kicker: 'QUOTE PATHS',
-        title: 'A route to a quote on every page.',
-        intro: 'The whole information architecture is built to end in an inquiry, and it offers that action at three levels of commitment so a visitor never has to look for it.',
-        slots: [
-          { type: 'media', image: bansar.at('quote', 'Bansar Get a Quick Quote page with a form asking for name, phone, email, product name and requirement', '/get-a-quick-quote/'), caption: 'QUOTE PAGE' },
-          {
-            type: 'cards',
-            numbered: true,
-            items: [
-              { title: 'Header', text: 'A persistent Get Better Quote button beside the main navigation.' },
-              { title: 'Service pages', text: 'A short request form beside each mode’s benefits.' },
-              { title: 'Quote page', text: 'Name, email, phone, product and a detailed requirement.' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'responsive',
-        layout: 'aside',
-        kicker: 'RESPONSIVE PRESENTATION',
-        title: 'A very large site, reduced to one column.',
-        intro: 'On a phone the navigation collapses into a menu button and the service tiles stack, so the same hierarchy reads top to bottom.',
-        slots: [
-          {
-            type: 'phones',
-            items: [
-              { image: bansar.phone('m-home', 'Bansar homepage on a phone with a menu button and the freight forwarding hero', '/'), caption: 'HOME' },
-              { image: bansar.phone('m-sea', 'Bansar sea freight page on a phone with the benefits list', '/sea-freight/'), caption: 'SEA FREIGHT' },
-              { image: bansar.phone('m-solutions', 'Bansar shipping solutions on a phone with stacked service tiles', '/'), caption: 'SERVICES' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+
+
 
   rantle: {
     overview: {
@@ -695,111 +459,7 @@ export const CASE_STUDIES = {
     ],
   },
 
-  'pnw-leads': {
-    overview: {
-      title: 'A lead-generation offer, explained on one page.',
-      lead: 'PNWLeads is a concept for a Pacific Northwest lead-generation service. Its single page explains the offer to service businesses and ends on a contact action.',
-      paragraphs: [
-        'The page presents local SEO, targeted paid advertising and in-person canvassing as one three-part system for generating qualified leads.',
-        'It is a compact conversion page: a dashboard-led hero, a proof band, the three-part process, testimonials and a closing call to action.',
-      ],
-      facts: [
-        ['AUDIENCE', 'Service businesses in the Pacific Northwest'],
-        ['STRUCTURE', 'A single page, with a header call to action'],
-        ['PAGES', 'The navigation also names Services, Case Studies, About and Contact; the concept builds the home page'],
-      ],
-    },
-    chapters: [
-      {
-        id: 'first-screen',
-        layout: 'aside',
-        kicker: 'FIRST SCREEN',
-        title: 'A dashboard to make the outcome tangible.',
-        intro: 'Before any process is explained, the hero shows what the service is selling. The headline speaks to service businesses tired of unqualified prospects, and a sample dashboard makes the result concrete.',
-        points: [
-          ['Headline', 'Qualified leads for service businesses, with the key phrase in the brand blue'],
-          ['Actions', 'Book a Free Call, and Watch Demo'],
-          ['Dashboard', 'A card of sample lead metrics'],
-        ],
-        slots: [
-          { type: 'media', image: pnw.at('hero', 'PNWLeads homepage hero with a headline about qualified leads and a lead generation dashboard card'), caption: 'HOME / HERO' },
-        ],
-      },
-      {
-        id: 'proof',
-        layout: 'top',
-        kicker: 'PROOF',
-        title: 'Three figures, then three testimonials.',
-        intro: 'Trust is built in two stages: a short band of headline figures, then three customer quotes with star ratings.',
-        slots: [
-          {
-            type: 'media',
-            image: pnw.at('proof', 'PNWLeads proof band with three colour-coded statistic cards'),
-            caption: 'HOME / PROOF BAND',
-            support: [
-              { image: pnw.at('testimonials', 'PNWLeads testimonials section with three star-rated customer quotes'), caption: 'HOME / TESTIMONIALS' },
-              { note: { label: 'INTERFACE CONTENT, NOT RESULTS', text: 'The figures and quotes are content written for the concept. They show how proof would be presented and are not verified client results.' } },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'process',
-        layout: 'aside',
-        aside: 4,
-        kicker: 'THE PROCESS',
-        title: 'One offer, three acquisition paths.',
-        intro: 'The core of the page is a three-card process, each card given its own icon and colour.',
-        slots: [
-          { type: 'media', image: pnw.at('process', 'PNWLeads section with three process cards: local SEO optimisation, targeted paid advertising and in-person canvassing'), caption: 'HOME / THE PROCESS' },
-          {
-            type: 'cards',
-            numbered: true,
-            items: [
-              { title: 'Local SEO', text: 'Improve the business’s online presence so it shows up in local search when customers need it.' },
-              { title: 'Targeted paid ads', text: 'Campaigns aimed at ideal customers at the right moment, to make the advertising budget work harder.' },
-              { title: 'In-person canvassing', text: 'Face-to-face outreach in the local market to build trust and generate leads.' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'conversion',
-        layout: 'top',
-        kicker: 'CONTACT PATH',
-        title: 'Every section points to an action.',
-        intro: 'The page keeps the next step in view from header to footer, in the style of each surface it sits on.',
-        slots: [
-          { type: 'media', image: pnw.at('cta', 'PNWLeads closing section on a dark surface asking visitors to scale their service business, with two buttons and a footer'), caption: 'HOME / CLOSING CALL TO ACTION' },
-          {
-            type: 'cards',
-            items: [
-              { label: 'HEADER', title: 'Get Started', text: 'A button beside the navigation, present from the first screen.' },
-              { label: 'HERO', title: 'Book a Free Call', text: 'A primary action, with Watch Demo as the quieter alternative.' },
-              { label: 'CLOSING', title: 'Grow My Leads Now', text: 'A final action with Chat With Us, above a footer with services and contact details.' },
-            ],
-          },
-        ],
-      },
-      {
-        id: 'responsive',
-        layout: 'aside',
-        kicker: 'RESPONSIVE PRESENTATION',
-        title: 'A short page that stacks cleanly.',
-        intro: 'On a phone the hero, the three process cards and the closing call to action each take a full width.',
-        slots: [
-          {
-            type: 'phones',
-            items: [
-              { image: pnw.phone('m-home', 'PNWLeads homepage on a phone with the headline and two buttons'), caption: 'HERO' },
-              { image: pnw.phone('m-process', 'PNWLeads process section on a phone with the first card'), caption: 'PROCESS' },
-              { image: pnw.phone('m-cta', 'PNWLeads closing call to action on a phone'), caption: 'CLOSING' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+
 }
 
 export const caseStudyFor = (project) => CASE_STUDIES[project.slug] || {

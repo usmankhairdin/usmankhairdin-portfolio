@@ -9,7 +9,7 @@ import useEditorialMotion from '../components/editorial/useEditorialMotion.js'
 import GroundedSculpture from '../components/editorial/GroundedSculpture.jsx'
 import { useTheme } from '../theme/ThemeProvider.jsx'
 import { projectAsset } from '../data/projects.js'
-import { portrait } from '../data/portrait.js'
+import { portrait, portraitBackdropCss } from '../data/portrait.js'
 import './About.css'
 
 function EditorialLink({ to, children }) {
@@ -60,7 +60,7 @@ export default function About() {
       <section className="about-editorial__practice" aria-labelledby="about-practice-title">
         <div className="about-editorial__wrap about-editorial__practice-layout">
           <figure className="about-editorial__portrait" data-editorial-reveal>
-            <div className="about-editorial__portrait-image">
+            <div className="about-editorial__portrait-image" style={{ '--portrait-light-background': portraitBackdropCss('light'), '--portrait-dark-background': portraitBackdropCss('dark') }}>
               <img src={portrait.src} alt="Usman Khair Din" width={portrait.width} height={portrait.height} style={{ '--portrait-zoom': portrait.zoom }} loading="lazy" decoding="async" />
             </div>
           </figure>
@@ -83,12 +83,12 @@ export default function About() {
           <div className="about-editorial__work-copy" data-editorial-reveal>
             <h2 id="about-work-title">Good ideas<br />deserve a<br />considered<br /><em>interface.</em></h2>
             <p>Product interfaces, websites and production work. Designed for people, built for the real world.</p>
-            <EditorialLink to="/work/prima/">View PRIMA</EditorialLink>
+            <EditorialLink to="/work/forma/">View Forma</EditorialLink>
             <span className="about-editorial__work-role">UI direction · Frontend</span>
           </div>
           <div className="about-editorial__work-stage" data-editorial-reveal>
-            <Link to="/work/prima/" className="about-editorial__work-preview" aria-label="Explore the PRIMA case study">
-              <img src={projectAsset('prima', 'showcase.webp')} srcSet={`${projectAsset('prima', 'showcase-1x.webp')} 1440w, ${projectAsset('prima', 'showcase.webp')} 2880w`} sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="PRIMA hospitality platform: the recommendation network homepage" />
+            <Link to="/work/forma/" className="about-editorial__work-preview" aria-label="Explore the Forma case study">
+              <img src={projectAsset('forma', 'showcase.webp')} width="1440" height="900" loading="lazy" decoding="async" alt="Forma AI workspace: the product homepage" />
             </Link>
           </div>
         </div>

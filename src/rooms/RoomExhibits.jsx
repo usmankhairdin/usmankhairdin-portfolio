@@ -3,12 +3,15 @@ import { useFrame, useLoader } from '@react-three/fiber'
 import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
-import { projectAsset, projects } from '../data/projects.js'
-import { portrait, portraitTextureCrop } from '../data/portrait.js'
+import { workRoomProjects } from './workRoomProjects.js'
+import { LiveProjectSurface, useLiveScreens } from './LiveProjectScreens.jsx'
+import { portrait, portraitTextureCrop, paintPortraitBackdrop } from '../data/portrait.js'
 import { sectionHeroes } from '../data/sectionHeroes.jsx'
 import { look } from '../experience/freeLook.js'
 import { ON_DARK, ON_LIGHT, body, eyebrow, paintGraphic, titleRuns, traceLettering, useFontsReady } from './roomGraphics.js'
 import { roomLit, useRoomTextures } from './referenceRooms.js'
+import { createFacadeGlazingGeometry } from '../experience/terraceDoor.js'
+import MasterTerraceDoor from './MasterTerraceDoor.jsx'
 import { followLink, inFront, linkState, linkTargets, pointLink, registerLink } from './linkTargets.js'
 
 /*
@@ -51,12 +54,11 @@ function useLinkTarget(ref, route, material, glow = 1.18) {
   const front = (e) => inFront(e, ref.current)
   return {
     onPointerOver: (e) => {
-      if (look.locked || !front(e)) return
+      if (!front(e)) return
       e.stopPropagation()
       pointLink('hovered', ref.current)
     },
     onPointerMove: (e) => {
-      if (look.locked) return
       const visible = front(e)
       if (visible && linkState.hovered !== ref.current) pointLink('hovered', ref.current)
       if (!visible && linkState.hovered === ref.current) pointLink('hovered', null)
@@ -65,7 +67,7 @@ function useLinkTarget(ref, route, material, glow = 1.18) {
       if (linkState.hovered === ref.current) pointLink('hovered', null)
     },
     onClick: (e) => {
-      if (look.locked || look.dragging || !front(e)) return
+      if (look.dragging || !front(e)) return
       e.stopPropagation()
       followLink(route, navigate)
     },
@@ -234,12 +236,7 @@ function FramedPortrait({ url, position, rotation }) {
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 256
     const ctx = canvas.getContext('2d')
-    const base = ctx.createLinearGradient(0, 0, 256, 256)
-    base.addColorStop(0, '#edf3ff'); base.addColorStop(1, '#9abcf1')
-    ctx.fillStyle = base; ctx.fillRect(0, 0, 256, 256)
-    const glow = ctx.createRadialGradient(123, 77, 0, 123, 77, 185)
-    glow.addColorStop(0, '#f0f6ff'); glow.addColorStop(0.55, '#d8e6ff'); glow.addColorStop(1, 'rgba(216,230,255,0)')
-    ctx.fillStyle = glow; ctx.fillRect(0, 0, 256, 256)
+    paintPortraitBackdrop(ctx, canvas.width, canvas.height)
     const t = new THREE.CanvasTexture(canvas)
     t.colorSpace = THREE.SRGBColorSpace
     return t
@@ -288,25 +285,36 @@ function screenTextures() {
 }
 
 const LED = { bezel: 0.022, depth: 0.05, standoff: 0.04 }
-function LedScreen({ url, width, height, position, rotation, link }) {
+function LedScreen({ url, width, height, position, rotation, project }) {
+  const {activate,session}=useLiveScreens()
   const texture = useCoverTexture(url, width, height)
-  const { sheen, spill } = screenTextures()
+  const { sheen } = screenTextures()
   const screen = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }), [texture]))
+  const reflected = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({map:texture,toneMapped:false}),[texture]))
+  const reflectionScreen=useRef()
+  useLayoutEffect(()=>{reflectionScreen.current?.layers.set(1)},[])
   const housing = useDisposable(useMemo(() => roomLit(new THREE.MeshStandardMaterial({ color: '#15171c', roughness: 0.32, metalness: 0.5 }), 0.8, { key: 0.6 }), []))
   const edge = useDisposable(useMemo(() => roomLit(new THREE.MeshStandardMaterial({ color: '#8a8f98', roughness: 0.3, metalness: 0.6 }), 1, { key: 0.6 }), []))
   const glass = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: sheen, transparent: true, depthWrite: false }), [sheen]))
-  const glow = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: spill, color: '#9fb2ff', transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }), [spill]))
   const screenRef = useRef()
-  const handlers = useLinkTarget(screenRef, link, screen, 1.12)
+  // Screens review content; the separate plaque below owns navigation.
+  const review=e=>{
+    if(look.dragging||!project?.embedUrl||!inFront(e,screenRef.current))return
+    e.stopPropagation();activate(project.slug)
+  }
+  const handlers=project?.embedUrl?{onClick:review,onPointerOut:()=>session.leave(project.slug)}:{}
   const W = width + LED.bezel * 2
   const H = height + LED.bezel * 2
   const z0 = LED.standoff
   return <group position={position} rotation={rotation}>
-    {/* the screen's light falling on the wall around it */}
-    <mesh material={glow} position={[0, 0, 0.004]} renderOrder={1}><planeGeometry args={[W * 1.5, H * 1.6]} /></mesh>
+    {project?.embedUrl&&<Board width={width} height={.28} position={[0,height/2+.22,0]} ppm={500} draw={(pen,{width:w})=>{
+      pen.text('CLICK TO EXPLORE · SCROLL INSIDE · CLICK OUTSIDE TO WALK',w/2,.07,{size:.056,weight:600,family:'mono',color:ON_DARK.brass,align:'center',tracking:.035})
+    }}/>}
     <mesh material={housing} position={[0, 0, z0 + LED.depth / 2]}><boxGeometry args={[W, H, LED.depth]} /></mesh>
     {[-1, 1].map((s) => <mesh key={`v${s}`} material={edge} position={[s * (W / 2), 0, z0 + LED.depth / 2]}><boxGeometry args={[0.006, H, LED.depth + 0.002]} /></mesh>)}
     <mesh ref={screenRef} material={screen} position={[0, 0, z0 + LED.depth + 0.001]} {...handlers}><planeGeometry args={[width, height]} /></mesh>
+    {project?.embedUrl&&<mesh ref={reflectionScreen} material={reflected} position={[0,0,z0+LED.depth+.00125]} raycast={()=>null}><planeGeometry args={[width,height]}/></mesh>}
+    {project?.embedUrl&&<LiveProjectSurface project={project} width={width} height={height} position={[0,0,z0+LED.depth+.0015]}/>}
     <mesh material={glass} position={[0, 0, z0 + LED.depth + 0.003]} raycast={() => null} renderOrder={3}><planeGeometry args={[width, height]} /></mesh>
   </group>
 }
@@ -613,15 +621,15 @@ function AboutExhibit() {
 /* ------------------------------------------------------------------ Work */
 const GATES = [8.81, 13.61, 18.41, 23.21]          // front faces of the four light gates
 const BAYS = [11.3, 16.1, 20.9]                     // the wall between one gate and the next
-const SCREEN = { w: 3.4, h: 2.125, y: 2.35 }
+const SCREEN = { w: 3.4, h: 2.125, y: 1.85 }
 
 function ProjectExhibit({ project, index, x, side }) {
   const z = side === 'left' ? -5 : 5
   const rotation = side === 'left' ? FACE.left : FACE.right
-  const link = `/work/${project.slug}/`
+  const link = project.projectLink
   return <>
-    <LedScreen url={projectAsset(project.slug, 'showcase-1x.webp')} width={SCREEN.w} height={SCREEN.h} position={[x, SCREEN.y, z]} rotation={rotation} link={link} />
-    <Board width={SCREEN.w} height={0.62} position={[x, 0.86, z]} rotation={rotation} link={link} ppm={400} draw={(pen, { width }) => {
+    <LedScreen project={project} url={project.screenUrl} width={SCREEN.w} height={SCREEN.h} position={[x, SCREEN.y, z]} rotation={rotation} />
+    <Board width={SCREEN.w} height={0.62} position={[x, 0.37, z]} rotation={rotation} link={link} ppm={400} draw={(pen, { width }) => {
       const ink = ON_DARK
       pen.text(`${String(index + 1).padStart(2, '0')} / ${project.category.toUpperCase()}`, 0.06, 0.06, eyebrow(0.05, ink.brass))
       pen.text(project.title, 0.06, 0.17, { size: 0.17, weight: 800, color: ink.text })
@@ -633,9 +641,9 @@ function ProjectExhibit({ project, index, x, side }) {
 
 function WorkExhibit() {
   const hero = sectionHeroes.work
-  const labels = [0, 1, 2].map((bay) => projects.slice(bay * 2, bay * 2 + 2).map((p) => p.title.toUpperCase()).join('  ·  '))
+  const labels = [0, 1, 2].map((bay) => workRoomProjects.slice(bay * 2, bay * 2 + 2).map((p) => p.title.toUpperCase()).join('  ·  '))
   return <>
-    {projects.slice(0, 6).map((project, i) => <ProjectExhibit key={project.slug} project={project} index={i} x={BAYS[Math.floor(i / 2)]} side={i % 2 ? 'right' : 'left'} />)}
+    {workRoomProjects.map((project, i) => <ProjectExhibit key={project.slug} project={project} index={i} x={BAYS[Math.floor(i / 2)]} side={i % 2 ? 'right' : 'left'} />)}
 
     {/* brass letters on each gate's head name the projects in the bay it opens onto */}
     {GATES.map((x, i) => <Lettering
@@ -683,10 +691,13 @@ function GlassFacade() {
     g.fillRect(0, 0, 512, 128)
     facadeSheen = new THREE.CanvasTexture(c)
   }
-  const material = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: facadeSheen, color: '#cfe0ea', transparent: true, depthWrite: false }), []))
-  return <mesh material={material} position={[21.27, 2.88, 0]} rotation={FACE.far} raycast={() => null} renderOrder={3}>
-    <planeGeometry args={[24, 5.7]} />
-  </mesh>
+  const material = useDisposable(useMemo(() => new THREE.MeshBasicMaterial({ map: facadeSheen, color: '#cfe0ea', transparent: true, depthWrite: false, side: THREE.DoubleSide }), []))
+  const geometry=useMemo(createFacadeGlazingGeometry,[])
+  useEffect(()=>()=>geometry.dispose(),[geometry])
+  return <>
+    <mesh geometry={geometry} material={material} position={[21.27,0,0]} rotation={FACE.far} raycast={() => null} renderOrder={3}/>
+    <MasterTerraceDoor glass={material}/>
+  </>
 }
 
 function ContactExhibit() {

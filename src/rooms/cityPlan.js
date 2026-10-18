@@ -1,4 +1,4 @@
-import { END_Z } from '../experience/corridorLayout.js'
+import { END_Z, TERRACE } from '../experience/corridorLayout.js'
 
 /*
  * The city below the Contact hall: its plan and its traffic. Pure data and arithmetic - the
@@ -17,7 +17,11 @@ import { END_Z } from '../experience/corridorLayout.js'
 export const CITY_Y = -96
 export const GLASS_Z = END_Z - 17.9
 // our own tower: its plot in plan space, its top just under the building's floors
-export const SITE = { x: 34, d0: -99.5, d1: 0.5 }
+export const SITE = { x: TERRACE.half, d0: GLASS_Z - TERRACE.edgeZ, d1: GLASS_Z - TERRACE.backZ }
+// The approved city's source lots use a stable reservation. Resizing the
+// gallery roof must not consume a different sequence of city random numbers
+// and silently regenerate every later building. The real tower uses SITE.
+const SOURCE_SITE = Object.freeze({ x:42, d0:-99, d1:28 })
 export const TOWER_TOP = -CITY_Y - 0.1
 export const BLOCK = 80
 export const BLVD = { d: 24, half: 13, walk: 5, lanes: 3, lane: 3.3, median: 1.6 }
@@ -53,10 +57,10 @@ export function mulberry32(a) {
  * the right) the towers rise; near the hall they stay low enough to see over.
  * style: 0 curtain-wall glass, 1 punched stone, 2 dark glass between fins, 3 brick apartments
  */
-const inSite = (x0, x1, d0, d1) => x1 > -SITE.x && x0 < SITE.x && d1 > SITE.d0 && d0 < SITE.d1
+const inSite = (x0, x1, d0, d1) => x1 > -SOURCE_SITE.x && x0 < SOURCE_SITE.x && d1 > SOURCE_SITE.d0 && d0 < SOURCE_SITE.d1
 
-export function layoutBuildings() {
-  const rnd = mulberry32(20261012)
+export function layoutBuildings(seed = 20261012) {
+  const rnd = mulberry32(seed)
   const boxes = []
   const rounds = []
   const roofs = []
@@ -102,6 +106,8 @@ export function layoutBuildings() {
         // rest of the tower a few rise past the terrace
         if (cd > 0 && cd < 200) h = Math.min(h, 22 + rnd() * 40)
         else if (Math.abs(cd + 50) < 200) h = rnd() < 0.3 ? Math.max(h, 100 + rnd() * 80) : Math.min(h, 30 + rnd() * 45)
+        // The corridor's own 96 m tower is the sole landmark above the city.
+        h = Math.min(h, 76)
         const style = h > 70 ? (rnd() < 0.55 ? 0 : rnd() < 0.5 ? 2 : 1) : (rnd() < 0.45 ? 3 : rnd() < 0.6 ? 1 : rnd() < 0.5 ? 0 : 2)
         const storey = style === 3 ? 3.0 + rnd() * 0.3 : style === 1 ? 3.3 + rnd() * 0.4 : 3.7 + rnd() * 0.5
         const bay = style === 0 ? 1.5 + rnd() * 0.3 : style === 2 ? 2.2 + rnd() * 0.8 : style === 3 ? 3.0 + rnd() * 0.8 : 2.6 + rnd() * 0.8
@@ -109,8 +115,8 @@ export function layoutBuildings() {
         const warm = style === 3 ? 0.8 + rnd() * 0.2 : style === 1 ? 0.55 + rnd() * 0.35 : 0.12 + rnd() * 0.35
         const seed = rnd()
         const shops = h < 160 || rnd() < 0.5 ? 1 : 0
-        const info = (s, crown = 0) => ({ a: [seed, s, storey, bay], b: [lit, warm, shops, crown] })
         const z = worldZ(d)
+        const info = (s, crown = 0) => ({ anchor: [x,z], a: [seed, s, storey, bay], b: [lit, warm, shops, crown] })
         if (h > 48 && rnd() < 0.8) {
           // a podium of shops, and the tower set back on it
           const podium = Math.round((8 + rnd() * 7) / storey) * storey
@@ -139,9 +145,9 @@ export function layoutBuildings() {
           roofs.push(...roofUnits(rnd, x, z, tw * tiers[tiers.length - 1][1], td * tiers[tiers.length - 1][1], y, 3))
           if (y > 150 && rnd() < 0.5) {
             const mast = 14 + rnd() * 24
-            roofs.push({ x, z, y, w: 0.8, d: 0.8, h: mast })
-            beacons.push({ x, z, y: y + mast + 0.6 })
-          } else if (y > 90) beacons.push({ x: x + tw * 0.3, z, y: y + 4.5 })
+            roofs.push({ x, z, y, w: 0.8, d: 0.8, h: mast, anchor:[x,z] })
+            beacons.push({ x, z, y: y + mast + 0.6, anchor:[x,z] })
+          } else if (y > 90) beacons.push({ x: x + tw * 0.3, z, y: y + 4.5, anchor:[x,z] })
           tops.push({ x, z, h: y })
         } else {
           const hh = Math.max(storey * 3, Math.round(h / storey) * storey)
@@ -164,7 +170,7 @@ function roofUnits(rnd, x, z, w, d, y, count) {
   for (let i = 0; i < n; i++) {
     const uw = 2 + rnd() * Math.min(9, w * 0.3)
     const ud = 2 + rnd() * Math.min(9, d * 0.3)
-    out.push({ x: x + (rnd() - 0.5) * (w - uw - 2), z: z + (rnd() - 0.5) * (d - ud - 2), y, w: uw, d: ud, h: 1.5 + rnd() * 3.5 })
+    out.push({ x: x + (rnd() - 0.5) * (w - uw - 2), z: z + (rnd() - 0.5) * (d - ud - 2), y, w: uw, d: ud, h: 1.5 + rnd() * 3.5, anchor:[x,z] })
   }
   return out
 }
@@ -234,7 +240,7 @@ const CYCLE = 40           // a signal cycle: along x [0, 17), amber to 20; alon
 const TURN_R = 7           // turning radius at a junction, metres
 const TURN_SPEED = 5.5
 
-function lightState(t, m, n, along) {
+export function lightState(t, m, n, along) {
   const p = (((t + m * 7.3 + n * 11.1) % CYCLE) + CYCLE) % CYCLE
   if (along === 'x') return p < 17 ? 'green' : p < 20 ? 'amber' : 'red'
   return p >= 21 && p < 37 ? 'green' : p >= 37 ? 'amber' : 'red'
@@ -246,6 +252,15 @@ const laneXY = (lane, s) => (lane.axis === 'x'
   : { x: lane.at, d: lane.dir > 0 ? s : -s })
 const laneS = (lane, x, d) => (lane.axis === 'x' ? (lane.dir > 0 ? x : -x) : (lane.dir > 0 ? d : -d))
 const laneYaw = (lane) => (lane.axis === 'x' ? (lane.dir > 0 ? 0 : Math.PI) : (lane.dir > 0 ? Math.PI / 2 : -Math.PI / 2))
+
+// Centre-line tangencies are independent of vehicle length. Triggering on a vehicle's nose
+// makes short vehicles reach the corner before steering, collapsing their turning radius.
+function laneTurn(from, to, radius = TURN_R) {
+  const cross = from.axis === 'x' ? { x: to.at, d: from.at } : { x: from.at, d: to.at }
+  return { to, radius, s: laneS(from, cross.x, cross.d) - radius, toS: laneS(to, cross.x, cross.d) + radius }
+}
+
+const vehicleTurn = (lane, route, car) => car.kind === KIND.bus && route.radius < 11 ? laneTurn(lane, route.to, 11) : route
 
 export function createTraffic(seed = 9) {
   const rnd = mulberry32(seed)
@@ -292,11 +307,11 @@ export function createTraffic(seed = 9) {
       for (let i = 0; i < lanesEach; i++) {
         const j = outer - (lanesEach - 1 - i)
         const right = i === 0 ? (lanesEach === 1 ? 0.45 : 0.8) : 0
-        toward[i].endTurn = { to: near[j], leftX: toward[i].at + side * TURN_R, right, toRight: far[1], rightX: toward[i].at - side * TURN_R * 1.3 }
-        turnOff(near[j], { s: side * (away[i].at - side * TURN_R), to: away[i] })
+        toward[i].endTurn = { left: laneTurn(toward[i], near[j]), right: laneTurn(toward[i], far[1], TURN_R * 1.3), chance: right }
+        turnOff(near[j], laneTurn(near[j], away[i]))
       }
       // from the far side of the boulevard, a right turn across it, out along this side
-      turnOff(far[1], { s: -side * (away[0].at + side * TURN_R * 1.3), to: away[0] })
+      turnOff(far[1], laneTurn(far[1], away[0], TURN_R * 1.3))
     }
   }
   const feeds = lanes.filter((l) => l.endTurn)
@@ -325,7 +340,8 @@ export function createTraffic(seed = 9) {
     lane.s0 = lane.dir > 0 ? lane.from : -lane.to
     lane.s1 = lane.dir > 0 ? lane.to : -lane.from
     // fill it, nose to tail with gaps, from the far end back
-    let s = lane.s1 - 4 - rnd() * 20
+    const entry = lane.endTurn ? Math.min(lane.s1, lane.endTurn.left.s, laneTurn(lane, lane.endTurn.left.to, 11).s) : lane.s1
+    let s = entry - 4 - rnd() * 20
     while (s > lane.s0) {
       const kind = rnd() < 0.06 ? KIND.bus : rnd() < 0.15 ? KIND.bike : KIND.car
       lane.vehicles.push(makeVehicle(rnd, kind, s))
@@ -349,7 +365,7 @@ function makeVehicle(rnd, kind, s) {
     : kind === KIND.bike ? [[0.03, 0.03, 0.035], [0.4, 0.05, 0.04], [0.3, 0.3, 0.32]][Math.floor(rnd() * 3)]
       : CAR_PAINT[Math.floor(rnd() * CAR_PAINT.length)]
   const v0 = kind === KIND.bus ? 8 + rnd() * 2.5 : kind === KIND.bike ? 9 + rnd() * 6 : 10 + rnd() * 6
-  return { kind, s, v: v0 * (0.5 + rnd() * 0.5), v0, len: LENGTH[kind], paint, brake: 0 }
+  return { kind, s, v: v0 * (0.5 + rnd() * 0.5), v0, len: LENGTH[kind], paint, brake: 0, light:[.55+rnd()*.95,rnd(),rnd()] }
 }
 
 // room for a vehicle at s in a lane? (vehicles are kept nose-first, s falling)
@@ -366,14 +382,20 @@ function insertAt(lane, car, s) {
   return true
 }
 
-function startTurn(traffic, car, fromLane, toLane, toS) {
-  const a = laneXY(fromLane, car.s)
-  const b = laneXY(toLane, toS)
-  // the corner where the two lanes' lines cross
-  const c = fromLane.axis === 'x' ? { x: toLane.at, d: fromLane.at } : { x: fromLane.at, d: toLane.at }
-  const len = Math.hypot(c.x - a.x, c.d - a.d) + Math.hypot(b.x - c.x, b.d - c.d)
-  traffic.turning.push({ car, a, b, c, t: 0, T: (len * 0.85) / TURN_SPEED, from: fromLane, to: toLane, toS })
-  car.v = TURN_SPEED
+function startTurn(traffic, car, fromLane, route, dt) {
+  const { to, toS, radius, s } = route
+  const a = laneXY(fromLane, s)
+  const b = laneXY(to, toS)
+  const incoming = { x: fromLane.axis === 'x' ? fromLane.dir : 0, d: fromLane.axis === 'd' ? fromLane.dir : 0 }
+  const outgoing = { x: to.axis === 'x' ? to.dir : 0, d: to.axis === 'd' ? to.dir : 0 }
+  const centre = { x: a.x + outgoing.x * radius, d: a.d + outgoing.d * radius }
+  const angle = Math.atan2(a.d - centre.d, a.x - centre.x)
+  const sweep = Math.sign(incoming.x * outgoing.d - incoming.d * outgoing.x) * Math.PI / 2
+  const speed = Math.max(0.3, car.v)
+  // The lane has already advanced this frame. Only its unused fraction belongs to the arc.
+  const remaining = Math.max(0, (car.s - s) / speed)
+  car.s = s
+  traffic.turning.push({ car, a, b, centre, angle, sweep, radius, speed, fromS: s, t: remaining - dt, T: radius * Math.PI / (2 * speed), from: fromLane, to, toS })
 }
 
 const turnBusy = (traffic, lane) => traffic.turning.some((tr) => tr.from === lane && (tr.t < tr.T * 0.6 || tr.t >= tr.T))
@@ -390,6 +412,22 @@ export function stepTraffic(traffic, dt) {
     for (let i = 0; i < vs.length; i++) {
       const car = vs[i]
       const lead = i > 0 ? vs[i - 1] : null
+      if (lane.endTurn && !car.turnTo) {
+        const end = lane.endTurn
+        car.turnTo = vehicleTurn(lane, car.kind !== KIND.bus && rnd() < end.chance ? end.right : end.left, car)
+      }
+      // Choose a junction before reaching it so deceleration and steering share one route.
+      if (!car.turnTo && lane.turnsOff?.length) {
+        for (const turn of lane.turnsOff) {
+          const candidate = vehicleTurn(lane, turn, car)
+          if (candidate.s <= car.s || candidate.s - car.s > 35 || car.turnDecision === turn) continue
+          car.turnDecision = turn
+          const pull = Math.min(3, Math.max(0.4, turn.to.share / Math.max(1, turn.to.vehicles.length)))
+          const push = Math.min(2.5, Math.max(0.5, vs.length / lane.share))
+          if (rnd() < Math.min(0.9, 0.3 * pull * push)) car.turnTo = candidate
+          break
+        }
+      }
       let gap = lead ? lead.s - lead.len / 2 - (car.s + car.len / 2) : 1e4
       let dv = lead ? car.v - lead.v : 0
       // the next stop line ahead, if its light says stop
@@ -404,49 +442,28 @@ export function stepTraffic(traffic, dt) {
       }
       // the end of a lane that turns: slow to turning pace before it, and wait while the one
       // before is still in the turn
-      if (lane.endTurn && !lead) {
-        const toEnd = lane.s1 - (car.s + car.len / 2)
-        const wait = turnBusy(traffic, lane)
-        if (toEnd < gap) { gap = Math.max(0.1, wait ? toEnd : toEnd + 8); dv = wait ? car.v : Math.max(0, car.v - TURN_SPEED) }
-      }
+      const turn = car.turnTo
+      const wait = turn && turnBusy(traffic, lane)
+      if (wait && turn.s - car.s < gap) { gap = Math.max(0.1, turn.s - car.s); dv = car.v }
+      const pace = turn ? Math.min(car.v0, Math.sqrt(TURN_SPEED ** 2 + 2 * B * Math.max(0, turn.s - car.s))) : car.v0
       const sStar = 2 + car.v * 1.2 + (car.v * dv) / (2 * Math.sqrt(A * B))
-      const acc = A * (1 - (car.v / car.v0) ** 4 - (Math.max(0, sStar) / Math.max(gap, 0.1)) ** 2)
-      const before = car.s
+      const acc = A * (1 - (car.v / pace) ** 4 - (Math.max(0, sStar) / Math.max(gap, 0.1)) ** 2)
       car.v = Math.max(0, car.v + Math.max(-8, acc) * dt)
       car.s += car.v * dt
+      if (wait && car.s >= turn.s) { car.s = turn.s - 0.01; car.v = 0 }
       car.brake = acc < -0.6 || car.v < 0.3 ? 1 : 0
-      // the boulevard's outer lane: now and then, a left turn out along an avenue
-      if (lane.turnsOff?.length) {
-        for (const turn of lane.turnsOff) {
-          if (before < turn.s && car.s >= turn.s) {
-            // drivers spread themselves: an emptier avenue draws more of them
-            const pull = Math.min(3, Math.max(0.4, turn.to.share / Math.max(1, turn.to.vehicles.length)))
-            const push = Math.min(2.5, Math.max(0.5, vs.length / lane.share))
-            const draw = Math.min(0.9, 0.3 * pull * push)
-            if (car.kind !== KIND.bus && rnd() < draw) car.turnTo = turn
-            break
-          }
-        }
-        if (car.turnTo && car.s >= car.turnTo.s) {
-          const turn = car.turnTo
-          car.turnTo = null
-          vs.splice(i, 1)
-          i--
-          startTurn(traffic, car, lane, turn.to, turn.to.s0 + TURN_R)
-        }
+      if (turn && car.s >= turn.s && !wait) {
+        car.turnTo = null
+        car.turnDecision = null
+        vs.splice(i, 1)
+        i--
+        startTurn(traffic, car, lane, turn, dt)
       }
     }
     // the far end of the lane
-    while (vs.length && (lane.endTurn ? vs[0].s + vs[0].len / 2 > lane.s1 + 3 : vs[0].s > lane.s1 + 20)) {
+    while (!lane.endTurn && vs.length && vs[0].s > lane.s1 + 20) {
       const car = vs[0]
-      if (lane.endTurn) {
-        // onto the boulevard - mostly left, some right - once the one before is clear
-        if (turnBusy(traffic, lane)) break
-        const { to, leftX, toRight, rightX, right } = lane.endTurn
-        vs.shift()
-        if (car.kind !== KIND.bus && rnd() < right) startTurn(traffic, car, lane, toRight, laneS(toRight, rightX, toRight.at))
-        else startTurn(traffic, car, lane, to, laneS(to, leftX, to.at))
-      } else if (lane.farEnd) {
+      if (lane.farEnd) {
         // out of sight: round into the lane coming back
         if (!insertAt(lane.farEnd, car, lane.farEnd.s0 + rnd() * 20)) break
         vs.shift()
@@ -470,12 +487,12 @@ export function stepTraffic(traffic, dt) {
   // vehicles in the middle of a turn, and those waiting at its end to join their lane
   for (let i = traffic.turning.length - 1; i >= 0; i--) {
     const turn = traffic.turning[i]
-    turn.t = Math.min(turn.T, turn.t + dt)
+    turn.t = Math.max(0, turn.t + dt)
     if (turn.t >= turn.T) {
-      if (insertAt(turn.to, turn.car, turn.toS)) {
-        turn.car.v = TURN_SPEED
+      if (insertAt(turn.to, turn.car, turn.toS + (turn.t - turn.T) * turn.speed)) {
+        turn.car.v = turn.speed
         traffic.turning.splice(i, 1)
-      } else turn.car.v = 0
+      } else { turn.t = turn.T; turn.car.v = 0 }
     }
   }
 }
@@ -494,15 +511,10 @@ export function placeOf(lane, car, out) {
 
 /** Where a turning vehicle is, on its curve from one lane into the next. */
 export function placeTurning(turn, out) {
-  const u = turn.t / turn.T
-  const k = 1 - u
-  const x = k * k * turn.a.x + 2 * k * u * turn.c.x + u * u * turn.b.x
-  const d = k * k * turn.a.d + 2 * k * u * turn.c.d + u * u * turn.b.d
-  const tx = 2 * k * (turn.c.x - turn.a.x) + 2 * u * (turn.b.x - turn.c.x)
-  const td = 2 * k * (turn.c.d - turn.a.d) + 2 * u * (turn.b.d - turn.c.d)
-  out.x = x
-  out.z = worldZ(d)
-  // nose along +x in the world means yaw 0; +d is world -z, so yaw = atan2(td, tx)
-  out.yaw = Math.atan2(td, tx)
+  const angle = turn.angle + Math.min(1, Math.max(0, turn.t / turn.T)) * turn.sweep
+  out.x = turn.centre.x + Math.cos(angle) * turn.radius
+  out.z = worldZ(turn.centre.d + Math.sin(angle) * turn.radius)
+  // The radius rotated a quarter turn in the sweep direction is the velocity tangent.
+  out.yaw = angle + Math.sign(turn.sweep) * Math.PI / 2
   return out
 }

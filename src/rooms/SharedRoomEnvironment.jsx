@@ -14,7 +14,7 @@ import { ROOM_KIND } from './referenceRooms.js'
 // room-side face of the corridor wall, so no part of the room occupies or crosses that wall.
 export default function SharedRoomEnvironment({ spec, children }) {
   const placement = roomPlacement(spec)
-  return <group position={placement.position} rotation={placement.rotation}>
+  return <group position={placement.position} rotation={placement.rotation} userData={{websiteOcclusionScope:true}}>
     <Suspense fallback={null}><ReferenceRoom kind={ROOM_KIND[spec.id] || 'services'} placementKey={spec.id} /></Suspense>
     {children}
   </group>

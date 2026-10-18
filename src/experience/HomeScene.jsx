@@ -6,6 +6,7 @@ import { FabricationProvider } from './GalleryFabrication.jsx'
 import { ReflectionPass } from './CorridorAtmosphere.jsx'
 import NightSky from './NightSky.jsx'
 import CityView from '../rooms/CityView.jsx'
+import { LiveScreenLayer } from '../rooms/LiveProjectScreens.jsx'
 
 /* One global rig lights the whole building, and it never changes.
    It used to be cross-faded against a duplicate rig owned by the room, which meant the
@@ -35,5 +36,6 @@ export default function HomeScene({enabled=true}){
     <CityView/>
     <CameraRig enabled={enabled}/>
     <ReflectionPass scale={reflectionScale} />
+    <LiveScreenLayer/>
   </>
 }

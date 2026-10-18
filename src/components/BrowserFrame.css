@@ -1,14 +1,13 @@
 /* ============================================================================
-   Shared browser frame — one restrained window shell used wherever a real project page is shown: the Work-showcase panels and the
-   project-detail hero preview. Both had an identical copy of this before.
+   Shared capture stage — edge-to-edge project imagery, a quiet hairline and a
+   grounded shadow. Used by standalone Home, Work and case studies only.
 
    A consumer only sets the four inputs below on the frame element; every painted property is declared once here, so the two places
    can never drift apart. Consumers add their own behaviour (the Work panel's hover lift, the detail preview's scrolling viewport)
    in their own stylesheet.
 
      --uf-accent    the project's accent, tinted into the shell
-     --uf-fg-rgb    "r g b" of the surrounding text colour, used for the hairline, the dots and the url pill
-     --uf-muted     the url text colour
+     --uf-fg-rgb    "r g b" of the surrounding text colour, used for the hairline
      --uf-bg        the shell fill        (override wholesale for a dark project stage)
      --uf-shadow    the shell shadow      (override wholesale for a dark project stage)
    ============================================================================ */
@@ -23,8 +22,9 @@
     0 46px 96px -36px rgb(var(--shadow,24 20 14) / .46);
   display:block;
   position:relative;
-  padding:0 clamp(7px,.85vw,13px) clamp(7px,.85vw,13px);
-  border-radius:clamp(12px,1.25vw,20px);
+  padding:0;
+  overflow:hidden;
+  border-radius:clamp(8px,.85vw,13px);
   background:var(--uf-bg);
   box-shadow:var(--uf-shadow);
 }
@@ -47,6 +47,6 @@
   display:block;
   aspect-ratio:1440/900;
   overflow:hidden;
-  border-radius:clamp(7px,.85vw,12px);
+  border-radius:inherit;
   background:#0c121c;
 }

@@ -22,7 +22,7 @@ const PAGES = {
 export function describeLink(route) {
   if (!route) return ''
   if (route.startsWith('mailto:')) return `Write to ${route.slice(7)} — opens your email, you stay here`
-  const page = PAGES[route] || (route.startsWith('/work/') ? 'the project page' : 'the page')
+  const page = PAGES[route] || (/^https?:\/\//i.test(route)?'the live project website':route.startsWith('/work/') ? 'the project page' : 'the page')
   return `Opens ${page} — you leave the corridor; Back brings you right here`
 }
 
@@ -78,5 +78,6 @@ export function followLink(route, navigate) {
   if (document.pointerLockElement) document.exitPointerLock?.()
   pointLink('hovered', null)
   pointLink('aimed', null)
+  if(/^https?:\/\//i.test(route)){window.location.assign(route);return}
   navigate(route)
 }
