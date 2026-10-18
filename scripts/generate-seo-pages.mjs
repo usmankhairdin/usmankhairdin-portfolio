@@ -1,6 +1,6 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
-import { routeSeo, seoPaths, structuredDataFor } from '../src/seo/routeSeo.js'
+import { routeSeo, seoForPath, seoPaths, structuredDataFor } from '../src/seo/routeSeo.js'
 
 const dist = join(process.cwd(), 'dist')
 const template = await readFile(join(dist, 'index.html'), 'utf8')
@@ -58,12 +58,14 @@ for (const path of seoPaths) {
 }
 
 // Unlisted routes still need a real file to load directly (the host answers unknown URLs with a 404),
-// but they stay out of search: the plain app shell, marked noindex.
+// but they stay out of search. Use complete metadata when it is available so
+// direct loads and client-side navigation agree.
 const UNLISTED = ['/web/', '/work/personal-portfolio-web/']
 for (const path of UNLISTED) {
   const directory = join(dist, path.slice(1))
   await mkdir(directory, { recursive: true })
-  await writeFile(join(directory, 'index.html'), replaceMeta(template, 'name', 'robots', 'noindex,follow'))
+  const page = seoForPath(path)
+  await writeFile(join(directory, 'index.html'), page ? render(page) : replaceMeta(template, 'name', 'robots', 'noindex,follow'))
 }
 
 console.log('Generated direct-load SEO HTML for ' + seoPaths.length + ' routes and ' + UNLISTED.length + ' unlisted route(s).')

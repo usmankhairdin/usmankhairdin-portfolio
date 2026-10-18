@@ -2,15 +2,15 @@
 
 Local continuation build for Usman Khair Din’s premium personal brand and white-label agency sales website. The approved immersive corridor experience, warm material family, premium typography and cobalt CTA language remain the visual foundation.
 
-## Locked featured work
+## Current selected work
+- Sanaira Health — https://sanaira.usmankhairdin.com/
+- Forma — https://www.usmankhairdin.com/portfolio/forma/
 - PRIMA — https://primaapp.com/
-- BizCare — https://www.usmankhairdin.com/portfolio/bizcare/
-- Bansar China — https://www.bansarchina.com/
+- Veyravael Estates — https://www.usmankhairdin.com/portfolio/veyravael/
 - Rantle — https://www.rantle.com/
 - Bum.Life — https://www.usmankhairdin.com/portfolio/bum.life/
-- PNWLeads — https://www.usmankhairdin.com/portfolio/PNWLeads/
 
-The corresponding internal routes are `/work/prima/`, `/work/bizcare/`, `/work/bansar/`, `/work/rantle/`, `/work/bum-life/` and `/work/pnw-leads/`. This set is authoritative; do not substitute other projects.
+The corresponding internal routes are `/work/sanaira/`, `/work/forma/`, `/work/prima/`, `/work/veyravael/`, `/work/rantle/` and `/work/bum-life/`. The homepage features Forma first, Sanaira second and PRIMA third. The featured personal-portfolio case study is `/work/personal-portfolio-3d/`; the retired Web case URL redirects there.
 
 ## Current QA state
 
@@ -31,22 +31,28 @@ The corresponding internal routes are `/work/prima/`, `/work/bizcare/`, `/work/b
 - About, Services, For Agencies, Contact, Work and project-detail pages receive a richer branded visual layer while preserving the cream/ink/accent system.
 - Contact form is configured to deliver to `brief@usmankhairdin.com` through FormSubmit.
 - About, Services, For Agencies and Contact now use distinct route-authored working diagrams while retaining the shared Usman Khair Din brand material and cobalt action system.
-- The immersive runtime is lazy at the home route; standard routes receive a small application entry and retain their approved visual rendering. The Phase 06 report records exact production-build measurements and regression coverage.
+- The immersive runtime is lazy at the home route; standard routes receive a small application entry and retain their approved visual rendering. Phones and coarse-pointer tablets open the Web Experience instead of loading the corridor.
+- `/web/` resolves complete homepage metadata during direct loads and client navigation, stays unlisted and uses the root canonical URL.
 
 Rantle currently serves a bot-verification page to automated browser sessions. Its live link is unchanged; the local portfolio media uses an actual dated public-page capture and does not fabricate a mobile state.
 
 ## Local run
 ```bash
 npm install
-npm run dev
+npm run dev -- --port 3001 --strictPort
 ```
 
 ## Production build
 ```bash
 npm run build
+npm test
+npm run check:seo
+npm run check:links -- --offline
 ```
 
-Do not push or deploy without explicit approval.
+`dist/` is the complete deployable portfolio build. The project does not need a sibling UKD or store project folder to build or run. Optional asset-preparation scripts document original source inputs; prepared runtime assets are already included in `public/`. Live-project URLs and embedded websites remain separately hosted applications.
+
+The existing GitHub Actions workflow deploys `main` to the current Namecheap host. Do not push or deploy without explicit approval. Preserve other hosted project folders as described in `DEPLOYMENT_CPanel.md`; local backup/dependency cleanup is a separate user-authorized task.
 
 ## Repository layout
 

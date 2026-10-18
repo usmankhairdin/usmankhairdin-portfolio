@@ -365,7 +365,10 @@ const none = () => null
 function LogoMark({ material }) {
   const svg = useLoader(THREE.FileLoader, '/assets/ukd-logo.svg')
   const mark = useMemo(() => {
-    const data = new SVGLoader().parse(svg)
+    // Only the outlines are used; the extruded mark has its own bronze material.
+    // SVGLoader cannot resolve the original 2D gradient paint servers.
+    const outlinesSvg = svg.replace(/fill="url\([^"]*\)"/g, 'fill="#fff"')
+    const data = new SVGLoader().parse(outlinesSvg)
     const view = data.xml?.viewBox?.baseVal
     const vw = view?.width || 1362
     const vh = view?.height || 564

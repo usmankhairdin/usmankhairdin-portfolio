@@ -140,9 +140,16 @@ export const routeSeo = Object.fromEntries(pages.map((page) => [page.path, {
 
 export const seoPaths = pages.map(({ path }) => path)
 
+// Web Home presents the same portfolio as /, but is deliberately kept out of
+// the sitemap. Resolve all of its metadata so SPA visits cannot inherit it
+// from Contact or a case study. Both entries share the root canonical URL.
+const unlistedRouteSeo = {
+  '/web/': { ...routeSeo['/'], robots: 'noindex,follow' },
+}
+
 export function seoForPath(pathname) {
   const normalized = pathname === '/' ? '/' : `${pathname.replace(/\/+$/, '')}/`
-  return routeSeo[normalized] || null
+  return routeSeo[normalized] || unlistedRouteSeo[normalized] || null
 }
 
 const ref = (id) => ({ '@id': id })

@@ -49,4 +49,10 @@ for (const path of seoPaths) {
 }
 
 assert.equal((sitemap.match(/<url>/g) || []).length, seoPaths.length)
-console.log('SEO checks passed for ' + seoPaths.length + ' direct-load routes.')
+const webHome = await readFile(join(dist, 'web', 'index.html'), 'utf8')
+assert.ok(webHome.includes('<title>Usman Khair Din | Product Designer &amp; Frontend Developer</title>'), 'Web Home title')
+assert.ok(webHome.includes('rel="canonical" href="https://www.usmankhairdin.com/"'), 'Web Home canonical')
+assert.ok(webHome.includes('name="robots" content="noindex,follow"'), 'Web Home stays unlisted')
+assert.ok(webHome.includes('property="og:url" content="https://www.usmankhairdin.com/"'), 'Web Home share URL')
+assert.ok(!sitemap.includes('<loc>https://www.usmankhairdin.com/web/</loc>'), 'Web Home stays out of the sitemap')
+console.log('SEO checks passed for ' + seoPaths.length + ' indexed routes and the unlisted Web Home.')

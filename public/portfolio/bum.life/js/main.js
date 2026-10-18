@@ -1,4 +1,29 @@
-// Initialize Lucide Icons
+// Brand marks are bundled here: current Lucide releases no longer include them.
+// Replace them before createIcons so every archived page keeps visible social links.
+const brandMarks = {
+    youtube: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 6 3-6 3Z"/>',
+    twitter: '<path d="m4 3 16 18h-4L0 3h4Z" transform="translate(2 0)"/><path d="M21 3 3 21"/>',
+    instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>',
+};
+for (const icon of document.querySelectorAll('i[data-lucide]')) {
+    const name = icon.getAttribute('data-lucide');
+    if (!brandMarks[name]) continue;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '24');
+    svg.setAttribute('height', '24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('class', icon.className);
+    svg.innerHTML = brandMarks[name];
+    icon.replaceWith(svg);
+}
+
+// Initialize the remaining Lucide interface icons.
 lucide.createIcons();
 
 // DOM Elements

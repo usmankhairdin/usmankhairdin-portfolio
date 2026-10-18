@@ -71,7 +71,9 @@ export function mountWeaveStill(host, { form = 0, turnSeconds = 44, fill = .8, s
   camera.position.z = 12;
   const pmrem = new THREE.PMREMGenerator(renderer);
   const room = new RoomEnvironment();
-  const environment = pmrem.fromScene(room, .38);
+  // Keep the initial blur within the 256px PMREM kernel's sample budget.
+  // The material's roughness supplies the broader reflection filtering.
+  const environment = pmrem.fromScene(room, .035);
   scene.environment = environment.texture;
   room.dispose();
   const keyLight = new THREE.DirectionalLight('#fff5e5', 2.35);
