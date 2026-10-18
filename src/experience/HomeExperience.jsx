@@ -102,34 +102,29 @@ function ExperienceHud() {
  * the building's front, its door, the UKD mark over the door, the Web Experience sign on the
  * plaza (CorridorExterior). Over it there are only two invisible controls, kept exactly over
  * the door and the sign by the camera (useCorridorCamera), so a click, tap or Enter key on
- * either works, and the label that says what the mouse is doing. Scrolling walks in too.
+ * the sign opens Web Experience; clicking the door only enables mouse look.
+ * The visitor crosses the doorway using the wheel, with no scripted entrance walk.
  */
-function ExteriorGate({ departing = false, onEnter }) {
-  const enteringRef = useRef(false)
+function ExteriorGate() {
   const reducedMotion = useReducedMotion()
   const [doorHover, setDoorHover] = useState(false)
 
-  // Ready again whenever the visitor is back outside.
-  useEffect(() => { if (!departing) enteringRef.current = false }, [departing])
-
-  const commitEnter = useCallback((e) => {
-    if (enteringRef.current || departing) return
-    enteringRef.current = true
+  const enableLook = useCallback(() => {
     setDoorHover(false)
-    onEnter?.()
-  }, [departing, onEnter])
+    setCursorFree(false)
+    lookCapture.request?.()
+  }, [])
 
   // Hovering the door parts its glass a hand's width, as an automatic door does.
   useEffect(() => {
-    if (enteringRef.current) return
-    hintEntrance(doorHover && !departing ? 0.08 : 0, { reducedMotion })
-  }, [doorHover, departing, reducedMotion])
+    hintEntrance(doorHover ? 0.08 : 0, { reducedMotion })
+  }, [doorHover, reducedMotion])
 
   // the sign on the plaza brightens while it is pointed at
   const signHover = (on) => { exteriorSign.hover = on ? 1 : 0 }
   useEffect(() => () => { exteriorSign.hover = 0 }, [])
 
-  return <div className={`exterior-gate${departing ? ' exterior-gate--departing' : ''}`}>
+  return <div className="exterior-gate">
     <main id="main-content" className="exterior-gate__main" tabIndex={-1}>
       <h1 className="visually-hidden">Usman Khair Din — The Interface Gallery</h1>
       <button
@@ -137,8 +132,8 @@ function ExteriorGate({ departing = false, onEnter }) {
         className={`entry-door-hotspot${doorHover ? ' is-hovered' : ''}`}
         data-cursor="enter"
         data-cursor-live=""
-        aria-label="Walk in through the door"
-        onClick={commitEnter}
+        aria-label="Enable mouse look"
+        onClick={enableLook}
         onPointerEnter={(e) => { if (e.pointerType === 'mouse') setDoorHover(true) }}
         onPointerLeave={() => setDoorHover(false)}
       />
@@ -165,12 +160,12 @@ function ExteriorGate({ departing = false, onEnter }) {
 }
 
 function ExperienceShell() {
-  const { experiencePhase, setExperiencePhase } = useJourney()
+  const { experiencePhase } = useJourney()
   const [sceneCompiled, setSceneCompiled] = useState(false)
   const [sceneReady, setSceneReady] = useState(false)
   const onSceneCompiled = useCallback(() => setSceneCompiled(true), [])
   const markSceneReady = useCallback(() => setSceneReady(true), [])
-  const gateVisible = experiencePhase === 'gated' || experiencePhase === 'entering'
+  const gateVisible = experiencePhase === 'gated'
 
   // The whole page is the scene now: the wheel always belongs to it, never to Web smooth scroll.
   useWebScrollSuspension(true)
@@ -198,10 +193,7 @@ function ExperienceShell() {
     <LookModeControl />
     {experiencePhase === 'inside' && <ExperienceHud />}
 
-    {gateVisible && <ExteriorGate
-      departing={experiencePhase === 'entering'}
-      onEnter={() => setExperiencePhase('entering')}
-    />}
+    {gateVisible && <ExteriorGate />}
   </div>
 }
 

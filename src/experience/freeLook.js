@@ -16,7 +16,7 @@ export const getLookMode = () => look.cursorFree ? 'free' : look.locked ? 'look'
 export function setCursorFree(free) {
   if (look.cursorFree === free) return
   look.cursorFree = free
-  if (free) lookCapture.release?.('cursor')
+  if (free) { lookDragEnd(); lookCapture.release?.('cursor') }
   pauseAutomaticLook(); setRelativeLook(false); changed()
 }
 export function setCaptureUnavailable(unavailable) {
@@ -34,6 +34,7 @@ export function setRelativeLook(active) {
   if (previous !== active) changed()
 }
 const drag = { id:null, x:0, y:0, moved:0 }
+export const ownsLookPointer = pointerId => drag.id !== null && drag.id === pointerId
 const turn = (dx,dy) => {
   if (!Number.isFinite(dx) || !Number.isFinite(dy)) return
   look.targetYaw -= dx * MOUSE_RADIANS_PER_PIXEL
@@ -53,7 +54,11 @@ export function lookMove(e) {
   if (e.buttons === 0) { lookDragEnd(); return }
   drag.moved += Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y)
   if (drag.moved > 4) look.dragging = true
-  if (look.dragging) turn(e.clientX-drag.x,e.clientY-drag.y)
+  if (look.dragging) {
+    turn(e.clientX-drag.x,e.clientY-drag.y)
+    look.yaw=look.targetYaw; look.pitch=look.targetPitch
+    look.vYaw=look.vPitch=0
+  }
   drag.x=e.clientX; drag.y=e.clientY
 }
 export function pauseAutomaticLook() {

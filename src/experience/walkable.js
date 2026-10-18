@@ -129,9 +129,8 @@ export function locate(x, z) {
 }
 
 /**
- * Moves from (x, z) by (dx, dz), sliding along whatever is in the way. As the walker heads
- * into an open doorway a little off-centre, the opening draws them to its middle, the way a
- * person lines up with a door without thinking about it.
+ * Moves from (x, z) by (dx, dz), sliding only when a physical obstacle blocks
+ * that step. Clear doorways never pull the visitor away from their chosen heading.
  */
 export function slide(x, z, dx, dz, openOf, out) {
   const len = Math.hypot(dx, dz)
@@ -141,21 +140,6 @@ export function slide(x, z, dx, dz, openOf, out) {
     const ox = x, oz = z
     for (let i = 0; i < n; i++) { slide(x, z, dx / n, dz / n, openOf, out); [x, z] = out }
     return Math.hypot(x - ox, z - oz) > 1e-8
-  }
-  for (const door of doors) {
-    if (openOf(door.id) < 0.3 || len < 1e-6) continue
-    const [lx, lz] = toRoomLocal(door, x, z)
-    if (lx > FACE_X - 1.6 && lx < ROOM_INSIDE + 1.2 && Math.abs(lz) < DOOR_CLEAR + 0.6) {
-      // the step in the door's own frame: how much of it heads through the wall
-      const [ax, az] = toRoomLocal(door, x + dx, z + dz)
-      const through = Math.abs(ax - lx) / len
-      if (through > 0.2 || lx > FACE_X - 0.2) {
-        const pull = Math.min(1, len * 1.6) * Math.min(1, Math.abs(lz)) * 0.5
-        const [tx, tz] = toWorld(door, ax, az - Math.sign(lz) * pull)
-        dx = tx - x
-        dz = tz - z
-      }
-    }
   }
   if (isFree(x + dx, z + dz, openOf)) { out[0] = x + dx; out[1] = z + dz; return true }
   if (isFree(x + dx, z, openOf)) { out[0] = x + dx; out[1] = z; return true }

@@ -95,6 +95,27 @@ test('a released drag remains consumed until a fresh click gesture begins',()=>{
   assert.equal(look.dragging,false,'a new intentional click works immediately')
 })
 
+test('fallback look follows the last mouse sample exactly and does not coast after release',()=>{
+  input.lookDragStart({pointerId:1,clientX:100,clientY:400})
+  lookMove({pointerId:1,clientX:900,clientY:300,buttons:1})
+  assert.ok(Math.abs(look.yaw + 1) < 1e-12)
+  assert.ok(Math.abs(look.pitch - .125) < 1e-12)
+  input.lookDragEnd()
+  const stopped=[look.yaw,look.pitch]
+  for(let i=0;i<300;i++)stepLook(i%2?1/30:1/120)
+  assert.deepEqual([look.yaw,look.pitch],stopped)
+})
+
+test('freeing the cursor ends a fallback gesture before look is resumed',()=>{
+  input.lookDragStart({pointerId:1,clientX:100,clientY:400})
+  lookMove({pointerId:1,clientX:300,clientY:400,buttons:1})
+  input.setCursorFree(true)
+  const stopped=look.yaw
+  input.setCursorFree(false)
+  lookMove({pointerId:1,clientX:1000,clientY:400,buttons:1})
+  assert.equal(look.yaw,stopped,'resuming look cannot revive a gesture from before Escape')
+})
+
 test('walking direction remains the horizontal centre-camera direction at every yaw and pitch', () => {
   for (const yaw of [-9, -Math.PI, -.5, 0, 1, 8]) for (const pitch of [-1.5, 0, 1.5]) {
     setLook(yaw, pitch)
