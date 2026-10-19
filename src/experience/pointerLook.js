@@ -1,7 +1,7 @@
 // Browser capture is acknowledged by pointerlockchange, never guessed from
 // a request. Its lifetime belongs to the Canvas, not a room/phase effect.
 export function createPointerLook(element, { document: doc, isAllowed, onChange, onUnavailable }) {
-  let active=false, pending=false, unacknowledged=false, blocked=false, disposed=false, releaseReason=null, generation=0
+  let active=false, pending=false, unacknowledged=false, blocked=false, disposed=false, releaseReason=null, generation=0,recapture=false
   const detach=()=>{
     doc.removeEventListener('pointerlockchange',change)
     doc.removeEventListener('pointerlockerror',error)
@@ -21,10 +21,13 @@ export function createPointerLook(element, { document: doc, isAllowed, onChange,
       pending=false
       if(!active){active=true;onChange(true,'capture')}
     }else{
+      const resume=recapture&&!disposed&&isAllowed()
+      recapture=false
       const wasActive=active;active=false;pending=false
       if(wasActive||releaseReason)onChange(false,releaseReason||(wasActive?'escape':'idle'))
       releaseReason=null
       if(disposed)detach()
+      else if(resume){blocked=false;control.request()}
     }
   }
   doc.addEventListener('pointerlockchange',change)
@@ -32,6 +35,9 @@ export function createPointerLook(element, { document: doc, isAllowed, onChange,
   const control={
     request(){
       if(disposed||!isAllowed())return Promise.resolve(false)
+      // An earlier click can still be waiting for the browser's exit event.
+      // Retain the newest click instead of mistaking that old lock for a grant.
+      if(blocked&&doc.pointerLockElement===element){recapture=true;return Promise.resolve(false)}
       if(doc.pointerLockElement===element){change();return Promise.resolve(true)}
       if(pending)return Promise.resolve(false)
       if(!element.requestPointerLock){onUnavailable(new Error('Pointer Lock unavailable'));return Promise.resolve(false)}
@@ -57,7 +63,7 @@ export function createPointerLook(element, { document: doc, isAllowed, onChange,
       })
     },
     release(reason='ui'){
-      generation++;blocked=true;pending=false;releaseReason=reason;active=false
+      generation++;blocked=true;pending=false;recapture=false;releaseReason=reason;active=false
       onChange(false,reason)
       if(doc.pointerLockElement===element)doc.exitPointerLock()
     },

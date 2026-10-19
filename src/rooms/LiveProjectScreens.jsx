@@ -1,8 +1,10 @@
 import {createContext,useCallback,useContext,useEffect,useMemo,useRef,useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {addAfterEffect,useFrame,useThree} from '@react-three/fiber'
 import * as THREE from 'three'
 import {useJourney} from '../experience/JourneyContext.jsx'
-import {look,lookCapture,setCursorFree,stopFallbackLook} from '../experience/freeLook.js'
+import {look,lookCapture,stopFallbackLook} from '../experience/freeLook.js'
+import {claimSceneClick,followLink,linkAtPoint} from './linkTargets.js'
 import {floorReflection} from '../experience/floorReflection.js'
 import {canShowWebsite,websiteContainsPoint,websiteHitClip,websiteProjection,websiteTransform} from './liveScreenGeometry.js'
 import {createScreenSession} from './liveScreenSession.js'
@@ -15,6 +17,7 @@ const Context=createContext(null)
 export const useLiveScreens=()=>useContext(Context)
 
 export function LiveScreensProvider({children,preloadReady=true}){
+  const navigate=useNavigate(),reviewLink=useRef(()=>null)
   const entries=useRef(new Map()),controls=useRef(()=>{}),suppressClick=useRef(false)
   const align=useRef(()=>{}),focus=useMemo(createScreenFocus,[])
   const session=useMemo(createScreenSession,[]),[active,setActive]=useState(null)
@@ -49,40 +52,61 @@ export function LiveScreensProvider({children,preloadReady=true}){
     entries.current.get(id).hitReady=false
     resumeCaptured.current=look.locked
     lookCapture.release?.('review')
-    stopFallbackLook();look.locked=false;look.targetYaw=look.yaw;look.targetPitch=look.pitch;look.vYaw=look.vPitch=0
+    stopFallbackLook();look.locked=false
+    if(!look.cursorFree){look.targetYaw=look.yaw;look.targetPitch=look.pitch}
+    look.vYaw=look.vPitch=0
     document.body.classList.remove('looking','look-aim','link-hover')
     align.current(id);controls.current(true);setActive(id)
+    return true
   },[activeDoor,phase,navigationOpen,session,focus])
   useEffect(()=>{if(activeDoor!=='work'||phase!=='room'||navigationOpen)close()},[activeDoor,phase,navigationOpen,close])
   useEffect(()=>{
+    let linkPress=null
     const down=e=>{
       if(e.button!==0)return
+      linkPress=null
       if(!session.active){suppressClick.current=false;return}
       if(e.target.closest?.('.live-project-screen'))return
       const entry=entries.current.get(session.active)
       if((!entry?.hitReady||e.target.tagName==='CANVAS')&&entry?.containsPoint?.(e.clientX,e.clientY))return
+      // Links and native controls own the release click. Dismissing on down
+      // would swallow navigation or turn a cancelled drag into a page visit.
+      if(e.target.closest?.('a,button,input,select,textarea,[role="button"]'))return
+      const route=reviewLink.current(e)
+      if(route){linkPress={route,x:e.clientX,y:e.clientY,id:e.pointerId,moved:0};return}
       suppressClick.current=true;close({gesture:true});e.preventDefault();e.stopImmediatePropagation()
     }
     const click=e=>{
-      if(!suppressClick.current)return
-      suppressClick.current=false;e.preventDefault();e.stopImmediatePropagation()
+      if(suppressClick.current){
+        suppressClick.current=false;e.preventDefault();e.stopImmediatePropagation();return
+      }
+      if(!session.active||e.target.closest?.('.live-project-screen'))return
+      if(e.target.closest?.('a,button,input,select,textarea,[role="button"]')){close();return}
+      const route=reviewLink.current(e)
+      if(route||linkPress){
+        const press=linkPress;linkPress=null
+        claimSceneClick(e);e.preventDefault();e.stopImmediatePropagation()
+        if(press&&route===press.route&&press.moved<=4&&Math.hypot(e.clientX-press.x,e.clientY-press.y)<=4){close();followLink(route,navigate)}
+      }
     }
-    const cancel=()=>{suppressClick.current=false}
+    const move=e=>{if(linkPress&&e.pointerId===linkPress.id)linkPress.moved=Math.max(linkPress.moved,Math.hypot(e.clientX-linkPress.x,e.clientY-linkPress.y))}
+    const cancel=()=>{suppressClick.current=false;linkPress=null}
     const wheel=e=>{
       // Native iframe wheel stays in its document; outside wheel never walks.
       if(session.active){e.preventDefault();e.stopImmediatePropagation()}
     }
-    const key=e=>{if(session.active&&e.key==='Escape'){close();setCursorFree(true);e.preventDefault();e.stopImmediatePropagation()}}
     document.addEventListener('pointerdown',down,true);document.addEventListener('click',click,true)
     document.addEventListener('pointercancel',cancel,true)
-    window.addEventListener('wheel',wheel,{capture:true,passive:false});window.addEventListener('keydown',key,true)
+    document.addEventListener('pointermove',move,true)
+    window.addEventListener('wheel',wheel,{capture:true,passive:false})
     return()=>{
       document.removeEventListener('pointerdown',down,true);document.removeEventListener('click',click,true)
       document.removeEventListener('pointercancel',cancel,true)
-      window.removeEventListener('wheel',wheel,true);window.removeEventListener('keydown',key,true)
+      document.removeEventListener('pointermove',move,true)
+      window.removeEventListener('wheel',wheel,true)
     }
-  },[close,session])
-  const value=useMemo(()=>({entries,controls,align,focus,session,readiness,preloadLayer,prepared,active,activate,close}),[session,focus,readiness,active,activate,close])
+  },[close,session,navigate])
+  const value=useMemo(()=>({entries,controls,align,focus,session,readiness,preloadLayer,prepared,reviewLink,active,activate,close}),[session,focus,readiness,active,activate,close])
   return <Context.Provider value={value}><div className="live-screen-layer" aria-label="Work Room live websites" ref={preloadLayer}/>{children}</Context.Provider>
 }
 
@@ -101,11 +125,15 @@ export function LiveProjectSurface({project,width,height,position}){
 }
 
 export function LiveScreenLayer(){
-  const {gl,size,camera}=useThree(),{entries,controls,align,focus,session,preloadLayer:layer,prepared,active,close}=useLiveScreens()
+  const {gl,size,camera,scene}=useThree(),{entries,controls,align,focus,session,preloadLayer:layer,prepared,reviewLink,active,close}=useLiveScreens()
   const {activeDoor,phase}=useJourney()
   useEffect(()=>{
     const canvas=gl.domElement,root=canvas.closest('.experience-root'),wrapper=canvas.closest('.experience-canvas')
     const canvasPointer=canvas.style.pointerEvents,wrapperPointer=wrapper?.style.pointerEvents
+    reviewLink.current=e=>{
+      const rect=canvas.getBoundingClientRect()
+      return linkAtPoint(scene,camera,e.clientX-rect.left,e.clientY-rect.top,rect.width,rect.height)
+    }
     controls.current=on=>{
       root.toggleAttribute('data-live-review',on)
       canvas.style.pointerEvents=on?'none':canvasPointer
@@ -121,8 +149,9 @@ export function LiveScreenLayer(){
     return()=>{
       for(const entry of entries.current.values())entry.dispose?.()
       controls.current(false);controls.current=()=>{}
+      reviewLink.current=()=>null
     }
-  },[gl,entries,controls,session,focus])
+  },[gl,entries,controls,session,focus,scene,camera,reviewLink])
   useEffect(()=>{
     if(!active)return
     let pose=null,projection=null

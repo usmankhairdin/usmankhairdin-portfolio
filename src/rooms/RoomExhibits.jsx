@@ -12,7 +12,7 @@ import { ON_DARK, ON_LIGHT, body, eyebrow, paintGraphic, titleRuns, traceLetteri
 import { roomLit, useRoomTextures } from './referenceRooms.js'
 import { createFacadeGlazingGeometry } from '../experience/terraceDoor.js'
 import MasterTerraceDoor from './MasterTerraceDoor.jsx'
-import { followLink, inFront, linkState, linkTargets, pointLink, registerLink } from './linkTargets.js'
+import { claimSceneClick, followLink, inFront, linkState, linkTargets, pointLink, registerLink } from './linkTargets.js'
 
 /*
  * The portfolio's content, built into the rooms rather than laid over them.
@@ -68,6 +68,7 @@ function useLinkTarget(ref, route, material, glow = 1.18) {
     },
     onClick: (e) => {
       if (look.dragging || !front(e)) return
+      claimSceneClick(e)
       e.stopPropagation()
       followLink(route, navigate)
     },
@@ -300,7 +301,7 @@ function LedScreen({ url, width, height, position, rotation, project }) {
   // Screens review content; the separate plaque below owns navigation.
   const review=e=>{
     if(look.dragging||!project?.embedUrl||!inFront(e,screenRef.current))return
-    e.stopPropagation();activate(project.slug)
+    if(activate(project.slug)){claimSceneClick(e);e.stopPropagation()}
   }
   const handlers=project?.embedUrl?{onClick:review,onPointerOut:()=>session.leave(project.slug)}:{}
   const W = width + LED.bezel * 2

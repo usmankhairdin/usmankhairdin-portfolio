@@ -129,6 +129,14 @@ export function locate(x, z) {
   return null
 }
 
+// Orientation only: corridor ends, or the four room/terrace axes. Keeping
+// the nearest equivalent turn also avoids a spin after several revolutions.
+export function normalWalkYaw(x,z,yaw){
+  const spacing=isOutside(z,x)||locate(x,z)?Math.PI/2:Math.PI
+  const angle=Number.isFinite(yaw)?yaw:0
+  return Math.round(angle/spacing)*spacing
+}
+
 /**
  * Moves from (x, z) by (dx, dz), sliding only when a physical obstacle blocks
  * that step. Clear doorways never pull the visitor away from their chosen heading.

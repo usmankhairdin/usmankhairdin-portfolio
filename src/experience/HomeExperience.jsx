@@ -1,5 +1,5 @@
 ﻿import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Suspense, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { events as pointerEvents } from '@react-three/fiber'
 import * as THREE from 'three'
 import Header from '../components/Header.jsx'
@@ -17,16 +17,7 @@ import { markSceneCompiled } from './probeEnv.js'
 import { exteriorSign } from './CorridorExterior.jsx'
 import { compileScenePrograms, deferSceneWarmup } from './sceneWarmup.js'
 import { LiveScreensProvider } from '../rooms/LiveProjectScreens.jsx'
-import { getLookMode, look, lookCapture, setCursorFree, subscribeCursorMode } from './freeLook.js'
-
-function LookModeControl() {
-  const mode = useSyncExternalStore(subscribeCursorMode, getLookMode, getLookMode)
-  const { navigationOpen } = useJourney()
-  if (navigationOpen) return null
-  return <button className="look-mode-switch" onClick={() => { if (mode === 'look') setCursorFree(true); else { setCursorFree(false); lookCapture.request?.() } }} aria-label={mode === 'look' ? 'Free the cursor' : 'Start mouse look'}>
-    <kbd>{mode === 'look' ? 'Esc' : mode === 'drag' ? 'Drag' : 'Click'}</kbd> {mode === 'look' ? 'Free cursor' : mode === 'free' ? 'Resume look' : 'Look around'}
-  </button>
-}
+import { look, setCursorFree } from './freeLook.js'
 
 function corridorEvents(store) {
   const manager = pointerEvents(store)
@@ -100,17 +91,11 @@ function ExperienceHud() {
  * the building's front, its door, the UKD mark over the door, the Web Experience sign on the
  * plaza (CorridorExterior). Over it there are only two invisible controls, kept exactly over
  * the door and the sign by the camera (useCorridorCamera), so a click, tap or Enter key on
- * the sign opens Web Experience; clicking the door only enables mouse look.
+ * the sign opens Web Experience; clicking the door changes walking mode.
  * The visitor crosses the doorway using the wheel, with no scripted entrance walk.
  */
 function ExteriorGate() {
   const [doorHover, setDoorHover] = useState(false)
-
-  const enableLook = useCallback(() => {
-    setDoorHover(false)
-    setCursorFree(false)
-    lookCapture.request?.()
-  }, [])
 
   // the sign on the plaza brightens while it is pointed at
   const signHover = (on) => { exteriorSign.hover = on ? 1 : 0 }
@@ -124,13 +109,13 @@ function ExteriorGate() {
         className={`entry-door-hotspot${doorHover ? ' is-hovered' : ''}`}
         data-cursor="enter"
         data-cursor-live=""
-        aria-label="Enable mouse look"
-        onClick={enableLook}
+        aria-label="Switch walking mode"
         onPointerEnter={(e) => { if (e.pointerType === 'mouse') setDoorHover(true) }}
         onPointerLeave={() => setDoorHover(false)}
       />
       <Link
         to={WEB_HOME}
+        draggable={false}
         className="exterior-sign-hotspot"
         data-cursor="open"
         data-cursor-live=""
@@ -162,7 +147,7 @@ function ExperienceShell() {
   // The whole page is the scene now: the wheel always belongs to it, never to Web smooth scroll.
   useWebScrollSuspension(true)
   // A fresh arrival meets a closed door.
-  useEffect(() => { if (experiencePhase === 'gated') setEntranceOpen(0) }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (experiencePhase === 'gated') {setEntranceOpen(0);setCursorFree(true)} }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Keep boot through real scene readiness; unrelated websites load afterward.
   useEffect(claimBootLoader, [])
@@ -182,7 +167,6 @@ function ExperienceShell() {
     </Canvas></LiveScreensProvider>
 
     <div className="look-reticle" aria-hidden="true" />
-    <LookModeControl />
     {experiencePhase === 'inside' && <ExperienceHud />}
 
     {gateVisible && <ExteriorGate />}

@@ -9,6 +9,9 @@ import * as THREE from 'three'
 
 export const linkTargets = new Map()   // mesh -> route
 export const linkState = { hovered: null, aimed: null, save: null, left: false }
+const claimedClicks=new WeakSet()
+export const claimSceneClick=event=>claimedClicks.add(event.nativeEvent||event)
+export const sceneClickClaimed=event=>claimedClicks.has(event.nativeEvent||event)
 
 const PAGES = {
   '/about/': 'the About page',
@@ -38,6 +41,17 @@ export function registerLink(mesh, route) {
 
 const occluder = new THREE.Raycaster()
 const shown = (o) => { for (; o; o = o.parent) if (!o.visible) return false; return true }
+
+// An LED review disables canvas input. Resolve visible wall links beneath an
+// outside click so following one never needs a separate review-dismiss click.
+export function linkAtPoint(scene,camera,x,y,width,height){
+  if(width<=0||height<=0||x<0||y<0||x>width||y>height)return null
+  scene.updateMatrixWorld(true);camera.updateMatrixWorld()
+  occluder.near=0;occluder.far=Infinity
+  occluder.setFromCamera(new THREE.Vector2(x/width*2-1,1-y/height*2),camera)
+  const hit=occluder.intersectObjects(scene.children,true).find(h=>shown(h.object))
+  return hit?linkTargets.get(hit.object)||null:null
+}
 /**
  * True when a pointer event's ray meets `mesh` before anything else in the scene - so a link
  * behind a wall, a door or another room never answers.

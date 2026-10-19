@@ -2,20 +2,25 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { afterEach, test } from 'node:test'
 import * as input from '../src/experience/freeLook.js'
+import * as links from '../src/rooms/linkTargets.js'
 
 // Exercise the camera's actual event wiring without requiring WebGL or a
 // browser's optional Pointer Lock implementation.
 const source = readFileSync(new URL('../src/experience/useCorridorCamera.js', import.meta.url), 'utf8')
 const start = source.indexOf('    const canvas = gl.domElement', source.indexOf('// Desktop uses relative mouse-look'))
 const end = source.indexOf('\n  }, [gl, walking, controlsEnabled', start)
-const wire = new Function('input', 'window', 'document', 'gl', 'context', `
+const buildWire = new Function('input', 'window', 'document', 'gl', 'context', 'links', `
   const {look,lookCapture,lookDragEnd,lookDragStart,lookMove,pauseAutomaticLook,setRelativeLook,setCursorFree,ownsLookPointer}=input
   const walking=true,controlsEnabled=true,liveScreens=context?.screens||null,navigationOpen=false,enabled=true
   const pointerPolicy={current:context?.policy||{}}
+  const straightening={current:context?.straightening||false}
   const fine=()=>true,cancelAutomaticTravel=()=>{},pointLink=()=>{},follow={current:{on:false}}
-  const centerHotspot=()=>null
+  const centerHotspot=()=>context?.hotspot||null
+  const {claimSceneClick,sceneClickClaimed}=links
+  const toggleWalkingMode=()=>context?.toggle?.()
   ${source.slice(start,end)}
 `)
+const wire=(input,win,doc,gl,context)=>buildWire(input,win,doc,gl,context,links)
 
 function surface() {
   const handlers = new Map()
@@ -75,13 +80,13 @@ test('window blur ends a held fallback look gesture', () => {
   } finally { cleanup() }
 })
 
-test('starting fallback look over the Web sign prevents the browser dragging its link', () => {
+test('a Web sign keeps its native click target instead of capturing it on the canvas', () => {
   const canvas=surface(),win=surface(),sign=surface()
   sign.closest=()=>sign
   const cleanup=wire(input,win,{body:surface(),pointerLockElement:null}, {domElement:canvas})
   try {
     const down=win.send('pointerdown',{target:sign})
-    assert.equal(down.defaultPrevented,true,'native link drag would cancel the mouse-look pointer mid-turn')
+    assert.notEqual(down.defaultPrevented,true,'the real link must keep its first click')
     win.send('pointermove',{target:canvas,clientX:1100})
     assert.ok(Math.abs(input.look.yaw+1.25)<1e-10)
   } finally { cleanup() }
@@ -101,15 +106,79 @@ test('a free-cursor Work LED click reaches the screen before any attempt to reca
   }finally{cleanup()}
 })
 
-test('the first exterior click still only enables look without activating a scene target',()=>{
+test('a native Web Experience banner receives its first click without a mode change',()=>{
   const canvas=surface(),win=surface()
-  const cleanup=wire(input,win,{body:surface(),pointerLockElement:null,querySelectorAll:()=>[]},{domElement:canvas},{policy:{activeDoor:null,phase:'corridor'}})
-  let requests=0,activations=0
+  const sign=surface();sign.closest=selector=>selector.includes('exterior-sign')||selector.includes('a,')?sign:null
+  let requests=0,activations=0,toggles=0
+  const cleanup=wire(input,win,{body:surface(),pointerLockElement:null,querySelectorAll:()=>[]},{domElement:canvas},{toggle:()=>toggles++},links)
   input.lookCapture.request=()=>requests++
   input.setCursorFree(true)
   try{
-    win.send('pointerdown',{target:canvas});win.send('pointerup',{target:canvas,buttons:0})
-    win.send('click',{target:canvas,buttons:0,isTrusted:true,onTarget(){activations++}})
-    assert.equal(requests,1);assert.equal(activations,0)
+    win.send('pointerdown',{target:sign});win.send('pointerup',{target:sign,buttons:0})
+    win.send('click',{target:sign,buttons:0,isTrusted:true,onTarget(){activations++}})
+    assert.equal(activations,1);assert.equal(requests,0);assert.equal(toggles,0)
+  }finally{cleanup()}
+})
+
+test('a click anywhere on a non-link scene surface toggles once in either mode',()=>{
+  for(const normal of [true,false]){
+    const canvas=surface(),win=surface();let toggles=0
+    const cleanup=wire(input,win,{body:surface(),pointerLockElement:null,querySelectorAll:()=>[]},{domElement:canvas},{toggle:()=>toggles++},links)
+    input.setCursorFree(normal);input.setCaptureUnavailable(true)
+    try{
+      win.send('pointerdown',{target:canvas});win.send('pointerup',{target:canvas,buttons:0})
+      win.send('click',{target:canvas,buttons:0,isTrusted:true})
+      assert.equal(toggles,1,'walls, floors and other non-link geometry all use the same click')
+    }finally{cleanup()}
+  }
+})
+
+test('a handled room link never toggles either walking mode after it navigates',()=>{
+  for(const normal of [true,false]){
+    const canvas=surface(),win=surface();let toggles=0,visits=0
+    const cleanup=wire(input,win,{body:surface(),pointerLockElement:null,querySelectorAll:()=>[]},{domElement:canvas},{toggle:()=>toggles++})
+    input.setCursorFree(normal);input.setCaptureUnavailable(true)
+    try{
+      win.send('click',{target:canvas,buttons:0,isTrusted:true,onTarget(event){links.claimSceneClick({nativeEvent:event});visits++}})
+      assert.equal(visits,1);assert.equal(toggles,0)
+    }finally{cleanup()}
+  }
+})
+
+test('a captured centre-dot Web banner navigates once without requiring Escape',()=>{
+  const canvas=surface(),win=surface();let visits=0,toggles=0
+  const sign={getBoundingClientRect(){return{}},matches:selector=>selector==='.exterior-sign-hotspot',click(){visits++}}
+  const cleanup=wire(input,win,{body:surface(),pointerLockElement:canvas,querySelectorAll:()=>[sign]},{domElement:canvas},{hotspot:sign,toggle:()=>toggles++})
+  input.setCursorFree(false);input.setRelativeLook(true)
+  try{
+    win.send('click',{target:canvas,buttons:0,isTrusted:true})
+    assert.equal(visits,1);assert.equal(toggles,0)
+  }finally{cleanup()}
+})
+
+test('menu/review input cleanup and window blur do not erase an unfinished normal heading',()=>{
+  const canvas=surface(),win=surface()
+  const cleanup=wire(input,win,{body:surface(),pointerLockElement:null},{domElement:canvas},{straightening:true})
+  input.setCursorFree(true);input.setLook(.8,.2);input.look.targetYaw=0;input.look.targetPitch=0
+  win.send('blur')
+  assert.equal(input.look.targetYaw,0,'blur must not lock normal walk to a diagonal intermediate angle')
+  cleanup()
+  assert.equal(input.look.targetYaw,0,'a pause must retain the selected straight direction')
+})
+
+test('dragging in normal mode cannot turn its release into a mode-toggle click',()=>{
+  const canvas=surface(),win=surface();let toggles=0
+  const cleanup=wire(input,win,{body:surface(),pointerLockElement:null},{domElement:canvas},{toggle:()=>toggles++})
+  input.setCursorFree(true)
+  try{
+    win.send('pointerdown',{target:canvas,clientX:200})
+    win.send('pointermove',{target:canvas,clientX:900})
+    win.send('pointerup',{target:canvas,clientX:900,buttons:0})
+    win.send('click',{target:canvas,clientX:900,buttons:0,isTrusted:true})
+    assert.equal(toggles,0,'a drag is not a click, even when mouse-look is paused')
+    win.send('pointerdown',{target:canvas,clientX:900})
+    win.send('pointerup',{target:canvas,clientX:900,buttons:0})
+    win.send('click',{target:canvas,clientX:900,buttons:0,isTrusted:true})
+    assert.equal(toggles,1,'the next deliberate click must work immediately')
   }finally{cleanup()}
 })

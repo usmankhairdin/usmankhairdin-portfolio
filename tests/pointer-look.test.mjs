@@ -77,3 +77,26 @@ test('a cancelled legacy request is still guarded if the canvas unmounts before 
   f.grant()
   assert.equal(f.doc.pointerLockElement,null)
 })
+
+test('a rapid return to free look waits for the pending exit before recapturing',async()=>{
+  const doc=new EventTarget(),changes=[];let requests=0
+  const canvas={requestPointerLock(){requests++;doc.pointerLockElement=canvas;doc.dispatchEvent(new Event('pointerlockchange'));return Promise.resolve()}}
+  doc.pointerLockElement=null;doc.exitPointerLock=()=>{}
+  const control=createPointerLook(canvas,{document:doc,isAllowed:()=>true,onChange:(...state)=>changes.push(state),onUnavailable:()=>{}})
+  await control.request();control.release('cursor');control.request()
+  doc.pointerLockElement=null;doc.dispatchEvent(new Event('pointerlockchange'));await Promise.resolve()
+  assert.equal(requests,2,'the next click must not be lost while the previous exit is awaiting acknowledgement')
+  assert.equal(doc.pointerLockElement,canvas);assert.equal(changes.at(-1)[0],true)
+  control.dispose()
+})
+
+test('a newer normal-mode click cancels a queued recapture before the exit acknowledgement',async()=>{
+  const doc=new EventTarget();let requests=0
+  const canvas={requestPointerLock(){requests++;doc.pointerLockElement=canvas;doc.dispatchEvent(new Event('pointerlockchange'));return Promise.resolve()}}
+  doc.pointerLockElement=null;doc.exitPointerLock=()=>{}
+  const control=createPointerLook(canvas,{document:doc,isAllowed:()=>true,onChange:()=>{},onUnavailable:()=>{}})
+  await control.request();control.release('cursor');control.request();control.release('cursor')
+  doc.pointerLockElement=null;doc.dispatchEvent(new Event('pointerlockchange'));await Promise.resolve()
+  assert.equal(requests,1);assert.equal(doc.pointerLockElement,null)
+  control.dispose()
+})
