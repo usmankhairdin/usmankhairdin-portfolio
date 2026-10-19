@@ -100,3 +100,52 @@ test('a newer normal-mode click cancels a queued recapture before the exit ackno
   assert.equal(requests,1);assert.equal(doc.pointerLockElement,null)
   control.dispose()
 })
+
+test('native look requests raw device motion before any platform acceleration',async()=>{
+  const f=fixture();let options
+  f.canvas.requestPointerLock=value=>{options=value;return Promise.resolve()}
+  await f.control.request()
+  assert.deepEqual(options,{unadjustedMovement:true})
+  f.control.dispose()
+})
+
+function rawFixture(failure='NotSupportedError'){
+  const doc=new EventTarget(),options=[],changes=[],errors=[]
+  let rejectRaw
+  const canvas={requestPointerLock(value){
+    options.push(value)
+    if(value?.unadjustedMovement)return new Promise((_,reject)=>{rejectRaw=reject})
+    doc.pointerLockElement=canvas;doc.dispatchEvent(new Event('pointerlockchange'));return Promise.resolve()
+  }}
+  doc.pointerLockElement=null
+  doc.exitPointerLock=()=>{doc.pointerLockElement=null;doc.dispatchEvent(new Event('pointerlockchange'))}
+  const control=createPointerLook(canvas,{document:doc,isAllowed:()=>true,onChange:(...state)=>changes.push(state),onUnavailable:e=>errors.push(e)})
+  return {doc,canvas,control,options,changes,errors,reject(){doc.dispatchEvent(new Event('pointerlockerror'));rejectRaw(new DOMException('Raw device motion unavailable',failure))}}
+}
+
+test('unsupported raw motion retries regular capture on the same activation without exposing drag mode',async()=>{
+  const f=rawFixture(),done=f.control.request()
+  assert.deepEqual(f.options,[{unadjustedMovement:true}])
+  f.reject();assert.equal(await done,true)
+  assert.deepEqual(f.options,[{unadjustedMovement:true},undefined])
+  assert.equal(f.errors.length,0)
+  assert.deepEqual(f.changes,[[true,'capture']])
+  f.control.dispose()
+})
+
+test('normal-mode release while raw capture is pending forbids a fallback recapture',async()=>{
+  const f=rawFixture(),done=f.control.request()
+  assert.deepEqual(f.options,[{unadjustedMovement:true}])
+  f.control.release('cursor');f.reject();assert.equal(await done,false)
+  assert.equal(f.options.length,1);assert.equal(f.doc.pointerLockElement,null);assert.equal(f.errors.length,0)
+  f.control.dispose()
+})
+
+test('permission denial is reported once and never retried as a raw-support failure',async()=>{
+  const f=rawFixture('NotAllowedError'),done=f.control.request()
+  assert.deepEqual(f.options,[{unadjustedMovement:true}])
+  f.reject();assert.equal(await done,false)
+  assert.equal(f.options.length,1);assert.equal(f.errors.length,1)
+  assert.equal(f.errors[0].name,'NotAllowedError')
+  f.control.dispose()
+})
