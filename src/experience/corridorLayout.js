@@ -16,8 +16,22 @@ export const WALKER_RADIUS = .38
 // The visitor arrives standing on the terrace, facing the door, and can walk all over it.
 export const FACADE_Z = START_Z + 0.9         // the front's outer face
 export const PLAZA_STAND_Z = START_Z + 6.4    // where the visitor arrives
-// One envelope for the visible shell, guarded roof and collision footprint.
-export const BUILDING = Object.freeze({ half: 30, top: 14, frontZ: FACADE_Z, backZ: END_Z - 17.9 })
+// The last room's glass is the end of the interior walk, shared with its terrace door.
+export const LAST_ROOM = Object.freeze({ depth: 21.27, endZ: END_Z + 3.5 - 21.27 })
+export const INTERIOR_LENGTH = START_Z - LAST_ROOM.endZ
+// Shorten the flanks without moving the occupied master room. Its central
+// glazed bay keeps its rear envelope, with short returns to the flanks.
+export const BUILDING = Object.freeze({ half: 30, top: 14, frontZ: FACADE_Z,
+  backZ: END_Z - 17.9, rearHalf: 12, sideBackZ: FACADE_Z - INTERIOR_LENGTH })
+export function buildingSideRuns() {
+  return [-1, 1].map(side => ({ x: side * BUILDING.half,
+    z: (FACADE_Z + BUILDING.sideBackZ) / 2, length: INTERIOR_LENGTH,
+    rotation: side * Math.PI / 2 }))
+}
+export const BUILDING_FOOTPRINT = Object.freeze([
+  Object.freeze([-BUILDING.half, BUILDING.half, BUILDING.sideBackZ, FACADE_Z]),
+  Object.freeze([-BUILDING.rearHalf, BUILDING.rearHalf, BUILDING.backZ, BUILDING.sideBackZ]),
+])
 // Keep the side walks close to the gallery envelope. The former deep front
 // forecourt and rear apron made each side feel like a second, longer street.
 export const TERRACE = Object.freeze({ half: 42, edgeZ: FACADE_Z + 8.4, backZ: END_Z - 38 })

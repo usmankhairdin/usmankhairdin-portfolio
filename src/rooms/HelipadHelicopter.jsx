@@ -159,7 +159,7 @@ export default function HelipadHelicopter() {
     const fixtures = HELIPAD_FLOODS.map(f => {
       const fixture = new THREE.Group()
       fixture.name = 'Roof helipad wall floodlight'
-      const mount = new THREE.Vector3(f.position[0],f.position[1]-.14,BUILDING.backZ-.02)
+      const mount = new THREE.Vector3(f.position[0],f.position[1]-.14,BUILDING.sideBackZ-.02)
       const anchor = new THREE.Vector3(f.position[0],f.position[1]-.1,f.position[2])
       const plate = new THREE.Mesh(fixtureGeometry,fixtureMaterial)
       plate.position.copy(mount)

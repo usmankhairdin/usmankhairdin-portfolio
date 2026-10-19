@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import { paintGraphic, useFontsReady } from '../rooms/roomGraphics.js'
-import { BUILDING, FACADE_Z, HELIPAD, SIGN, START_Z, TERRACE, TERRACE_LAMPS } from './corridorLayout.js'
+import { BUILDING, buildingSideRuns, FACADE_Z, HELIPAD, SIGN, START_Z, TERRACE, TERRACE_LAMPS } from './corridorLayout.js'
 import { ENTRANCE_OPENING } from './EntranceDoor.jsx'
 import { floorReflection } from './floorReflection.js'
 import { metricBox, metricPlane } from './corridorMaterials.js'
@@ -276,20 +276,24 @@ function buildGeometry() {
   const rearSideW = FRONT.half - CONTACT_GLASS.half
   const rearHeadH = FRONT.top - CONTACT_GLASS.top
   const sillH = CONTACT_GLASS.bottom - FLOOR_Y
+  const sides = buildingSideRuns()
+  const sideBack = FRONT.sideBackZ
+  const returnDepth = sideBack - BACK_Z
   // the stone: either side of the reveal, over it, and the building's flanks
   const stone = mergeGeometries([
     at(metricBox(sideW, H, DEPTH), -(REVEAL.w / 2 + sideW / 2), FLOOR_Y + H / 2, midZ),
     at(metricBox(sideW, H, DEPTH), REVEAL.w / 2 + sideW / 2, FLOOR_Y + H / 2, midZ),
     at(metricBox(REVEAL.w + 0.02, headH, DEPTH), 0, FLOOR_Y + REVEAL.h + headH / 2, midZ),
-    at(metricPlane(FACADE_Z - BACK_Z, H).rotateY(-Math.PI / 2), -FRONT.half, FLOOR_Y + H / 2, (FACADE_Z + BACK_Z) / 2),
-    at(metricPlane(FACADE_Z - BACK_Z, H).rotateY(Math.PI / 2), FRONT.half, FLOOR_Y + H / 2, (FACADE_Z + BACK_Z) / 2),
+    ...sides.map(run => at(metricPlane(run.length, H).rotateY(run.rotation), run.x, FLOOR_Y + H / 2, run.z)),
     // The Contact room's original glass fills this opening; no second pane or wall covers it.
-    ...[-1, 1].map(side => at(metricPlane(rearSideW, H).rotateY(Math.PI), side * (CONTACT_GLASS.half + rearSideW / 2), FLOOR_Y + H / 2, BACK_Z)),
+    ...[-1, 1].map(side => at(metricPlane(rearSideW, H).rotateY(Math.PI), side * (CONTACT_GLASS.half + rearSideW / 2), FLOOR_Y + H / 2, sideBack)),
+    ...[-1, 1].map(side => at(metricPlane(returnDepth, H).rotateY(side * Math.PI / 2), side * CONTACT_GLASS.half, FLOOR_Y + H / 2, (sideBack + BACK_Z) / 2)),
     at(metricPlane(CONTACT_GLASS.half * 2, rearHeadH).rotateY(Math.PI), 0, CONTACT_GLASS.top + rearHeadH / 2, BACK_Z),
     ...[[-CONTACT_GLASS.half,MASTER_TERRACE_DOOR.x-MASTER_TERRACE_DOOR.width/2],
       [MASTER_TERRACE_DOOR.x+MASTER_TERRACE_DOOR.width/2,CONTACT_GLASS.half]]
       .map(([x0,x1])=>at(metricPlane(x1-x0,sillH).rotateY(Math.PI),(x0+x1)/2,FLOOR_Y+sillH/2,BACK_Z)),
-    at(metricPlane(FRONT.half * 2, FACADE_Z - BACK_Z).rotateX(-Math.PI / 2), 0, FRONT.top - 0.012, (FACADE_Z + BACK_Z) / 2),
+    at(metricPlane(FRONT.half * 2, sides[0].length).rotateX(-Math.PI / 2), 0, FRONT.top - 0.012, sides[0].z),
+    at(metricPlane(CONTACT_GLASS.half * 2, returnDepth).rotateX(-Math.PI / 2), 0, FRONT.top - 0.012, (sideBack + BACK_Z) / 2),
   ])
   // bronze: the reveal's lining and its back round the door, the fins, the coping
   const lining = 0.03
@@ -306,8 +310,10 @@ function buildGeometry() {
     at(new THREE.BoxGeometry(0.06, REVEAL.h + 0.06, 0.03), REVEAL.w / 2 + 0.03, FLOOR_Y + (REVEAL.h + 0.06) / 2, FACADE_Z + 0.015),
     at(new THREE.BoxGeometry(REVEAL.w + 0.12, 0.06, 0.03), 0, FLOOR_Y + REVEAL.h + 0.03, FACADE_Z + 0.015),
     at(new THREE.BoxGeometry(FRONT.half * 2 + 0.2, 0.42, DEPTH + 0.4), 0, FRONT.top - 0.21 + 0.001, midZ + 0.2),
-    ...[-1, 1].map(side => at(new THREE.BoxGeometry(0.2, 0.42, FACADE_Z - BACK_Z), side * FRONT.half, FRONT.top - 0.21, (FACADE_Z + BACK_Z) / 2)),
-    at(new THREE.BoxGeometry(FRONT.half * 2 + 0.2, 0.42, 0.2), 0, FRONT.top - 0.21, BACK_Z),
+    ...sides.map(run => at(new THREE.BoxGeometry(0.2, 0.42, run.length), run.x, FRONT.top - 0.21, run.z)),
+    ...[-1, 1].map(side => at(new THREE.BoxGeometry(rearSideW + .2, .42, .2), side * (CONTACT_GLASS.half + rearSideW / 2), FRONT.top - .21, sideBack)),
+    ...[-1, 1].map(side => at(new THREE.BoxGeometry(.2, .42, returnDepth), side * CONTACT_GLASS.half, FRONT.top - .21, (sideBack + BACK_Z) / 2)),
+    at(new THREE.BoxGeometry(CONTACT_GLASS.half * 2 + .2, .42, .2), 0, FRONT.top - .21, BACK_Z),
   ]
   for (let x = FIRST_FIN; x < FRONT.half - 0.4; x += BAY) {
     for (const s of [-1, 1]) bronzeParts.push(at(new THREE.BoxGeometry(FIN.w, H - 0.42, FIN.d), s * x, FLOOR_Y + (H - 0.42) / 2, FACADE_Z + FIN.d / 2))
@@ -315,12 +321,13 @@ function buildGeometry() {
   const bronze = mergeGeometries(bronzeParts)
   // Four paving strips surround the building without adding a floor beneath any room.
   const floor = (w, d, x, z) => at(metricPlane(w, d).rotateX(-Math.PI / 2), x, FLOOR_Y, z)
-  const sideDepth = FACADE_Z - BACK_Z
+  const sideDepth = sides[0].length
   const sideWidth = TERRACE.half - FRONT.half
   const plaza = mergeGeometries([
     floor(TERRACE.half * 2, TERRACE.edgeZ - FACADE_Z, 0, (TERRACE.edgeZ + FACADE_Z) / 2),
     floor(TERRACE.half * 2, BACK_Z - TERRACE.backZ, 0, (BACK_Z + TERRACE.backZ) / 2),
-    ...[-1, 1].map(side => floor(sideWidth, sideDepth, side * (FRONT.half + sideWidth / 2), (FACADE_Z + BACK_Z) / 2)),
+    ...[-1, 1].map(side => floor(sideWidth, sideDepth, side * (FRONT.half + sideWidth / 2), sides[0].z)),
+    ...[-1, 1].map(side => floor(TERRACE.half - CONTACT_GLASS.half, returnDepth, side * (CONTACT_GLASS.half + (TERRACE.half - CONTACT_GLASS.half) / 2), (sideBack + BACK_Z) / 2)),
     floor(REVEAL.w, FACADE_Z - (START_Z + 0.3), 0, (FACADE_Z + START_Z + 0.3) / 2),
   ])
   // Painted roof markings only: they share the paving plane and have no interaction.

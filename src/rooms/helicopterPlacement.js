@@ -12,7 +12,7 @@ export const HELICOPTER_PLACEMENT = Object.freeze({
 // Two real wall-mounted fixtures illuminate both the aircraft and the deck.
 // Positions sit on the stone piers outside the Contact room's glass opening.
 export const HELIPAD_FLOODS = Object.freeze([-15,15].map(x => {
-  const position = [x,4,BUILDING.backZ-.24], target = [HELIPAD.x,1.2,HELIPAD.z]
+  const position = [x,4,BUILDING.sideBackZ-.24], target = [HELIPAD.x,1.2,HELIPAD.z]
   const delta = target.map((v,i) => v-position[i]), length = Math.hypot(...delta)
   return Object.freeze({ position, target, direction: delta.map(v => v/length),
     color: [1,.88,.72], intensity: 400, outer: 40, inner: 30, range: 35 })

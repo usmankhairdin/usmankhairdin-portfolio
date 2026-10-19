@@ -1,6 +1,6 @@
 import { doors } from '../data/projects.js'
 import { ROOM_KIND } from '../rooms/referenceRooms.js'
-import { ART, BUILDING, END_Z, FACADE_Z, PLANTS, PLAZA_STAND_Z, SCULPTURES, SIGN, START_Z, TERRACE, TERRACE_LAMPS, TERRACE_WALK_BOUNDS, WALKER_RADIUS, toRoomLocal, toWorld } from './corridorLayout.js'
+import { ART, BUILDING, BUILDING_FOOTPRINT, END_Z, FACADE_Z, PLANTS, PLAZA_STAND_Z, SCULPTURES, SIGN, START_Z, TERRACE, TERRACE_LAMPS, TERRACE_WALK_BOUNDS, WALKER_RADIUS, toRoomLocal, toWorld } from './corridorLayout.js'
 import { MASTER_TERRACE_DOOR, terraceDoor, terraceDoorPose, terraceLeafBlocks, terraceApproachBlocks } from './terraceDoor.js'
 import { helicopterRouteCorners, isHelicopterBlocked } from '../rooms/helicopterPlacement.js'
 
@@ -72,7 +72,7 @@ function inCorridor(x, z, entranceOpen) {
 const REVEAL_HALF = 1.67 - BODY
 const SIGN_BOX = [SIGN.x - 0.6, SIGN.x + 0.6, SIGN.z - 0.5, SIGN.z + 0.5]
 const LAMP_BOXES = TERRACE_LAMPS.map(([x, z]) => [x - 0.12, x + 0.12, FACADE_Z + z - 0.12, FACADE_Z + z + 0.12])
-const ROOF_OBSTACLES = [[-BUILDING.half, BUILDING.half, BUILDING.backZ, FACADE_Z], SIGN_BOX, ...LAMP_BOXES]
+const ROOF_OBSTACLES = [...BUILDING_FOOTPRINT, SIGN_BOX, ...LAMP_BOXES]
 // Routing reserves the whole outward swing, so a door opening after a route
 // was planned cannot catch a passer-by. Manual passage still uses the actual leaf.
 const exitHingeX=MASTER_TERRACE_DOOR.x-MASTER_TERRACE_DOOR.width/2+.04
@@ -83,13 +83,14 @@ function inOutside(x, z) {
   if (isHelicopterBlocked(x, z, BODY)) return false
   if (Math.abs(x) < REVEAL_HALF && z > START_Z + 0.22 + BODY && z <= FACADE_Z + BODY) return true
   if (x < TERRACE_WALK_BOUNDS.minX || x > TERRACE_WALK_BOUNDS.maxX || z < TERRACE_WALK_BOUNDS.minZ || z > TERRACE_WALK_BOUNDS.maxZ) return false
-  if (Math.abs(x) < BUILDING.half + BODY && z > BUILDING.backZ - BODY && z < FACADE_Z + BODY) return false
+  if (BUILDING_FOOTPRINT.some(box => inBox(x, z, box, BODY))) return false
   return !inBox(x, z, SIGN_BOX, BODY) && !LAMP_BOXES.some((box) => inBox(x, z, box, BODY))
 }
 /** Out on the terrace, or in the reveal before the door. */
 export const isOutside = (z, x = 0) => z > START_Z + 0.3 ||
   (z >= TERRACE.backZ && z <= TERRACE.edgeZ && Math.abs(x) <= TERRACE.half &&
-    (Math.abs(x) >= BUILDING.half || z <= BUILDING.backZ ||
+    (Math.abs(x) >= BUILDING.half ||
+      (z <= BUILDING.sideBackZ && (Math.abs(x) >= BUILDING.rearHalf || z <= BUILDING.backZ)) ||
       (Math.abs(x-MASTER_TERRACE_DOOR.x) < MASTER_TERRACE_DOOR.width/2 && z <= MASTER_TERRACE_DOOR.z)))
 
 function inDoorway(door, x, z, open) {

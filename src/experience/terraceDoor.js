@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
-import { END_Z, WALKER_RADIUS } from './corridorLayout.js'
+import { LAST_ROOM, WALKER_RADIUS } from './corridorLayout.js'
 import { motionEase } from './doorSystem.js'
 
 // The right-hand 6..9m window bay, in the master room and in the shared world.
 // A normal hinged leaf with fixed sidelights/transom replaces its lower glass.
 export const MASTER_TERRACE_DOOR = Object.freeze({
-  id: 'contact-terrace', roomX: 21.27, x: 7.5, z: END_Z + 3.5 - 21.27,
+  id: 'contact-terrace', roomX: LAST_ROOM.depth, x: 7.5, z: LAST_ROOM.endZ,
   width: 1.42, height: 2.8, floor: -.075, frame: .045,
   maxAngle: Math.PI * 100 / 180,
 })
