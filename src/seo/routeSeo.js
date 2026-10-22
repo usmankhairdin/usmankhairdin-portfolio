@@ -85,6 +85,11 @@ const pages = [
 ]
 
 const projectSeo = {
+  avenlo: {
+    title: 'Avenlo Health Case Study | Healthcare Website Design',
+    description: 'Explore Avenlo Health: a healthcare website for individuals, brokers and employers, with distinct colour systems, original graphics and coverage interfaces.',
+    intent: 'Healthcare website product design and frontend case study',
+  },
   forma: {
     title: 'Forma Case Study | SaaS Website, UI/UX & Frontend',
     description: 'Explore Forma, a complete AI-workspace marketing frontend with expressive product illustrations, reversible motion, platform pages and responsive light and dark themes.',

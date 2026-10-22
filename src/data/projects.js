@@ -202,6 +202,33 @@ export const projects = [
     evidenceTitle: 'From cast and clips to a producer pitch.',
     evidenceCopy: 'The site moves from the series premise to featured clips, the cast, a gallery and a dedicated page for producers.',
   },
+  {
+    slug: 'avenlo',
+    title: 'Avenlo Health',
+    category: 'Healthcare insurance website',
+    status: 'Self-initiated template · Public demo',
+    liveUrl: 'https://www.usmankhairdin.com/portfolio/avenlo/',
+    poster: '/assets/projects/avenlo/hero.webp',
+    accent: '#3055d9',
+    surfaceLight: '#e9edff',
+    surfaceDark: '#151d3c',
+    presentation: 'coverage',
+    workRoom: false,
+    summary: 'A healthcare website connecting individual coverage, broker resources and employer benefits through distinct audience journeys.',
+    role: 'Product design · UI/UX · Frontend',
+    contribution: 'A self-initiated multipage website: brand direction, audience-specific colour systems, responsive interfaces, original imagery and frontend coverage journeys.',
+    deliverables: ['Individual, broker and employer website modules', 'Health and supplemental product pages', 'Plan discovery, comparison and account interface demonstrations', 'Shared navigation, controls and motion patterns'],
+    tags: ['Healthcare', 'Product design', 'UI/UX', 'Frontend'],
+    media: { ...localMedia('avenlo', { mobile: false, poster: '/assets/projects/avenlo/hero.webp' }), showcaseWidths: [960, 1440] },
+    mediaAlt: {
+      hero: 'Avenlo Health homepage with its blue and violet coverage introduction, family photograph and original 3D graphics',
+      detail: 'Avenlo individual coverage page with its green colour palette and family-focused introduction',
+      mobile: 'Avenlo Health individual coverage interface',
+    },
+    evidenceTitle: 'One brand, three considered paths.',
+    evidenceCopy: 'Individuals, brokers and employers have their own navigation and colour tone, connected by consistent controls and coverage content.',
+    sourceNote: 'Avenlo is a fictional healthcare brand and a frontend website template. Plans, prices, people and account interactions are illustrative; no live quoting, enrollment, authentication or dashboard is included.',
+  },
 ]
 
 // The spatial portfolio case study, ahead of the same curated project sequence as Work Room.

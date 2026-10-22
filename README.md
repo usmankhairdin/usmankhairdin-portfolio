@@ -3,6 +3,7 @@
 Local continuation build for Usman Khair Din’s premium personal brand and white-label agency sales website. The approved immersive corridor experience, warm material family, premium typography and cobalt CTA language remain the visual foundation.
 
 ## Current selected work
+- Avenlo Health — https://www.usmankhairdin.com/portfolio/avenlo/ (case study: `/work/avenlo/`)
 - Sanaira Health — https://sanaira.usmankhairdin.com/
 - Forma — https://www.usmankhairdin.com/portfolio/forma/
 - PRIMA — https://primaapp.com/

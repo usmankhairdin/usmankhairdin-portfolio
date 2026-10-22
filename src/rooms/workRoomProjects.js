@@ -8,7 +8,7 @@ const exhibit=slug=>{
 // One shared editorial sequence. Adjacent entries face each other in the room.
 // Rantle sends X-Frame-Options:SAMEORIGIN and retains its capture + real link.
 const roomCaptures=new Set(['sanaira','forma','veyravael'])
-export const workRoomProjects=projects.map(project=>({
+export const workRoomProjects=projects.filter(project=>project.workRoom!==false).map(project=>({
   ...exhibit(project.slug),
   ...(roomCaptures.has(project.slug)?{screenUrl:`/assets/rooms/work/${project.slug}.webp`}:{}),
   ...(project.slug==='rantle'?{}:{embedUrl:project.liveUrl}),

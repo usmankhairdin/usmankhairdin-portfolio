@@ -42,6 +42,8 @@ for(const file of publicFiles.filter(p=>/\.(html|css|js)$/.test(p)&&p.includes(`
   const base=file.endsWith('.js')?sourcePath.split('/').slice(0,3).join('/')+'/index.html':sourcePath
   for(const match of text.matchAll(/(?:\b(?:src|href|poster)\s*=\s*["']([^"']+)["']|url\(\s*["']?([^'"\)]+))/g)){
     const url=(match[1]||match[2]).trim()
+    // Computed HTML fragments in the new compiled demo are not literal dependency paths.
+    if(sourcePath.startsWith('/portfolio/avenlo/')&&file.endsWith('.js')&&url.includes('`'))continue
     if(/^(?:https?:|data:|mailto:|tel:|javascript:|#)/i.test(url))continue
     const target=decodeURIComponent(new URL(url,'https://local.test'+base).pathname)
     const resolved=target.endsWith('/')?target+'index.html':target

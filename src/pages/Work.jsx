@@ -58,7 +58,7 @@ export default function Work(){
     <section className="wk-selected" aria-labelledby="wk-selected-title">
       <div className="route-wrap">
         <h2 id="wk-selected-title">Selected Work</h2>
-        <p>Six projects presented through real interface captures and clearly stated context.</p>
+        <p>{projects.length} projects presented through real interface captures and clearly stated context.</p>
       </div>
     </section>
 

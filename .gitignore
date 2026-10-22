@@ -11,3 +11,7 @@ logs/
 coverage/
 .nyc_output/
 .tmp-sanaira-captures/
+
+# Avenlo product illustrations are not test coverage output.
+!public/portfolio/avenlo/images/individuals/coverage/
+!public/portfolio/avenlo/images/individuals/coverage/*.webp

@@ -1,6 +1,6 @@
 # Production deployment — usmankhairdin.com
 
-This build replaces the root portfolio and includes the complete maintained Bum.Life static demo. The existing Forma and Veyravael public demos remain on the host.
+This build replaces the root portfolio and includes the complete maintained Bum.Life and Avenlo static demos. The existing Forma and Veyravael public demos remain on the host.
 
 ## Critical rule
 
@@ -29,7 +29,7 @@ The deployable files will be created in `dist/`.
 ## Replace the root site in cPanel
 
 1. Back up the current `public_html` root files.
-2. Preserve existing project folders under `public_html/portfolio/`; update only the included Bum.Life runtime files and demo helper.
+2. Preserve existing project folders under `public_html/portfolio/`; update only the included Bum.Life and Avenlo runtime files and demo helper.
 3. Remove/replace only the old root-site files that conflict with the new site.
 4. Upload the **contents of `dist/`** into `public_html/`.
 5. Confirm `.htaccess` exists at `public_html/.htaccess` after upload.
