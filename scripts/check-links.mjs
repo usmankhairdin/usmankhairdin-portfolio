@@ -42,7 +42,9 @@ for(const file of publicFiles.filter(p=>/\.(html|css|js)$/.test(p)&&p.includes(`
   const base=file.endsWith('.js')?sourcePath.split('/').slice(0,3).join('/')+'/index.html':sourcePath
   for(const match of text.matchAll(/(?:\b(?:src|href|poster)\s*=\s*["']([^"']+)["']|url\(\s*["']?([^'"\)]+))/g)){
     const url=(match[1]||match[2]).trim()
-    // Computed HTML fragments in the new compiled demo are not literal dependency paths.
+    // Computed HTML fragments are not literal dependency paths (including inline module scripts).
+    if(url.includes('${'))continue
+    // Avenlo also contains template fragments crossing a backtick boundary.
     if(sourcePath.startsWith('/portfolio/avenlo/')&&file.endsWith('.js')&&url.includes('`'))continue
     if(/^(?:https?:|data:|mailto:|tel:|javascript:|#)/i.test(url))continue
     const target=decodeURIComponent(new URL(url,'https://local.test'+base).pathname)

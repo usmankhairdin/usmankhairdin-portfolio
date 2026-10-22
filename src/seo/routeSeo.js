@@ -85,6 +85,11 @@ const pages = [
 ]
 
 const projectSeo = {
+  carthevia: {
+    title: 'Carthevia Case Study | Commerce Website Design',
+    description: 'Explore Carthevia: a complete commerce platform website with original interactive scenes, focused product pages, responsive interfaces and light and dark themes.',
+    intent: 'Commerce website product design and frontend case study',
+  },
   avenlo: {
     title: 'Avenlo Health Case Study | Healthcare Website Design',
     description: 'Explore Avenlo Health: a healthcare website for individuals, brokers and employers, with distinct colour systems, original graphics and coverage interfaces.',

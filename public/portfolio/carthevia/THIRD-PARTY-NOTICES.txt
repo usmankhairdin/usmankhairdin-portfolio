@@ -1,0 +1,6 @@
+Original Carthevia website design and code-native artwork: Usman Khair Din.
+React, React DOM, Scheduler, Three.js and Lenis licenses are in licenses/.
+GSAP / ScrollTrigger retains its upstream licensing and compiled notices.
+Manrope and Instrument Serif: SIL Open Font License notices in fonts/.
+Natural Earth land data in data/land.geojson: public domain.
+https://www.naturalearthdata.com/about/terms-of-use/

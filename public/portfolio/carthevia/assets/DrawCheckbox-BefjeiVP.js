@@ -1,0 +1,1 @@
+import{j as e}from"./loaderCarton-BoLaSt0p.js";function t(s){return e.jsxs("span",{className:"draw-checkbox",children:[e.jsx("input",{...s,type:"checkbox"}),e.jsx("svg",{viewBox:"0 0 28 28","aria-hidden":"true",children:e.jsx("path",{d:"m7 13 5 5L22 8",pathLength:"1"})})]})}export{t as D};

@@ -1,0 +1,1 @@
+*{box-sizing:border-box}body{margin:0;font-family:Manrope,Arial,sans-serif;background:var(--paper);color:var(--ink)}#loader-preview-theme{position:fixed;z-index:1001;top:clamp(18px,3vw,36px);right:clamp(20px,4vw,64px)}

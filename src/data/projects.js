@@ -229,9 +229,35 @@ export const projects = [
     evidenceCopy: 'Individuals, brokers and employers have their own navigation and colour tone, connected by consistent controls and coverage content.',
     sourceNote: 'Avenlo is a fictional healthcare brand and a frontend website template. Plans, prices, people and account interactions are illustrative; no live quoting, enrollment, authentication or dashboard is included.',
   },
+  {
+    slug: 'carthevia', title: 'Carthevia', category: 'Commerce platform website',
+    status: 'Self-initiated template · Public demo',
+    liveUrl: 'https://www.usmankhairdin.com/portfolio/carthevia/',
+    poster: '/assets/projects/carthevia/hero.webp',
+    accent: '#b84c27', surfaceLight: '#f0e8dd', surfaceDark: '#29211c',
+    presentation: 'commerce', workRoom: false,
+    summary: 'A commerce platform website connecting storefronts, checkout and operations through an original, moving product world.',
+    role: 'Product design · UI/UX · Frontend',
+    contribution: 'A self-initiated multipage marketing frontend: commerce-focused brand direction, original interactive product scenes, responsive layouts and a coherent light/dark interface system.',
+    deliverables: ['Responsive commerce platform website', 'Storefront, checkout, operations and analytics pages', 'Original interactive scenes and scroll choreography', 'Light/dark themes and frontend entry demonstrations'],
+    tags: ['Commerce', 'Product design', 'UI/UX', 'Frontend'],
+    media: { ...localMedia('carthevia', {mobile:false,poster:'/assets/projects/carthevia/hero.webp'}), showcaseWidths:[960,1440] },
+    mediaAlt: {
+      hero: 'Carthevia commerce homepage with warm orange branding and an interactive commerce product scene',
+      detail: 'Carthevia storefront platform page with a product presentation and commerce interface',
+      mobile: 'Carthevia storefront interface detail',
+    },
+    evidenceTitle: 'Commerce, as one connected experience.',
+    evidenceCopy: 'Storefronts, checkout, operations, analytics and global commerce each receive a focused product page within the same brand system.',
+    sourceNote: 'Carthevia is a fictional commerce platform and frontend website template. Product data and entry flows are illustrative; no live payments, orders, authentication or backend services are included.',
+  },
 ]
 
-// The spatial portfolio case study, ahead of the same curated project sequence as Work Room.
+// Owner-curated standalone sequence. Keep the fixed immersive room and homepage data independent.
+export const workProjects = ['carthevia','forma','avenlo','veyravael','sanaira','prima','rantle','bum-life']
+  .map(slug => projects.find(project => project.slug === slug))
+
+// The spatial portfolio remains available after the selected website projects.
 export const featuredProjects = [
   {
     title: 'The Corridor — 3D Portfolio',
@@ -246,8 +272,8 @@ export const featuredProjects = [
 
 // Every case-study route in Work-page order, so each detail page can point onward to the next one.
 const caseStudies = [
+  ...workProjects.map(({ title, slug }) => ({ title, href: `/work/${slug}/` })),
   ...featuredProjects.map(({ title, href }) => ({ title, href })),
-  ...projects.map(({ title, slug }) => ({ title, href: `/work/${slug}/` })),
 ]
 export const nextCaseStudy = (href) => {
   const index = caseStudies.findIndex((item) => item.href === href)

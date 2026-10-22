@@ -16,6 +16,10 @@
  *   cta / ctaInk the primary button on it           deco      decorative glow colour
  */
 export const PROJECT_BRANDS = {
+ carthevia: {
+  light:{ink:'#30251e',ink2:'#6b5546',s1:'#faf7f0',s2:'#f0e8dd',panel:'#fffdf8',line:'#d8c6b4',accent:'#a74323',soft:'#f0ddcc',close:'#34261e',closeInk:'#fff8ed',closeInk2:'#d8c8b8',closeAccent:'#ffb284',cta:'#f4b187',ctaInk:'#332219',deco:'#df9162'},
+  dark:{ink:'#fff5e9',ink2:'#cdb9a8',s1:'#211b17',s2:'#30261f',panel:'#3b2e25',line:'#66503e',accent:'#ffb78b',soft:'#513827',close:'#34261e',closeInk:'#fff8ed',closeInk2:'#d8c8b8',closeAccent:'#ffb284',cta:'#f4b187',ctaInk:'#332219',deco:'#df9162'},
+ },
   avenlo: {
     light: {ink:'#15244d',ink2:'#4c5b7b',s1:'#f7f8ff',s2:'#e9edff',panel:'#ffffff',line:'#c3cdec',accent:'#2645ad',soft:'#dce5ff',close:'#243a83',closeInk:'#f7f9ff',closeInk2:'#cbd6f4',closeAccent:'#ccd7ff',cta:'#dbe5ff',ctaInk:'#15244d',deco:'#849ae9'},
     dark: {ink:'#f1f4ff',ink2:'#b8c4e2',s1:'#151d3c',s2:'#1d2950',panel:'#25335d',line:'#485b8b',accent:'#b4c5ff',soft:'#304170',close:'#243a83',closeInk:'#f7f9ff',closeInk2:'#cbd6f4',closeAccent:'#ccd7ff',cta:'#dbe5ff',ctaInk:'#15244d',deco:'#849ae9'},

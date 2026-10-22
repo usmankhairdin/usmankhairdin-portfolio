@@ -1,3 +1,4 @@
+import { cartheviaCaseStudy } from './cartheviaCaseStudy.js'
 import { avenloCaseStudy } from './avenloCaseStudy.js'
 import { projectAsset } from './projects.js'
 import { sanairaCaseStudy } from './sanairaCaseStudy.js'
@@ -56,6 +57,7 @@ const bumLife = captures('bum-life', 'https://www.usmankhairdin.com/portfolio/bu
 
 
 export const CASE_STUDIES = {
+  carthevia: cartheviaCaseStudy,
   avenlo: avenloCaseStudy,
   sanaira: sanairaCaseStudy,
   forma: formaCaseStudy,

@@ -75,3 +75,12 @@ scripts          dark-theme generator and the project media capture pipeline
 ```bash
 node scripts/generate-dark-theme.mjs
 ```
+
+
+### Work page presentation (2026-10-22)
+
+The standalone `/work/` page now uses ordinary vertical scrolling and one full-page project presentation per item. Its explicit `workProjects` sequence is Carthevia, Forma, Avenlo, Veyravael, Sanaira, PRIMA, Rantle and Bum.Life; the spatial portfolio case study follows. This sequence is independent of the homepage selections and the fixed six exhibits in the immersive Work Room.
+
+`WorkProject.jsx` composes the shared interactive `ProjectCapture`; `useWorkPresentation.js` adds restrained desktop parallax without pinning or intercepting input, and disables it for reduced motion. Existing case-study scrolling previews remain shared.
+
+Carthevia's case study is `/work/carthevia/`. Its public frontend demo is `/portfolio/carthevia/`, copied byte-for-byte from the store's static buyer build. Paid source archives are not part of the portfolio deployment.
