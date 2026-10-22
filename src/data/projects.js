@@ -42,6 +42,33 @@ export const hostLabel = (url) => {
 
 export const projects = [
   {
+    slug: 'nexora',
+    title: 'Nexora',
+    category: 'Animated productivity landing page',
+    status: 'Self-initiated concept · Frontend demo',
+    liveUrl: 'https://www.usmankhairdin.com/portfolio/nexora/',
+    poster: '/assets/projects/nexora/hero.webp',
+    accent: '#00e5ff',
+    surfaceLight: '#10162b',
+    surfaceDark: '#070914',
+    presentation: 'productivity',
+    workRoom: false,
+    summary: 'A nine-chapter productivity landing page, connecting a living WebGL fluid canvas with planning previews and a working focus timer.',
+    role: 'Product design · UI/UX · Frontend',
+    contribution: 'A self-initiated React, Vite and TypeScript frontend: visual direction, a continuous GPU fluid scene, scroll choreography, responsive product previews and interactive focus, pricing and FAQ demonstrations.',
+    deliverables: ['Nine-chapter responsive productivity landing page', 'Continuous WebGL fluid scene and coordinated scroll motion', 'Interactive focus timer, task selection, pricing toggle and FAQ', 'Dark and warm light themes with reduced-motion support'],
+    tags: ['Productivity', 'WebGL', 'UI/UX', 'Frontend'],
+    media: { ...localMedia('nexora', { poster: '/assets/projects/nexora/hero.webp' }), showcaseWidths: [960, 1440] },
+    mediaAlt: {
+      hero: 'Nexora productivity homepage with its Find Your Focus headline over a cyan and violet fluid orbit on dark navy',
+      detail: 'Nexora productivity workspace preview with priorities, tasks and a daily schedule',
+      mobile: 'Nexora responsive productivity landing page on a phone',
+    },
+    evidenceTitle: 'A product story that moves with your attention.',
+    evidenceCopy: 'Planning, focus and progress form one continuous page, with product previews, a working session timer, illustrative insights and concept pricing.',
+    sourceNote: 'Nexora is a fictional productivity product and an interactive frontend concept. Workspace figures, AI insights and prices are illustrative. There is no live AI service, authentication, checkout or backend; timer sessions reset on reload.',
+  },
+  {
     slug: 'sanaira',
     title: 'Sanaira Health',
     category: 'Healthcare website + application',
@@ -254,7 +281,7 @@ export const projects = [
 ]
 
 // Owner-curated standalone sequence. Keep the fixed immersive room and homepage data independent.
-export const workProjects = ['carthevia','forma','avenlo','veyravael','sanaira','prima','rantle','bum-life']
+export const workProjects = ['carthevia','forma','avenlo','veyravael','sanaira','nexora','prima','rantle','bum-life']
   .map(slug => projects.find(project => project.slug === slug))
 
 // The spatial portfolio remains available after the selected website projects.

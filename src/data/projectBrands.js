@@ -16,6 +16,10 @@
  *   cta / ctaInk the primary button on it           deco      decorative glow colour
  */
 export const PROJECT_BRANDS = {
+  nexora: {
+    light: {ink:'#182039',ink2:'#505b74',s1:'#f4f6fc',s2:'#e6edf5',panel:'#ffffff',line:'#c0cadc',accent:'#07596c',soft:'#d6eef3',close:'#10162b',closeInk:'#eef0f6',closeInk2:'#b9becf',closeAccent:'#7beeff',cta:'#00e5ff',ctaInk:'#071321',deco:'#895cff'},
+    dark: {ink:'#eef0f6',ink2:'#b9becf',s1:'#070914',s2:'#0b1020',panel:'#10162b',line:'#35415d',accent:'#7beeff',soft:'#143443',close:'#10162b',closeInk:'#eef0f6',closeInk2:'#b9becf',closeAccent:'#7beeff',cta:'#00e5ff',ctaInk:'#071321',deco:'#895cff'},
+  },
  carthevia: {
   light:{ink:'#30251e',ink2:'#6b5546',s1:'#faf7f0',s2:'#f0e8dd',panel:'#fffdf8',line:'#d8c6b4',accent:'#a74323',soft:'#f0ddcc',close:'#34261e',closeInk:'#fff8ed',closeInk2:'#d8c8b8',closeAccent:'#ffb284',cta:'#f4b187',ctaInk:'#332219',deco:'#df9162'},
   dark:{ink:'#fff5e9',ink2:'#cdb9a8',s1:'#211b17',s2:'#30261f',panel:'#3b2e25',line:'#66503e',accent:'#ffb78b',soft:'#513827',close:'#34261e',closeInk:'#fff8ed',closeInk2:'#d8c8b8',closeAccent:'#ffb284',cta:'#f4b187',ctaInk:'#332219',deco:'#df9162'},

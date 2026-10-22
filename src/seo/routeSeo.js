@@ -85,6 +85,15 @@ const pages = [
 ]
 
 const projectSeo = {
+  nexora: {
+    title: 'Nexora Case Study | Animated Productivity Landing Page',
+    description: 'Explore Nexora: a nine-chapter productivity landing page with WebGL fluid motion, responsive workspace previews, an interactive focus timer and light and dark themes.',
+    intent: 'Animated productivity website design and React frontend case study',
+    image: SITE_ORIGIN + '/assets/projects/nexora/social.jpg',
+    imageAlt: 'Nexora productivity landing page with cyan and violet fluid motion on dark navy',
+    imageWidth: 1200,
+    imageHeight: 630,
+  },
   carthevia: {
     title: 'Carthevia Case Study | Commerce Website Design',
     description: 'Explore Carthevia: a complete commerce platform website with original interactive scenes, focused product pages, responsive interfaces and light and dark themes.',
@@ -135,8 +144,8 @@ for (const project of projects) {
   if (!meta) throw new Error(`Missing SEO copy for ${project.slug}`)
   pages.push({
     path: `/work/${project.slug}/`,
-    ...meta,
     ...social(project.slug, project.mediaAlt.hero),
+    ...meta,
     pageType: 'WebPage',
     caseStudy: true,
   })
