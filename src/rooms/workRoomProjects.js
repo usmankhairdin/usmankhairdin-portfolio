@@ -1,15 +1,16 @@
 import { projects, projectAsset } from '../data/projects.js'
 
-const exhibit=slug=>{
-  const project=projects.find(p=>p.slug===slug)
-  return {...project,screenUrl:projectAsset(slug,'showcase-1x.webp'),projectLink:project.liveUrl}
-}
-
-// One shared editorial sequence. Adjacent entries face each other in the room.
-// Rantle sends X-Frame-Options:SAMEORIGIN and retains its capture + real link.
-const roomCaptures=new Set(['sanaira','forma','veyravael'])
-export const workRoomProjects=projects.filter(project=>project.workRoom!==false).map(project=>({
-  ...exhibit(project.slug),
-  ...(roomCaptures.has(project.slug)?{screenUrl:`/assets/rooms/work/${project.slug}.webp`}:{}),
-  ...(project.slug==='rantle'?{}:{embedUrl:project.liveUrl}),
-}))
+// Three existing bays, two exhibits per bay. Keep the room architecture fixed.
+const exhibitOrder = ['forme', 'meridian', 'nexora', 'carthevia', 'forma', 'avenlo']
+const roomCaptures = new Set(['forma', 'veyravael'])
+export const workRoomProjects = exhibitOrder.map(slug => {
+  const project = projects.find(item => item.slug === slug)
+  if (!project) throw new Error('Missing Work Room project: ' + slug)
+  return {
+    ...project,
+    screenUrl: roomCaptures.has(slug) ? '/assets/rooms/work/' + slug + '.webp' : projectAsset(slug, 'showcase-1x.webp'),
+    projectLink: project.liveUrl,
+    // Same-origin copies work both in the local corridor and after deployment.
+    embedUrl: '/portfolio/' + slug + '/',
+  }
+})

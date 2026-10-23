@@ -1,0 +1,114 @@
+[
+  {
+    "route": "/",
+    "title": "A place apart."
+  },
+  {
+    "route": "/collection/",
+    "title": "The collection"
+  },
+  {
+    "route": "/destinations/",
+    "title": "Destinations"
+  },
+  {
+    "route": "/perspective/",
+    "title": "Our perspective"
+  },
+  {
+    "route": "/services/",
+    "title": "Buying with us"
+  },
+  {
+    "route": "/sell/",
+    "title": "Selling your property"
+  },
+  {
+    "route": "/journal/",
+    "title": "The journal"
+  },
+  {
+    "route": "/contact/",
+    "title": "Make an enquiry"
+  },
+  {
+    "route": "/saved/",
+    "title": "Saved residences"
+  },
+  {
+    "route": "/cookies/",
+    "title": "Cookie preferences"
+  },
+  {
+    "route": "/style-guide/",
+    "title": "Design system"
+  },
+  {
+    "route": "/properties/solenne/",
+    "title": "The Solenne House"
+  },
+  {
+    "route": "/properties/olive/",
+    "title": "Olive & Stone"
+  },
+  {
+    "route": "/properties/stillwater/",
+    "title": "Stillwater Residence"
+  },
+  {
+    "route": "/destinations/mediterranean/",
+    "title": "The Mediterranean"
+  },
+  {
+    "route": "/destinations/countryside/",
+    "title": "The Countryside"
+  },
+  {
+    "route": "/destinations/coastal/",
+    "title": "Coastal Living"
+  },
+  {
+    "route": "/destinations/alpine/",
+    "title": "Alpine Retreats"
+  },
+  {
+    "route": "/destinations/islands/",
+    "title": "Island Hideaways"
+  },
+  {
+    "route": "/destinations/city/",
+    "title": "City Perspectives"
+  },
+  {
+    "route": "/journal/the-art-of-arriving/",
+    "title": "The art of arriving."
+  },
+  {
+    "route": "/journal/a-slower-kind-of-luxury/",
+    "title": "A slower kind of luxury."
+  },
+  {
+    "route": "/journal/before-you-buy-abroad/",
+    "title": "Before you buy abroad."
+  },
+  {
+    "route": "/sign-in/",
+    "title": "Sign in"
+  },
+  {
+    "route": "/sign-up/",
+    "title": "Create an account"
+  },
+  {
+    "route": "/forgot-password/",
+    "title": "Password recovery"
+  },
+  {
+    "route": "/privacy/",
+    "title": "Privacy information"
+  },
+  {
+    "route": "/terms/",
+    "title": "Terms of use"
+  }
+]

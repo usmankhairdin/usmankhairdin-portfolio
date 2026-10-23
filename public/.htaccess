@@ -8,6 +8,11 @@
   # The Web Experience homepage moved from /home-classic/ to /web/.
   RewriteRule ^home-classic/?$ /web/ [R=301,L]
 
+  # Retired client showcases now lead to the independent project collection.
+  # Run before the file check so old deployed HTML cannot remain visible.
+  RewriteRule ^work/(prima|rantle|bum-life|basecare|base-care|bascare)(/.*)?$ /work/ [R=301,L,NC]
+  RewriteRule ^portfolio/(bum\.life|prima|rantle|basecare|base-care|bascare)(/.*)?$ /work/ [R=301,L,NC]
+
   # Preserve real files and folders already on the host (including /portfolio/).
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d

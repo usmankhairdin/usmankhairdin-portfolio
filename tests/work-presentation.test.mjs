@@ -7,9 +7,8 @@ import {CASE_STUDIES} from '../src/data/projectCaseStudies.js'
 import {seoForPath} from '../src/seo/routeSeo.js'
 
 test('Work follows the owner sequence without adding bays to the immersive room',()=>{
- assert.deepEqual(workProjects.map(p=>p.slug),['carthevia','forma','avenlo','veyravael','sanaira','nexora','prima','rantle','bum-life'])
- assert.deepEqual(projects.filter(p=>p.slug!=='nexora').slice(0,7).map(p=>p.slug),['sanaira','forma','prima','veyravael','rantle','bum-life','avenlo'])
- assert.deepEqual(workRoomProjects.map(p=>p.slug),['sanaira','forma','prima','veyravael','rantle','bum-life'])
+ assert.deepEqual(workProjects.map(p=>p.slug),['forme','meridian','nexora','carthevia','forma','avenlo','veyravael','sanaira'])
+ assert.deepEqual(workRoomProjects.map(p=>p.slug),['forme','meridian','nexora','carthevia','forma','avenlo'])
  for(let i=0;i<workProjects.length-1;i++)assert.equal(nextCaseStudy(`/work/${workProjects[i].slug}/`).href,`/work/${workProjects[i+1].slug}/`)
 })
 test('Carthevia has a complete local case-study and portable website',()=>{

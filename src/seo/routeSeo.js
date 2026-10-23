@@ -85,6 +85,15 @@ const pages = [
 ]
 
 const projectSeo = {
+  forme: {"title":"FORME Case Study | Renovation Studio Landing Page","description":"Explore FORME: an editorial renovation studio landing page with interactive before-and-after comparisons, material palettes, responsive design and considered motion.","intent":"Renovation studio website design and React frontend case study","image":"https://www.usmankhairdin.com/assets/projects/forme/social.jpg","imageAlt":"FORME renovation studio homepage with a warm kitchen comparison and expressive serif typography","imageWidth":1200,"imageHeight":630},
+  meridian: {
+    title: 'Meridian Case Study | Cinematic Revenue Operations Landing Page',
+    description: 'Explore Meridian: a cinematic revenue operations landing page with a Three.js Earth, interactive sample pipeline, workflow demonstrations and responsive product design.',
+    intent: 'Cinematic revenue platform product design and React frontend case study',
+    image: SITE_ORIGIN + '/assets/projects/meridian/social.jpg',
+    imageAlt: 'Meridian revenue operations landing page with a mint headline and illuminated Earth on dark navy',
+    imageWidth: 1200, imageHeight: 630,
+  },
   nexora: {
     title: 'Nexora Case Study | Animated Productivity Landing Page',
     description: 'Explore Nexora: a nine-chapter productivity landing page with WebGL fluid motion, responsive workspace previews, an interactive focus timer and light and dark themes.',
@@ -119,23 +128,11 @@ const projectSeo = {
     description: 'Explore Sanaira Health: a cinematic healthcare website and companion broker, member and employer application, with coverage discovery and interactive demo workflows.',
     intent: 'Healthcare website and SaaS application product design case study',
   },
-  prima: {
-    title: 'PRIMA Case Study | Hospitality Product UI & Frontend',
-    description: 'Explore PRIMA’s hospitality network interface, bringing live restaurant booking, rewarded recommendations and partner earnings into one public product story.',
-    intent: 'Hospitality product UI and frontend case study',
-  },
 
 
-  rantle: {
-    title: 'Rantle Case Study | Electronics Website Design',
-    description: 'See a responsive sourcing website for electronic components, organized around product families, part-number quotes and technical content.',
-    intent: 'Electronics distributor website design and frontend case study',
-  },
-  'bum-life': {
-    title: 'Bum.Life Case Study | Animated Series Website',
-    description: 'Explore a responsive animated-series website portfolio build with cast profiles, clips, a gallery and a producer-facing pitch page.',
-    intent: 'Animated series website design case study',
-  },
+
+
+
 
 }
 

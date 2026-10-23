@@ -102,7 +102,7 @@ function TechTag({ id, children }) {
 }
 
 export default function DesignSystem() {
-  const prima = projects.find((project) => project.slug === 'prima')
+  const featuredProject = projects.find((project) => project.slug === 'forme')
 
 
   return <div className="route-page design-system-page">
@@ -256,14 +256,14 @@ export default function DesignSystem() {
         index="05"
         eyebrow="MEDIA + PROJECT PRESENTATION"
         title="One disciplined project frame."
-        intro="PRIMA is the structural reference: a real capture, fixed browser geometry, clipped overflow and reversible pointer-led scrolling."
+        intro="FORME demonstrates the shared presentation: a real capture, fixed browser geometry, clipped overflow and reversible pointer-led scrolling."
         className="ds-section--centered"
       >
         <div className="ds-media-grid">
           <div className="ds-media-notes">
             {['Real project capture', 'Starts at the top', 'Preserves image ratio', 'Pointer scrolls and resets'].map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong></div>)}
           </div>
-          {prima && <ProjectBrowserPreview project={prima} eager />}
+          {featuredProject && <ProjectBrowserPreview project={featuredProject} eager />}
         </div>
       </GuideSection>
 
@@ -330,7 +330,7 @@ export default function DesignSystem() {
       >
         <div className="ds-system-cards">
           <article><span>HOME</span><strong>Real project evidence + drifting tool tags</strong><p>A tailored opening experience built on the shared Web foundation.</p></article>
-          <article><span>WORK</span><strong>PRIMA-derived project geometry</strong><p>Consistent panels with real screenshots and controlled choreography.</p></article>
+          <article><span>WORK</span><strong>Shared project-frame geometry</strong><p>Consistent panels with real screenshots and controlled choreography.</p></article>
           <article><span>CORRIDOR</span><strong>Spatial interface + game-style look</strong><p>React Three Fiber, camera, materials and lighting remain a distinct system.</p></article>
         </div>
         <div className="ds-stack" aria-label="Production technology stack">

@@ -1,0 +1,1 @@
+import{j as s}from"./sanaira.js";function i({position:e="bl",icon:l,kicker:a,value:n,tone:r="green"}){return s.jsxs("span",{className:`frame-callout callout-${e} callout-${r}`,"aria-hidden":"true",children:[l&&s.jsx("span",{className:"callout-icon",children:s.jsx(l,{size:17})}),s.jsxs("span",{children:[a&&s.jsx("small",{children:a}),s.jsx("b",{children:n})]})]})}export{i as F};

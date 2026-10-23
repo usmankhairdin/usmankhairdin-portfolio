@@ -19,9 +19,9 @@ import './HomeWeb.css'
  */
 
 const bySlug = (slug) => projects.find((p) => p.slug === slug)
-const FEATURED = bySlug('forma')
+const FEATURED = bySlug('forme')
 
-// Home has its own editorial priority; Work retains the physical room sequence.
+// Home has its own editorial priority; Work lists the independently developed collection.
 const showcase = (slug) => ({
   src: projectAsset(slug, 'showcase-1x.webp'),
   srcSet: bySlug(slug).media.showcaseWidths?.[0] === bySlug(slug).media.showcaseWidths?.[1]
@@ -30,9 +30,9 @@ const showcase = (slug) => ({
   height: 900,
 })
 const SELECTED = [
-  { project: FEATURED, image: showcase('forma') },
-  { project: bySlug('sanaira'), image: showcase('sanaira') },
-  { project: bySlug('prima'), image: showcase('prima') },
+  { project: FEATURED, image: showcase('forme') },
+  { project: bySlug('meridian'), image: showcase('meridian') },
+  { project: bySlug('nexora'), image: showcase('nexora') },
 ]
 
 // The services, in a line each; the whole of them is on Services.

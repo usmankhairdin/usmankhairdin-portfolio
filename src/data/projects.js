@@ -1,6 +1,6 @@
 // When a project's captures are replaced under the same file names, bump its version here: every page and the
 // Corridor ask for the new files instead of reusing the copies browsers already cached.
-const MEDIA_VERSION = { prima: '20261013c', forma: '20261018-local', veyravael: '20261018' }
+const MEDIA_VERSION = { forma: '20261018-local', veyravael: '20261018' }
 export const projectAsset = (slug, file) => `/assets/projects/${slug}/${file}${MEDIA_VERSION[slug] ? `?v=${MEDIA_VERSION[slug]}` : ''}`
 
 const localMedia = (slug, { mobile = true, poster = `/assets/posters/${slug}.svg` } = {}) => ({
@@ -21,7 +21,7 @@ export const surfacesFor = (project) => ({
   dark: project.surfaceDark || '#0b111b',
 })
 
-// Data-driven tone: a project whose own surface is dark (Bum.Life) gets light-on-dark type in either theme; everything else follows the theme.
+// Data-driven tone: a project whose own surface is dark gets light-on-dark type in either theme; everything else follows the theme.
 export const toneFor = (project) => {
   const hex = String(surfacesFor(project).light || '').replace('#', '')
   if (hex.length !== 6) return 'theme'
@@ -41,6 +41,89 @@ export const hostLabel = (url) => {
 }
 
 export const projects = [
+{
+  "slug": "forme",
+  "title": "FORME",
+  "category": "Renovation studio landing page",
+  "status": "Self-initiated concept · Frontend demo",
+  "liveUrl": "https://www.usmankhairdin.com/portfolio/forme/",
+  "poster": "/assets/projects/forme/hero.webp",
+  "accent": "#ee6043",
+  "surfaceLight": "#e9e3d7",
+  "surfaceDark": "#171714",
+  "presentation": "architecture",
+  "summary": "An editorial renovation studio landing page, pairing warm architectural visualisations with interactive before-and-after comparisons and considered motion.",
+  "role": "Product design · UI/UX · Frontend",
+  "contribution": "A self-initiated React and TypeScript frontend: independent art direction, responsive typography, material-led project stories, accessible comparison controls and a local enquiry-summary demonstration.",
+  "deliverables": [
+    "Responsive single-page renovation studio website",
+    "Interactive before-and-after transformations and material palettes",
+    "Studio, six services, process, craft and FAQ sections",
+    "Project-aware local enquiry summary and reduced-motion access"
+  ],
+  "tags": [
+    "Interiors",
+    "Responsive web",
+    "UI/UX",
+    "Frontend"
+  ],
+  "media": {
+    "gallery": [
+      "/assets/projects/forme/hero.webp",
+      "/assets/projects/forme/detail.webp"
+    ],
+    "preview": [
+      "/assets/projects/forme/hero.webp"
+    ],
+    "hero": [
+      "/assets/projects/forme/hero.webp"
+    ],
+    "fullpage": [
+      "/assets/projects/forme/fullpage.jpg",
+      "/assets/projects/forme/hero.webp"
+    ],
+    "detail": [
+      "/assets/projects/forme/detail.webp"
+    ],
+    "mobile": [
+      "/assets/projects/forme/mobile.webp"
+    ],
+    "showcaseWidths": [
+      1440,
+      2880
+    ]
+  },
+  "mediaAlt": {
+    "hero": "FORME renovation studio homepage with expressive serif typography and a kitchen before-and-after comparison",
+    "detail": "FORME Oak and Limestone Kitchen transformation with an adjustable comparison divider and materials",
+    "mobile": "FORME renovation studio responsive homepage on a phone"
+  },
+  "evidenceTitle": "Make the transformation visible.",
+  "evidenceCopy": "Architectural stories, interactive comparisons and material details connect the studio introduction to a focused project enquiry.",
+  "sourceNote": "FORME is a fictional renovation studio and frontend concept. Project imagery is AI-generated architectural visualisation; projects, budgets and the sample quote are illustrative. The enquiry form prepares a local summary and sends no message. No booking, authentication or business backend is included."
+},
+  {
+    slug: 'meridian', title: 'Meridian', category: 'Cinematic revenue operations landing page',
+    status: 'Self-initiated concept · Frontend demo',
+    liveUrl: 'https://www.usmankhairdin.com/portfolio/meridian/',
+    poster: '/assets/projects/meridian/hero.webp',
+    accent: '#5df0a8', surfaceLight: '#101a30', surfaceDark: '#04060f',
+    presentation: 'workspace',
+    summary: 'A cinematic revenue operations landing page, connecting a photographic Earth with interactive pipeline, workflow and product demonstrations.',
+    role: 'Product design · UI/UX · Frontend',
+    contribution: 'A self-initiated React and TypeScript frontend: product direction, a Three.js Earth scene, coordinated scroll motion, responsive layouts and interactive workspace, workflow, pricing and FAQ demonstrations.',
+    deliverables: ['Responsive single-page revenue platform website', 'Photographic Three.js Earth and connected global scene', 'Interactive sample pipeline, workflow tabs and concept pricing', 'Mobile presentation and reduced-motion access'],
+    tags: ['Revenue operations', 'WebGL', 'UI/UX', 'Frontend'],
+    media: { ...localMedia('meridian', { poster: '/assets/projects/meridian/hero.webp' }), showcaseWidths: [960, 1440] },
+    mediaAlt: {
+      hero: 'Meridian homepage with its mint revenue operations headline and illuminated photographic Earth on dark navy',
+      detail: 'Meridian revenue workspace with sample opportunities, market filters and pipeline charts',
+      mobile: 'Meridian responsive landing page on a phone',
+    },
+    evidenceTitle: 'From global signals to a clear next step.',
+    evidenceCopy: 'An expressive Earth scene leads into focused capabilities, an interactive sample workspace, connected workflows and concept plans.',
+    sourceNote: 'Meridian is a fictional revenue operations platform and an interactive frontend concept. Opportunities, revenue figures and plan amounts are illustrative. There is no connected CRM, real account, subscription, lead delivery or backend service.',
+  },
   {
     slug: 'nexora',
     title: 'Nexora',
@@ -52,7 +135,6 @@ export const projects = [
     surfaceLight: '#10162b',
     surfaceDark: '#070914',
     presentation: 'productivity',
-    workRoom: false,
     summary: 'A nine-chapter productivity landing page, connecting a living WebGL fluid canvas with planning previews and a working focus timer.',
     role: 'Product design · UI/UX · Frontend',
     contribution: 'A self-initiated React, Vite and TypeScript frontend: visual direction, a continuous GPU fluid scene, scroll choreography, responsive product previews and interactive focus, pricing and FAQ demonstrations.',
@@ -73,8 +155,8 @@ export const projects = [
     title: 'Sanaira Health',
     category: 'Healthcare website + application',
     status: 'Self-initiated template · Public demo',
-    liveUrl: 'https://sanaira.usmankhairdin.com/',
-    appUrl: 'https://sanaira.usmankhairdin.com/app/broker/',
+    liveUrl: 'https://www.usmankhairdin.com/portfolio/sanaira/',
+    appUrl: 'https://www.usmankhairdin.com/portfolio/sanaira/app/broker/',
     poster: '/assets/projects/sanaira/hero.webp',
     accent: '#3a6c61',
     surface: '#e2e9d9',
@@ -122,32 +204,7 @@ export const projects = [
     evidenceCopy: 'The homepage assembles a shared workspace, explains connect, understand and act, and continues into purpose-built platform, integration and entry pages.',
     sourceNote: 'Forma is a fictional product and a frontend template. Product metrics, automation and AI responses are illustrative; no live AI service, authentication or account creation is claimed.',
   },
-  {
-    slug: 'prima',
-    title: 'PRIMA',
-    category: 'Hospitality network',
-    status: 'Live public site',
-    liveUrl: 'https://primaapp.com/',
-    poster: '/assets/posters/prima.svg',
-    accent: '#4168ef',
-    surface: '#edf3ff',
-    surfaceLight: '#e6e8f6',
-    surfaceDark: '#0e1328',
-    presentation: 'atlas',
-    summary: 'A hospitality network pairing live restaurant booking with tracked, rewarded recommendations from concierges and hotels.',
-    role: 'UI direction · Frontend',
-    contribution: 'Interface direction and responsive frontend work for a hospitality product where booking, recommendations and payouts need to read as one coherent experience.',
-    deliverables: ['Website and product-interface direction', 'Responsive frontend production', 'Interaction and content presentation'],
-    tags: ['Hospitality', 'UI design', 'Frontend'],
-    media: localMedia('prima'),
-    mediaAlt: {
-      hero: 'PRIMA homepage showing its recommendation network, with Hotels, Curators and Companies around the PRIMA mark',
-      detail: 'PRIMA hotels page section explaining what a property earns from free and prime table fees',
-      mobile: 'PRIMA responsive homepage showing the recommendation network and its introduction on a phone',
-    },
-    evidenceTitle: 'Two kinds of table, one shared fee.',
-    evidenceCopy: 'The public site moves from a network of recommenders to a booking app with live times, explains how free and prime table fees are shared, and gives each kind of partner its own page.',
-  },
+
   {
     slug: 'veyravael',
     title: 'Veyravael Estates',
@@ -175,60 +232,8 @@ export const projects = [
     evidenceCopy: 'A landscape-led arrival introduces selected homes, the practice’s point of view, destinations and a personal enquiry path.',
     sourceNote: 'Veyravael is a fictional real-estate brand and a frontend template. Properties and enquiry interfaces are demo content; no live inventory or completed enquiry is claimed.',
   },
-  {
-    slug: 'rantle',
-    title: 'Rantle',
-    category: 'Electronics distributor',
-    status: 'Live public site',
-    liveUrl: 'https://www.rantle.com/',
-    poster: '/assets/posters/rantle.svg',
-    accent: '#f49622',
-    surface: '#e8f1f3',
-    surfaceLight: '#dae5ed',
-    surfaceDark: '#0a1a26',
-    presentation: 'circuit',
-    summary: 'A sourcing site for an independent electronic-components distributor, built around product families and part-number quotes.',
-    role: 'Website design · Frontend',
-    contribution: 'Website design and frontend production shaped around dense component information, sourcing content and responsive reading.',
-    deliverables: ['Product and sourcing website UI', 'Responsive frontend', 'Technical content presentation'],
-    tags: ['Electronics', 'Web design', 'Frontend'],
-    media: localMedia('rantle', { mobile: false }),
-    mediaAlt: {
-      hero: 'Rantle homepage presenting electronic components sourcing and inquiry navigation',
-      detail: 'Rantle homepage section introducing its electronic components supplier offer',
-      mobile: 'Rantle electronic components homepage detail',
-    },
-    evidenceTitle: 'Part-number quotes on every product page.',
-    evidenceCopy: 'Category and part pages pair short product copy with a quote form and a long technical guide for engineers.',
-  },
-  {
-    slug: 'bum-life',
-    title: 'Bum.Life',
-    category: 'Animated series website',
-    status: 'Public portfolio build',
-    liveUrl: 'https://www.usmankhairdin.com/portfolio/bum.life/',
-    poster: '/assets/posters/bum-life.svg',
-    accent: '#ffd51d',
-    surface: '#111620',
-    surfaceLight: '#1a160f',
-    surfaceDark: '#12100b',
-    presentation: 'stage',
-    summary: 'A multi-page website for an animated comedy series: its five-character cast, clips, gallery and a producer-facing pitch page.',
-    role: 'Public portfolio presentation',
-    contextLabel: 'PROJECT CONTEXT',
-    deliverablesLabel: 'VISIBLE SURFACES',
-    contribution: 'The public portfolio build introduces the series, characters, clips, image gallery and producer-facing information through a responsive presentation.',
-    deliverables: ['Series and story-world introduction', 'Character and video presentation', 'Responsive public website'],
-    tags: ['Entertainment', 'Storytelling', 'Responsive web'],
-    media: localMedia('bum-life'),
-    mediaAlt: {
-      hero: 'Bum.Life homepage showing the five animated characters and series introduction',
-      detail: 'Bum.Life featured videos section with character artwork',
-      mobile: 'Bum.Life responsive hero with series introduction and calls to action',
-    },
-    evidenceTitle: 'From cast and clips to a producer pitch.',
-    evidenceCopy: 'The site moves from the series premise to featured clips, the cast, a gallery and a dedicated page for producers.',
-  },
+
+
   {
     slug: 'avenlo',
     title: 'Avenlo Health',
@@ -240,7 +245,6 @@ export const projects = [
     surfaceLight: '#e9edff',
     surfaceDark: '#151d3c',
     presentation: 'coverage',
-    workRoom: false,
     summary: 'A healthcare website connecting individual coverage, broker resources and employer benefits through distinct audience journeys.',
     role: 'Product design · UI/UX · Frontend',
     contribution: 'A self-initiated multipage website: brand direction, audience-specific colour systems, responsive interfaces, original imagery and frontend coverage journeys.',
@@ -262,7 +266,7 @@ export const projects = [
     liveUrl: 'https://www.usmankhairdin.com/portfolio/carthevia/',
     poster: '/assets/projects/carthevia/hero.webp',
     accent: '#b84c27', surfaceLight: '#f0e8dd', surfaceDark: '#29211c',
-    presentation: 'commerce', workRoom: false,
+    presentation: 'commerce',
     summary: 'A commerce platform website connecting storefronts, checkout and operations through an original, moving product world.',
     role: 'Product design · UI/UX · Frontend',
     contribution: 'A self-initiated multipage marketing frontend: commerce-focused brand direction, original interactive product scenes, responsive layouts and a coherent light/dark interface system.',
@@ -280,8 +284,8 @@ export const projects = [
   },
 ]
 
-// Owner-curated standalone sequence. Keep the fixed immersive room and homepage data independent.
-export const workProjects = ['carthevia','forma','avenlo','veyravael','sanaira','nexora','prima','rantle','bum-life']
+// Owner-curated standalone sequence, independent of the six immersive exhibits.
+export const workProjects = ['forme','meridian','nexora','carthevia','forma','avenlo','veyravael','sanaira']
   .map(slug => projects.find(project => project.slug === slug))
 
 // The spatial portfolio remains available after the selected website projects.

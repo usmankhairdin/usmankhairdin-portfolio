@@ -81,13 +81,13 @@ export default function Services() {
         <div className="services-editorial__wrap services-editorial__proof-layout">
           <div className="services-editorial__proof-copy" data-editorial-reveal>
             <h2 id="services-proof-title">Clarity,<br />carried into<br />the <em>browser.</em></h2>
-            <p>Rantle brings product information and sourcing enquiries into one responsive website.</p>
-            <EditorialLink to="/work/rantle/">Explore Rantle</EditorialLink>
+            <p>Carthevia connects storefronts, checkout and operations through a cohesive, responsive product website.</p>
+            <EditorialLink to="/work/carthevia/">Explore Carthevia</EditorialLink>
             <span className="services-editorial__credit">Website design · Frontend</span>
           </div>
           <div className="services-editorial__preview-stage" data-editorial-reveal>
-            <Link to="/work/rantle/" className="services-editorial__preview" aria-label="Explore the Rantle case study">
-              <img src="/assets/projects/rantle/showcase.webp" srcSet="/assets/projects/rantle/showcase-1x.webp 1440w, /assets/projects/rantle/showcase.webp 2880w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="Rantle electronics sourcing website with product navigation and enquiry action" />
+            <Link to="/work/carthevia/" className="services-editorial__preview" aria-label="Explore the Carthevia case study">
+              <img src="/assets/projects/carthevia/showcase.webp" srcSet="/assets/projects/carthevia/showcase-1x.webp 960w, /assets/projects/carthevia/showcase.webp 1440w" sizes="(max-width: 700px) 90vw, 60vw" width="1440" height="900" loading="lazy" decoding="async" alt="Carthevia commerce platform website with a warm product scene and clear navigation" />
             </Link>
           </div>
         </div>

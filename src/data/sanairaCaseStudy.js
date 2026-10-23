@@ -1,6 +1,6 @@
 import { projectAsset } from './projects.js'
 
-const origin = 'https://sanaira.usmankhairdin.com'
+const origin = 'https://www.usmankhairdin.com/portfolio/sanaira'
 const capture = (name, alt, path = '/') => ({
   src: projectAsset('sanaira', `ev-${name}.webp`),
   srcSet: `${projectAsset('sanaira', `ev-${name}-1x.webp`)} 960w, ${projectAsset('sanaira', `ev-${name}.webp`)} 1440w`,

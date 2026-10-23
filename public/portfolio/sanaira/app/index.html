@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f4e9" />
+    <meta name="robots" content="noindex" />
+    <title>Broker Overview — Sanaira Coverage Workspace</title>
+    <link rel="icon" type="image/png" href="/portfolio/sanaira/app/assets/images/brand/care-weave-mark-512.png" />
+    <script>
+      /* Apply the saved or system theme before first paint (shared with the website). */
+      (function () {
+        var root = document.documentElement, saved;
+        try { saved = localStorage.getItem('sanaira-theme'); } catch (e) {}
+        var forced = location.search.match(/[?&]theme=(dark|light)/);
+        if (forced) saved = forced[1];
+        var theme = saved === 'dark' || saved === 'light' ? saved : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        root.setAttribute('data-theme', theme);
+        root.style.colorScheme = theme;
+      })();
+    </script>
+    <script type="module" crossorigin src="/portfolio/sanaira/app/assets/index-CGygfogM.js"></script>
+    <link rel="stylesheet" crossorigin href="/portfolio/sanaira/app/assets/index-bCWi286p.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

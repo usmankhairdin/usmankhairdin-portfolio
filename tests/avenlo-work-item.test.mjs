@@ -6,11 +6,11 @@ import {workRoomProjects} from '../src/rooms/workRoomProjects.js'
 import {CASE_STUDIES} from '../src/data/projectCaseStudies.js'
 import {seoForPath} from '../src/seo/routeSeo.js'
 
-test('Avenlo is a complete standalone Work item without changing the fixed immersive exhibit set',()=>{
+test('Avenlo is a complete Work item and joins the six latest immersive exhibits',()=>{
  const p=projects.find(x=>x.slug==='avenlo')
  assert.ok(p)
  assert.equal(p.liveUrl,'https://www.usmankhairdin.com/portfolio/avenlo/')
- assert.deepEqual(workRoomProjects.map(x=>x.slug),['sanaira','forma','prima','veyravael','rantle','bum-life'])
+ assert.deepEqual(workRoomProjects.map(x=>x.slug),['forme','meridian','nexora','carthevia','forma','avenlo'])
  assert.ok(CASE_STUDIES.avenlo.chapters.length)
  assert.match(seoForPath('/work/avenlo/').title,/Avenlo/)
  assert.ok(fs.existsSync('public/portfolio/avenlo/index.html'))

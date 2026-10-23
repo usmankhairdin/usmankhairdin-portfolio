@@ -16,6 +16,11 @@
  *   cta / ctaInk the primary button on it           deco      decorative glow colour
  */
 export const PROJECT_BRANDS = {
+forme: {"light":{"ink":"#282923","ink2":"#595a50","s1":"#f7f5ef","s2":"#e9e3d7","panel":"#fffdf8","line":"#c9c1b2","accent":"#a63720","soft":"#f0dfd3","close":"#171714","closeInk":"#f4f0e8","closeInk2":"#c4c0b4","closeAccent":"#ff9b80","cta":"#ee6043","ctaInk":"#11110e","deco":"#ee6043"},"dark":{"ink":"#f4f0e8","ink2":"#c4c0b4","s1":"#0e0e0d","s2":"#171714","panel":"#24241f","line":"#505044","accent":"#ff9b80","soft":"#453027","close":"#262620","closeInk":"#f4f0e8","closeInk2":"#c4c0b4","closeAccent":"#ff9b80","cta":"#ee6043","ctaInk":"#11110e","deco":"#ee6043"}},
+  meridian: {
+    light: {ink:'#14243a',ink2:'#4c6074',s1:'#f3f8f7',s2:'#e2eee9',panel:'#ffffff',line:'#bbcec7',accent:'#116443',soft:'#d5eee1',close:'#101a30',closeInk:'#f3f6ff',closeInk2:'#b6c2d8',closeAccent:'#5df0a8',cta:'#5df0a8',ctaInk:'#032018',deco:'#5df0a8'},
+    dark: {ink:'#f3f6ff',ink2:'#a6b1cc',s1:'#04060f',s2:'#0b1122',panel:'#101a30',line:'#34455c',accent:'#5df0a8',soft:'#173c32',close:'#101a30',closeInk:'#f3f6ff',closeInk2:'#b6c2d8',closeAccent:'#5df0a8',cta:'#5df0a8',ctaInk:'#032018',deco:'#5df0a8'},
+  },
   nexora: {
     light: {ink:'#182039',ink2:'#505b74',s1:'#f4f6fc',s2:'#e6edf5',panel:'#ffffff',line:'#c0cadc',accent:'#07596c',soft:'#d6eef3',close:'#10162b',closeInk:'#eef0f6',closeInk2:'#b9becf',closeAccent:'#7beeff',cta:'#00e5ff',ctaInk:'#071321',deco:'#895cff'},
     dark: {ink:'#eef0f6',ink2:'#b9becf',s1:'#070914',s2:'#0b1020',panel:'#10162b',line:'#35415d',accent:'#7beeff',soft:'#143443',close:'#10162b',closeInk:'#eef0f6',closeInk2:'#b9becf',closeAccent:'#7beeff',cta:'#00e5ff',ctaInk:'#071321',deco:'#895cff'},
@@ -40,24 +45,7 @@ export const PROJECT_BRANDS = {
     light: { ink: '#223c36', ink2: '#51665e', s1: '#f7f4e9', s2: '#e2e9d9', panel: '#fffcf3', line: '#b9c7b4', accent: '#3a6c61', soft: '#dce5d3', close: '#203e32', closeInk: '#f3f0df', closeInk2: '#c5d2be', closeAccent: '#dec79f', cta: '#d0dabb', ctaInk: '#253d2d', deco: '#8eaa99' },
     dark: { ink: '#f0eddf', ink2: '#b8cbc0', s1: '#142d27', s2: '#203e32', panel: '#233d33', line: '#466759', accent: '#d9bb91', soft: '#2d4a3c', close: '#132f24', closeInk: '#f0f1df', closeInk2: '#bad0b2', closeAccent: '#d9c9a0', cta: '#d1dfb7', ctaInk: '#203729', deco: '#a2c4b7' },
   },
-  // primaapp.com — cool white UI, ink #0a0c10, blue #2563eb / #1d4ed8, theme gradient cyan #4bcfff → navy #002454
-  prima: {
-    light: { ink: '#0a0c10', ink2: '#475569', s1: '#f3f6fc', s2: '#e5ecf9', panel: '#fbfcff', line: '#c9d6ee', accent: '#1d4ed8', soft: '#dbe6fc', close: '#002454', closeInk: '#f4f8ff', closeInk2: '#b7c9e8', closeAccent: '#4bcfff', cta: '#4bcfff', ctaInk: '#00193d', deco: '#4bcfff' },
-    dark: { ink: '#eaf0ff', ink2: '#a9b7d6', s1: '#0b1226', s2: '#0f1a36', panel: '#131f3f', line: '#26365f', accent: '#4bcfff', soft: '#15305a', close: '#002454', closeInk: '#f4f8ff', closeInk2: '#b7c9e8', closeAccent: '#4bcfff', cta: '#4bcfff', ctaInk: '#00193d', deco: '#4bcfff' },
-  },
 
-
-  // rantle.com — deep teal-blue #05496b, orange #f78619, light grey #f3f3f3, ink #181818 / #343a3b
-  rantle: {
-    light: { ink: '#0d1a22', ink2: '#3b505e', s1: '#eef3f6', s2: '#dce8ee', panel: '#fbfdfe', line: '#c2d3de', accent: '#05496b', soft: '#cde0ea', close: '#05496b', closeInk: '#ffffff', closeInk2: '#bcd8e6', closeAccent: '#ff9d3d', cta: '#f78619', ctaInk: '#1a0f02', deco: '#f78619' },
-    dark: { ink: '#e9f2f7', ink2: '#9db8c7', s1: '#08161f', s2: '#0b1f2c', panel: '#0e2634', line: '#1c3d52', accent: '#58b6e0', soft: '#123549', close: '#05496b', closeInk: '#ffffff', closeInk2: '#bcd8e6', closeAccent: '#ff9d3d', cta: '#f78619', ctaInk: '#1a0f02', deco: '#f78619' },
-  },
-  // Bum.Life — a naturally dark brand: near-black #191919 / #202020 / #0f0f0f, yellow #ffdb26 (dark contrast #111827), white text.
-  // It stays dark in BOTH themes (a pale body would misrepresent it); the light-theme variant is only a little warmer.
-  'bum-life': {
-    light: { ink: '#ffffff', ink2: '#d1d5db', s1: '#171614', s2: '#1f1e1b', panel: '#262521', line: '#3b3a35', accent: '#ffdb26', soft: '#37300f', close: '#ffdb26', closeInk: '#111827', closeInk2: '#3d3711', closeAccent: '#111827', cta: '#111827', ctaInk: '#ffffff', deco: '#ffdb26' },
-    dark: { ink: '#ffffff', ink2: '#cfd3da', s1: '#0f0f0f', s2: '#151515', panel: '#1b1b1b', line: '#2f2f2f', accent: '#ffdb26', soft: '#2c270b', close: '#ffdb26', closeInk: '#111827', closeInk2: '#3d3711', closeAccent: '#111827', cta: '#111827', ctaInk: '#ffffff', deco: '#ffdb26' },
-  },
 
 }
 

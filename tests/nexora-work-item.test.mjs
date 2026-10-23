@@ -7,17 +7,16 @@ import { CASE_STUDIES } from '../src/data/projectCaseStudies.js'
 import { PROJECT_BRANDS } from '../src/data/projectBrands.js'
 import { seoForPath, seoPaths, structuredDataFor } from '../src/seo/routeSeo.js'
 
-test('Nexora joins the standalone Work sequence while the immersive exhibits stay fixed', () => {
+test('Nexora follows Meridian in Work and joins the six latest immersive exhibits', () => {
   const project = projects.find(item => item.slug === 'nexora')
   assert.ok(project)
   assert.equal(project.title, 'Nexora')
   assert.equal(project.category, 'Animated productivity landing page')
-  assert.equal(project.workRoom, false)
   assert.equal(project.liveUrl, 'https://www.usmankhairdin.com/portfolio/nexora/')
-  assert.deepEqual(workProjects.map(item => item.slug), ['carthevia', 'forma', 'avenlo', 'veyravael', 'sanaira', 'nexora', 'prima', 'rantle', 'bum-life'])
-  assert.deepEqual(workRoomProjects.map(item => item.slug), ['sanaira', 'forma', 'prima', 'veyravael', 'rantle', 'bum-life'])
-  assert.equal(nextCaseStudy('/work/sanaira/').href, '/work/nexora/')
-  assert.equal(nextCaseStudy('/work/nexora/').href, '/work/prima/')
+  assert.deepEqual(workProjects.map(item => item.slug), ['forme', 'meridian', 'nexora', 'carthevia', 'forma', 'avenlo', 'veyravael', 'sanaira'])
+  assert.deepEqual(workRoomProjects.map(item => item.slug), ['forme', 'meridian', 'nexora', 'carthevia', 'forma', 'avenlo'])
+  assert.equal(nextCaseStudy('/work/sanaira/').href, '/work/personal-portfolio-3d/')
+  assert.equal(nextCaseStudy('/work/nexora/').href, '/work/carthevia/')
   assert.ok(CASE_STUDIES.nexora.chapters.length >= 3)
   assert.ok(PROJECT_BRANDS.nexora.light && PROJECT_BRANDS.nexora.dark)
 })
